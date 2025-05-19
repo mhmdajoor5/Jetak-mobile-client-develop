@@ -10,18 +10,18 @@ class Media {
   String size;
 
   Media({this.id = '', this.name = '', String? url, String? thumb, String? icon, this.size = ''})
-    : url = url ?? "${GlobalConfiguration().getValue('base_url')}images/image_default.png",
-      thumb = thumb ?? "${GlobalConfiguration().getValue('base_url')}images/image_default.png",
-      icon = icon ?? "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
+      : url = url ?? "${GlobalConfiguration().getValue('base_url')}/images/image_default.png",
+        thumb = thumb ?? "${GlobalConfiguration().getValue('base_url')}/images/image_default.png",
+        icon = icon ?? "${GlobalConfiguration().getValue('base_url')}/images/image_default.png";
 
   factory Media.fromJSON(Map<String, dynamic>? jsonMap) {
     try {
       return Media(
         id: jsonMap?['id']?.toString() ?? '',
         name: jsonMap?['name']?.toString() ?? '',
-        url: jsonMap?['url']?.toString() ?? "${GlobalConfiguration().getValue('base_url')}images/image_default.png",
-        thumb: jsonMap?['thumb']?.toString() ?? "${GlobalConfiguration().getValue('base_url')}images/image_default.png",
-        icon: jsonMap?['icon']?.toString() ?? "${GlobalConfiguration().getValue('base_url')}images/image_default.png",
+        url: jsonMap?['url']?.toString() ?? "${GlobalConfiguration().getValue('base_url')}/images/image_default.png",
+        thumb: jsonMap?['thumb']?.toString() ?? "${GlobalConfiguration().getValue('base_url')}/images/image_default.png",
+        icon: jsonMap?['icon']?.toString() ?? "${GlobalConfiguration().getValue('base_url')}/images/image_default.png",
         size: jsonMap?['formated_size']?.toString() ?? '',
       );
     } catch (e) {

@@ -20,10 +20,7 @@ class DetailsWidget extends StatefulWidget {
   dynamic currentTab;
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  DetailsWidget({
-    Key? key,
-    required this.currentTab,
-  }) {
+  DetailsWidget({Key? key, required this.currentTab}) {
     if (currentTab != null) {
       if (currentTab is RouteArgument) {
         routeArgument = currentTab;
@@ -42,19 +39,46 @@ class DetailsWidget extends StatefulWidget {
 
 class _DetailsWidgetState extends StateMVC<DetailsWidget> {
   late RestaurantController _con;
+  bool _isLoading = true;
 
   _DetailsWidgetState() : super(RestaurantController()) {
     _con = controller as RestaurantController;
   }
 
-  initState() {
-    _con.listenForRestaurant(id: widget.routeArgument.param).then((value) {
-      setState(() {
-        _con.restaurant = value as Restaurant;
-      });
-    });
-
+  @override
+  void initState() {
     super.initState();
+    _loadRestaurant();
+  }
+
+  void _loadRestaurant() async {
+    try {
+      if (widget.routeArgument.param is String) {
+        final value = await _con.listenForRestaurant(
+          id: widget.routeArgument.param,
+        );
+        if (mounted) {
+          setState(() {
+            _con.restaurant = value as Restaurant;
+            _isLoading = false;
+          });
+        }
+      } else if (widget.routeArgument.param is Restaurant) {
+        if (mounted) {
+          setState(() {
+            _con.restaurant = widget.routeArgument.param as Restaurant;
+            _isLoading = false;
+          });
+        }
+      }
+    } catch (e) {
+      print('Error loading restaurant: $e');
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   // @override
@@ -106,150 +130,51 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    if (_isLoading) {
+      return Scaffold(
         key: widget.scaffoldKey,
         drawer: DrawerWidget(),
-        // bottomNavigationBar: Container(
-        //   height: 66,
-        //   decoration: BoxDecoration(
-        //     color: Theme
-        //         .of(context)
-        //         .primaryColor,
-        //     boxShadow: [BoxShadow(color: Theme
-        //         .of(context)
-        //         .hintColor
-        //         .withOpacity(0.10), offset: Offset(0, -4), blurRadius: 10)
-        //     ],
-        //   ),
-        //   child: Row(
-        //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-        //     children: [
-        //       IconButton(
-        //         icon: Icon(
-        //           Icons.store,
-        //           size: widget.currentTab == 0 ? 28 : 24,
-        //           color: widget.currentTab == 0 ? Theme
-        //               .of(context)
-        //               .accentColor : Theme
-        //               .of(context)
-        //               .focusColor,
-        //         ),
-        //         onPressed: () {
-        //           this._selectTab(0);
-        //         },
-        //       ),
-        //       IconButton(
-        //         icon: Icon(
-        //           Icons.chat,
-        //           size: widget.currentTab == 1 ? 28 : 24,
-        //           color: widget.currentTab == 1 ? Theme
-        //               .of(context)
-        //               .accentColor : Theme
-        //               .of(context)
-        //               .focusColor,
-        //         ),
-        //         onPressed: () {
-        //           this._selectTab(1);
-        //         },
-        //       ),
-        //       IconButton(
-        //         icon: Icon(
-        //           Icons.directions,
-        //           size: widget.currentTab == 2 ? 28 : 24,
-        //           color: widget.currentTab == 2 ? Theme
-        //               .of(context)
-        //               .accentColor : Theme
-        //               .of(context)
-        //               .focusColor,
-        //         ),
-        //         onPressed: () {
-        //           this._selectTab(2);
-        //         },
-        //       ),
-        //       //         MaterialButton(
-        //       // elevation: 0,
-        //       // focusElevation: 0,
-        //       // highlightElevation: 0,
-        //       //           onPressed: () {
-        //       //             this._selectTab(3);
-        //       //           },
-        //       //           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        //       //           shape: StadiumBorder(),
-        //       //           color: Theme.of(context).colorScheme.secondary,
-        //       //           child: Wrap(
-        //       //             spacing: 10,
-        //       //             children: [
-        //       //               Icon(Icons.restaurant, color: Theme.of(context).primaryColor),
-        //       //               Text(
-        //       //                 S.of(context).menu,
-        //       //                 style: TextStyle(color: Theme.of(context).primaryColor),
-        //       //               )
-        //       //             ],
-        //       //           ),
-        //       //         ),
-        //     ],
-        //   ),
-        // ),
-        /*
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Theme.of(context).colorScheme.secondary,
-          selectedFontSize: 0,
-          unselectedFontSize: 0,
-          iconSize: 22,
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          //selectedIconTheme: IconThemeData(size: 28),
-          unselectedItemColor: Theme.of(context).focusColor.withOpacity(1),
-          currentIndex: widget.currentTab,
-          onTap: (int i) {
-            this._selectTab(i);
-            print(i);
-          },
-          // this will be set when a new tab is tapped
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.store),
-              title: new Container(height: 0.0),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
-              title: new Container(height: 0.0),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.directions),
-              title: new Container(height: 0.0),
-            ),
-            BottomNavigationBarItem(
-              icon: Container(
-                margin: EdgeInsetsDirectional.only(end: 10),
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondary,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: Wrap(
-                  spacing: 10,
-                  children: [
-                    Icon(Icons.restaurant, color: Theme.of(context).primaryColor),
-                    Text(
-                      S.of(context).menu,
-                      style: TextStyle(color: Theme.of(context).primaryColor),
-                    )
-                  ],
-                ),
+        body: CircularLoadingWidget(height: 500),
+      );
+    }
+
+    if (_con.restaurant!.id.isEmpty) {
+      return Scaffold(
+        key: widget.scaffoldKey,
+        drawer: DrawerWidget(),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline,
+                size: 48,
+                color: Theme.of(context).colorScheme.error,
               ),
-              title: SizedBox(height: 0),
-            ),
-          ],
-        ),*/
-        body: _con.restaurant == null || _con.restaurant?.id == null
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : RestaurantWidget(
-                    parentScaffoldKey: widget.scaffoldKey,
-                    routeArgument: RouteArgument(param: _con.restaurant)) ??
-                CircularLoadingWidget(height: 400));
+              SizedBox(height: 16),
+              Text(
+                S.of(context).verify_your_internet_connection,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _loadRestaurant,
+                child: Text(S.of(context).verify),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Scaffold(
+      key: widget.scaffoldKey,
+      drawer: DrawerWidget(),
+      body: RestaurantWidget(
+        parentScaffoldKey: widget.scaffoldKey,
+        routeArgument: RouteArgument(param: _con.restaurant),
+      ),
+    );
   }
 }

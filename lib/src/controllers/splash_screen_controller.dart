@@ -13,10 +13,10 @@ import '../repository/user_repository.dart' as userRepo;
 
 class SplashScreenController extends ControllerMVC {
   ValueNotifier<Map<String, double>> progress = new ValueNotifier(new Map());
-  GlobalKey<ScaffoldState>? scaffoldKey;
+  late GlobalKey<ScaffoldState> scaffoldKey;
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
-  xSplashScreenController() {
+  SplashScreenController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
     // Should define these variables before the app loaded
     progress.value = {"Setting": 0, "User": 0};
@@ -41,8 +41,8 @@ class SplashScreenController extends ControllerMVC {
       }
     });
     Timer(Duration(seconds: 20), () {
-      if(scaffoldKey?.currentContext != null) {
-        ScaffoldMessenger.of(scaffoldKey!.currentContext!).showSnackBar(SnackBar(
+      if(scaffoldKey.currentContext! != null) {
+        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
           content: Text(S
               .of(state!.context)
               .verify_your_internet_connection),
@@ -106,3 +106,4 @@ class SplashScreenController extends ControllerMVC {
     );
   }
 }
+

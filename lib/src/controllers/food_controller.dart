@@ -21,12 +21,13 @@ class FoodController extends ControllerMVC {
 
   FoodController() {
     scaffoldKey = GlobalKey<ScaffoldState>();
+    food = Food();
   }
 
   void listenForFood(BuildContext context, {required String foodId, String? message}) async {
     final Stream<Food> stream = await getFood(foodId);
     stream.listen(
-      (Food _food) {
+          (Food _food) {
         setState(() => food = _food);
       },
       onError: (e) {
@@ -90,9 +91,9 @@ class FoodController extends ControllerMVC {
 
   void addToFavorite(Food food) async {
     final fav =
-        Favorite()
-          ..food = food
-          ..extras = food.extras.where((e) => e.checked).toList();
+    Favorite()
+      ..food = food
+      ..extras = food.extras.where((e) => e.checked).toList();
 
     addFavorite(fav).then((value) {
       setState(() => favorite = value);

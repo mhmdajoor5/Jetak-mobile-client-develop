@@ -12,144 +12,178 @@ import '../pages/mobile_verification_2.dart';
 import '../repository/user_repository.dart' as repository;
 
 class UserController extends ControllerMVC {
-  model.User user = new model.User();
+  model.User user = model.User();
   bool hidePassword = true;
   bool loading = false;
   late GlobalKey<FormState> loginFormKey;
   late GlobalKey<ScaffoldState> scaffoldKey;
   late FirebaseMessaging _firebaseMessaging;
   late OverlayEntry loader;
+  bool _isLoaderVisible = false;
 
   UserController() {
-    loginFormKey = new GlobalKey<FormState>();
-    this.scaffoldKey = new GlobalKey<ScaffoldState>();
+    loginFormKey = GlobalKey<FormState>();
+    scaffoldKey = GlobalKey<ScaffoldState>();
     _firebaseMessaging = FirebaseMessaging.instance;
-    _firebaseMessaging.getToken().then((String _deviceToken) {
-      user.deviceToken = _deviceToken;
-    } as FutureOr<Null> Function(String? value)).catchError((e) {
-      print('Notification not configured');
-    });
+
+    _initializeFirebaseMessaging();
+  }
+
+  void _initializeFirebaseMessaging() async {
+    try {
+      String? token = await _firebaseMessaging.getToken();
+      if (token != null) {
+        user.deviceToken = token;
+      }
+    } catch (e) {
+      print('Notification not configured: $e');
+    }
+  }
+
+  BuildContext? get context =>
+      state?.context ?? scaffoldKey.currentContext;
+
+  void _showLoader() {
+    if (!_isLoaderVisible && context != null) {
+      loader = Helper.overlayLoader(context!);
+      Overlay.of(context!)?.insert(loader);
+      _isLoaderVisible = true;
+    }
+  }
+
+  void _hideLoader() {
+    if (_isLoaderVisible) {
+      loader.remove();
+      _isLoaderVisible = false;
+    }
   }
 
   void login() async {
-    loader = Helper.overlayLoader(state!.context);
-    FocusScope.of(state!.context).unfocus();
-    if (loginFormKey.currentState!.validate()) {
-      loginFormKey.currentState!.save();
-      Overlay.of(state!.context).insert(loader);
-      repository.login(user).then((value) {
+    if (context == null) return;
+    FocusScope.of(context!).unfocus();
+    if (loginFormKey.currentState?.validate() ?? false) {
+      loginFormKey.currentState?.save();
+      _showLoader();
+      try {
+        final value = await repository.login(user);
         if (value != null && value.apiToken != null) {
-          Navigator.of(scaffoldKey.currentContext!)
-              .pushReplacementNamed('/Pages', arguments: 2);
+          Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
         } else {
-          ScaffoldMessenger.of(scaffoldKey.currentContext!)
-              .showSnackBar(SnackBar(
-            content: Text(S.of(state!.context).wrong_email_or_password),
-          ));
+          _showSnackBar(S.of(context!).wrong_email_or_password);
         }
-      }).catchError((e) {
-        loader.remove();
+      } catch (e) {
         print(e);
-        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
-          content: Text(S.of(state!.context).this_account_not_exist),
-        ));
-      }).whenComplete(() {
-        Helper.hideLoader(loader);
-      });
+        _showSnackBar(S.of(context!).this_account_not_exist);
+      } finally {
+        _hideLoader();
+      }
+    }
+  }
+
+  Future<void> register() async {
+    if (context == null) return;
+    FocusScope.of(context!).unfocus();
+    _showLoader();
+    try {
+      final value = await repository.register(user);
+      if (value != null && value.apiToken != null) {
+        Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
+      } else {
+        _showSnackBar(S.of(context!).wrong_email_or_password);
+      }
+    } catch (e) {
+      _showSnackBar(S.of(context!).this_email_account_exists);
+    } finally {
+      _hideLoader();
     }
   }
 
   Future<void> verifyPhone(model.User user) async {
-    final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
-      repository.currentUser.value.verificationId = verId;
+    if (context == null) return;
+
+    final PhoneVerificationCompleted verificationCompleted =
+        (PhoneAuthCredential credential) {
+      // You could log in the user automatically here if needed.
     };
 
-    final PhoneCodeSent smsCodeSent = (String verId, [int? forceCodeResent]) {
-      repository.currentUser.value.verificationId = verId;
+    final PhoneVerificationFailed verificationFailed =
+        (FirebaseAuthException e) {
+      _showSnackBar(e.message ?? 'Phone verification failed');
+      print(e);
+    };
+
+    final PhoneCodeSent codeSent =
+        (String verificationId, int? forceResendingToken) {
+      repository.currentUser.value.verificationId = verificationId;
       Navigator.push(
-        scaffoldKey.currentContext!,
+        context!,
         MaterialPageRoute(
-            builder: (context) => MobileVerification2(
-                  onVerified: (v) {
-                    Navigator.of(scaffoldKey.currentContext!)
-                        .pushReplacementNamed('/Pages', arguments: 2);
-                  },
-                )),
+          builder: (ctx) => MobileVerification2(
+            onVerified: (v) {
+              Navigator.of(ctx).pushReplacementNamed('/Pages', arguments: 2);
+            },
+          ),
+        ),
       );
-    } as PhoneCodeSent;
-    final PhoneVerificationCompleted _verifiedSuccess =
-        (AuthCredential auth) {};
-    final PhoneVerificationFailed _verifyFailed = (FirebaseAuthException e) {
-      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
-        content: Text(e.message!),
-      ));
-      print(e.toString());
     };
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: user.phone,
-      timeout: const Duration(seconds: 5),
-      verificationCompleted: _verifiedSuccess,
-      verificationFailed: _verifyFailed,
-      codeSent: smsCodeSent,
-      codeAutoRetrievalTimeout: autoRetrieve,
-    );
+
+    final PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout =
+        (String verificationId) {
+      repository.currentUser.value.verificationId = verificationId;
+    };
+
+    try {
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: user.phone,
+        timeout: const Duration(seconds: 5),
+        verificationCompleted: verificationCompleted,
+        verificationFailed: verificationFailed,
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: autoRetrievalTimeout,
+      );
+    } catch (e) {
+      _showSnackBar('Phone verification failed');
+      print(e);
+    }
   }
 
-  Future<void> register() async {
-    loader = Helper.overlayLoader(state!.context);
-    FocusScope.of(state!.context).unfocus();
-    Overlay.of(state!.context).insert(loader);
-    repository.register(user).then((value) {
-      if (value != null && value.apiToken != null) {
-        Navigator.of(scaffoldKey.currentContext!)
-            .pushReplacementNamed('/Pages', arguments: 2);
-      } else {
-        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
-          content: Text(S.of(state!.context).wrong_email_or_password),
-        ));
-      }
-    }).catchError((e) {
-      loader.remove();
-      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
-        content: Text(S.of(state!.context).this_email_account_exists),
-      ));
-    }).whenComplete(() {
-      Helper.hideLoader(loader);
-    });
-  }
-
-  void resetPassword() {
-    loader = Helper.overlayLoader(state!.context);
-    FocusScope.of(state!.context).unfocus();
-    if (loginFormKey.currentState!.validate()) {
-      loginFormKey.currentState!.save();
-      Overlay.of(state!.context).insert(loader);
-      repository.resetPassword(user).then((value) {
-        if (value != null && value == true) {
-          ScaffoldMessenger.of(scaffoldKey.currentContext!)
-              .showSnackBar(SnackBar(
-            content: Text(S
-                .of(state!.context)
-                .your_reset_link_has_been_sent_to_your_email),
-            action: SnackBarAction(
-              label: S.of(state!.context).login,
-              onPressed: () {
-                Navigator.of(scaffoldKey.currentContext!)
-                    .pushReplacementNamed('/Login');
-              },
+  void resetPassword() async {
+    if (context == null) return;
+    FocusScope.of(context!).unfocus();
+    if (loginFormKey.currentState?.validate() ?? false) {
+      loginFormKey.currentState?.save();
+      _showLoader();
+      try {
+        final success = await repository.resetPassword(user);
+        if (success == true) {
+          ScaffoldMessenger.of(context!).showSnackBar(
+            SnackBar(
+              content: Text(S.of(context!).your_reset_link_has_been_sent_to_your_email),
+              action: SnackBarAction(
+                label: S.of(context!).login,
+                onPressed: () {
+                  Navigator.of(context!).pushReplacementNamed('/Login');
+                },
+              ),
+              duration: const Duration(seconds: 10),
             ),
-            duration: Duration(seconds: 10),
-          ));
+          );
         } else {
-          loader.remove();
-          ScaffoldMessenger.of(scaffoldKey.currentContext!)
-              .showSnackBar(SnackBar(
-            content: Text(S.of(state!.context).error_verify_email_settings),
-          ));
+          _showSnackBar(S.of(context!).error_verify_email_settings);
         }
-      }).whenComplete(() {
-        Helper.hideLoader(loader);
-      });
+      } catch (e) {
+        _showSnackBar(S.of(context!).error_verify_email_settings);
+      } finally {
+        _hideLoader();
+      }
+    }
+  }
+
+  void _showSnackBar(String message) {
+    if (context != null) {
+      ScaffoldMessenger.of(context!).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
     }
   }
 }
