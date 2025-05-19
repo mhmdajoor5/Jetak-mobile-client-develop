@@ -1,0 +1,164 @@
+{
+  "project_info": {
+    "project_number": "651078762961",
+    "project_id": "fooddelivery-e663e",
+    "storage_bucket": "fooddelivery-e663e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651078762961:android:723e23eacacb88cf0760f0",
+        "android_client_info": {
+          "package_name": "com.carryeats.customer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSJvSnckxw1YY04qzvuvXQklq_pI25KqQ"
+        },
+        {
+          "current_key": "AIzaSyCm2w4Z4um1lK-pblcmhlN4dyZbKlgFg5I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651078762961:android:2fbfb15313c7e7c80760f0",
+        "android_client_info": {
+          "package_name": "com.carryeats.manager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSJvSnckxw1YY04qzvuvXQklq_pI25KqQ"
+        },
+        {
+          "current_key": "AIzaSyCm2w4Z4um1lK-pblcmhlN4dyZbKlgFg5I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651078762961:android:1adf425b676359fa0760f0",
+        "android_client_info": {
+          "package_name": "com.smartersvision.food_delivery_owner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSJvSnckxw1YY04qzvuvXQklq_pI25KqQ"
+        },
+        {
+          "current_key": "AIzaSyCm2w4Z4um1lK-pblcmhlN4dyZbKlgFg5I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651078762961:android:5a91f0ea4f70fe310760f0",
+        "android_client_info": {
+          "package_name": "com.zeidat.food_delivery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSJvSnckxw1YY04qzvuvXQklq_pI25KqQ"
+        },
+        {
+          "current_key": "AIzaSyCm2w4Z4um1lK-pblcmhlN4dyZbKlgFg5I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651078762961:android:f547098a74d4b5a30760f0",
+        "android_client_info": {
+          "package_name": "com.zeidat.food_delivery_owner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSJvSnckxw1YY04qzvuvXQklq_pI25KqQ"
+        },
+        {
+          "current_key": "AIzaSyCm2w4Z4um1lK-pblcmhlN4dyZbKlgFg5I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651078762961:android:962992736d8765a50760f0",
+        "android_client_info": {
+          "package_name": "com.zeidat.foodmanager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSJvSnckxw1YY04qzvuvXQklq_pI25KqQ"
+        },
+        {
+          "current_key": "AIzaSyCm2w4Z4um1lK-pblcmhlN4dyZbKlgFg5I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651078762961:android:ee366bb5c9d5ba900760f0",
+        "android_client_info": {
+          "package_name": "com.zeidat.jetakdelivery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSJvSnckxw1YY04qzvuvXQklq_pI25KqQ"
+        },
+        {
+          "current_key": "AIzaSyCm2w4Z4um1lK-pblcmhlN4dyZbKlgFg5I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
