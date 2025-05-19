@@ -12,35 +12,54 @@ class NotificationsButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Stack(
-        alignment: Alignment.topRight,
-        children: <Widget>[
-          Icon(
-            Icons.notifications_outlined,
-            color: iconColor ?? Theme.of(context).hintColor,
-            size: 28,
-          ),
-          Container(
-            child: Text(
-              '0',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodySmall!.merge(
-                TextStyle(color: Theme.of(context).primaryColor, fontSize: 9),
-              ),
-            ),
-            padding: EdgeInsets.all(0),
-            decoration: BoxDecoration(
-              color: labelColor ?? Theme.of(context).colorScheme.secondary,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-            constraints: BoxConstraints(minWidth: 15, maxWidth: 15, minHeight: 15, maxHeight: 15),
-          ),
-        ],
-      ),
-      onPressed: () {
+    return GestureDetector(
+      onTap: () {
         Navigator.of(context).pushNamed('/Notifications');
       },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 6),
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Color(0xFFF1F1F1),
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: <Widget>[
+            Icon(
+              Icons.notifications_outlined,
+              color: iconColor ?? Color(0xFF292D32),
+              size: 24,
+            ),
+            Positioned(
+              top: -4,
+              right: -4,
+              child: Container(
+                width: 15,
+                height: 15,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: labelColor ?? Theme.of(context).colorScheme.secondary,
+                  shape: BoxShape.circle,
+                ),
+                child: Text(
+                  '0', // TODO: Replace with real count
+                  style: TextStyle(fontSize: 9, color: Colors.white),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
-} 
+
+}

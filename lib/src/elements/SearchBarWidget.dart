@@ -15,21 +15,26 @@ class SearchBarWidget extends StatelessWidget {
         Navigator.of(context).push(SearchModal());
       },
       child: Container(
-        padding: EdgeInsets.all(9),
-        decoration: BoxDecoration(color: Colors.transparent, border: Border.all(color: Theme.of(context).focusColor.withOpacity(0.2)), borderRadius: BorderRadius.circular(4)),
+        height: 50,
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          color: Color(0xFFF9F9F9),
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
         child: Row(
-          children: <Widget>[
-            Padding(padding: const EdgeInsets.only(right: 12, left: 0), child: Icon(Icons.search, color: Theme.of(context).colorScheme.secondary)),
+          children: [
+            Icon(Icons.search, color: Color(0xFF292D32), size: 22),
+            SizedBox(width: 10),
             Expanded(
               child: Text(
                 S.of(context).search_for_restaurants_or_foods,
-                maxLines: 1,
-                softWrap: false,
-                overflow: TextOverflow.fade,
-                style: Theme.of(context).textTheme.bodySmall!.merge(TextStyle(fontSize: 12)),
+                style: TextStyle(
+                  color: Colors.grey.shade600,
+                  fontSize: 14,
+                ),
               ),
             ),
-            SizedBox(width: 8),
             InkWell(
               onTap: () {
                 if (onClickFilter != null) {
@@ -37,13 +42,12 @@ class SearchBarWidget extends StatelessWidget {
                 }
               },
               child: Container(
-                padding: const EdgeInsets.only(right: 10, left: 10, top: 5, bottom: 5),
-                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5)), color: Theme.of(context).focusColor.withOpacity(0.1)),
-                child: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  spacing: 4,
-                  children: [Text(S.of(context).filter, style: TextStyle(color: Theme.of(context).hintColor)), Icon(Icons.filter_list, color: Theme.of(context).hintColor, size: 21)],
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Color(0xFFEFF0F2),
+                  borderRadius: BorderRadius.circular(8),
                 ),
+                child: Icon(Icons.filter_alt_outlined, size: 20, color: Color(0xFF292D32)),
               ),
             ),
           ],
@@ -51,4 +55,5 @@ class SearchBarWidget extends StatelessWidget {
       ),
     );
   }
+
 }
