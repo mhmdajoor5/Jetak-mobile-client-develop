@@ -94,94 +94,148 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                           },
                         ),
                       );
+                  case 'categories_heading':
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.symmetric(vertical: 0),
+                        leading: Icon(Icons.category, color: Theme.of(context).hintColor),
+                        title: Text(S.of(context).food_categories, style: Theme.of(context).textTheme.headlineLarge),
+                      ),
+                    );
+                  case 'categories':
+                    return CategoriesCarouselWidget(categories: _con.categories);
                     case 'top_restaurants_heading':
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 15, left: 20, right: 20, bottom: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
+                      return Visibility(
+                        visible: false,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 15, left: 20, right: 20, bottom: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      S.of(context).top_restaurants,
+                                      style: Theme.of(context).textTheme.headlineLarge,
+                                      maxLines: 1,
+                                      softWrap: false,
+                                      overflow: TextOverflow.fade,
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      var bottomSheetController = widget.parentScaffoldKey?.currentState?.showBottomSheet(
+                                            (context) => DeliveryAddressBottomSheetWidget(scaffoldKey: widget.parentScaffoldKey!),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                                        ),
+                                      );
+                                      bottomSheetController?.closed.then((value) {
+                                        _con.refreshHome();
+                                      });
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                                        color: settingsRepo.deliveryAddress.value?.address == null
+                                            ? Theme.of(context).focusColor.withOpacity(0.1)
+                                            : Theme.of(context).colorScheme.secondary,
+                                      ),
+                                      child: Text(
+                                        S.of(context).delivery,
+                                        style: TextStyle(
+                                          color: settingsRepo.deliveryAddress.value?.address == null
+                                              ? Theme.of(context).hintColor
+                                              : Theme.of(context).primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 7),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        settingsRepo.deliveryAddress.value?.address = null;
+                                      });
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                                        color: settingsRepo.deliveryAddress.value?.address != null
+                                            ? Theme.of(context).focusColor.withOpacity(0.1)
+                                            : Theme.of(context).colorScheme.secondary,
+                                      ),
+                                      child: Text(
+                                        S.of(context).pickup,
+                                        style: TextStyle(
+                                          color: settingsRepo.deliveryAddress.value?.address != null
+                                              ? Theme.of(context).hintColor
+                                              : Theme.of(context).primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              if (settingsRepo.deliveryAddress.value?.address != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 12),
+                                  child: Text(
+                                    S.of(context).near_to + " " + settingsRepo.deliveryAddress.value!.address!,
+                                    style: Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      );
+
+                    case 'top_restaurants':
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Expanded(
-                                  child: Text(
-                                    S.of(context).top_restaurants,
-                                    style: Theme.of(context).textTheme.headlineLarge,
-                                    maxLines: 1,
-                                    softWrap: false,
-                                    overflow: TextOverflow.fade,
+                                Text(
+                                  'Offers near you',
+                                  style: TextStyle(
+                                    fontFamily: 'Nunito',
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18,
+                                    height: 1.6, // line height 160%
+                                    color: Colors.black,
                                   ),
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    var bottomSheetController = widget.parentScaffoldKey?.currentState?.showBottomSheet(
-                                          (context) => DeliveryAddressBottomSheetWidget(scaffoldKey: widget.parentScaffoldKey!),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-                                      ),
-                                    );
-                                    bottomSheetController?.closed.then((value) {
-                                      _con.refreshHome();
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                                      color: settingsRepo.deliveryAddress.value?.address == null
-                                          ? Theme.of(context).focusColor.withOpacity(0.1)
-                                          : Theme.of(context).colorScheme.secondary,
-                                    ),
-                                    child: Text(
-                                      S.of(context).delivery,
-                                      style: TextStyle(
-                                        color: settingsRepo.deliveryAddress.value?.address == null
-                                            ? Theme.of(context).hintColor
-                                            : Theme.of(context).primaryColor,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 7),
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      settingsRepo.deliveryAddress.value?.address = null;
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                                      color: settingsRepo.deliveryAddress.value?.address != null
-                                          ? Theme.of(context).focusColor.withOpacity(0.1)
-                                          : Theme.of(context).colorScheme.secondary,
-                                    ),
-                                    child: Text(
-                                      S.of(context).pickup,
-                                      style: TextStyle(
-                                        color: settingsRepo.deliveryAddress.value?.address != null
-                                            ? Theme.of(context).hintColor
-                                            : Theme.of(context).primaryColor,
-                                      ),
-                                    ),
+                                Text(
+                                  'See all',
+                                  style: TextStyle(
+                                    fontFamily: 'Nunito',
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                    color: Colors.black,
                                   ),
                                 ),
                               ],
                             ),
-                            if (settingsRepo.deliveryAddress.value?.address != null)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 12),
-                                child: Text(
-                                  S.of(context).near_to + " " + settingsRepo.deliveryAddress.value!.address!,
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(height: 10),
+                          CardsCarouselWidget(
+                            restaurantsList: _con.topRestaurants,
+                            heroTag: 'home_top_restaurants',
+                          ),
+                        ],
                       );
-                    case 'top_restaurants':
-                      return CardsCarouselWidget(restaurantsList: _con.topRestaurants, heroTag: 'home_top_restaurants');
+
                     case 'trending_week_heading':
                       return ListTile(
                         dense: true,
@@ -196,18 +250,6 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                       );
                     case 'trending_week':
                       return FoodsCarouselWidget(foodsList: _con.trendingFoods, heroTag: 'home_food_carousel');
-                    case 'categories_heading':
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: ListTile(
-                          dense: true,
-                          contentPadding: EdgeInsets.symmetric(vertical: 0),
-                          leading: Icon(Icons.category, color: Theme.of(context).hintColor),
-                          title: Text(S.of(context).food_categories, style: Theme.of(context).textTheme.headlineLarge),
-                        ),
-                      );
-                    case 'categories':
-                      return CategoriesCarouselWidget(categories: _con.categories);
                     case 'popular_heading':
                       return Padding(
                         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),

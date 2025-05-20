@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
@@ -22,11 +23,15 @@ class CardWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.all(Radius.circular(10)),
-        boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.1), blurRadius: 15, offset: Offset(0, 5))],
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).focusColor.withOpacity(0.1),
+            blurRadius: 15,
+            offset: Offset(0, 5),
+          ),
+        ],
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Stack(
@@ -47,24 +52,34 @@ class CardWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              Row(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                    decoration: BoxDecoration(color: restaurant.closed ? Colors.grey : Colors.green, borderRadius: BorderRadius.circular(24)),
-                    child: Text(restaurant.closed ? S.of(context).closed : S.of(context).open, style: Theme.of(context).textTheme.bodySmall?.merge(TextStyle(color: Theme.of(context).primaryColor))),
+              Positioned(
+                top: 12,
+                left: 12,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFEDEFF1),
+                    borderRadius: BorderRadius.circular(24),
                   ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                    decoration: BoxDecoration(color: Helper.canDelivery(restaurant) ? Colors.green : Colors.orange, borderRadius: BorderRadius.circular(24)),
-                    child: Text(
-                      Helper.canDelivery(restaurant) ? S.of(context).delivery : S.of(context).pickup,
-                      style: Theme.of(context).textTheme.bodySmall?.merge(TextStyle(color: Theme.of(context).primaryColor)),
-                    ),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/img/ticket-discount.svg',
+                        height: 18,
+                        width: 18,
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        ' 20% off (up to \$50)',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF26386A),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ],
           ),
@@ -73,42 +88,77 @@ class CardWidget extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                Expanded(
+                Expa  nded(
                   flex: 3,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(restaurant.name, overflow: TextOverflow.fade, softWrap: false, style: Theme.of(context).textTheme.titleMedium),
                       Text(Helper.skipHtml(restaurant.description), overflow: TextOverflow.fade, softWrap: false, style: Theme.of(context).textTheme.bodySmall),
-                      SizedBox(height: 5),
-                      Row(children: Helper.getStarsList(double.parse(restaurant.rate))),
+                      Visibility(
+                        visible: false,
+                          child: Row(children: Helper.getStarsList(double.parse(restaurant.rate)))),
                     ],
                   ),
                 ),
-                SizedBox(width: 15),
-                Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      MaterialButton(
-                        padding: EdgeInsets.all(0),
-                        onPressed: () {
-                          Navigator.of(context).pushNamed('/Pages', arguments: RouteArgument(id: '1', param: restaurant));
-                        },
-                        child: Icon(Icons.directions, color: Theme.of(context).primaryColor),
-                        color: Theme.of(context).colorScheme.secondary,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                      ),
-                      restaurant.distance > 0
-                          ? Text(Helper.getDistance(restaurant.distance, Helper.of(context).trans(setting.value.distanceUnit)), overflow: TextOverflow.fade, maxLines: 1, softWrap: false)
-                          : SizedBox(height: 0),
-                    ],
+                // SizedBox(width: 15),
+                Visibility(
+                  visible: false,
+                  child: Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        MaterialButton(
+                          padding: EdgeInsets.all(0),
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/Pages', arguments: RouteArgument(id: '1', param: restaurant));
+                          },
+                          child: Icon(Icons.directions, color: Theme.of(context).primaryColor),
+                          color: Theme.of(context).colorScheme.secondary,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                        ),
+                        restaurant.distance > 0
+                            ? Text(
+                          Helper.getDistance(
+                            restaurant.distance,
+                            Helper.of(context).trans(setting.value.distanceUnit),
+                          ),
+                          overflow: TextOverflow.fade,
+                          maxLines: 1,
+                          softWrap: false,
+                        )
+                            : SizedBox(height: 0),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.star, color: Colors.orange, size: 16),
+                    SizedBox(width: 4),
+                    Text(restaurant.rate.toString(), style: TextStyle(fontSize: 12)),
+                    SizedBox(width: 10),
+                    Icon(Icons.access_time, size: 16),
+                    SizedBox(width: 4),
+                    Text("20-30 min", style: TextStyle(fontSize: 12)),
+                  ],
+                ),
+                Text(
+                  "\$70.00",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF003580)),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 10),
         ],
       ),
     );
