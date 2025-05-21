@@ -13,7 +13,8 @@ class CardWidget extends StatelessWidget {
   final Restaurant restaurant;
   final String heroTag;
 
-  const CardWidget({Key? key, required this.restaurant, required this.heroTag}) : super(key: key);
+  const CardWidget({Key? key, required this.restaurant, required this.heroTag})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +42,22 @@ class CardWidget extends StatelessWidget {
               Hero(
                 tag: this.heroTag + restaurant.id,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                  ),
                   child: CachedNetworkImage(
                     height: 150,
                     width: double.infinity,
                     fit: BoxFit.cover,
                     imageUrl: restaurant.image.url,
-                    placeholder: (context, url) => Image.asset('assets/img/loading.gif', fit: BoxFit.cover, width: double.infinity, height: 150),
+                    placeholder:
+                        (context, url) => Image.asset(
+                          'assets/img/loading.gif',
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: 150,
+                        ),
                     errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                 ),
@@ -106,7 +116,7 @@ class CardWidget extends StatelessWidget {
                           height: 1.3,
                         ),
                       ),
-                      SizedBox(height: 10,),
+                      SizedBox(height: 10),
                       Text(
                         Helper.skipHtml(restaurant.description),
                         overflow: TextOverflow.fade,
@@ -122,7 +132,12 @@ class CardWidget extends StatelessWidget {
 
                       Visibility(
                         visible: false,
-                          child: Row(children: Helper.getStarsList(double.parse(restaurant.rate)))),
+                        child: Row(
+                          children: Helper.getStarsList(
+                            double.parse(restaurant.rate),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -135,22 +150,35 @@ class CardWidget extends StatelessWidget {
                         MaterialButton(
                           padding: EdgeInsets.all(0),
                           onPressed: () {
-                            Navigator.of(context).pushNamed('/Pages', arguments: RouteArgument(id: '1', param: restaurant));
+                            Navigator.of(context).pushNamed(
+                              '/Pages',
+                              arguments: RouteArgument(
+                                id: '1',
+                                param: restaurant,
+                              ),
+                            );
                           },
-                          child: Icon(Icons.directions, color: Theme.of(context).primaryColor),
+                          child: Icon(
+                            Icons.directions,
+                            color: Theme.of(context).primaryColor,
+                          ),
                           color: Theme.of(context).colorScheme.secondary,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
                         ),
                         restaurant.distance > 0
                             ? Text(
-                          Helper.getDistance(
-                            restaurant.distance,
-                            Helper.of(context).trans(setting.value.distanceUnit),
-                          ),
-                          overflow: TextOverflow.fade,
-                          maxLines: 1,
-                          softWrap: false,
-                        )
+                              Helper.getDistance(
+                                restaurant.distance,
+                                Helper.of(
+                                  context,
+                                ).trans(setting.value.distanceUnit),
+                              ),
+                              overflow: TextOverflow.fade,
+                              maxLines: 1,
+                              softWrap: false,
+                            )
                             : SizedBox(height: 0),
                       ],
                     ),
@@ -168,11 +196,29 @@ class CardWidget extends StatelessWidget {
                   children: [
                     Icon(Icons.star, color: Colors.orange, size: 16),
                     SizedBox(width: 4),
-                    Text(restaurant.rate.toString(), style: TextStyle(fontSize: 12)),
+                    Text(
+                      restaurant.rate.toString(),
+                      style: TextStyle(
+                        fontFamily: 'Nunito',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        height: 1.6,
+                        color: Color(0xFF9D9FA4),
+                      ),
+                    ),
                     SizedBox(width: 10),
                     Icon(Icons.access_time, size: 16),
                     SizedBox(width: 4),
-                    Text("20-30 min", style: TextStyle(fontSize: 12)),
+                    Text(
+                      "20-30 min",
+                      style: TextStyle(
+                        fontFamily: 'Nunito',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        height: 1.6,
+                        color: Color(0xFF9D9FA4),
+                      ),
+                    ),
                   ],
                 ),
               ],

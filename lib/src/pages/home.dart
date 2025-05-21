@@ -199,19 +199,20 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                   'Offers near you',
                                   style: TextStyle(
                                     fontFamily: 'Nunito',
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500, // 500
+                                    fontSize: 21, // 16px
                                     height: 1.6, // line height 160%
-                                    color: Colors.black,
+                                    color: Colors.black, // #000000
                                   ),
                                 ),
                                 Text(
                                   'See all',
                                   style: TextStyle(
                                     fontFamily: 'Nunito',
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 18,
-                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400, // 400
+                                    fontSize: 18, // 14px
+                                    height: 1.6, // line height 160%
+                                    color: Color(0xFF26386A), // #26386A
                                   ),
                                 ),
                               ],

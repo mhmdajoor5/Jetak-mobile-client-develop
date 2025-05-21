@@ -50,18 +50,27 @@ class _HomeSliderWidgetState extends State<HomeSliderWidget> {
                     return Builder(
                       builder: (BuildContext context) {
                         return Container(
-                          margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                          height: 140,
-                          decoration: BoxDecoration(boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), blurRadius: 15, offset: Offset(0, 2))]),
+                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                          height: 148,
+                          decoration: BoxDecoration(
+                            color: Color(0xFF26386A),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                           child: Stack(
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.all(Radius.circular(10)),
                                 child: CachedNetworkImage(
-                                  height: 140,
+                                  height: 160,
                                   width: double.infinity,
+                                  fit: BoxFit.cover, // هذا هو التعديل المهم
                                   imageUrl: slide.image.url,
-                                  placeholder: (context, url) => Image.asset('assets/img/loading.gif', fit: BoxFit.contain, width: double.infinity, height: 140),
+                                  placeholder: (context, url) => Image.asset(
+                                    'assets/img/loading.gif',
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    height: 148,
+                                  ),
                                   errorWidget: (context, url, error) => Icon(Icons.error),
                                 ),
                               ),

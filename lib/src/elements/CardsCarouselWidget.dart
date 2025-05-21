@@ -27,7 +27,7 @@ class _CardsCarouselWidgetState extends State<CardsCarouselWidget> {
     return (widget.restaurantsList?.isEmpty ?? true)
         ? CardsCarouselLoaderWidget()
         : Container(
-          height: 295,
+          height: 282,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: widget.restaurantsList!.length,

@@ -36,6 +36,7 @@ class SearchBarWidget extends StatelessWidget {
                 S.of(context).search_for_restaurants_or_foods,
                 style: TextStyle(
                   color: Color(0xFFF9D9FA4),
+                  fontFamily: 'Nunito',
                   fontSize: 15,
                   fontWeight: FontWeight.w400
                 ),
