@@ -89,13 +89,37 @@ class CardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Expa  nded(
+                Expanded(
                   flex: 3,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(restaurant.name, overflow: TextOverflow.fade, softWrap: false, style: Theme.of(context).textTheme.titleMedium),
-                      Text(Helper.skipHtml(restaurant.description), overflow: TextOverflow.fade, softWrap: false, style: Theme.of(context).textTheme.bodySmall),
+                      Text(
+                        restaurant.name,
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                        style: TextStyle(
+                          fontFamily: 'Nunito',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          color: Color(0xFF272727),
+                          height: 1.3,
+                        ),
+                      ),
+                      SizedBox(height: 10,),
+                      Text(
+                        Helper.skipHtml(restaurant.description),
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                        style: TextStyle(
+                          fontFamily: 'Nunito',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          color: Color(0xFF9D9FA4),
+                          height: 1.3,
+                        ),
+                      ),
+
                       Visibility(
                         visible: false,
                           child: Row(children: Helper.getStarsList(double.parse(restaurant.rate)))),
@@ -150,10 +174,6 @@ class CardWidget extends StatelessWidget {
                     SizedBox(width: 4),
                     Text("20-30 min", style: TextStyle(fontSize: 12)),
                   ],
-                ),
-                Text(
-                  "\$70.00",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF003580)),
                 ),
               ],
             ),

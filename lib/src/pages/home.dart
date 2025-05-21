@@ -94,18 +94,6 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                           },
                         ),
                       );
-                  case 'categories_heading':
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: ListTile(
-                        dense: true,
-                        contentPadding: EdgeInsets.symmetric(vertical: 0),
-                        leading: Icon(Icons.category, color: Theme.of(context).hintColor),
-                        title: Text(S.of(context).food_categories, style: Theme.of(context).textTheme.headlineLarge),
-                      ),
-                    );
-                  case 'categories':
-                    return CategoriesCarouselWidget(categories: _con.categories);
                     case 'top_restaurants_heading':
                       return Visibility(
                         visible: false,
@@ -221,7 +209,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                   style: TextStyle(
                                     fontFamily: 'Nunito',
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 16,
+                                    fontSize: 18,
                                     color: Colors.black,
                                   ),
                                 ),
@@ -250,6 +238,18 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                       );
                     case 'trending_week':
                       return FoodsCarouselWidget(foodsList: _con.trendingFoods, heroTag: 'home_food_carousel');
+                    // case 'categories_heading':
+                    //   return Padding(
+                    //     padding: const EdgeInsets.symmetric(horizontal: 20),
+                    //     child: ListTile(
+                    //       dense: true,
+                    //       contentPadding: EdgeInsets.symmetric(vertical: 0),
+                    //       leading: Icon(Icons.category, color: Theme.of(context).hintColor),
+                    //       title: Text(S.of(context).food_categories, style: Theme.of(context).textTheme.headlineLarge),
+                    //     ),
+                    //   );
+                    case 'categories':
+                      return CategoriesCarouselWidget(categories: _con.categories);
                     case 'popular_heading':
                       return Padding(
                         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),

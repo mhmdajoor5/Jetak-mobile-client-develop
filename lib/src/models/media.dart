@@ -10,9 +10,9 @@ class Media {
   String size;
 
   Media({this.id = '', this.name = '', String? url, String? thumb, String? icon, this.size = ''})
-      : url = url ?? "${GlobalConfiguration().getValue('base_url')}/images/image_default.png",
-        thumb = thumb ?? "${GlobalConfiguration().getValue('base_url')}/images/image_default.png",
-        icon = icon ?? "${GlobalConfiguration().getValue('base_url')}/images/image_default.png";
+      : url = url ?? "${GlobalConfiguration().getValue('base_url')}/images/restaurant.png",
+        thumb = thumb ?? "${GlobalConfiguration().getValue('base_url')}/images/restaurant.png",
+        icon = icon ?? "${GlobalConfiguration().getValue('base_url')}/images/restaurant.png";
 
   factory Media.fromJSON(Map<String, dynamic>? jsonMap) {
     try {
