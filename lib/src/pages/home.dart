@@ -10,11 +10,9 @@ import '../elements/FoodsCarouselWidget.dart';
 import '../elements/GridWidget.dart';
 import '../elements/HomeSliderWidget.dart';
 import '../elements/NotificationsButtonWidget.dart';
-import '../elements/ReviewsListWidget.dart';
 import '../elements/SearchBarWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
-import '../repository/user_repository.dart';
 
 class HomeWidget extends StatefulWidget {
   final GlobalKey<ScaffoldState>? parentScaffoldKey;
@@ -45,7 +43,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 40, left: 20, right: 20, bottom: 10),
+                  padding: const EdgeInsets.only(top: 40, left: 20, right: 20, bottom: 0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -53,7 +51,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Your location", style: TextStyle(fontSize: 12, color: Colors.grey)),
+                            Text("Your location", style: TextStyle(fontSize: 12, color: Color(0xFF9D9FA4))),
                             SizedBox(height: 5),
                             Row(
                               children: [
@@ -61,7 +59,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                 SizedBox(width: 4),
                                 Text(
                                   "4140 Parker Rd...",
-                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xFF1F2F56)),
+                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF1F2F56)),
                                 ),
                                 Icon(Icons.keyboard_arrow_down, size: 20, color: Color(0xFF1F2F56)),
                               ],
@@ -69,12 +67,15 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                           ],
                         ),
                       ),
-                      Row(
-                        children: [
-                          NotificationsButtonWidget(iconColor: Color(0xFF292D32), labelColor: Colors.red),
-                          SizedBox(width: 0),
-                          ShoppingCartButtonWidget(iconColor: Color(0xFF292D32), labelColor: Colors.red),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 25),
+                        child: Row(
+                          children: [
+                            NotificationsButtonWidget(notificationCount: 5),
+                            SizedBox(width: 15),
+                            ShoppingCartButtonWidget(iconColor: Color(0xFF292D32), labelColor: Colors.red),
+                          ],
+                        ),
                       ),
                     ],
                   ),

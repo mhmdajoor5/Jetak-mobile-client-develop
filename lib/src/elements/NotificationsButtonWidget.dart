@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class NotificationsButtonWidget extends StatelessWidget {
-  const NotificationsButtonWidget({
-    this.iconColor,
-    this.labelColor,
-    Key? key,
-  }) : super(key: key);
+  final int notificationCount;
 
-  final Color? iconColor;
-  final Color? labelColor;
+  const NotificationsButtonWidget({
+    Key? key,
+    this.notificationCount = 0,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,49 +16,50 @@ class NotificationsButtonWidget extends StatelessWidget {
         Navigator.of(context).pushNamed('/Notifications');
       },
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 6),
-        padding: EdgeInsets.all(10),
+        width: 50,
+        height: 50,
         decoration: BoxDecoration(
-          color: Color(0xFFF1F1F1),
+          color: Color(0xFFF9F9F9),
           shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: Offset(0, 2),
-            ),
-          ],
+          border: Border.all(
+            color: Color(0xFFEAEAEA),
+            width: 1,
+          ),
         ),
         child: Stack(
           clipBehavior: Clip.none,
-          children: <Widget>[
-            Icon(
-              Icons.notifications_outlined,
-              color: iconColor ?? Color(0xFF292D32),
-              size: 24,
+          alignment: Alignment.center,
+          children: [
+            SvgPicture.asset(
+              'assets/img/notification-bing.svg',
+              height: 27,
+              width: 27,
             ),
-            Positioned(
-              top: -4,
-              right: -4,
-              child: Container(
-                width: 15,
-                height: 15,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: labelColor ?? Theme.of(context).colorScheme.secondary,
-                  shape: BoxShape.circle,
-                ),
-                child: Text(
-                  '0', // TODO: Replace with real count
-                  style: TextStyle(fontSize: 9, color: Colors.white),
+            if (notificationCount > 0)
+              Positioned(
+                top: -6,
+                right: -6,
+                child: Container(
+                  width: 22,
+                  height: 22,
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Text(
+                    notificationCount.toString(),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),
     );
   }
-
 }

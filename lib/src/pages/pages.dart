@@ -119,18 +119,37 @@ class _PagesWidgetState extends State<PagesWidget> {
                       height: 32,
                       width: 32,
                     ),
-                    Text(S.of(context).home, style: TextStyle(fontSize: 12))
+                    Text(
+                      S.of(context).home,
+                      style: TextStyle(
+                        fontFamily: 'Nunito',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        height: 1.6,
+                        color: Color(0xff26386A),
+                      ),
+                      textAlign: TextAlign.center,
+                    )
                   ],
                 ),
               activeIcon: Column(
                 children: [
                   SvgPicture.asset(
                     'assets/img/home.svg',
-                    height: 32,
-                    width: 32,
+                    height: 24,
+                    width: 24,
                     colorFilter: ColorFilter.mode(Color(0xff26386A), BlendMode.srcIn),
                   ),
-                  Text(S.of(context).home, style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold))
+                  Text(S.of(context).home,
+                    style: TextStyle(
+                      fontFamily: 'Nunito',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      height: 1.6,
+                      color: Color(0xff26386A),
+                    ),
+                    textAlign: TextAlign.center,
+                  )
                 ],
               ),
             ),
@@ -140,21 +159,37 @@ class _PagesWidgetState extends State<PagesWidget> {
                 children: [
                   SvgPicture.asset(
                     'assets/img/restaurants.svg',
-                    height: 32,
-                    width: 32,
+                    height: 24,
+                    width: 24,
                   ),
-                  Text(S.of(context).restaurants, style: TextStyle(fontSize: 12,))
+                  Text(S.of(context).restaurants,
+                    style: TextStyle(
+                      fontFamily: 'Nunito',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      height: 1.6,
+                      color: Color(0xff26386A),
+                    ),
+                    textAlign: TextAlign.center,)
                 ],
               ),
               activeIcon: Column(
                 children: [
                   SvgPicture.asset(
                     'assets/img/restaurants.svg',
-                    height: 32,
-                    width: 32,
+                    height: 24,
+                    width: 24,
                     colorFilter: ColorFilter.mode(Color(0xff26386A), BlendMode.srcIn),
                   ),
-                  Text(S.of(context).restaurants, style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold))
+                  Text(S.of(context).restaurants,
+                    style: TextStyle(
+                      fontFamily: 'Nunito',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      height: 1.6,
+                      color: Color(0xff26386A),
+                    ),
+                    textAlign: TextAlign.center,)
                 ],
               ),
             ),
@@ -164,8 +199,8 @@ class _PagesWidgetState extends State<PagesWidget> {
                 children: [
                   SvgPicture.asset(
                     'assets/img/stores.svg',
-                    height: 32,
-                    width: 32,
+                    height: 24,
+                    width: 24,
                   ),
                   Text(S.of(context).stores, style: TextStyle(fontSize: 12))
                 ],
@@ -174,12 +209,19 @@ class _PagesWidgetState extends State<PagesWidget> {
                 children: [
                   SvgPicture.asset(
                     'assets/img/stores.svg',
-                    height: 32,
-                    width: 32,
+                    height: 24,
+                    width: 24,
                     colorFilter: ColorFilter.mode(Color(0xff26386A), BlendMode.srcIn),
                   ),
-                  Text(S.of(context).stores, style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold))
-                ],
+                  Text(S.of(context).stores,
+                    style: TextStyle(
+                      fontFamily: 'Nunito',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      height: 1.6,
+                      color: Color(0xff26386A),
+                    ),
+                    textAlign: TextAlign.center,)                ],
               ),
             ),
             BottomNavigationBarItem(
@@ -188,22 +230,36 @@ class _PagesWidgetState extends State<PagesWidget> {
                 children: [
                   SvgPicture.asset(
                     'assets/img/chats.svg',
-                    height: 32,
-                    width: 32,
+                    height: 24,
+                    width: 24,
                   ),
-                  Text(S.of(context).chats, style: TextStyle(fontSize: 12))
-                ],
+                  Text(S.of(context).chats,
+                    style: TextStyle(
+                      fontFamily: 'Nunito',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      height: 1.6,
+                      color: Color(0xff26386A),
+                    ),
+                    textAlign: TextAlign.center,)                ],
               ),
               activeIcon: Column(
                 children: [
                   SvgPicture.asset(
                     'assets/img/chats.svg',
-                    height: 32,
-                    width: 32,
+                    height: 24,
+                    width: 24,
                     colorFilter: ColorFilter.mode(Color(0xff26386A), BlendMode.srcIn),
                   ),
-                  Text(S.of(context).chats, style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold))
-                ],
+                  Text(S.of(context).chats,
+                    style: TextStyle(
+                      fontFamily: 'Nunito',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      height: 1.6,
+                      color: Color(0xff26386A),
+                    ),
+                    textAlign: TextAlign.center,)                ],
               ),
             ),
             BottomNavigationBarItem(
@@ -212,22 +268,36 @@ class _PagesWidgetState extends State<PagesWidget> {
                 children: [
                   SvgPicture.asset(
                     'assets/img/profile.svg',
-                    height: 32,
-                    width: 32,
+                    height: 24,
+                    width: 24,
                   ),
-                  Text(S.of(context).profile, style: TextStyle(fontSize: 12))
-                ],
+                  Text(S.of(context).profile,
+                    style: TextStyle(
+                      fontFamily: 'Nunito',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      height: 1.6,
+                      color: Color(0xff26386A),
+                    ),
+                    textAlign: TextAlign.center,)                ],
               ),
               activeIcon: Column(
                 children: [
                   SvgPicture.asset(
                     'assets/img/profile.svg',
-                    height: 32,
-                    width: 32,
+                    height: 24,
+                    width: 24,
                     colorFilter: ColorFilter.mode(Color(0xff26386A), BlendMode.srcIn),
                   ),
-                  Text(S.of(context).profile, style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold))
-                ],
+                  Text(S.of(context).profile,
+                    style: TextStyle(
+                      fontFamily: 'Nunito',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      height: 1.6,
+                      color: Color(0xff26386A),
+                    ),
+                    textAlign: TextAlign.center,)                ],
               ),
             ),
             // BottomNavigationBarItem(
