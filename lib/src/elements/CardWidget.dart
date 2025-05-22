@@ -84,6 +84,7 @@ class CardWidget extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
+                          fontFamily: 'Nunito',
                           color: Color(0xFF26386A),
                         ),
                       ),

@@ -102,7 +102,7 @@ class CategoriesCarouselItemWidget extends StatelessWidget {
             style: TextStyle(
               fontFamily: 'Nunito',
               fontWeight: FontWeight.w400,
-              fontSize: 12,
+              fontSize: 13,
               height: 1.6,
               color: Color(0xFF9D9FA4),
             ),

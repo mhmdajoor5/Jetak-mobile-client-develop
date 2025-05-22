@@ -51,7 +51,15 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Your location", style: TextStyle(fontSize: 12, color: Color(0xFF9D9FA4))),
+                            Text(
+                              "Your location",
+                              style: TextStyle(
+                                fontFamily: 'Nunito',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF9D9FA4),
+                              ),
+                            ),
                             SizedBox(height: 5),
                             Row(
                               children: [
@@ -59,7 +67,12 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                 SizedBox(width: 4),
                                 Text(
                                   "4140 Parker Rd...",
-                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF1F2F56)),
+                                  style: TextStyle(
+                                    fontFamily: 'Nunito',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF1F2F56),
+                                  ),
                                 ),
                                 Icon(Icons.keyboard_arrow_down, size: 20, color: Color(0xFF1F2F56)),
                               ],
@@ -231,11 +244,18 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                         dense: true,
                         contentPadding: EdgeInsets.symmetric(horizontal: 20),
                         leading: Icon(Icons.trending_up, color: Theme.of(context).hintColor),
-                        title: Text(S.of(context).trending_this_week, style: Theme.of(context).textTheme.headlineLarge),
+                        title: Text(
+                          S.of(context).trending_this_week,
+                          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                            fontFamily: 'Nunito',
+                          ),
+                        ),
                         subtitle: Text(
                           S.of(context).clickOnTheFoodToGetMoreDetailsAboutIt,
                           maxLines: 2,
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontFamily: 'Nunito',
+                          ),
                         ),
                       );
                     case 'trending_week':
