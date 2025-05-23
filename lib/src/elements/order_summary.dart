@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../generated/l10n.dart';
 import '../helpers/app_colors.dart';
 import '../helpers/app_text_styles.dart';
 
@@ -32,12 +33,12 @@ class OrderSummary extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Order Summary", style: AppTextStyles.font16W600Black),
-          SizedBox(height: 4),
           Text(
-            'Include tax ( if applicable )',
-            style: AppTextStyles.font12W400Grey,
+            S.of(context).order_summary,
+            style: AppTextStyles.font16W600Black,
           ),
+          SizedBox(height: 4),
+          Text(S.of(context).include_tax, style: AppTextStyles.font12W400Grey),
           SizedBox(height: 16),
           Divider(color: AppColors.colorF1F1F1),
           SizedBox(height: 12),
@@ -45,16 +46,25 @@ class OrderSummary extends StatelessWidget {
             spacing: 12,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              PriceWidget(title: 'Item subtotal', price: itemSubtotlalPrice),
-              PriceWidget(title: 'Service fee', price: serviceFeePrice),
-              PriceWidget(title: 'Delivery', price: deliveryPrice),
-              PriceWidget(title: 'Promo', price: promoPrice),
+              PriceWidget(
+                title: S.of(context).item_subtotal,
+                price: itemSubtotlalPrice,
+              ),
+              PriceWidget(
+                title: S.of(context).service_fee,
+                price: serviceFeePrice,
+              ),
+              PriceWidget(title: S.of(context).delivery, price: deliveryPrice),
+              PriceWidget(title: S.of(context).promo, price: promoPrice),
 
               Divider(color: AppColors.colorF1F1F1),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Total", style: AppTextStyles.font16W600Black),
+                  Text(
+                    S.of(context).total,
+                    style: AppTextStyles.font16W600Black,
+                  ),
                   Text("\$$total", style: AppTextStyles.font16W600Black),
                 ],
               ),

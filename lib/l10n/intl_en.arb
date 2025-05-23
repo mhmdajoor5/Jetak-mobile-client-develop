@@ -163,8 +163,6 @@
   "deliverable": "Deliverable",
   "not_deliverable": "Not Deliverable",
   "items": "Items",
-  "delivery": "Delivery",
-  "pickup": "Pickup",
   "closed": "Closed",
   "open": "Open",
   "km": "Km",
@@ -264,5 +262,22 @@
   "check_on_waze": "Check on Waze:",
   "restaurants": "Restaurants",
   "stores":"Stores",
-  "chats": "Chats"
+  "chats": "Chats",
+  "payment_method": "Payment method",
+  "credit_card":"Credit card",
+  "cash":"Cash",
+  "add_courier_tip":"Add courier tip",
+  "add_a_promo_code":"Add a promo code",
+  "change":"Change",
+  "payment":"Payment",
+  "order_summary":"Order Summary",
+  "include_tax":"Include tax ( if applicable )",
+  "item_subtotal":"Item subtotal",
+  "service_fee":"Service fee",
+  "promo":"Promo",
+  "pay_now":"Pay now",
+  "enter_here":"Enter here",
+  "delivery":"Delivery",
+  "pickup":"Pickup"
+  
 }

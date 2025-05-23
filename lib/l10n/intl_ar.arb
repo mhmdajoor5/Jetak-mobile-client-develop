@@ -189,5 +189,24 @@
   "iCredit": "ادفع الآن",
   "restaurants": "المطاعم",
   "stores": "المتاجر",
-  "chats": "المحادثات"
+  "chats": "المحادثات",
+  "payment_method": "طريقة الدفع",
+  "credit_card":"بطاقة ائتمان",
+  "cash":"نقداً",
+  "add_courier_tip":"إضافة إكرامية عامل التوصيل",
+  "add_a_promo_code":"اضافة رمز الخصم",
+  "change":"تغيير",
+  "payment":"الدقع",
+  "order_summary":"ملخص الطلب",
+  "include_tax":"اضف الضريبة (ان وجدت)",
+  "item_subtotal":"المجموع الفرعي للعنصر",
+  "service_fee":"ضريبة الخدمة",
+  "promo":"الخصم",
+  "pay_now":"ادفع الان",
+  "enter_here":"ادخل هنا",
+  "delivery":"توصيل",
+  "pickup":"استلام"
+  
+
+
 }

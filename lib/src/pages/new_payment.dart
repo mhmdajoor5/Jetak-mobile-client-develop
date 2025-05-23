@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../generated/l10n.dart';
 import '../elements/back_button.dart';
 import '../elements/order_summary.dart';
 import '../elements/tip_item.dart';
@@ -34,7 +35,10 @@ class _PaymentState extends State<Payment> {
           padding: EdgeInsetsDirectional.only(start: 16),
           child: CustomBackButton(onTap: () {}),
         ),
-        title: Text('Payment', style: AppTextStyles.font16W600Black),
+        title: Text(
+          S.of(context).payment,
+          style: AppTextStyles.font16W600Black,
+        ),
       ),
       floatingActionButton: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -54,7 +58,7 @@ class _PaymentState extends State<Payment> {
                   CustomTabBar(
                     tabs: [
                       TabItem(
-                        text: "Delivery",
+                        text: S.of(context).delivery,
                         isSelected: selectedTap == 1,
                         onPressed: () {
                           setState(() {
@@ -63,7 +67,7 @@ class _PaymentState extends State<Payment> {
                         },
                       ),
                       TabItem(
-                        text: "Pickup",
+                        text: S.of(context).pickup,
                         isSelected: selectedTap == 2,
                         onPressed: () {
                           setState(() {
@@ -81,10 +85,13 @@ class _PaymentState extends State<Payment> {
                   SizedBox(height: 24),
 
                   // Payent Method
-                  Text('Payment method', style: AppTextStyles.font16W600Black),
+                  Text(
+                    S.of(context).payment_method,
+                    style: AppTextStyles.font16W600Black,
+                  ),
                   SizedBox(height: 12),
                   PaymentMethodCard(
-                    title: 'Credit card',
+                    title: S.of(context).credit_card,
                     image: 'assets/img/card.svg',
                     isSelected: selectedPaymentMethod.contains('credit'),
                     onTap: () {
@@ -95,7 +102,7 @@ class _PaymentState extends State<Payment> {
                   ),
                   SizedBox(height: 8),
                   PaymentMethodCard(
-                    title: 'Cash',
+                    title: S.of(context).cash,
                     image: 'assets/img/empty-wallet.svg',
                     isSelected: selectedPaymentMethod.contains('cash'),
                     onTap: () {
@@ -109,7 +116,10 @@ class _PaymentState extends State<Payment> {
                   _buildPromoCodeField(TextEditingController()),
                   SizedBox(height: 24),
                   // Add Courier tip
-                  Text('Add courier tip', style: AppTextStyles.font16W600Black),
+                  Text(
+                    S.of(context).add_courier_tip,
+                    style: AppTextStyles.font16W600Black,
+                  ),
                   SizedBox(height: 12),
                   CourierTip(
                     values: [0, 1, 2, 10],
@@ -138,8 +148,8 @@ class _PaymentState extends State<Payment> {
 
   _buildPromoCodeField(TextEditingController controller) {
     return CustomTextField(
-      lableText: "Add a promo code",
-      hint: "Enter here",
+      lableText: S.of(context).add_a_promo_code,
+      hint: S.of(context).enter_here,
       prefix: SvgPicture.asset(
         'assets/img/ticket-discount.svg',
         width: 18,
@@ -163,7 +173,7 @@ class _PaymentState extends State<Payment> {
   ) {
     return CustomTextField(
       controller: controller,
-      lableText: "Address",
+      lableText: S.of(context).address,
       prefix: SvgPicture.asset(
         'assets/img/location.svg',
         width: 18,
@@ -173,7 +183,7 @@ class _PaymentState extends State<Payment> {
       suffix: Padding(
         padding: const EdgeInsets.only(top: 17.5),
         child: Text(
-          'Change',
+          S.of(context).change,
           style: AppTextStyles.font12W400Grey.copyWith(
             color: AppColors.color26386A,
           ),
