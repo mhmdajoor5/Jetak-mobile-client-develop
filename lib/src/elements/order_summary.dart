@@ -1,0 +1,87 @@
+import 'package:flutter/material.dart';
+
+import '../helpers/app_colors.dart';
+import '../helpers/app_text_styles.dart';
+
+class OrderSummary extends StatelessWidget {
+  const OrderSummary({
+    super.key,
+    required this.itemSubtotlalPrice,
+    required this.serviceFeePrice,
+    required this.deliveryPrice,
+    required this.promoPrice,
+  });
+  final double itemSubtotlalPrice;
+  final double serviceFeePrice;
+  final double deliveryPrice;
+  final double promoPrice;
+  @override
+  Widget build(BuildContext context) {
+    final total = (itemSubtotlalPrice +
+            serviceFeePrice +
+            deliveryPrice -
+            promoPrice)
+        .toStringAsFixed(2);
+    return Container(
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.colorFAFAFA,
+        border: Border.all(color: AppColors.colorF1F1F1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Order Summary", style: AppTextStyles.font16W600Black),
+          SizedBox(height: 4),
+          Text(
+            'Include tax ( if applicable )',
+            style: AppTextStyles.font12W400Grey,
+          ),
+          SizedBox(height: 16),
+          Divider(color: AppColors.colorF1F1F1),
+          SizedBox(height: 12),
+          Column(
+            spacing: 12,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PriceWidget(title: 'Item subtotal', price: itemSubtotlalPrice),
+              PriceWidget(title: 'Service fee', price: serviceFeePrice),
+              PriceWidget(title: 'Delivery', price: deliveryPrice),
+              PriceWidget(title: 'Promo', price: promoPrice),
+
+              Divider(color: AppColors.colorF1F1F1),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Total", style: AppTextStyles.font16W600Black),
+                  Text("\$$total", style: AppTextStyles.font16W600Black),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PriceWidget extends StatelessWidget {
+  const PriceWidget({super.key, required this.title, required this.price});
+  final String title;
+  final double price;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(title, style: AppTextStyles.font12W400Grey),
+        Text(
+          "\$$price",
+          style: AppTextStyles.font12W400Grey.copyWith(color: Colors.black),
+        ),
+      ],
+    );
+  }
+}
