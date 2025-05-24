@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -22,6 +22,8 @@ class MobileVerificationBottomSheetWidget extends StatefulWidget {
 }
 
 class _MobileVerificationBottomSheetWidgetState extends State<MobileVerificationBottomSheetWidget> {
+  final bool skipOTP = true; // ✅ تجاوز التحقق دائماً
+
   bool isLoading = false;
   String smsSent = '';
   String? errorMessage;
@@ -46,7 +48,9 @@ class _MobileVerificationBottomSheetWidgetState extends State<MobileVerification
   Future<void> verifyPhone() async {
     currentUser.value.verificationId = '';
     smsSent = '';
-    await sendOTP(currentUser.value.phone!);
+    if (!skipOTP) {
+      await sendOTP(currentUser.value.phone ?? '');
+    }
   }
 
   @override
@@ -75,64 +79,83 @@ class _MobileVerificationBottomSheetWidgetState extends State<MobileVerification
                   ],
                 ),
                 const SizedBox(height: 30),
-                PinCodeTextField(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  appContext: context,
-                  pastedTextStyle: TextStyle(color: Colors.green.shade600, fontWeight: FontWeight.bold),
-                  length: 4,
-                  animationType: AnimationType.scale,
-                  validator: (v) {
-                    return null;
-                  },
-                  pinTheme: PinTheme(shape: PinCodeFieldShape.underline, fieldHeight: 50, fieldWidth: 40, activeColor: Theme.of(context).primaryColor, inactiveColor: Theme.of(context).indicatorColor),
-                  cursorColor: Colors.black,
-                  animationDuration: const Duration(milliseconds: 300),
-                  errorAnimationController: errorController,
-                  controller: textEditingController,
-                  keyboardType: TextInputType.number,
-                  boxShadows: const [BoxShadow(offset: Offset(0, 1), color: Colors.black12, blurRadius: 10)],
-                  onCompleted: (v) {
-                    debugPrint("Completed");
-                  },
-                  onChanged: (value) {
-                    debugPrint(value);
-                    setState(() {
-                      smsSent = value;
-                    });
-                  },
-                  beforeTextPaste: (text) {
-                    debugPrint("Allowing to paste $text");
-                    return true;
-                  },
-                ),
+                if (!skipOTP)
+                  PinCodeTextField(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    appContext: context,
+                    pastedTextStyle: TextStyle(color: Colors.green.shade600, fontWeight: FontWeight.bold),
+                    length: 4,
+                    animationType: AnimationType.scale,
+                    validator: (v) => null,
+                    pinTheme: PinTheme(
+                      shape: PinCodeFieldShape.underline,
+                      fieldHeight: 50,
+                      fieldWidth: 40,
+                      activeColor: Theme.of(context).primaryColor,
+                      inactiveColor: Theme.of(context).indicatorColor,
+                    ),
+                    cursorColor: Colors.black,
+                    animationDuration: const Duration(milliseconds: 300),
+                    errorAnimationController: errorController,
+                    controller: textEditingController,
+                    keyboardType: TextInputType.number,
+                    boxShadows: const [BoxShadow(offset: Offset(0, 1), color: Colors.black12, blurRadius: 10)],
+                    onCompleted: (v) {
+                      debugPrint("Completed");
+                    },
+                    onChanged: (value) {
+                      debugPrint(value);
+                      setState(() {
+                        smsSent = value;
+                      });
+                    },
+                    beforeTextPaste: (text) {
+                      debugPrint("Allowing to paste $text");
+                      return true;
+                    },
+                  ),
                 const SizedBox(height: 15),
                 Text(S.of(context).smsHasBeenSentTo + (widget.user?.phone ?? ''), style: Theme.of(context).textTheme.bodySmall, textAlign: TextAlign.center),
                 const SizedBox(height: 80),
                 isLoading
                     ? const CupertinoActivityIndicator()
                     : BlockButtonWidget(
-                      onPressed: () async {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        try {
-                          bool isVerified = await verifyOTP(smsSent);
-                          if (!isVerified) {
-                            ScaffoldMessenger.of(widget.scaffoldKey?.currentContext ?? context).showSnackBar(const SnackBar(behavior: SnackBarBehavior.floating, content: Text("Code doesn't match")));
-                          } else {
-                            widget.valueChangedCallback?.call(true);
-                          }
-                        } catch (e) {
-                          print(e);
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(behavior: SnackBarBehavior.fixed, content: Text("Code doesn't match")));
-                        }
-                        setState(() {
-                          isLoading = false;
-                        });
-                      },
-                      color: Theme.of(context).colorScheme.secondary,
-                      text: Text(S.of(context).verify.toUpperCase(), style: Theme.of(context).textTheme.headlineSmall?.merge(TextStyle(color: Theme.of(context).primaryColor))),
+                  onPressed: () async {
+                    setState(() => isLoading = true);
+
+                    if (skipOTP) {
+                      currentUser.value.updatePhoneVerification(true); // ✅ التفعيل اليدوي
+                      widget.valueChangedCallback?.call(true);
+                      setState(() => isLoading = false);
+                      return;
+                    }
+
+                    try {
+                      bool isVerified = await verifyOTP(smsSent);
+                      if (!isVerified) {
+                        ScaffoldMessenger.of(widget.scaffoldKey?.currentContext ?? context).showSnackBar(
+                          const SnackBar(behavior: SnackBarBehavior.floating, content: Text("Code doesn't match")),
+                        );
+                      } else {
+                        widget.valueChangedCallback?.call(true);
+                      }
+                    } catch (e) {
+                      print(e);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(behavior: SnackBarBehavior.fixed, content: Text("Code doesn't match")),
+                      );
+                    }
+
+                    setState(() => isLoading = false);
+                  },
+                  color: Theme.of(context).colorScheme.secondary,
+                  text: Text(
+                    S.of(context).verify.toUpperCase(),
+                    style: Theme.of(context).textTheme.headlineSmall?.merge(
+                      TextStyle(color: Theme.of(context).primaryColor),
                     ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -140,8 +163,17 @@ class _MobileVerificationBottomSheetWidgetState extends State<MobileVerification
             height: 30,
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 13, horizontal: config.App(context).appWidth(42)),
-            decoration: BoxDecoration(color: Theme.of(context).focusColor.withOpacity(0.05), borderRadius: const BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20))),
-            child: Container(width: 30, decoration: BoxDecoration(color: Theme.of(context).focusColor.withOpacity(0.8), borderRadius: BorderRadius.circular(3))),
+            decoration: BoxDecoration(
+              color: Theme.of(context).focusColor.withOpacity(0.05),
+              borderRadius: const BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+            ),
+            child: Container(
+              width: 30,
+              decoration: BoxDecoration(
+                color: Theme.of(context).focusColor.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(3),
+              ),
+            ),
           ),
         ],
       ),

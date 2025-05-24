@@ -26,7 +26,7 @@ class SearchBarWidget extends StatelessWidget {
         child: Row(
           children: [
             SvgPicture.asset(
-              'assets/img/magnifyingGlass.svg',
+              'assets/img/vector.svg',
               height: 24,
               width: 24,
             ),

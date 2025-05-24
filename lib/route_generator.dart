@@ -3,6 +3,7 @@ import 'package:food_delivery_app/src/models/credit_card.dart';
 import 'package:food_delivery_app/src/pages/icredit_payment_page.dart';
 
 import 'src/models/route_argument.dart';
+import 'src/pages/TrackingModernWidget.dart' show TrackingModernWidget;
 import 'src/pages/add_new_card.dart';
 import 'src/pages/cart.dart';
 import 'src/pages/category.dart';
@@ -34,21 +35,21 @@ import 'src/pages/tracking.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    // Getting arguments passed in while calling Navigator.pushNamed
     final args = settings.arguments;
+
     switch (settings.name) {
       case '/Debug':
         return MaterialPageRoute(
-          builder: (_) => DebugWidget(routeArgument: args as RouteArgument),
+          builder: (_) => DebugWidget(
+            routeArgument: args is RouteArgument ? args : RouteArgument(),
+          ),
         );
       case '/Payment':
         return MaterialPageRoute(builder: (_) => Payment());
       case '/Splash':
         return MaterialPageRoute(builder: (_) => SplashScreen());
       case '/SignUp':
-        return MaterialPageRoute(builder: (_) => SignUpWidget());
       case '/MobileVerification':
-        return MaterialPageRoute(builder: (_) => SignUpWidget());
       case '/MobileVerification2':
         return MaterialPageRoute(builder: (_) => SignUpWidget());
       case '/Login':
@@ -58,12 +59,16 @@ class RouteGenerator {
       case '/ForgetPassword':
         return MaterialPageRoute(builder: (_) => ForgetPasswordWidget());
       case '/Pages':
-        return MaterialPageRoute(builder: (_) => PagesWidget(currentTab: args));
+        return MaterialPageRoute(
+          builder: (_) => PagesWidget(currentTab: args),
+        );
       case '/Favorites':
         return MaterialPageRoute(builder: (_) => FavoritesWidget());
       case '/Chat':
         return MaterialPageRoute(
-          builder: (_) => ChatWidget(routeArgument: args as RouteArgument),
+          builder: (_) => ChatWidget(
+            routeArgument: args is RouteArgument ? args : RouteArgument(),
+          ),
         );
       case '/Details':
         return MaterialPageRoute(
@@ -71,27 +76,44 @@ class RouteGenerator {
         );
       case '/Menu':
         return MaterialPageRoute(
-          builder: (_) => MenuWidget(routeArgument: args as RouteArgument),
+          builder: (_) => MenuWidget(
+            routeArgument: args is RouteArgument ? args : RouteArgument(),
+          ),
         );
       case '/Food':
         return MaterialPageRoute(
-          builder: (_) => FoodWidget(routeArgument: args as RouteArgument),
+          builder: (_) => FoodWidget(
+            routeArgument: args is RouteArgument ? args : RouteArgument(),
+          ),
         );
       case '/Category':
         return MaterialPageRoute(
-          builder: (_) => CategoryWidget(routeArgument: args as RouteArgument),
+          builder: (_) => CategoryWidget(
+            routeArgument: args is RouteArgument ? args : RouteArgument(),
+          ),
         );
       case '/Cart':
         return MaterialPageRoute(
-          builder: (_) => CartWidget(routeArgument: args as RouteArgument),
+          builder: (_) => CartWidget(
+            routeArgument: args is RouteArgument ? args : RouteArgument(),
+          ),
         );
+      // case '/Tracking':
+      //   return MaterialPageRoute(
+      //     builder: (_) => TrackingWidget(
+      //       routeArgument: args is RouteArgument ? args : RouteArgument(),
+      //     ),
+      //   );
       case '/Tracking':
         return MaterialPageRoute(
-          builder: (_) => TrackingWidget(routeArgument: args as RouteArgument),
+          builder: (_) => TrackingModernWidget(),
         );
+
       case '/Reviews':
         return MaterialPageRoute(
-          builder: (_) => ReviewsWidget(routeArgument: args as RouteArgument),
+          builder: (_) => ReviewsWidget(
+            routeArgument: args is RouteArgument ? args : RouteArgument(),
+          ),
         );
       case '/PaymentMethod':
         return MaterialPageRoute(
@@ -99,36 +121,35 @@ class RouteGenerator {
         );
       case '/DeliveryAddresses':
         return MaterialPageRoute(
-          builder:
-              (_) => DeliveryAddressesWidget(
-                shouldChooseDeliveryHere: args as bool,
-              ),
+          builder: (_) => DeliveryAddressesWidget(
+            shouldChooseDeliveryHere: args is bool ? args : false,
+          ),
         );
       case '/DeliveryPickup':
         return MaterialPageRoute(
-          builder:
-              (_) => DeliveryPickupWidget(routeArgument: args as RouteArgument),
+          builder: (_) => DeliveryPickupWidget(
+            routeArgument: args is RouteArgument ? args : RouteArgument(),
+          ),
         );
       case '/Checkout':
         return MaterialPageRoute(builder: (_) => CheckoutWidget());
       case '/CashOnDelivery':
         return MaterialPageRoute(
-          builder:
-              (_) => OrderSuccessWidget(
-                routeArgument: RouteArgument(param: 'Cash on Delivery'),
-              ),
+          builder: (_) => OrderSuccessWidget(
+            routeArgument: RouteArgument(param: 'Cash on Delivery'),
+          ),
         );
       case '/PayOnPickup':
         return MaterialPageRoute(
-          builder:
-              (_) => OrderSuccessWidget(
-                routeArgument: RouteArgument(param: 'Pay on Pickup'),
-              ),
+          builder: (_) => OrderSuccessWidget(
+            routeArgument: RouteArgument(param: 'Pay on Pickup'),
+          ),
         );
       case '/PayPal':
         return MaterialPageRoute(
-          builder:
-              (_) => PayPalPaymentWidget(routeArgument: args as RouteArgument),
+          builder: (_) => PayPalPaymentWidget(
+            routeArgument: args is RouteArgument ? args : RouteArgument(),
+          ),
         );
       case '/iCredit':
         return MaterialPageRoute(
@@ -140,14 +161,15 @@ class RouteGenerator {
         );
       case '/RazorPay':
         return MaterialPageRoute(
-          builder:
-              (_) =>
-                  RazorPayPaymentWidget(routeArgument: args as RouteArgument),
+          builder: (_) => RazorPayPaymentWidget(
+            routeArgument: args is RouteArgument ? args : RouteArgument(),
+          ),
         );
       case '/OrderSuccess':
         return MaterialPageRoute(
-          builder:
-              (_) => OrderSuccessWidget(routeArgument: args as RouteArgument),
+          builder: (_) => OrderSuccessWidget(
+            routeArgument: args is RouteArgument ? args : RouteArgument(),
+          ),
         );
       case '/Languages':
         return MaterialPageRoute(builder: (_) => LanguagesWidget());
@@ -156,9 +178,10 @@ class RouteGenerator {
       case '/Settings':
         return MaterialPageRoute(builder: (_) => SettingsWidget());
       default:
-        // If there is no such named route in the switch statement, e.g. /third
         return MaterialPageRoute(
-          builder: (_) => Scaffold(body: SafeArea(child: Text('Route Error'))),
+          builder: (_) => Scaffold(
+            body: SafeArea(child: Text('Route Error')),
+          ),
         );
     }
   }

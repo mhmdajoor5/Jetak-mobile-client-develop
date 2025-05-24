@@ -28,7 +28,11 @@ class _MapWidgetState extends StateMVC<MapWidget> {
 
   @override
   void initState() {
-    _con.currentRestaurant = widget.routeArgument?.param as Restaurant;
+    if (widget.routeArgument?.param is Restaurant) {
+      _con.currentRestaurant = widget.routeArgument?.param as Restaurant;
+    } else {
+      _con.currentRestaurant = Restaurant(); // أو أي قيمة افتراضية مناسبة
+    }
     if (_con.currentRestaurant?.latitude != null) {
       // user select a restaurant
       _con.getRestaurantLocation();

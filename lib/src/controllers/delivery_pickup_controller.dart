@@ -160,8 +160,11 @@ class DeliveryPickupController extends CartController {
               child: MobileVerificationBottomSheetWidget(
                 scaffoldKey: scaffoldKey,
                 user: currentUser.value,
-                valueChangedCallback: (verified) {
-                  if (verified) Navigator.pop(context);
+                valueChangedCallback: (verified) async {
+                  if (verified) {
+                    Navigator.pop(context);
+                    await _createSale(context); // ✅ انتقل للصفحة التالية بعد التحقق
+                  }
                 },
               ),
             ),
