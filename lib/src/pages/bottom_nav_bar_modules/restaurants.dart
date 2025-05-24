@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../generated/l10n.dart';
-import '../controllers/order_controller.dart';
-import '../elements/EmptyOrdersWidget.dart';
-import '../elements/OrderItemWidget.dart';
-import '../elements/PermissionDeniedWidget.dart';
-import '../elements/SearchBarWidget.dart';
-import '../elements/ShoppingCartButtonWidget.dart';
-import '../repository/user_repository.dart';
+import '../../../generated/l10n.dart';
+import '../../controllers/order_controller.dart';
+import '../../elements/EmptyOrdersWidget.dart';
+import '../../elements/OrderItemWidget.dart';
+import '../../elements/PermissionDeniedWidget.dart';
+import '../../elements/SearchBarWidget.dart';
+import '../../elements/ShoppingCartButtonWidget.dart';
+import '../../repository/user_repository.dart';
 
 class RestaurantsWidget extends StatefulWidget {
   final GlobalKey<ScaffoldState>? parentScaffoldKey;

@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../generated/l10n.dart';
-import '../controllers/profile_controller.dart';
-import '../elements/DrawerWidget.dart';
-import '../elements/EmptyOrdersWidget.dart';
-import '../elements/OrderItemWidget.dart';
-import '../elements/PermissionDeniedWidget.dart';
-import '../elements/ProfileAvatarWidget.dart';
-import '../elements/ShoppingCartButtonWidget.dart';
-import '../repository/user_repository.dart';
+import '../../../generated/l10n.dart';
+import '../../controllers/profile_controller.dart';
+import '../../elements/DrawerWidget.dart';
+import '../../elements/EmptyOrdersWidget.dart';
+import '../../elements/OrderItemWidget.dart';
+import '../../elements/PermissionDeniedWidget.dart';
+import '../../elements/ProfileAvatarWidget.dart';
+import '../../elements/ShoppingCartButtonWidget.dart';
+import '../../repository/user_repository.dart';
+
+
 
 class ProfileWidget extends StatefulWidget {
   final GlobalKey<ScaffoldState>? parentScaffoldKey;
 
-  ProfileWidget({Key? key, this.parentScaffoldKey}) : super(key: key);
+   ProfileWidget({Key? key, this.parentScaffoldKey}) : super(key: key);
   @override
   _ProfileWidgetState createState() => _ProfileWidgetState();
 }

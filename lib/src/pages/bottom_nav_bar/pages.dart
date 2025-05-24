@@ -3,17 +3,18 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../generated/l10n.dart';
-import '../elements/DrawerWidget.dart';
-import '../elements/FilterWidget.dart';
-import '../helpers/helper.dart';
-import '../models/route_argument.dart';
-import '../pages/home.dart';
-import '../pages/map.dart';
-import '../pages/notifications.dart';
-import '../pages/orders.dart';
-import 'messages.dart';
-import 'restaurants.dart';
+import '../../../generated/l10n.dart';
+import '../../elements/DrawerWidget.dart';
+import '../../elements/FilterWidget.dart';
+import '../../helpers/helper.dart';
+import '../../models/route_argument.dart';
+import '../bottom_nav_bar_modules/home.dart';
+import '../bottom_nav_bar_modules/orders.dart';
+import '../bottom_nav_bar_modules/profile.dart';
+import '../bottom_nav_bar_modules/map.dart';
+import '../notifications.dart';
+import '../messages.dart';
+import '../bottom_nav_bar_modules/restaurants.dart';
 
 // ignore: must_be_immutable
 class PagesWidget extends StatefulWidget {
@@ -75,6 +76,11 @@ class _PagesWidgetState extends State<PagesWidget> {
           widget.currentPage = MapWidget(
             parentScaffoldKey: widget.scaffoldKey,
             routeArgument: widget.routeArgument,
+          );
+      /// mElkerm : add profile Screen to the bottom nav bar
+        case 4:
+          widget.currentPage = ProfileWidget(
+            parentScaffoldKey: widget.scaffoldKey,
           );
         default:
           widget.currentPage = OrdersWidget(

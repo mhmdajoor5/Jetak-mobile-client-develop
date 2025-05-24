@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_app/src/helpers/phone_util.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../generated/l10n.dart';
-import '../controllers/user_controller.dart';
-import '../elements/BlockButtonWidget.dart';
-import '../elements/MobileVerificationBottomSheetWidget.dart';
-import '../helpers/app_config.dart' as config;
-import '../helpers/helper.dart';
+import '../../../generated/l10n.dart';
+import '../../controllers/user_controller.dart';
+import '../../elements/BlockButtonWidget.dart';
+import '../../elements/MobileVerificationBottomSheetWidget.dart';
+import '../../helpers/app_config.dart' as config;
+import '../../helpers/helper.dart';
 
 class SignUpWidget extends StatefulWidget {
   @override

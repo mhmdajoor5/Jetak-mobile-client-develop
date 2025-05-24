@@ -11,7 +11,6 @@ import '../models/restaurant.dart';
 import '../models/route_argument.dart';
 import '../repository/user_repository.dart';
 import 'chat.dart';
-import 'map.dart';
 import 'menu_list.dart';
 import 'restaurant.dart';
 
