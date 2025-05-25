@@ -207,47 +207,47 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                         primary: false,
                                         shrinkWrap: true,
                                       ),
-                                  ListTile(
-                                    dense: true,
-                                    contentPadding: EdgeInsets.symmetric(vertical: 10),
-                                    leading: Icon(Icons.donut_small, color: Theme.of(context).hintColor),
-                                    title: Text(S.of(context).ingredients, style: Theme.of(context).textTheme.titleMedium),
-                                  ),
-                                  Helper.applyHtml(context, _con.food.ingredients, style: TextStyle(fontSize: 12)),
-                                  ListTile(
-                                    dense: true,
-                                    contentPadding: EdgeInsets.symmetric(vertical: 10),
-                                    leading: Icon(Icons.local_activity, color: Theme.of(context).hintColor),
-                                    title: Text(S.of(context).nutrition, style: Theme.of(context).textTheme.titleMedium),
-                                  ),
-                                  Wrap(
-                                    spacing: 8,
-                                    runSpacing: 8,
-                                    children: List.generate(_con.food.nutritions.length, (index) {
-                                      return Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).primaryColor,
-                                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                                          boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.2), offset: Offset(0, 2), blurRadius: 6.0)],
-                                        ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: <Widget>[
-                                            Text(_con.food.nutritions.elementAt(index).name, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.bodySmall),
-                                            Text(_con.food.nutritions.elementAt(index).quantity.toString(), overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.headlineMedium),
-                                          ],
-                                        ),
-                                      );
-                                    }),
-                                  ),
-                                  ListTile(
-                                    dense: true,
-                                    contentPadding: EdgeInsets.symmetric(vertical: 10),
-                                    leading: Icon(Icons.recent_actors, color: Theme.of(context).hintColor),
-                                    title: Text(S.of(context).reviews, style: Theme.of(context).textTheme.titleMedium),
-                                  ),
-                                  ReviewsListWidget(reviewsList: _con.food.foodReviews),
+                                  // ListTile(
+                                  //   dense: true,
+                                  //   contentPadding: EdgeInsets.symmetric(vertical: 10),
+                                  //   leading: Icon(Icons.donut_small, color: Theme.of(context).hintColor),
+                                  //   title: Text(S.of(context).ingredients, style: Theme.of(context).textTheme.titleMedium),
+                                  // ),
+                                  // Helper.applyHtml(context, _con.food.ingredients, style: TextStyle(fontSize: 12)),
+                                  // ListTile(
+                                  //   dense: true,
+                                  //   contentPadding: EdgeInsets.symmetric(vertical: 10),
+                                  //   leading: Icon(Icons.local_activity, color: Theme.of(context).hintColor),
+                                  //   title: Text(S.of(context).nutrition, style: Theme.of(context).textTheme.titleMedium),
+                                  // ),
+                                  // Wrap(
+                                  //   spacing: 8,
+                                  //   runSpacing: 8,
+                                  //   children: List.generate(_con.food.nutritions.length, (index) {
+                                  //     return Container(
+                                  //       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                  //       decoration: BoxDecoration(
+                                  //         color: Theme.of(context).primaryColor,
+                                  //         borderRadius: BorderRadius.all(Radius.circular(5)),
+                                  //         boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.2), offset: Offset(0, 2), blurRadius: 6.0)],
+                                  //       ),
+                                  //       child: Column(
+                                  //         mainAxisSize: MainAxisSize.min,
+                                  //         children: <Widget>[
+                                  //           Text(_con.food.nutritions.elementAt(index).name, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.bodySmall),
+                                  //           Text(_con.food.nutritions.elementAt(index).quantity.toString(), overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.headlineMedium),
+                                  //         ],
+                                  //       ),
+                                  //     );
+                                  //   }),
+                                  // ),
+                                  // ListTile(
+                                  //   dense: true,
+                                  //   contentPadding: EdgeInsets.symmetric(vertical: 10),
+                                  //   leading: Icon(Icons.recent_actors, color: Theme.of(context).hintColor),
+                                  //   title: Text(S.of(context).reviews, style: Theme.of(context).textTheme.titleMedium),
+                                  // ),
+                                  // ReviewsListWidget(reviewsList: _con.food.foodReviews),
                                 ],
                               ),
                             ),

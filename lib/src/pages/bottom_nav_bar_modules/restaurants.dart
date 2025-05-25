@@ -20,28 +20,37 @@ class RestaurantsWidget extends StatefulWidget {
 }
 
 class _RestaurantsWidgetState extends StateMVC<RestaurantsWidget> {
-
-  _RestaurantsWidgetState() : super(OrderController()) {
-  }
+  _RestaurantsWidgetState() : super(OrderController()) {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: new IconButton(icon: new Icon(Icons.sort, color: Theme.of(context).hintColor), onPressed: () => widget.parentScaffoldKey?.currentState?.openDrawer()),
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
-          title: Text(S.of(context).my_orders, style: Theme.of(context).textTheme.headlineSmall?.merge(TextStyle(letterSpacing: 1.3))),
-          actions: <Widget>[new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).colorScheme.secondary)],
+      appBar: AppBar(
+        leading: new IconButton(
+          icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
+          onPressed: () => widget.parentScaffoldKey?.currentState?.openDrawer(),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Restaurants'),
-          ],
-        )
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          S.of(context).my_orders,
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.merge(TextStyle(letterSpacing: 1.3)),
+        ),
+        actions: <Widget>[
+          new ShoppingCartButtonWidget(
+            iconColor: Theme.of(context).hintColor,
+            labelColor: Theme.of(context).colorScheme.secondary,
+          ),
+        ],
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [Text('Restaurants')],
+      ),
     );
   }
 }
