@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
           onGenerateRoute: RouteGenerator.generateRoute,
           debugShowCheckedModeBanner: false,
           // locale: _setting.mobileLanguage.value,
-          locale: Locale("en"),
+          locale: Locale("ar"),
           localizationsDelegates: [
             S.delegate,
             GlobalMaterialLocalizations.delegate,

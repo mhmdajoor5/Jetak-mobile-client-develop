@@ -83,7 +83,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             leading: Icon(Icons.settings, color: Theme.of(context).focusColor.withOpacity(1)),
             title: Text(S.of(context).settings, style: Theme.of(context).textTheme.titleMedium),
           ),
-          _buildTile(context, '/Languages', S.of(context).languages, Icons.translate),
+          // _buildTile(context, '/Languages', S.of(context).languages, Icons.translate),
           ListTile(
             onTap: () {
               final brightness = Theme.of(context).brightness;
