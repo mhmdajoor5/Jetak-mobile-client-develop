@@ -308,7 +308,7 @@ class _PagesWidgetState extends State<PagesWidget> {
                     activeIcon: Column(
                       children: [
                         SvgPicture.asset(
-                          'assets/img/chats.svg',
+                          'assets/img/location.svg',
                           height: 24,
                           width: 24,
                           colorFilter: ColorFilter.mode(
@@ -317,7 +317,7 @@ class _PagesWidgetState extends State<PagesWidget> {
                           ),
                         ),
                         Text(
-                          S.of(context).chats,
+                          S.of(context).maps,
                           style: TextStyle(
                             fontFamily: 'Nunito',
                             fontSize: 12,

@@ -220,6 +220,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "לחיצה ארוכה על המזון להוספת תוספות"),
         "makeItDefault":
             MessageLookupByLibrary.simpleMessage("הגדר כברירת מחדל"),
+        "maps": MessageLookupByLibrary.simpleMessage("Maps"),
         "maps_explorer": MessageLookupByLibrary.simpleMessage("מגלה מפות"),
         "mastercard": MessageLookupByLibrary.simpleMessage("MasterCard"),
         "menu": MessageLookupByLibrary.simpleMessage("תפריט"),

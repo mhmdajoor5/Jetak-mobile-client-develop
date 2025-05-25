@@ -264,5 +264,6 @@
   "check_on_waze": "בדוק ב-Waze:",
   "restaurants": "מסעדות",
   "stores":"חנויות",
-  "chats": "צ'אטים"
+  "chats": "צ'אטים",
+  "maps" : "Maps"
 }
