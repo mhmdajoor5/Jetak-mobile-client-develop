@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -40,6 +41,8 @@ class _MyAppState extends State<MyApp> {
       valueListenable: settingRepo.setting,
       builder: (context, Setting _setting, _) {
         return MaterialApp(
+          navigatorObservers: [BotToastNavigatorObserver()],
+          builder: BotToastInit(), //1. call BotToastInit
           navigatorKey: settingRepo.navigatorKey,
           title: _setting.appName,
           initialRoute: '/Splash',

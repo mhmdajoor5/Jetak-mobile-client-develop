@@ -588,15 +588,15 @@ obj/
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/flutter,android,androidstudio,intellij,intellij+iml,intellij+all,swift,swiftpackagemanager,swiftpm,dart,darteditor,kotlin
-/lib/generated/l10n.dart
-/lib/generated/intl/messages_all.dart
-/lib/generated/intl/messages_ar.dart
-/lib/generated/intl/messages_en.dart
-/lib/generated/intl/messages_es.dart
-/lib/generated/intl/messages_fr.dart
-/lib/generated/intl/messages_fr_CA.dart
-/lib/generated/intl/messages_in.dart
-/lib/generated/intl/messages_ko.dart
-/lib/generated/intl/messages_pt.dart
+#/lib/generated/l10n.dart
+#/lib/generated/intl/messages_all.dart
+#/lib/generated/intl/messages_ar.dart
+#/lib/generated/intl/messages_en.dart
+#/lib/generated/intl/messages_es.dart
+#/lib/generated/intl/messages_fr.dart
+#/lib/generated/intl/messages_fr_CA.dart
+#/lib/generated/intl/messages_in.dart
+#/lib/generated/intl/messages_ko.dart
+#/lib/generated/intl/messages_pt.dart
 
 /ios/.DS_Store

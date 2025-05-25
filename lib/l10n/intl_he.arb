@@ -265,5 +265,6 @@
   "restaurants": "מסעדות",
   "stores":"חנויות",
   "chats": "צ'אטים",
-  "maps" : "Maps"
+  "maps" : "Maps",
+  "login_success" : "Login Success"
 }

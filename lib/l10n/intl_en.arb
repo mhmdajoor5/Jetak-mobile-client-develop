@@ -279,6 +279,7 @@
   "enter_here":"Enter here",
   "delivery":"Delivery",
   "pickup":"Pickup",
-  "maps" : "Maps"
+  "maps" : "Maps",
+  "login_success" : "Login Success"
 
 }
