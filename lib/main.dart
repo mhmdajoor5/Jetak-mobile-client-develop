@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> {
               _setting.brightness.value == Brightness.light
                   ? ThemeData(
                     useMaterial3: true,
-                    fontFamily: 'Cairo',
+                    fontFamily: 'Nunito',
                     colorScheme: ColorScheme.fromSeed(
                       seedColor: config.Colors().mainColor(1),
                       brightness: Brightness.light,
