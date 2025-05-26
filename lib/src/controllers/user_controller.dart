@@ -1,15 +1,16 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
-import '../helpers/my_toast_helper.dart';
 import '../models/user.dart' as model;
 import '../pages/mobile_verification_2.dart';
 import '../repository/user_repository.dart' as repository;
@@ -43,7 +44,8 @@ class UserController extends ControllerMVC {
     }
   }
 
-  BuildContext? get context => state?.context ?? scaffoldKey.currentContext;
+  BuildContext? get context =>
+      state?.context ?? scaffoldKey.currentContext;
 
   void _showLoader() {
     if (!_isLoaderVisible && context != null) {
@@ -63,83 +65,100 @@ class UserController extends ControllerMVC {
   void login() async {
     if (context == null) return;
     FocusScope.of(context!).unfocus();
-    if (loginFormKey.currentState?.validate() ?? false) {
-      loginFormKey.currentState?.save();
-      _showLoader();
-      try {
-        final value = await repository.login(user);
-        if (value != null && value.apiToken != null) {
-          Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
-          MyToastHelper.successBar(S.current.login_success , color: Colors.green);
-        } else {
-          _showSnackBar(S.of(context!).wrong_email_or_password);
-        }
-      } catch (e) {
-        print(e);
-        _showSnackBar(S.of(context!).this_account_not_exist);
-      } finally {
-        _hideLoader();
+
+    if (!(loginFormKey.currentState?.validate() ?? false)) {
+      _showSnackBar(S.of(context!).please_fill_all_fields);
+      return;
+    }
+    loginFormKey.currentState!.save();
+    _showLoader();
+    try {
+      final value = await repository.login(user);
+      _hideLoader();
+      if (value != null && value.apiToken != null) {
+        ScaffoldMessenger.of(context!).showSnackBar(
+          SnackBar(
+            content: Text(S.of(context!).login_successful),
+            duration: const Duration(seconds: 1),
+          ),
+        );
+        Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
+      } else {
+        _showSnackBar(S.of(context!).wrong_email_or_password);
       }
+    } on FirebaseAuthException catch (e) {
+      _hideLoader();
+      if (e.code == 'wrong-password') {
+        _showSnackBar(S.of(context!).wrong_password); // أضف هذه الترجمة في ملف l10n
+      } else if (e.code == 'user-not-found') {
+        _showSnackBar(S.of(context!).this_account_not_exist);
+      } else {
+        _showSnackBar(e.message ?? 'An error occurred');
+      }
+    } catch (e) {
+      _hideLoader();
+      _showSnackBar(S.of(context!).this_account_not_exist);
     }
   }
 
   Future<void> register() async {
     if (context == null) return;
     FocusScope.of(context!).unfocus();
+    if (!(loginFormKey.currentState?.validate() ?? false)) return;
+    loginFormKey.currentState?.save();
     _showLoader();
     try {
       final value = await repository.register(user);
+      _hideLoader();
       if (value != null && value.apiToken != null) {
+        ScaffoldMessenger.of(context!).showSnackBar(
+          SnackBar(
+            content: Text(S.of(context!).register_successful),
+            duration: const Duration(seconds: 1),
+          ),
+        );
+        await Future.delayed(const Duration(milliseconds: 500));
         Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
       } else {
         _showSnackBar(S.of(context!).wrong_email_or_password);
       }
     } catch (e) {
-      _showSnackBar(S.of(context!).this_email_account_exists);
-    } finally {
       _hideLoader();
+      _showSnackBar(S.of(context!).this_email_account_exists);
     }
   }
 
   Future<void> verifyPhone(model.User user) async {
     if (context == null) return;
 
-    final PhoneVerificationCompleted verificationCompleted = (
-      PhoneAuthCredential credential,
-    ) {
+    final PhoneVerificationCompleted verificationCompleted =
+        (PhoneAuthCredential credential) {
       // You could log in the user automatically here if needed.
     };
 
-    final PhoneVerificationFailed verificationFailed = (
-      FirebaseAuthException e,
-    ) {
+    final PhoneVerificationFailed verificationFailed =
+        (FirebaseAuthException e) {
       _showSnackBar(e.message ?? 'Phone verification failed');
       print(e);
     };
 
-    final PhoneCodeSent codeSent = (
-      String verificationId,
-      int? forceResendingToken,
-    ) {
+    final PhoneCodeSent codeSent =
+        (String verificationId, int? forceResendingToken) {
       repository.currentUser.value.verificationId = verificationId;
       Navigator.push(
         context!,
         MaterialPageRoute(
-          builder:
-              (ctx) => MobileVerification2(
-                onVerified: (v) {
-                  Navigator.of(
-                    ctx,
-                  ).pushReplacementNamed('/Pages', arguments: 2);
-                },
-              ),
+          builder: (ctx) => MobileVerification2(
+            onVerified: (v) {
+              Navigator.of(ctx).pushReplacementNamed('/Pages', arguments: 2);
+            },
+          ),
         ),
       );
     };
 
-    final PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout = (
-      String verificationId,
-    ) {
+    final PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout =
+        (String verificationId) {
       repository.currentUser.value.verificationId = verificationId;
     };
 
@@ -158,6 +177,92 @@ class UserController extends ControllerMVC {
     }
   }
 
+  Future<void> loginWithGoogle() async {
+    if (context == null) return;
+    _showLoader();
+    try {
+      final account = await GoogleSignIn().signIn();
+      if (account == null) throw 'canceled';
+      final auth = await account.authentication;
+      final token = auth.idToken;
+      final response = await http.post(
+        Uri.parse('https://your.api.com/social-login/google'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'token': token}),
+      );
+      if (response.statusCode == 200) {
+        _hideLoader();
+        _showSnackBar(S.of(context!).login_successful);
+        Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
+      } else {
+        throw 'error';
+      }
+    } catch (e) {
+      _hideLoader();
+      _showSnackBar('Google login failed');
+    }
+  }
+
+  Future<void> loginWithFacebook() async {
+    if (context == null) return;
+    _showLoader();
+    try {
+      final result = await FacebookAuth.instance.login();
+
+      if (result.status != LoginStatus.success || result.accessToken == null) {
+        throw 'Facebook login canceled or failed';
+      }
+      final token = result.accessToken?.toJson()['token'];
+
+      if (token == null) {
+        throw 'Token is null';
+      }
+
+      final response = await http.post(
+        Uri.parse('https://your.api.com/social-login/facebook'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'token': token}),
+      );
+
+      if (response.statusCode == 200) {
+        _hideLoader();
+        _showSnackBar(S.of(context!).login_successful);
+        Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
+      } else {
+        throw 'API error';
+      }
+    } catch (e) {
+      _hideLoader();
+      _showSnackBar('فشل تسجيل الدخول باستخدام فيسبوك');
+      debugPrint('Facebook login error: $e');
+    }
+  }
+
+
+//   Future<void> loginWithApple() async {
+//     if (context == null) return;
+//     _showLoader();
+//     try {
+//       final credential = await SignInWithApple.getAppleIDCredential(
+//         scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
+//       );
+//       final oauthCred = OAuthProvider("apple.com").credential(
+//         idToken: credential.identityToken,
+//         accessToken: credential.authorizationCode,
+//       );
+//       final userCred = await FirebaseAuth.instance.signInWithCredential(oauthCred);
+//       if (userCred.user != null) {
+//         _hideLoader();
+//         _showSnackBar(S.of(context!).login_successful);
+//         Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
+//       }
+//     } catch (e) {
+//       _hideLoader();
+//       _showSnackBar('Apple login failed');
+//     }
+//   }
+// }
+
   void resetPassword() async {
     if (context == null) return;
     FocusScope.of(context!).unfocus();
@@ -169,9 +274,7 @@ class UserController extends ControllerMVC {
         if (success == true) {
           ScaffoldMessenger.of(context!).showSnackBar(
             SnackBar(
-              content: Text(
-                S.of(context!).your_reset_link_has_been_sent_to_your_email,
-              ),
+              content: Text(S.of(context!).your_reset_link_has_been_sent_to_your_email),
               action: SnackBarAction(
                 label: S.of(context!).login,
                 onPressed: () {
@@ -192,61 +295,11 @@ class UserController extends ControllerMVC {
     }
   }
 
-  Future<void> loginWithGoogle() async {
-    _showLoader();
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) {
-        _hideLoader();
-        return;
-      }
-
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-
-      Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
-      MyToastHelper.successBar('تم تسجيل الدخول باستخدام Google', color: Colors.green);
-    } catch (e) {
-      print('Google sign-in error: $e');
-      _showSnackBar('فشل تسجيل الدخول باستخدام Google');
-    } finally {
-      _hideLoader();
-    }
-  }
-
-  Future<void> loginWithFacebook() async {
-    _showLoader();
-    try {
-      final LoginResult result = await FacebookAuth.instance.login();
-
-      if (result.status == LoginStatus.success) {
-        final OAuthCredential credential = FacebookAuthProvider.credential(result.accessToken!.tokenString);
-        final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-
-        Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
-        MyToastHelper.successBar('تم تسجيل الدخول باستخدام Facebook', color: Colors.green);
-      } else {
-        _showSnackBar('فشل تسجيل الدخول باستخدام Facebook');
-      }
-    } catch (e) {
-      print('Facebook sign-in error: $e');
-      _showSnackBar('فشل تسجيل الدخول باستخدام Facebook');
-    } finally {
-      _hideLoader();
-    }
-  }
-
   void _showSnackBar(String message) {
     if (context != null) {
-      ScaffoldMessenger.of(
-        context!,
-      ).showSnackBar(SnackBar(content: Text(message)));
+      ScaffoldMessenger.of(context!).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
     }
   }
 }

@@ -2850,21 +2850,131 @@ class S {
     );
   }
 
-  /// `Maps`
-  String get maps {
+  /// `Open until {time}`
+  String open_until(Object time) {
     return Intl.message(
-      'Maps',
-      name: 'maps',
+      'Open until $time',
+      name: 'open_until',
+      desc: '',
+      args: [time],
+    );
+  }
+
+  /// `More`
+  String get more {
+    return Intl.message(
+      'More',
+      name: 'more',
       desc: '',
       args: [],
     );
   }
 
-  /// `Login Success`
+  /// `No items found in this category`
+  String get no_items_in_this_category {
+    return Intl.message(
+      'No items found in this category',
+      name: 'no_items_in_this_category',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login successful`
+  String get login_successful {
+    return Intl.message(
+      'Login successful',
+      name: 'login_successful',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You are already logged in`
+  String get already_logged_in {
+    return Intl.message(
+      'You are already logged in',
+      name: 'already_logged_in',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Registration successful`
+  String get register_successful {
+    return Intl.message(
+      'Registration successful',
+      name: 'register_successful',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please fill all fields correctly`
+  String get please_fill_all_fields {
+    return Intl.message(
+      'Please fill all fields correctly',
+      name: 'please_fill_all_fields',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incorrect password`
+  String get wrong_password {
+    return Intl.message(
+      'Incorrect password',
+      name: 'wrong_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login with Facebook`
+  String get login_with_facebook {
+    return Intl.message(
+      'Login with Facebook',
+      name: 'login_with_facebook',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login with Google`
+  String get login_with_google {
+    return Intl.message(
+      'Login with Google',
+      name: 'login_with_google',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login with Apple`
+  String get login_with_apple {
+    return Intl.message(
+      'Login with Apple',
+      name: 'login_with_apple',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login successful!`
   String get login_success {
     return Intl.message(
-      'Login Success',
+      'Login successful!',
       name: 'login_success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Maps`
+  String get maps {
+    return Intl.message(
+      'Maps',
+      name: 'maps',
       desc: '',
       args: [],
     );

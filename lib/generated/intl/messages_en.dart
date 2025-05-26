@@ -20,9 +20,11 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m1(id) => "Order: #${id} has been canceled";
+  static String m0(time) => "Open until ${time}";
 
-  static String m0(foodname) => "The ${foodname} was removed from your cart";
+  static String m2(id) => "Order: #${id} has been canceled";
+
+  static String m1(foodname) => "The ${foodname} was removed from your cart";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -42,6 +44,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Addresses refreshed successfuly"),
         "all": MessageLookupByLibrary.simpleMessage("All"),
         "all_menu": MessageLookupByLibrary.simpleMessage("All Menu"),
+        "already_logged_in":
+            MessageLookupByLibrary.simpleMessage("You are already logged in"),
         "app_language": MessageLookupByLibrary.simpleMessage("App Language"),
         "app_settings": MessageLookupByLibrary.simpleMessage("App Settings"),
         "application_preferences":
@@ -230,7 +234,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "light_mode": MessageLookupByLibrary.simpleMessage("Light Mode"),
         "log_out": MessageLookupByLibrary.simpleMessage("Log out"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
-        "login_success": MessageLookupByLibrary.simpleMessage("Login Success"),
+        "login_success":
+            MessageLookupByLibrary.simpleMessage("Login successful!"),
+        "login_successful":
+            MessageLookupByLibrary.simpleMessage("Login successful"),
+        "login_with_apple":
+            MessageLookupByLibrary.simpleMessage("Login with Apple"),
+        "login_with_facebook":
+            MessageLookupByLibrary.simpleMessage("Login with Facebook"),
+        "login_with_google":
+            MessageLookupByLibrary.simpleMessage("Login with Google"),
         "long_press_to_edit_item_swipe_item_to_delete_it":
             MessageLookupByLibrary.simpleMessage(
                 "Long press to edit item, swipe item to delete it"),
@@ -245,6 +258,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "menu": MessageLookupByLibrary.simpleMessage("Menu"),
         "messages": MessageLookupByLibrary.simpleMessage("Messages"),
         "mi": MessageLookupByLibrary.simpleMessage("mi"),
+        "more": MessageLookupByLibrary.simpleMessage("More"),
         "most_popular": MessageLookupByLibrary.simpleMessage("Most Popular"),
         "multirestaurants":
             MessageLookupByLibrary.simpleMessage("Multi-Restaurants"),
@@ -258,6 +272,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "New Address added successfully"),
         "new_order_from_client":
             MessageLookupByLibrary.simpleMessage("New order from client"),
+        "no_items_in_this_category": MessageLookupByLibrary.simpleMessage(
+            "No items found in this category"),
         "notValidAddress":
             MessageLookupByLibrary.simpleMessage("Not valid address"),
         "not_a_valid_address":
@@ -290,13 +306,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "One or more foods in your cart not deliverable."),
         "open": MessageLookupByLibrary.simpleMessage("Open"),
+        "open_until": m0,
         "opened_restaurants":
             MessageLookupByLibrary.simpleMessage("Opened Restaurants"),
         "or_checkout_with":
             MessageLookupByLibrary.simpleMessage("Or Checkout With"),
         "order": MessageLookupByLibrary.simpleMessage("Order"),
         "orderDetails": MessageLookupByLibrary.simpleMessage("Order Details"),
-        "orderThisorderidHasBeenCanceled": m1,
+        "orderThisorderidHasBeenCanceled": m2,
         "order_id": MessageLookupByLibrary.simpleMessage("Order Id"),
         "order_refreshed_successfuly": MessageLookupByLibrary.simpleMessage(
             "Order refreshed successfully"),
@@ -335,6 +352,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "pickup_your_food_from_the_restaurant":
             MessageLookupByLibrary.simpleMessage(
                 "Pickup your food from the restaurant"),
+        "please_fill_all_fields": MessageLookupByLibrary.simpleMessage(
+            "Please fill all fields correctly"),
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "profile_settings":
             MessageLookupByLibrary.simpleMessage("Profile Settings"),
@@ -352,6 +371,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "recents_search":
             MessageLookupByLibrary.simpleMessage("Recents Search"),
         "register": MessageLookupByLibrary.simpleMessage("Register"),
+        "register_successful":
+            MessageLookupByLibrary.simpleMessage("Registration successful"),
         "reset": MessageLookupByLibrary.simpleMessage("Reset"),
         "reset_cart": MessageLookupByLibrary.simpleMessage("Reset Cart?"),
         "reset_your_cart_and_order_meals_form_this_restaurant":
@@ -424,7 +445,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "the_food_has_been_rated_successfully":
             MessageLookupByLibrary.simpleMessage(
                 "The food has been rated successfully"),
-        "the_food_was_removed_from_your_cart": m0,
+        "the_food_was_removed_from_your_cart": m1,
         "the_restaurant_has_been_rated_successfully":
             MessageLookupByLibrary.simpleMessage(
                 "The restaurant has been rated successfully"),
@@ -481,6 +502,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("What They Say ?"),
         "wrong_email_or_password":
             MessageLookupByLibrary.simpleMessage("Wrong email or password"),
+        "wrong_password":
+            MessageLookupByLibrary.simpleMessage("Incorrect password"),
         "yes": MessageLookupByLibrary.simpleMessage("Yes"),
         "youDontHaveAnyConversations": MessageLookupByLibrary.simpleMessage(
             "You don\'t have any conversations"),

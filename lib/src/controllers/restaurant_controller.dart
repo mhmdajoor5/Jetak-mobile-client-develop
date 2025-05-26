@@ -17,7 +17,7 @@ import '../repository/restaurant_repository.dart';
 import '../repository/settings_repository.dart';
 
 class RestaurantController extends ControllerMVC {
-   Restaurant? restaurant;
+  Restaurant? restaurant;
   List<Gallery> galleries = <Gallery>[];
   List<Food> foods = <Food>[];
   List<Category> categories = <Category>[];
@@ -27,9 +27,12 @@ class RestaurantController extends ControllerMVC {
   late GlobalKey<ScaffoldState> scaffoldKey;
 
   final PagingController<int, Food> foodPagingController =
-      PagingController(firstPageKey: 1);
+  PagingController(firstPageKey: 1);
   final PagingController<int, Food> featuredFoodsPagingController =
-      PagingController(firstPageKey: 1);
+  PagingController(firstPageKey: 1);
+
+  Map<String, Future<List<Food>>> foodsByCategory = {};
+
 
   RestaurantController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -72,10 +75,36 @@ class RestaurantController extends ControllerMVC {
     }, onError: (a) {}, onDone: () {});
   }
 
+  Future<List<Food>> getFoodsByCategoryId(String categoryId) async {
+    if (foodsByCategory.containsKey(categoryId)) {
+      return foodsByCategory[categoryId]!;
+    }
+
+    final completer = Completer<List<Food>>();
+    foodsByCategory[categoryId] = completer.future;
+
+    try {
+      final Stream<Food> stream = await getFoodsOfRestaurant(
+        restaurant!.id!,
+        categories: [categoryId], page: 1,
+      );
+      List<Food> categoryFoods = [];
+      await for (var food in stream) {
+        categoryFoods.add(food);
+      }
+      completer.complete(categoryFoods);
+      return categoryFoods;
+    } catch (e) {
+      print('Error fetching foods for category $categoryId: $e');
+      completer.completeError(e);
+      return [];
+    }
+  }
+
+
   Future<void> listenForFoods(String idRestaurant, int pageKey,
       {List<String> categoriesId = const []}) async {
     try {
-      // Fetch a page of foods
       final Stream<Food> stream = await getFoodsOfRestaurant(
         idRestaurant,
         page: pageKey,
@@ -88,7 +117,7 @@ class RestaurantController extends ControllerMVC {
       }
 
       if (pageKey == 1 && newFoods.isNotEmpty) {
-        restaurant?.name = newFoods.first.restaurant.name;
+        // restaurant?.name = newFoods.first.restaurant.name;
       }
 
       final isLastPage = newFoods.length < 5;
@@ -128,15 +157,17 @@ class RestaurantController extends ControllerMVC {
     }, onError: (a) {
       print(a);
     }, onDone: () {
-      categories.insert(0, new Category.fromJSON({'id': '0', 'name': S.of(state!.context).all}));
+      // If you added 'All' for filtering, and now you want to display categories individually,
+      // it's probably better to remove this line if you don't want an "All" heading in the UI.
+      // categories.insert(0, new Category.fromJSON({'id': '0', 'name': S.of(state!.context).all}));
     });
   }
 
-  Future<void> selectCategory(List<String> categoriesId) async {
-    foodPagingController.value.itemList?.clear();
-    listenForFoods(restaurant!.id, 0, categoriesId: categoriesId);
-    foodPagingController.refresh() ;
-  }
+  // Future<void> selectCategory(List<String> categoriesId) async {
+  //   foodPagingController.value.itemList?.clear();
+  //   listenForFoods(restaurant!.id, 0, categoriesId: categoriesId);
+  //   foodPagingController.refresh() ;
+  // }
 
   Future<void> refreshRestaurant() async {
     var _id = restaurant!.id;
@@ -144,9 +175,11 @@ class RestaurantController extends ControllerMVC {
     galleries.clear();
     reviews.clear();
     featuredFoods.clear();
+    foodsByCategory.clear();
     listenForRestaurant(id: _id, message: S.of(state!.context).restaurant_refreshed_successfuly);
     listenForRestaurantReviews(id: _id);
     listenForGalleries(_id);
     listenForFeaturedFoods(_id);
+    listenForCategories(_id);
   }
 }

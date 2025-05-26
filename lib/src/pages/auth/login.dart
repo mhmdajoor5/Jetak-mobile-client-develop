@@ -9,7 +9,6 @@ import '../../helpers/app_config.dart' as config;
 import '../../helpers/helper.dart';
 import '../../repository/user_repository.dart' as userRepo;
 
-
 class LoginWidget extends StatefulWidget {
   @override
   _LoginWidgetState createState() => _LoginWidgetState();

@@ -21,6 +21,7 @@ class Restaurant {
   bool availableForDelivery;
   double deliveryRange;
   double distance;
+  String closingTime;
   List<User> users;
 
   Restaurant({
@@ -42,6 +43,8 @@ class Restaurant {
     this.availableForDelivery = false,
     this.deliveryRange = 0.0,
     this.distance = 0.0,
+    this.closingTime = '22:00',
+
     List<User>? users,
   }) : image = image ?? Media(),
        users = users ?? [];
@@ -66,6 +69,7 @@ class Restaurant {
         longitude: jsonMap?['longitude']?.toString() ?? '0',
         closed: jsonMap?['closed'] ?? false,
         availableForDelivery: jsonMap?['available_for_delivery'] ?? false,
+        closingTime: jsonMap?['closing_time']?.toString() ?? '22:00',
         distance: (jsonMap?['distance'] != null) ? double.tryParse(jsonMap!['distance'].toString()) ?? 0.0 : 0.0,
         users: jsonMap?['users'] != null ? List<User>.from(jsonMap!['users'].map((e) => User.fromJSON(e))).toSet().toList() : [],
       );

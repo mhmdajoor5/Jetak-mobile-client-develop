@@ -84,17 +84,17 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             title: Text(S.of(context).settings, style: Theme.of(context).textTheme.titleMedium),
           ),
           // _buildTile(context, '/Languages', S.of(context).languages, Icons.translate),
-          ListTile(
-            onTap: () {
-              final brightness = Theme.of(context).brightness;
-              final newBrightness = brightness == Brightness.dark ? Brightness.light : Brightness.dark;
-              setBrightness(newBrightness);
-              setting.value.brightness.value = newBrightness;
-              setting.notifyListeners();
-            },
-            leading: Icon(Icons.brightness_6, color: Theme.of(context).focusColor.withOpacity(1)),
-            title: Text(Theme.of(context).brightness == Brightness.dark ? S.of(context).light_mode : S.of(context).dark_mode, style: Theme.of(context).textTheme.titleMedium),
-          ),
+          // ListTile(
+          //   onTap: () {
+          //     final brightness = Theme.of(context).brightness;
+          //     final newBrightness = brightness == Brightness.dark ? Brightness.light : Brightness.dark;
+          //     setBrightness(newBrightness);
+          //     setting.value.brightness.value = newBrightness;
+          //     setting.notifyListeners();
+          //   },
+          //   leading: Icon(Icons.brightness_6, color: Theme.of(context).focusColor.withOpacity(1)),
+          //   title: Text(Theme.of(context).brightness == Brightness.dark ? S.of(context).light_mode : S.of(context).dark_mode, style: Theme.of(context).textTheme.titleMedium),
+          // ),
           ListTile(
             onTap: () {
               if (currentUser.value.apiToken != null) {

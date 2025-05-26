@@ -216,8 +216,5 @@
   "wrong_password": "كلمة المرور غير صحيحة",
   "login_with_facebook": "تسجيل الدخول عبر فيسبوك",
   "login_with_google":   "تسجيل الدخول عبر جوجل",
-  "login_with_apple":    "تسجيل الدخول عبر آبل",
-  "maps": "الخرائط",
-  "login_success": "تم تسجيل الدخول بنجاح!"
-  
+  "login_with_apple":    "تسجيل الدخول عبر آبل"
 }
