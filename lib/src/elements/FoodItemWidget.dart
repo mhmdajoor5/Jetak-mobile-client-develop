@@ -51,7 +51,7 @@ class FoodItemWidget extends StatelessWidget {
                   width: 80,
                   fit: BoxFit.cover,
                 ),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, ),
               ),
             ),
             SizedBox(width: 10),

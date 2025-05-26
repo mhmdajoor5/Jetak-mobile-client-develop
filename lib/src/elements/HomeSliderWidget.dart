@@ -71,7 +71,7 @@ class _HomeSliderWidgetState extends State<HomeSliderWidget> {
                                     width: double.infinity,
                                     height: 148,
                                   ),
-                                  errorWidget: (context, url, error) => Icon(Icons.error),
+                                  errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, ),
                                 ),
                               ),
                               Container(

@@ -259,6 +259,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                           ),
                         ),
                       );
+
                     case 'trending_week':
                       return FoodsCarouselWidget(foodsList: _con.trendingFoods, heroTag: 'home_food_carousel');
                     // case 'categories_heading':

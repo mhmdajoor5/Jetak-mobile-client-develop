@@ -56,7 +56,7 @@ class _MessageItemWidgetState extends State<MessageItemWidget> {
                         fit: BoxFit.cover,
                         imageUrl: otherUser.image?.thumb ?? '',
                         placeholder: (context, url) => Image.asset('assets/img/loading.gif', fit: BoxFit.cover, width: double.infinity, height: 140),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, ),
                       ),
                     ),
                   ),
