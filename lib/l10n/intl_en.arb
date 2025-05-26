@@ -278,6 +278,8 @@
   "pay_now":"Pay now",
   "enter_here":"Enter here",
   "delivery":"Delivery",
-  "pickup":"Pickup"
-  
+  "pickup":"Pickup",
+  "maps" : "Maps",
+  "login_success" : "Login Success"
+
 }

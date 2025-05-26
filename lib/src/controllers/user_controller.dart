@@ -7,6 +7,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
+import '../helpers/my_toast_helper.dart';
 import '../models/user.dart' as model;
 import '../pages/mobile_verification_2.dart';
 import '../repository/user_repository.dart' as repository;
@@ -40,8 +41,7 @@ class UserController extends ControllerMVC {
     }
   }
 
-  BuildContext? get context =>
-      state?.context ?? scaffoldKey.currentContext;
+  BuildContext? get context => state?.context ?? scaffoldKey.currentContext;
 
   void _showLoader() {
     if (!_isLoaderVisible && context != null) {
@@ -68,6 +68,7 @@ class UserController extends ControllerMVC {
         final value = await repository.login(user);
         if (value != null && value.apiToken != null) {
           Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
+          MyToastHelper.successBar(S.current.login_success , color: Colors.green);
         } else {
           _showSnackBar(S.of(context!).wrong_email_or_password);
         }
@@ -101,34 +102,42 @@ class UserController extends ControllerMVC {
   Future<void> verifyPhone(model.User user) async {
     if (context == null) return;
 
-    final PhoneVerificationCompleted verificationCompleted =
-        (PhoneAuthCredential credential) {
+    final PhoneVerificationCompleted verificationCompleted = (
+      PhoneAuthCredential credential,
+    ) {
       // You could log in the user automatically here if needed.
     };
 
-    final PhoneVerificationFailed verificationFailed =
-        (FirebaseAuthException e) {
+    final PhoneVerificationFailed verificationFailed = (
+      FirebaseAuthException e,
+    ) {
       _showSnackBar(e.message ?? 'Phone verification failed');
       print(e);
     };
 
-    final PhoneCodeSent codeSent =
-        (String verificationId, int? forceResendingToken) {
+    final PhoneCodeSent codeSent = (
+      String verificationId,
+      int? forceResendingToken,
+    ) {
       repository.currentUser.value.verificationId = verificationId;
       Navigator.push(
         context!,
         MaterialPageRoute(
-          builder: (ctx) => MobileVerification2(
-            onVerified: (v) {
-              Navigator.of(ctx).pushReplacementNamed('/Pages', arguments: 2);
-            },
-          ),
+          builder:
+              (ctx) => MobileVerification2(
+                onVerified: (v) {
+                  Navigator.of(
+                    ctx,
+                  ).pushReplacementNamed('/Pages', arguments: 2);
+                },
+              ),
         ),
       );
     };
 
-    final PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout =
-        (String verificationId) {
+    final PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout = (
+      String verificationId,
+    ) {
       repository.currentUser.value.verificationId = verificationId;
     };
 
@@ -158,7 +167,9 @@ class UserController extends ControllerMVC {
         if (success == true) {
           ScaffoldMessenger.of(context!).showSnackBar(
             SnackBar(
-              content: Text(S.of(context!).your_reset_link_has_been_sent_to_your_email),
+              content: Text(
+                S.of(context!).your_reset_link_has_been_sent_to_your_email,
+              ),
               action: SnackBarAction(
                 label: S.of(context!).login,
                 onPressed: () {
@@ -181,9 +192,9 @@ class UserController extends ControllerMVC {
 
   void _showSnackBar(String message) {
     if (context != null) {
-      ScaffoldMessenger.of(context!).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
+      ScaffoldMessenger.of(
+        context!,
+      ).showSnackBar(SnackBar(content: Text(message)));
     }
   }
 }

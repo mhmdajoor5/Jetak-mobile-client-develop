@@ -171,8 +171,8 @@ class RouteGenerator {
             routeArgument: args is RouteArgument ? args : RouteArgument(),
           ),
         );
-      case '/Languages':
-        return MaterialPageRoute(builder: (_) => LanguagesWidget());
+      // case '/Languages':
+      //   return MaterialPageRoute(builder: (_) => LanguagesWidget());
       case '/Help':
         return MaterialPageRoute(builder: (_) => HelpWidget());
       case '/Settings':

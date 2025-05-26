@@ -270,30 +270,30 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
-                          ListTile(
-                            onTap: () {
-                              Navigator.of(context).pushNamed('/Languages');
-                            },
-                            dense: true,
-                            title: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.translate,
-                                  size: 22,
-                                  color: Theme.of(context).focusColor,
-                                ),
-                                SizedBox(width: 10),
-                                Text(
-                                  S.of(context).languages,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                              ],
-                            ),
-                            trailing: Text(
-                              S.of(context).english,
-                              style: TextStyle(color: Theme.of(context).focusColor),
-                            ),
-                          ),
+                          // ListTile(
+                          //   onTap: () {
+                          //     Navigator.of(context).pushNamed('/Languages');
+                          //   },
+                          //   dense: true,
+                          //   title: Row(
+                          //     children: <Widget>[
+                          //       Icon(
+                          //         Icons.translate,
+                          //         size: 22,
+                          //         color: Theme.of(context).focusColor,
+                          //       ),
+                          //       SizedBox(width: 10),
+                          //       Text(
+                          //         S.of(context).languages,
+                          //         style: Theme.of(context).textTheme.bodyMedium,
+                          //       ),
+                          //     ],
+                          //   ),
+                          //   trailing: Text(
+                          //     S.of(context).english,
+                          //     style: TextStyle(color: Theme.of(context).focusColor),
+                          //   ),
+                          // ),
                           ListTile(
                             onTap: () {
                               Navigator.of(context).pushNamed('/DeliveryAddresses', arguments: false);

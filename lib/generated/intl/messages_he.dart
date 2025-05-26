@@ -212,6 +212,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "light_mode": MessageLookupByLibrary.simpleMessage("מצב אור"),
         "log_out": MessageLookupByLibrary.simpleMessage("התנתקות"),
         "login": MessageLookupByLibrary.simpleMessage("התחברות"),
+        "login_success": MessageLookupByLibrary.simpleMessage("Login Success"),
         "long_press_to_edit_item_swipe_item_to_delete_it":
             MessageLookupByLibrary.simpleMessage(
                 "לחיצה ארוכה לעריכת פריט, החלק פריט למחיקה"),
@@ -220,6 +221,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "לחיצה ארוכה על המזון להוספת תוספות"),
         "makeItDefault":
             MessageLookupByLibrary.simpleMessage("הגדר כברירת מחדל"),
+        "maps": MessageLookupByLibrary.simpleMessage("Maps"),
         "maps_explorer": MessageLookupByLibrary.simpleMessage("מגלה מפות"),
         "mastercard": MessageLookupByLibrary.simpleMessage("MasterCard"),
         "menu": MessageLookupByLibrary.simpleMessage("תפריט"),
