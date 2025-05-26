@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../../generated/l10n.dart';
@@ -7,7 +8,6 @@ import '../../elements/BlockButtonWidget.dart';
 import '../../helpers/app_config.dart' as config;
 import '../../helpers/helper.dart';
 import '../../repository/user_repository.dart' as userRepo;
-
 
 
 class LoginWidget extends StatefulWidget {
@@ -164,6 +164,24 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                         child: Text(S.of(context).skip),
                         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 14),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            icon: FaIcon(FontAwesomeIcons.google, color: Colors.red),
+                            iconSize: 30,
+                            onPressed: () => _con.loginWithGoogle(),
+                           // tooltip: 'تسجيل الدخول باستخدام Google',
+                          ),
+                          SizedBox(width: 20),
+                          IconButton(
+                            icon: FaIcon(FontAwesomeIcons.facebook, color: Colors.blue),
+                            iconSize: 30,
+                            onPressed: () => _con.loginWithFacebook(),
+                            //tooltip: 'تسجيل الدخول باستخدام Facebook',
+                          ),
+                        ],
+                      )
 //                      SizedBox(height: 10),
                     ],
                   ),
