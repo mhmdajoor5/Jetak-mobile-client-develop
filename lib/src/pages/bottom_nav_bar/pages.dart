@@ -30,7 +30,7 @@ class PagesWidget extends StatefulWidget {
         currentTab = int.parse(currentTab.id);
       }
     } else {
-      currentTab = 2;
+      currentTab = 0;
     }
   }
 
@@ -43,7 +43,8 @@ class PagesWidget extends StatefulWidget {
 class _PagesWidgetState extends State<PagesWidget> {
   initState() {
     super.initState();
-    _selectTab(widget.currentTab);
+    // _selectTab(widget.currentTab);
+    _selectTab(0);
   }
 
   @override

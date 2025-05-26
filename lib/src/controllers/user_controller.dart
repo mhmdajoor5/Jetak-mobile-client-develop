@@ -210,7 +210,7 @@ class UserController extends ControllerMVC {
 
       final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
 
-      Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
+      Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 0);
       MyToastHelper.successBar('تم تسجيل الدخول باستخدام Google', color: Colors.green);
     } catch (e) {
       print('Google sign-in error: $e');
