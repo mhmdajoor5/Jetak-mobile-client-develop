@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -187,6 +189,56 @@ class UserController extends ControllerMVC {
       } finally {
         _hideLoader();
       }
+    }
+  }
+
+  Future<void> loginWithGoogle() async {
+    _showLoader();
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        _hideLoader();
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+
+      Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
+      MyToastHelper.successBar('تم تسجيل الدخول باستخدام Google', color: Colors.green);
+    } catch (e) {
+      print('Google sign-in error: $e');
+      _showSnackBar('فشل تسجيل الدخول باستخدام Google');
+    } finally {
+      _hideLoader();
+    }
+  }
+
+  Future<void> loginWithFacebook() async {
+    _showLoader();
+    try {
+      final LoginResult result = await FacebookAuth.instance.login();
+
+      if (result.status == LoginStatus.success) {
+        final OAuthCredential credential = FacebookAuthProvider.credential(result.accessToken!.tokenString);
+        final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+
+        Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
+        MyToastHelper.successBar('تم تسجيل الدخول باستخدام Facebook', color: Colors.green);
+      } else {
+        _showSnackBar('فشل تسجيل الدخول باستخدام Facebook');
+      }
+    } catch (e) {
+      print('Facebook sign-in error: $e');
+      _showSnackBar('فشل تسجيل الدخول باستخدام Facebook');
+    } finally {
+      _hideLoader();
     }
   }
 
