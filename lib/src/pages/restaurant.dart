@@ -128,8 +128,10 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                                     'assets/img/loading.gif',
                                     fit: BoxFit.cover,
                                   ),
-                                  errorWidget: (context, url, error) =>
-                                      Icon(Icons.error),
+                                  // errorWidget: (context, url, error) =>
+                                  //     Icon(Icons.error),
+                                  errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, ),
+
                                 ),
                               ),
                             ),
@@ -155,8 +157,10 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                                     'assets/img/loading.gif',
                                     fit: BoxFit.cover,
                                   ),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
+                              // errorWidget: (context, url, error) =>
+                              //     Icon(Icons.error),
+                              errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, ),
+
                             ),
                           ),
                           Positioned(
@@ -239,7 +243,8 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(Icons.star, size: 14, color: Colors.amber),
+                                    // Icon(Icons.star, size: 14, color: Colors.amber),
+                                    SvgPicture.asset('assets/img/star.svg',),
                                     SizedBox(width: 6),
                                     Text(
                                       _con.restaurant!.rate ?? '0.0',
@@ -263,7 +268,9 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    FaIcon(FontAwesomeIcons.route, size: 14, color: Colors.grey.shade500),
+                                    // FaIcon(FontAwesomeIcons.route, size: 14, color: Colors.grey.shade500),
+                                    SvgPicture.asset('assets/img/routing.svg',),
+
                                     SizedBox(width: 4),
                                     Text(
                                       Helper.getDistance(
@@ -320,8 +327,8 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                                   S.of(context).more,
                                   style: TextStyle(
                                     fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black87,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xff26386A),
                                     height: 1.6,
                                   ),
                                 ),
@@ -344,7 +351,8 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                                   child: OutlinedButton.icon(
                                     onPressed: () {
                                     },
-                                    icon: FaIcon(FontAwesomeIcons.truckFast, size: 20, color: Colors.black87),
+                                    icon:                                    SvgPicture.asset('assets/img/truck-fast2.svg',),
+
                                     label: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
@@ -387,7 +395,8 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                                   radius: 24,
                                   backgroundColor: Colors.transparent,
                                   child: IconButton(
-                                    icon: FaIcon(FontAwesomeIcons.circleUser, size: 20, color: Colors.black87),
+                                    icon:                                     SvgPicture.asset('assets/img/user-cirlce-add.svg',height: 25,width: 25,),
+
                                     onPressed: () {
                                       // Add your onPressed logic here
                                     },

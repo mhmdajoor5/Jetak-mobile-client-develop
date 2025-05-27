@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../helpers/helper.dart';
 import '../models/restaurant.dart';
+import '../models/route_argument.dart';
 
 class GridCardWidget extends StatelessWidget {
   final Restaurant restaurant;
@@ -14,7 +15,11 @@ class GridCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        print("mElkerm");
+        // print(restaurant.name);
+        // Navigator.of(context).pushNamed('/Details', arguments: restaurant);
         Navigator.of(context).pushNamed('/Details', arguments: restaurant);
+
       },
       child: Container(
         margin: EdgeInsets.all(8),

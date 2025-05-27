@@ -61,6 +61,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "check_on_waze":
             MessageLookupByLibrary.simpleMessage("افحص الموقع على تطبيق Waze:"),
         "checkout": MessageLookupByLibrary.simpleMessage("الدفع"),
+        "choose_your_location":
+            MessageLookupByLibrary.simpleMessage("برجاء تحديد موقعك"),
         "clickToPayWithRazorpayMethod": MessageLookupByLibrary.simpleMessage(
             "Click to pay with RazorPay method"),
         "click_on_the_stars_below_to_leave_comments":

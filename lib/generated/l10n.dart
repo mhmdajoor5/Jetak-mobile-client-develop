@@ -2979,6 +2979,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Please , Choose Your Location`
+  String get choose_your_location {
+    return Intl.message(
+      'Please , Choose Your Location',
+      name: 'choose_your_location',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

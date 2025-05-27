@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_app/src/models/credit_card.dart';
 import 'package:food_delivery_app/src/pages/icredit_payment_page.dart';
 
+import 'src/models/restaurant.dart';
 import 'src/models/route_argument.dart';
 import 'src/pages/TrackingModernWidget.dart' show TrackingModernWidget;
 import 'src/pages/add_new_card.dart';
@@ -70,9 +71,31 @@ class RouteGenerator {
             routeArgument: args is RouteArgument ? args : RouteArgument(),
           ),
         );
+      // case '/Details':
+      //   return MaterialPageRoute(
+      //
+      //     builder: (_) => DetailsWidget(currentTab: args),
+      //   );
       case '/Details':
         return MaterialPageRoute(
-          builder: (_) => DetailsWidget(currentTab: args),
+          builder: (_) {
+            // Handle case where args is already a RouteArgument
+            if (args is RouteArgument) {
+              return DetailsWidget(routeArgument: args);
+            }
+            // Handle case where args is a Restaurant
+            else if (args is Restaurant) {
+              return DetailsWidget(
+                routeArgument: RouteArgument(param: args),
+              );
+            }
+            // Fallback for other cases
+            else {
+              return DetailsWidget(
+                routeArgument: RouteArgument(param: null),
+              );
+            }
+          },
         );
       case '/Menu':
         return MaterialPageRoute(
