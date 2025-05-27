@@ -7,11 +7,11 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../generated/l10n.dart';
 import '../controllers/restaurant_controller.dart';
 import '../elements/CircularLoadingWidget.dart';
-import '../elements/DrawerWidget.dart';
+// import '../elements/DrawerWidget.dart'; // لم تعد مستخدمة في هذا الجزء
 import '../elements/FoodItemWidget.dart';
-import '../elements/FoodsCarouselWidget.dart';
-import '../elements/SearchBarWidget.dart';
-import '../elements/ShoppingCartButtonWidget.dart';
+// import '../elements/FoodsCarouselWidget.dart'; // لم تعد مستخدمة في هذا الجزء
+// import '../elements/SearchBarWidget.dart'; // لم تعد مستخدمة في هذا الجزء
+// import '../elements/ShoppingCartButtonWidget.dart'; // لم تعد مستخدمة في هذا الجزء
 import '../models/category.dart';
 import '../models/food.dart';
 import '../models/restaurant.dart';
@@ -29,7 +29,6 @@ class MenuWidget extends StatefulWidget {
 
 class _MenuWidgetState extends StateMVC<MenuWidget> {
   late RestaurantController _con;
-  List<String> selectedCategories = [];
 
   _MenuWidgetState() : super(RestaurantController()) {
     _con = controller as RestaurantController;
@@ -40,164 +39,82 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
     _con.restaurant = widget.routeArgument?.param as Restaurant;
     _con.listenForTrendingFoods(_con.restaurant!.id);
     _con.listenForCategories(_con.restaurant!.id);
-    selectedCategories = ['0'];
-    _con.listenForFoods(_con.restaurant!.id, 1);
-    _con.foodPagingController.addPageRequestListener((pageKey) {
-      _con.listenForFoods(_con.restaurant!.id, pageKey,
-          categoriesId: selectedCategories);
-    });
+    // selectedCategories = ['0'];
+    // _con.listenForFoods(_con.restaurant!.id, 1);
+    // _con.foodPagingController.addPageRequestListener((pageKey) {
+    //   _con.listenForFoods(_con.restaurant!.id, pageKey,
+    //       categoriesId: selectedCategories);
+    // });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   key: _con.scaffoldKey,
-    //   drawer: DrawerWidget(),
-    //   appBar: AppBar(
-    //     backgroundColor: Colors.transparent,
-    //     elevation: 0,
-    //     centerTitle: true,
-    //     automaticallyImplyLeading: false,
-    //     leading: new IconButton(
-    //       icon: new Icon(Icons.arrow_back, color: Theme.of(context).hintColor),
-    //       onPressed: () => Navigator.of(context).pushNamed('/Details', arguments: RouteArgument(id: '0', param: _con.restaurant.id, heroTag: 'menu_tab')),
-    //     ),
-    //     title: Text(
-    //       _con.restaurant?.name ?? '',
-    //       overflow: TextOverflow.fade,
-    //       softWrap: false,
-    //       style: Theme.of(context).textTheme.headlineSmall?.merge(TextStyle(letterSpacing: 0)),
-    //     ),
-    //     actions: <Widget>[
-    //       new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).colorScheme.secondary),
-    //     ],
-    //   ),
-    //   floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-    //   body:
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
-        // Padding(
-        //   padding: const EdgeInsets.symmetric(horizontal: 20),
-        //   child: SearchBarWidget(),
-        // ),
-        // ListTile(
-        //   dense: true,
-        //   contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        //   leading: Icon(
-        //     Icons.bookmark,
-        //     color: Theme.of(context).hintColor,
-        //   ),
-        //   title: Text(
-        //     S.of(context).featured_foods,
-        //     style: Theme.of(context).textTheme.headlineLarge
-        //   ),
-        //   subtitle: Text(
-        //     S.of(context).clickOnTheFoodToGetMoreDetailsAboutIt,
-        //     maxLines: 2,
-        //     style: Theme.of(context).textTheme.bodySmall,
-        //   ),
-        // ),
-        // FoodsCarouselWidget(heroTag: 'menu_trending_food', foodsList: _con.trendingFoods),
-        // ListTile(
-        //   dense: true,
-        //   contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        //   leading: Icon(
-        //     Icons.subject,
-        //     color: Theme.of(context).hintColor,
-        //   ),
-        //   title: Text(
-        //     S.of(context).all_menu,
-        //     style: Theme.of(context).textTheme.headlineLarge
-        //   ),
-        //   subtitle: Text(
-        //     S.of(context).clickOnTheFoodToGetMoreDetailsAboutIt,
-        //     maxLines: 2,
-        //     style: Theme.of(context).textTheme.bodySmall,
-        //   ),
-        // ),
-        _con.categories.isEmpty
-            ? SizedBox(height: 90)
-            : Container(
-                height: 90,
-                child: ListView(
-                  primary: false,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  children: List.generate(_con.categories.length, (index) {
-                    Category? _category = _con.categories.elementAtOrNull(index);
-                    var _selected =
-                        this.selectedCategories.contains(_category?.id);
-                    return Padding(
-                      padding: const EdgeInsetsDirectional.only(start: 20),
-                      child: RawChip(
-                        elevation: 0,
-                        label: Text(_category?.name??''),
-                        labelStyle: _selected
-                            ? Theme.of(context).textTheme.bodyMedium?.merge(
-                                TextStyle(
-                                    color: Theme.of(context).primaryColor))
-                            : Theme.of(context).textTheme.bodyMedium,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-                        backgroundColor:
-                            Theme.of(context).focusColor.withOpacity(0.1),
-                        selectedColor: Theme.of(context).colorScheme.secondary,
-                        selected: _selected,
-                        //shape: StadiumBorder(side: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.05))),
-                        showCheckmark: false,
-                        onSelected: (bool value) {
-                          setState(() {
-                            if (_category?.id == '0') {
-                              this.selectedCategories = ['0'];
-                            } else {
-                              this
-                                  .selectedCategories
-                                  .removeWhere((element) => element == '0');
-                            }
-                              if (_category != null){
-                                if (value) {
-                                  this.selectedCategories.add(_category.id!);
-                                } else {
-                                  this.selectedCategories.removeWhere(
-                                          (element) => element == _category.id);
-                                }
-                              }
-                            _con.selectCategory(this.selectedCategories);
-                          });
-                        },
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+
+          _con.categories.isEmpty
+              ? CircularLoadingWidget(height: 250)
+              : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: _con.categories.map((category) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    child: Text(
+                      category.name ?? '',
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
                       ),
-                    );
-                  }),
-                ),
-              ),
-        PagedListView<int, Food>(
-          pagingController: _con.foodPagingController,
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          // Optional, based on your layout
-          builderDelegate: PagedChildBuilderDelegate<Food>(
-            itemBuilder: (context, food, index) {
-              return FoodItemWidget(
-                heroTag: 'menu_list',
-                food: food,
+                    ),
+                  ),
+                  FutureBuilder<List<Food>>(
+                    future: _con.getFoodsByCategoryId(category.id!),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularLoadingWidget(height: 100);
+                      } else if (snapshot.hasError) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text('Error: ${snapshot.error}'),
+                        );
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(S.of(context).no_items_in_this_category),
+                        );
+                      } else {
+                        return ListView.separated(
+                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: snapshot.data!.length,
+                          separatorBuilder: (context, index) =>
+                              SizedBox(height: 10),
+                          itemBuilder: (context, index) {
+                            Food food = snapshot.data![index];
+                            return FoodItemWidget(
+                              heroTag: 'menu_food_${food.id}_${category.id}',
+                              food: food, onAdd: () {  },
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
+                  SizedBox(height: 30),
+                ],
               );
-            },
-            firstPageProgressIndicatorBuilder: (context) =>
-                CircularLoadingWidget(height: 250),
-            noItemsFoundIndicatorBuilder: (context) => Center(
-              child: Text(
-                "No Foods Found",
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ),
+            }).toList(),
           ),
-        ),
-      ],
+        ],
+      ),
     );
-    // );
   }
 }

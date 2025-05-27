@@ -20,7 +20,9 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ar';
 
-  static String m0(foodname) => "تمت إزالة ${foodname} من سلة التسوق";
+  static String m0(time) => "مفتوح حتى ${time}";
+
+  static String m1(foodname) => "تمت إزالة ${foodname} من سلة التسوق";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -38,6 +40,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "addresses_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("تم تحديث العناوين بنجاح"),
         "all_menu": MessageLookupByLibrary.simpleMessage("كل المينو"),
+        "already_logged_in":
+            MessageLookupByLibrary.simpleMessage("أنت مسجّل دخول مسبقًا"),
         "app_language": MessageLookupByLibrary.simpleMessage("لغة التطبيق"),
         "app_settings": MessageLookupByLibrary.simpleMessage("إعدادات التطبيق"),
         "application_preferences":
@@ -163,7 +167,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "log_out": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
         "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
         "login_success":
+            MessageLookupByLibrary.simpleMessage("تم تسجيل الدخول بنجاح!"),
+        "login_successful":
             MessageLookupByLibrary.simpleMessage("تم تسجيل الدخول بنجاح"),
+        "login_with_apple":
+            MessageLookupByLibrary.simpleMessage("تسجيل الدخول عبر آبل"),
+        "login_with_facebook":
+            MessageLookupByLibrary.simpleMessage("تسجيل الدخول عبر فيسبوك"),
+        "login_with_google":
+            MessageLookupByLibrary.simpleMessage("تسجيل الدخول عبر جوجل"),
         "long_press_to_edit_item_swipe_item_to_delete_it":
             MessageLookupByLibrary.simpleMessage(
                 "اضغط مطولا لتحرير العنصر، اسحب الى الجنب لحذفه"),
@@ -171,10 +183,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(" إضغط على المنتج لإضافة"),
         "makeItDefault":
             MessageLookupByLibrary.simpleMessage("Make it default"),
-        "maps": MessageLookupByLibrary.simpleMessage("خرائط"),
+        "maps": MessageLookupByLibrary.simpleMessage("الخرائط"),
         "maps_explorer": MessageLookupByLibrary.simpleMessage("مستكشف الخرائط"),
         "menu": MessageLookupByLibrary.simpleMessage("المينيو"),
         "messages": MessageLookupByLibrary.simpleMessage("Messages"),
+        "more": MessageLookupByLibrary.simpleMessage("المزيد"),
         "most_popular": MessageLookupByLibrary.simpleMessage("الأكثر شعبية"),
         "multirestaurants": MessageLookupByLibrary.simpleMessage("عدة مطابخ"),
         "my_orders": MessageLookupByLibrary.simpleMessage("طلباتي"),
@@ -184,6 +197,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "تمت اضافة العنوان الجديد بنجاح"),
         "new_order_from_client":
             MessageLookupByLibrary.simpleMessage("New order from client"),
+        "no_items_in_this_category":
+            MessageLookupByLibrary.simpleMessage("لا توجد عناصر في هذه الفئة"),
         "notValidAddress":
             MessageLookupByLibrary.simpleMessage("Not valid address"),
         "not_a_valid_address":
@@ -208,6 +223,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notifications_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("تم تحديث الإشعارات بنجاح"),
         "nutrition": MessageLookupByLibrary.simpleMessage("العناصر الغذائية"),
+        "open_until": m0,
         "or_checkout_with": MessageLookupByLibrary.simpleMessage("او ادفع مع"),
         "order_id": MessageLookupByLibrary.simpleMessage("رمز الطلب"),
         "order_refreshed_successfuly":
@@ -236,6 +252,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("الدفع بواسطة Paypal"),
         "phone": MessageLookupByLibrary.simpleMessage("رقم الجوال"),
         "pickup": MessageLookupByLibrary.simpleMessage("استلام"),
+        "please_fill_all_fields": MessageLookupByLibrary.simpleMessage(
+            "الرجاء تعبئة جميع الحقول بشكل صحيح"),
         "profile": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
         "profile_settings":
             MessageLookupByLibrary.simpleMessage("إعدادات الملف الشخصي"),
@@ -254,6 +272,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "recents_search":
             MessageLookupByLibrary.simpleMessage("عمليات البحث الأخيرة"),
         "register": MessageLookupByLibrary.simpleMessage("تسجيل"),
+        "register_successful":
+            MessageLookupByLibrary.simpleMessage("تم التسجيل بنجاح"),
         "reset": MessageLookupByLibrary.simpleMessage("إعادة تعيين"),
         "reset_cart":
             MessageLookupByLibrary.simpleMessage("إعادة تعيين سلة التسوق"),
@@ -307,7 +327,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "the_food_has_been_rated_successfully":
             MessageLookupByLibrary.simpleMessage(
                 "The food has been rated successfully"),
-        "the_food_was_removed_from_your_cart": m0,
+        "the_food_was_removed_from_your_cart": m1,
         "the_restaurant_has_been_rated_successfully":
             MessageLookupByLibrary.simpleMessage(
                 "The restaurant has been rated successfully"),
@@ -343,6 +363,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("ماذا يقول عملائنا ؟"),
         "wrong_email_or_password": MessageLookupByLibrary.simpleMessage(
             "بريد إلكتروني أو كلمة مرور خاطئة"),
+        "wrong_password":
+            MessageLookupByLibrary.simpleMessage("كلمة المرور غير صحيحة"),
         "youDontHaveAnyConversations": MessageLookupByLibrary.simpleMessage(
             "You don\'t have any conversations"),
         "you_can_discover_restaurants": MessageLookupByLibrary.simpleMessage(

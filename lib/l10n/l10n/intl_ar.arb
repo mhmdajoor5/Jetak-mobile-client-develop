@@ -117,7 +117,7 @@
   "your_address": "عنوانك",
   "search": "بحث",
   "recents_search": "عمليات البحث الأخيرة",
-  "verify_your_internet_connection": "تحقق من asdf",
+  "verify_your_internet_connection": "تحقق من الاتصال",
   "carts_refreshed_successfuly": "تم تحديث العربة بنجاح",
   "the_food_was_removed_from_your_cart": "تمت إزالة {foodname} من سلة التسوق",
   "category_refreshed_successfuly": "تم تحديث الفئة بنجاح",
@@ -216,8 +216,5 @@
   "wrong_password": "كلمة المرور غير صحيحة",
   "login_with_facebook": "تسجيل الدخول عبر فيسبوك",
   "login_with_google":   "تسجيل الدخول عبر جوجل",
-  "login_with_apple":    "تسجيل الدخول عبر آبل",
-  "maps": "الخرائط",
-  "login_success": "تم تسجيل الدخول بنجاح!"
-  
+  "login_with_apple":    "تسجيل الدخول عبر آبل"
 }

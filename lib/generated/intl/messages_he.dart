@@ -20,9 +20,11 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'he';
 
-  static String m1(id) => "הזמנה: #${id} בוטלה";
+  static String m0(time) => "פתוח עד ${time}";
 
-  static String m0(foodname) => "ה${foodname} הוסר מהעגלה שלך";
+  static String m2(id) => "הזמנה: #${id} בוטלה";
+
+  static String m1(foodname) => "ה${foodname} הוסר מהעגלה שלך";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -38,6 +40,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("כתובות רעננו בהצלחה"),
         "all": MessageLookupByLibrary.simpleMessage("הכל"),
         "all_menu": MessageLookupByLibrary.simpleMessage("כל התפריט"),
+        "already_logged_in":
+            MessageLookupByLibrary.simpleMessage("אתה כבר מחובר"),
         "app_language": MessageLookupByLibrary.simpleMessage("שפת האפליקציה"),
         "app_settings": MessageLookupByLibrary.simpleMessage("הגדרות אפליקציה"),
         "application_preferences":
@@ -212,7 +216,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "light_mode": MessageLookupByLibrary.simpleMessage("מצב אור"),
         "log_out": MessageLookupByLibrary.simpleMessage("התנתקות"),
         "login": MessageLookupByLibrary.simpleMessage("התחברות"),
-        "login_success": MessageLookupByLibrary.simpleMessage("Login Success"),
+        "login_success":
+            MessageLookupByLibrary.simpleMessage("התחברות הצליחה!"),
+        "login_successful":
+            MessageLookupByLibrary.simpleMessage("התחברה בהצלחה"),
+        "login_with_apple":
+            MessageLookupByLibrary.simpleMessage("התחבר עם אפל"),
+        "login_with_facebook":
+            MessageLookupByLibrary.simpleMessage("התחבר עם פייסבוק"),
+        "login_with_google":
+            MessageLookupByLibrary.simpleMessage("התחבר עם גוגל"),
         "long_press_to_edit_item_swipe_item_to_delete_it":
             MessageLookupByLibrary.simpleMessage(
                 "לחיצה ארוכה לעריכת פריט, החלק פריט למחיקה"),
@@ -221,12 +234,13 @@ class MessageLookup extends MessageLookupByLibrary {
                 "לחיצה ארוכה על המזון להוספת תוספות"),
         "makeItDefault":
             MessageLookupByLibrary.simpleMessage("הגדר כברירת מחדל"),
-        "maps": MessageLookupByLibrary.simpleMessage("Maps"),
+        "maps": MessageLookupByLibrary.simpleMessage("מפות"),
         "maps_explorer": MessageLookupByLibrary.simpleMessage("מגלה מפות"),
         "mastercard": MessageLookupByLibrary.simpleMessage("MasterCard"),
         "menu": MessageLookupByLibrary.simpleMessage("תפריט"),
         "messages": MessageLookupByLibrary.simpleMessage("הודעות"),
         "mi": MessageLookupByLibrary.simpleMessage("מייל"),
+        "more": MessageLookupByLibrary.simpleMessage("עוד"),
         "most_popular": MessageLookupByLibrary.simpleMessage("הכי פופולרי"),
         "multirestaurants":
             MessageLookupByLibrary.simpleMessage("מסעדות מרובות"),
@@ -270,13 +284,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "פריט או יותר בעגלתך אינם ניתנים למשלוח."),
         "open": MessageLookupByLibrary.simpleMessage("פתוח"),
+        "open_until": m0,
         "opened_restaurants":
             MessageLookupByLibrary.simpleMessage("מסעדות פתוחות"),
         "or_checkout_with":
             MessageLookupByLibrary.simpleMessage("או בצע הזמנה עם"),
         "order": MessageLookupByLibrary.simpleMessage("הזמנה"),
         "orderDetails": MessageLookupByLibrary.simpleMessage("פרטי הזמנה"),
-        "orderThisorderidHasBeenCanceled": m1,
+        "orderThisorderidHasBeenCanceled": m2,
         "order_id": MessageLookupByLibrary.simpleMessage("מספר הזמנה"),
         "order_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("הזמנה רעננה בהצלחה"),
@@ -307,6 +322,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "pickup": MessageLookupByLibrary.simpleMessage("איסוף"),
         "pickup_your_food_from_the_restaurant":
             MessageLookupByLibrary.simpleMessage("איסוף המזון שלך מהמסעדה"),
+        "please_fill_all_fields":
+            MessageLookupByLibrary.simpleMessage("אנא מלא את כל השדות כראוי"),
         "profile": MessageLookupByLibrary.simpleMessage("פרופיל"),
         "profile_settings":
             MessageLookupByLibrary.simpleMessage("הגדרות פרופיל"),
@@ -323,6 +340,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "recents_search":
             MessageLookupByLibrary.simpleMessage("חיפושים אחרונים"),
         "register": MessageLookupByLibrary.simpleMessage("הרשמה"),
+        "register_successful":
+            MessageLookupByLibrary.simpleMessage("ההרשמה הצליחה"),
         "reset": MessageLookupByLibrary.simpleMessage("אתחול"),
         "reset_cart": MessageLookupByLibrary.simpleMessage("אתחל עגלה?"),
         "reset_your_cart_and_order_meals_form_this_restaurant":
@@ -388,7 +407,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("הכתובת עודכנה בהצלחה"),
         "the_food_has_been_rated_successfully":
             MessageLookupByLibrary.simpleMessage("האוכל דורג בהצלחה"),
-        "the_food_was_removed_from_your_cart": m0,
+        "the_food_was_removed_from_your_cart": m1,
         "the_restaurant_has_been_rated_successfully":
             MessageLookupByLibrary.simpleMessage("המסעדה דורגה בהצלחה"),
         "thisFoodWasAddedToFavorite":
@@ -442,6 +461,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "what_they_say": MessageLookupByLibrary.simpleMessage("מה הם אומרים?"),
         "wrong_email_or_password": MessageLookupByLibrary.simpleMessage(
             "כתובת האימייל או הסיסמה שגויים"),
+        "wrong_password": MessageLookupByLibrary.simpleMessage("הסיסמה שגויה"),
         "yes": MessageLookupByLibrary.simpleMessage("כן"),
         "youDontHaveAnyConversations":
             MessageLookupByLibrary.simpleMessage("אין לך שיחות"),

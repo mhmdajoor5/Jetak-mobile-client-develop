@@ -37,7 +37,6 @@ dependencies:
   flutter_dash: ^1.0.0
   dotted_line: ^3.0.1
 
-
   ## Firebase - Update all to be compatible and recent
   firebase_core: ^3.13.0 # Updated
   firebase_auth: ^5.5.3 # Updated

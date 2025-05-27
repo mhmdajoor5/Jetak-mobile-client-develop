@@ -274,8 +274,5 @@
   "wrong_password": "הסיסמה שגויה",
   "login_with_facebook": "התחבר עם פייסבוק",
   "login_with_google":   "התחבר עם גוגל",
-  "login_with_apple":    "התחבר עם אפל",
-  "login_success": "התחברות הצליחה!",
-  "maps": "מפות"
-
+  "login_with_apple":    "התחבר עם אפל"
 }
