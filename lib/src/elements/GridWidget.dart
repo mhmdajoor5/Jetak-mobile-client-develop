@@ -9,8 +9,11 @@ import 'grid_card_widget.dart' show GridCardWidget;
 class GridWidget extends StatelessWidget {
   final List<Restaurant> restaurantsList;
   final String heroTag;
+  final bool shrinkWrap;
+  final bool isScrollable;
 
-  GridWidget({Key? key, required this.restaurantsList, required this.heroTag}) : super(key: key);
+  GridWidget({Key? key, required this.restaurantsList, required this.heroTag,this.shrinkWrap = false,
+    this.isScrollable = true,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +35,9 @@ class GridWidget extends StatelessWidget {
       crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
       mainAxisSpacing: 15,
       crossAxisSpacing: 15,
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: shrinkWrap,
+      physics: isScrollable ? ScrollPhysics() : NeverScrollableScrollPhysics(),
+      //physics: NeverScrollableScrollPhysics(),
       itemCount: restaurantsList.length,
       itemBuilder: (context, index) {
         return GridCardWidget(restaurant: restaurantsList[index]);

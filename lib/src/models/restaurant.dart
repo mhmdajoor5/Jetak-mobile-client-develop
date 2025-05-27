@@ -46,18 +46,22 @@ class Restaurant {
     this.closingTime = '22:00',
 
     List<User>? users,
-  }) : image = image ?? Media(),
-       users = users ?? [];
+  })
+      : image = image ?? Media(),
+        users = users ?? [];
 
   factory Restaurant.fromJSON(Map<String, dynamic>? jsonMap) {
     try {
       return Restaurant(
         id: jsonMap?['id']?.toString() ?? '',
         name: jsonMap?['name']?.toString() ?? '',
-        image: (jsonMap?['media'] != null && (jsonMap!['media'] as List).isNotEmpty) ? Media.fromJSON(jsonMap['media'][0]) : Media(),
+        image: (jsonMap?['media'] != null &&
+            (jsonMap!['media'] as List).isNotEmpty) ? Media.fromJSON(
+            jsonMap['media'][0]) : Media(),
         rate: jsonMap?['rate']?.toString() ?? '0',
         deliveryFee: (jsonMap?['delivery_fee'] as num?)?.toDouble() ?? 0.0,
-        adminCommission: (jsonMap?['admin_commission'] as num?)?.toDouble() ?? 0.0,
+        adminCommission: (jsonMap?['admin_commission'] as num?)?.toDouble() ??
+            0.0,
         deliveryRange: (jsonMap?['delivery_range'] as num?)?.toDouble() ?? 0.0,
         address: jsonMap?['address']?.toString() ?? '',
         description: jsonMap?['description']?.toString() ?? '',
@@ -70,8 +74,11 @@ class Restaurant {
         closed: jsonMap?['closed'] ?? false,
         availableForDelivery: jsonMap?['available_for_delivery'] ?? false,
         closingTime: jsonMap?['closing_time']?.toString() ?? '22:00',
-        distance: (jsonMap?['distance'] != null) ? double.tryParse(jsonMap!['distance'].toString()) ?? 0.0 : 0.0,
-        users: jsonMap?['users'] != null ? List<User>.from(jsonMap!['users'].map((e) => User.fromJSON(e))).toSet().toList() : [],
+        distance: (jsonMap?['distance'] != null) ? double.tryParse(
+            jsonMap!['distance'].toString()) ?? 0.0 : 0.0,
+        users: jsonMap?['users'] != null ? List<User>.from(
+            jsonMap!['users'].map((e) => User.fromJSON(e))).toSet().toList() : [
+        ],
       );
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: e.toString()));
@@ -80,6 +87,14 @@ class Restaurant {
   }
 
   Map<String, dynamic> toMap() {
-    return {'id': id, 'name': name, 'latitude': latitude, 'longitude': longitude, 'delivery_fee': deliveryFee, 'distance': distance};
+    return {
+      'id': id,
+      'name': name,
+      'latitude': latitude,
+      'longitude': longitude,
+      'delivery_fee': deliveryFee,
+      'distance': distance
+    };
   }
 }
+

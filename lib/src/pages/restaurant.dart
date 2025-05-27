@@ -194,45 +194,11 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                               ),
                             ),
                           ),
-                          // Positioned(
-                          //   top: 260,
-                          //   left: 16,
-                          //   child: Container(
-                          //     width: 90,
-                          //     height: 90,
-                          //     decoration: BoxDecoration(
-                          //       color: Colors.white,
-                          //       borderRadius: BorderRadius.circular(12),
-                          //       boxShadow: [
-                          //         BoxShadow(
-                          //           color: Colors.black26,
-                          //           blurRadius: 4,
-                          //           offset: Offset(0, 2),
-                          //         ),
-                          //       ],
-                          //     ),
-                          //     child: ClipRRect(
-                          //       borderRadius: BorderRadius.circular(12),
-                          //       child: CachedNetworkImage(
-                          //         imageUrl: _con.restaurant!.image.url!,
-                          //         fit: BoxFit.cover,
-                          //         placeholder: (context, url) =>
-                          //             Image.asset(
-                          //               'assets/img/loading.gif',
-                          //               fit: BoxFit.cover,
-                          //             ),
-                          //         errorWidget: (context, url, error) =>
-                          //             Icon(Icons.error),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
                         ],
                       ),
                     ),
                   ),
                 ),
-
                 SliverToBoxAdapter(
                   child: Container(
                     color: Colors.white,
