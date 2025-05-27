@@ -80,7 +80,9 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
                       width: 80,
                       fit: BoxFit.cover,
                     ),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, ),
+
+                // errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
             SizedBox(width: 10),
