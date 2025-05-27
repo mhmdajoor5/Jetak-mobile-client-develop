@@ -60,7 +60,7 @@ class _ReviewsWidgetState extends StateMVC<ReviewsWidget> {
                                       fit: BoxFit.cover,
                                       imageUrl: _con.order.foodOrders[0].food?.restaurant.image.url ?? '',
                                       placeholder: (context, url) => Image.asset('assets/img/loading.gif', fit: BoxFit.cover),
-                                      errorWidget: (context, url, error) => Icon(Icons.error),
+                                      errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, ),
                                     ),
                                   ),
                                 ),

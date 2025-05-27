@@ -52,7 +52,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   fit: BoxFit.cover,
                   imageUrl: widget.cart.food!.image!.thumb!,
                   placeholder: (context, url) => Image.asset('assets/img/loading.gif', fit: BoxFit.cover, height: 90, width: 90),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, ),
                 ),
               ),
               SizedBox(width: 15),

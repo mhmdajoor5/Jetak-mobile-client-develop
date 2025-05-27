@@ -353,7 +353,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "validCouponCode": MessageLookupByLibrary.simpleMessage("Valid Coupon"),
         "verify": MessageLookupByLibrary.simpleMessage("التحقق"),
         "verify_your_internet_connection":
-            MessageLookupByLibrary.simpleMessage("تحقق من الاتصال"),
+            MessageLookupByLibrary.simpleMessage("تحقق من asdf"),
         "verify_your_quantity_and_click_checkout":
             MessageLookupByLibrary.simpleMessage(
                 "تحقق من الكمية واضغط على الدفع"),

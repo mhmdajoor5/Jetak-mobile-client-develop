@@ -87,7 +87,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                   fit: BoxFit.cover,
                                   imageUrl: _con.food.image?.url ?? '',
                                   placeholder: (context, url) => Image.asset('assets/img/loading.gif', fit: BoxFit.cover),
-                                  errorWidget: (context, url, error) => Icon(Icons.error),
+                                  errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, ),
                                 ),
                               ),
                             ),
