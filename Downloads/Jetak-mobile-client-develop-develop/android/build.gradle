@@ -1,0 +1,65 @@
+//
+//buildscript {
+//    ext.kotlin_version = '1.9.10'
+//    repositories {
+//        google()
+//        mavenCentral()
+//        maven { url 'https://jitpack.io' }
+//        maven { url = uri("https://maven.fpregistry.io/releases") }
+//    }
+//
+//    dependencies {
+//        classpath 'com.android.tools.build:gradle:7.1.3'
+//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//    }
+//}
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+//        maven { url 'https://jitpack.io' }
+//        maven { url = uri("https://maven.fpregistry.io/releases") }
+    }
+}
+
+rootProject.buildDir = '../build'
+
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            project.android {
+                if (namespace == null) {
+                    namespace project.group
+                }
+                compileSdkVersion 35
+
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+            }
+        }
+
+    }
+}
+subprojects {
+    afterEvaluate {
+        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+            if (project.plugins.hasPlugin("com.android.application") || project.plugins.hasPlugin("com.android.library")) {
+                kotlinOptions.jvmTarget = android.compileOptions.sourceCompatibility
+            } else {
+                kotlinOptions.jvmTarget = sourceCompatibility
+            }
+        }
+    }
+}
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
