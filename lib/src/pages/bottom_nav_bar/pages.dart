@@ -30,7 +30,7 @@ class PagesWidget extends StatefulWidget {
         currentTab = int.parse(currentTab.id);
       }
     } else {
-      currentTab = 2;
+      currentTab = 0;
     }
   }
 
@@ -43,7 +43,8 @@ class PagesWidget extends StatefulWidget {
 class _PagesWidgetState extends State<PagesWidget> {
   initState() {
     super.initState();
-    _selectTab(widget.currentTab);
+    // _selectTab(widget.currentTab);
+    _selectTab(0);
   }
 
   @override
@@ -288,12 +289,13 @@ class _PagesWidgetState extends State<PagesWidget> {
                     icon: Column(
                       children: [
                         SvgPicture.asset(
-                          'assets/img/chats.svg',
+                          'assets/img/location.svg',
                           height: 24,
                           width: 24,
+                          color: Colors.grey,
                         ),
                         Text(
-                          S.of(context).chats,
+                          S.of(context).maps,
                           style: TextStyle(
                             fontFamily: 'Nunito',
                             fontSize: 12,

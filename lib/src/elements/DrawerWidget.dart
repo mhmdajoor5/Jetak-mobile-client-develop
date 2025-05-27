@@ -45,7 +45,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                                 fit: BoxFit.cover,
                                 imageUrl: currentUser.value.image?.thumb ?? '',
                                 placeholder: (context, url) => Image.asset('assets/img/loading.gif', fit: BoxFit.cover, width: double.infinity, height: 80),
-                                errorWidget: (context, url, error) => Icon(Icons.error_outline),
+                                errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, ),
                               ),
                             ),
                           ),

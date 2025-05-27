@@ -38,7 +38,7 @@ class FoodsCarouselItemWidget extends StatelessWidget {
                       fit: BoxFit.cover,
                       imageUrl: food.image?.thumb ?? '',
                       placeholder: (context, url) => Image.asset('assets/img/loading.gif', fit: BoxFit.cover),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, ),
                     ),
                   ),
                 ),

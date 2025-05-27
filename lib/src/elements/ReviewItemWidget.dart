@@ -31,7 +31,7 @@ class ReviewItemWidget extends StatelessWidget {
                   fit: BoxFit.cover,
                   imageUrl: review.user?.image?.thumb ?? '',
                   placeholder: (context, url) => Image.asset('assets/img/loading.gif', fit: BoxFit.cover, height: 65, width: 65),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, ),
                 ),
               ),
               SizedBox(width: 15),

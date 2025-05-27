@@ -3,6 +3,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../elements/GridItemWidget.dart';
 import '../models/restaurant.dart';
+import 'CardWidget.dart' show CardWidget;
+import 'grid_card_widget.dart' show GridCardWidget;
 
 class GridWidget extends StatelessWidget {
   final List<Restaurant> restaurantsList;
@@ -34,10 +36,8 @@ class GridWidget extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       itemCount: restaurantsList.length,
       itemBuilder: (context, index) {
-        return GridItemWidget(
-          restaurant: restaurantsList[index],
-          heroTag: heroTag,
-        );
+        return GridCardWidget(restaurant: restaurantsList[index]);
+
       },
     );
   }
