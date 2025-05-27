@@ -17,7 +17,7 @@ class MapController extends ControllerMVC {
   List<Marker> allMarkers = <Marker>[];
   late Address currentAddress;
   Set<Polyline> polylines = {};
-  late CameraPosition cameraPosition;
+  late CameraPosition? cameraPosition = null;
   final MapsUtil mapsUtil = MapsUtil();
   final Completer<GoogleMapController> mapController = Completer();
 
@@ -76,7 +76,7 @@ class MapController extends ControllerMVC {
   void getRestaurantsOfArea() {
     setState(() {
       topRestaurants.clear();
-      final areaAddress = Address.fromJSON({"latitude": cameraPosition.target.latitude, "longitude": cameraPosition.target.longitude});
+      final areaAddress = Address.fromJSON({"latitude": cameraPosition!.target.latitude, "longitude": cameraPosition!.target.longitude});
       listenForNearRestaurants(currentAddress, areaAddress);
     });
   }
