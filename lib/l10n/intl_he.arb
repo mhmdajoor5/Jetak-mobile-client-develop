@@ -276,6 +276,7 @@
   "login_with_google":   "התחבר עם גוגל",
   "login_with_apple":    "התחבר עם אפל",
   "login_success": "התחברות הצליחה!",
-  "maps": "מפות"
+  "maps": "מפות",
+  "choose_your_location" : "Please , Choose Your Location"
 
 }

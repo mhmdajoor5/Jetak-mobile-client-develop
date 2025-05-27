@@ -71,6 +71,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "chats": MessageLookupByLibrary.simpleMessage("Chats"),
         "check_on_waze": MessageLookupByLibrary.simpleMessage("Check on Waze:"),
         "checkout": MessageLookupByLibrary.simpleMessage("Checkout"),
+        "choose_your_location": MessageLookupByLibrary.simpleMessage(
+            "Please , Choose Your Location"),
         "clear": MessageLookupByLibrary.simpleMessage("Clear"),
         "clickOnTheFoodToGetMoreDetailsAboutIt":
             MessageLookupByLibrary.simpleMessage(
