@@ -413,6 +413,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                           ),
                         ),
                       );
+                      ///Most Popular
                     case 'popular':
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
