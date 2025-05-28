@@ -206,7 +206,8 @@ Future<Stream<Food>> getFoodsOfRestaurant(String restaurantId, { required int pa
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
 
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data as Map<String, dynamic>?)).expand((data) => (data['data'] as List)).map((data) {
+    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data as Map<String, dynamic>?)).expand((data) => (data as List<dynamic>))
+        .map((data) {
       return Food.fromJSON(data);
     });
   } catch (e) {

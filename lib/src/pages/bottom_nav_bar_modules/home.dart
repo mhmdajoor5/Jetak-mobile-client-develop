@@ -68,8 +68,8 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                             SizedBox(height: 5),
                             InkWell(
                               onTap: () {
-                                setState((){
-                                    _con.getCurrentLocation();
+                                setState(() {
+                                  _con.getCurrentLocation();
                                 });
                               },
                               child: Row(
@@ -88,7 +88,6 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-
                                         fontFamily: 'Nunito',
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
@@ -101,6 +100,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                     size: 20,
                                     color: Color(0xFF1F2F56),
                                   ),
+                                  SizedBox(width: 13),
                                 ],
                               ),
                             ),

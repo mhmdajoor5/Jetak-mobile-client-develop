@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-
 import '../../../generated/l10n.dart';
-import '../../controllers/order_controller.dart';
-import '../../elements/EmptyOrdersWidget.dart';
-import '../../elements/OrderItemWidget.dart';
-import '../../elements/PermissionDeniedWidget.dart';
-import '../../elements/SearchBarWidget.dart';
-import '../../elements/ShoppingCartButtonWidget.dart';
-import '../../repository/user_repository.dart';
+import '../../controllers/home_controller.dart';
+import '../../elements/GridWidget.dart';
 
 class RestaurantsWidget extends StatefulWidget {
   final GlobalKey<ScaffoldState>? parentScaffoldKey;
@@ -20,14 +14,21 @@ class RestaurantsWidget extends StatefulWidget {
 }
 
 class _RestaurantsWidgetState extends StateMVC<RestaurantsWidget> {
-  _RestaurantsWidgetState() : super(OrderController()) {}
+  late HomeController _con;
+
+  _RestaurantsWidgetState() : super(HomeController()) {
+    _con = controller as HomeController;
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: new IconButton(
-          icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
+        leading: IconButton(
+          icon: Icon(Icons.sort, color: Theme
+              .of(context)
+              .hintColor),
           onPressed: () => widget.parentScaffoldKey?.currentState?.openDrawer(),
         ),
         automaticallyImplyLeading: false,
@@ -35,21 +36,30 @@ class _RestaurantsWidgetState extends StateMVC<RestaurantsWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          S.of(context).my_orders,
-          style: Theme.of(
-            context,
-          ).textTheme.headlineSmall?.merge(TextStyle(letterSpacing: 1.3)),
+          S
+              .of(context)
+              .restaurants,
+          style: Theme
+              .of(context)
+              .textTheme
+              .headlineSmall
+              ?.merge(TextStyle(letterSpacing: 1.3)),
         ),
-        actions: <Widget>[
-          new ShoppingCartButtonWidget(
-            iconColor: Theme.of(context).hintColor,
-            labelColor: Theme.of(context).colorScheme.secondary,
-          ),
-        ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [Text('Restaurants')],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Column(
+            children: [
+              GridWidget(
+                restaurantsList: _con.popularRestaurants,
+                heroTag: 'home_restaurants',
+                // shrinkWrap: true,
+                // isScrollable: false,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

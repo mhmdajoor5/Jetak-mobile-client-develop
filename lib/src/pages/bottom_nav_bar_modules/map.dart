@@ -5,7 +5,6 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../../generated/l10n.dart';
 import '../../controllers/map_controller.dart';
 import '../../elements/CardsCarouselWidget.dart';
-import '../../elements/CircularLoadingWidget.dart';
 import '../../models/restaurant.dart';
 import '../../models/route_argument.dart';
 
@@ -29,10 +28,11 @@ class _MapWidgetState extends StateMVC<MapWidget> {
 
   @override
   void initState() {
+    _con.goCurrentLocation();
     if (widget.routeArgument?.param is Restaurant) {
       _con.currentRestaurant = widget.routeArgument?.param as Restaurant;
     } else {
-      _con.currentRestaurant = Restaurant(); // أو أي قيمة افتراضية مناسبة
+      _con.currentRestaurant = Restaurant();
     }
     if (_con.currentRestaurant?.latitude != null) {
       // user select a restaurant
@@ -48,7 +48,7 @@ class _MapWidgetState extends StateMVC<MapWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
         leading:
@@ -98,7 +98,7 @@ class _MapWidgetState extends StateMVC<MapWidget> {
         alignment: AlignmentDirectional.bottomStart,
         children: <Widget>[
           _con.cameraPosition == null
-              ? CircularLoadingWidget(height: 0)
+              ? CircularProgressIndicator()
               : GoogleMap(
                 mapToolbarEnabled: false,
                 mapType: MapType.normal,

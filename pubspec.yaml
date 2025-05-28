@@ -54,6 +54,9 @@ dependencies:
   permission_handler: ^11.3.0 # Updated
   collection: ^1.18.0 # Updated (usually updated with Dart SDK)
   carousel_slider: ^5.0.0
+  chucker_flutter: ^1.8.5
+
+
 
 
   flutter_easyloading: ^3.0.5
