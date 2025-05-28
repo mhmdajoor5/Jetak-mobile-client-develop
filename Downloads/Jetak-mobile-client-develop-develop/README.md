@@ -1,1 +1,0 @@
-# Jetak-mobile-client
