@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../../generated/l10n.dart';
@@ -22,7 +24,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
   @override
   void initState() {
     super.initState();
-    if (userRepo.currentUser.value.apiToken != null) {
+    if (userRepo.currentUser.value?.apiToken != null) {
       Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
     }
   }
@@ -166,15 +168,15 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           IconButton(
-                            icon: Icon(Icons.g_translate, color: Colors.red),
-                            iconSize: 30,
+                            icon: SvgPicture.asset('assets/img/google_svg_icon.svg', height: 20,width: 20,),
+                            iconSize: 10,
                             onPressed: () => _con.loginWithGoogle(),
                            // tooltip: 'تسجيل الدخول باستخدام Google',
                           ),
                           SizedBox(width: 20),
                           IconButton(
-                            icon: Icon(Icons.g_translate, color: Colors.red),
-                            iconSize: 30,
+                            icon: SvgPicture.asset('assets/img/facebook_svg_icon.svg',height: 20,width: 20, ),
+                            iconSize: 10,
                             onPressed: () => _con.loginWithFacebook(),
                             //tooltip: 'تسجيل الدخول باستخدام Facebook',
                           ),
