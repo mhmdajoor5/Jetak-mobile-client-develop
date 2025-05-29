@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:food_delivery_app/src/models/icredit_create_sale_response.dart';
+import '../models/icredit_create_sale_response.dart';
 
 import '../helpers/custom_trace.dart';
 import '../models/payment_method.dart';

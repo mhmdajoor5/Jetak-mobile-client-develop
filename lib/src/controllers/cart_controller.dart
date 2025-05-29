@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/src/models/icredit_create_sale_body.dart';
-import 'package:food_delivery_app/src/models/icredit_create_sale_response.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -9,8 +7,6 @@ import '../models/cart.dart';
 import '../models/coupon.dart';
 import '../repository/cart_repository.dart';
 import '../repository/coupon_repository.dart';
-import '../repository/icredit_repository.dart';
-import '../repository/settings_repository.dart';
 import '../repository/user_repository.dart';
 
 class CartController extends ControllerMVC {
@@ -132,27 +128,29 @@ class CartController extends ControllerMVC {
     }
   }
 
+  /// TODO : here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  /// mElkerm : i made this change to be able to complete the order
   void goCheckout(BuildContext context) {
-    if (!currentUser.value.profileCompleted()) {
-      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
-        SnackBar(
-          content: Text(S.of(context).completeYourProfileDetailsToContinue),
-          action: SnackBarAction(
-            label: S.of(context).settings,
-            textColor: Theme.of(context).colorScheme.secondary,
-            onPressed: () {
-              Navigator.of(context).pushNamed('/Settings');
-            },
-          ),
-        ),
-      );
-    } else {
+    // if (!currentUser.value.profileCompleted()) {
+    //   ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+    //     SnackBar(
+    //       content: Text(S.of(context).completeYourProfileDetailsToContinue),
+    //       action: SnackBarAction(
+    //         label: S.of(context).settings,
+    //         textColor: Theme.of(context).colorScheme.secondary,
+    //         onPressed: () {
+    //           Navigator.of(context).pushNamed('/Settings');
+    //         },
+    //       ),
+    //     ),
+    //   );
+    // } else {
       if (carts[0].food!.restaurant.closed) {
         ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text(S.of(context).this_restaurant_is_closed_)));
       } else {
         Navigator.of(context).pushNamed('/DeliveryPickup');
       }
-    }
+    // }
   }
 
   Color getCouponIconColor() {

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -67,7 +66,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
           boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), offset: Offset(0, -2), blurRadius: 5.0)],
         ),
         child:
-            _con.order == null || _con.orderStatus.isEmpty
+            _con.orderStatus.isEmpty
                 ? CircularLoadingWidget(height: 120)
                 : Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -92,7 +91,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
                 ),
       ),
       body:
-          _con.order == null || _con.orderStatus.isEmpty
+          _con.orderStatus.isEmpty
               ? CircularLoadingWidget(height: 400)
               : CustomScrollView(
                 slivers: <Widget>[
@@ -297,7 +296,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
                                 ),
                               ),
                             ),
-                            _con.order.deliveryAddress?.address != null
+                            _con.order.deliveryAddress.address != null
                                 ? Container(
                                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                                   decoration: BoxDecoration(color: Theme.of(context).primaryColor),
@@ -318,9 +317,9 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Text(_con.order.deliveryAddress?.description ?? "", overflow: TextOverflow.fade, softWrap: false, style: Theme.of(context).textTheme.titleMedium),
+                                            Text(_con.order.deliveryAddress.description ?? "", overflow: TextOverflow.fade, softWrap: false, style: Theme.of(context).textTheme.titleMedium),
                                             Text(
-                                              _con.order.deliveryAddress?.address ?? S.of(context).unknown,
+                                              _con.order.deliveryAddress.address ?? S.of(context).unknown,
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 3,
                                               style: Theme.of(context).textTheme.bodySmall,

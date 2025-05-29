@@ -34,14 +34,10 @@ class _MapWidgetState extends StateMVC<MapWidget> {
     } else {
       _con.currentRestaurant = Restaurant();
     }
-    if (_con.currentRestaurant?.latitude != null) {
-      // user select a restaurant
-      _con.getRestaurantLocation();
-      _con.getDirectionSteps();
-    } else {
-      _con.getCurrentLocation();
-    }
-    super.initState();
+    // user select a restaurant
+    _con.getRestaurantLocation();
+    _con.getDirectionSteps();
+      super.initState();
   }
 
   @override
@@ -52,7 +48,7 @@ class _MapWidgetState extends StateMVC<MapWidget> {
         elevation: 0,
         centerTitle: true,
         leading:
-            _con.currentRestaurant?.latitude == null
+            _con.currentRestaurant.latitude == null
                 ? new IconButton(
                   icon: new Icon(
                     Icons.sort,

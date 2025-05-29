@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../helpers/helper.dart';
 import '../models/restaurant.dart';
-import '../models/route_argument.dart';
 
 class GridCardWidget extends StatelessWidget {
   final Restaurant restaurant;

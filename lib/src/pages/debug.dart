@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../controllers/favorite_controller.dart';

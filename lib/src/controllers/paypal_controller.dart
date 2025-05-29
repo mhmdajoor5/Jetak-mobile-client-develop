@@ -22,8 +22,8 @@ class PayPalController extends ControllerMVC {
   void initState() {
     final String _apiToken = 'api_token=${userRepo.currentUser.value.apiToken}';
     final String _userId = 'user_id=${userRepo.currentUser.value.id}';
-    final String _deliveryAddress = 'delivery_address_id=${settingRepo.deliveryAddress.value?.id}';
-    final String _couponCode = 'coupon_code=${settingRepo.coupon?.code}';
+    final String _deliveryAddress = 'delivery_address_id=${settingRepo.deliveryAddress.value.id}';
+    final String _couponCode = 'coupon_code=${settingRepo.coupon.code}';
     url = '${GlobalConfiguration().getValue('base_url')}payments/paypal/express-checkout?$_apiToken&$_userId&$_deliveryAddress&$_couponCode';
     setState(() {});
     super.initState();

@@ -24,7 +24,7 @@ class MapsUtil {
       String res = response.body;
       int statusCode = response.statusCode;
 //      print("API Response: " + res);
-      if (statusCode < 200 || statusCode > 400 || json == null) {
+      if (statusCode < 200 || statusCode > 400) {
         res = "{\"status\":" + statusCode.toString() + ",\"message\":\"error\",\"response\":" + res + "}";
         throw new Exception(res);
       }

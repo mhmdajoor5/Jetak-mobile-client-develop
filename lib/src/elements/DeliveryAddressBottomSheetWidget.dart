@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/delivery_addresses_controller.dart';
 import '../helpers/app_config.dart' as config;
-import '../models/address.dart';
-import '../repository/settings_repository.dart';
 
 class DeliveryAddressBottomSheetWidget extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;

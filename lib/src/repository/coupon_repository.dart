@@ -33,10 +33,8 @@ Future<Stream<Coupon>> verifyCoupon(String code) async {
 }
 
 Future<Coupon> saveCoupon(Coupon coupon) async {
-  if (coupon != null) {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('coupon', json.encode(coupon.toMap()));
-  }
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('coupon', json.encode(coupon.toMap()));
   return coupon;
 }
 

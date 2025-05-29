@@ -1,14 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:food_delivery_app/src/models/card_item.dart';
-import 'package:food_delivery_app/src/models/icredit_charge_simple_reesponse.dart';
-import 'package:food_delivery_app/src/models/icredit_complete_sale_response.dart';
-import 'package:food_delivery_app/src/repository/icredit_repository.dart';
+import '../models/card_item.dart';
+import '../models/icredit_charge_simple_reesponse.dart';
+import '../repository/icredit_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../elements/PaymentMethodListItemWidget.dart';
-import '../elements/SearchBarWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
 import '../helpers/helper.dart';
 import '../models/credit_card.dart';
@@ -498,7 +495,6 @@ class CardMethodListItemWidget extends StatelessWidget {
   }
 
   String _getCardIcon(String cardNumber) {
-    if (cardNumber == null) return "";
     if (cardNumber.startsWith(RegExp(r'^4'))) {
       return "assets/img/credit-card.svg"; // Icon for Visa
     } else if (cardNumber.startsWith(RegExp(r'^5[1-5]'))) {

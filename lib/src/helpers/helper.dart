@@ -1,18 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 // import 'package:flutter_html/src/style.dart' as style;
 // import 'package:flutter_html/src/style/marker.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:food_delivery_app/src/models/card_item.dart';
+import '../models/card_item.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as map;
 import 'package:html/parser.dart';
@@ -25,7 +23,6 @@ import '../models/food_order.dart';
 import '../models/order.dart';
 import '../models/restaurant.dart';
 import '../repository/settings_repository.dart';
-import 'app_config.dart' as config;
 import 'custom_trace.dart';
 
 class Helper {
@@ -194,10 +191,9 @@ class Helper {
         softWrap: false,
         overflow: TextOverflow.fade,
         maxLines: 1,
-        text: setting.value?.currencyRight != null &&
-                setting.value?.currencyRight == false
+        text: setting.value.currencyRight == false
             ? TextSpan(
-                text: setting.value?.defaultCurrency,
+                text: setting.value.defaultCurrency,
                 style: style == null
                     ? Theme.of(context).textTheme.titleMedium!.merge(
                           TextStyle(
@@ -381,7 +377,7 @@ class Helper {
   static hideLoader(OverlayEntry loader) {
     Timer(Duration(milliseconds: 500), () {
       try {
-        loader?.remove();
+        loader.remove();
       } catch (e) {}
     });
   }
@@ -394,7 +390,7 @@ class Helper {
 
   static String getCreditCardNumber(String number) {
     String result = '';
-    if (number != null && number.isNotEmpty && number.length == 16) {
+    if (number.isNotEmpty && number.length == 16) {
       result = number.substring(0, 4);
       result += ' ' + number.substring(4, 8);
       result += ' ' + number.substring(8, 12);
@@ -473,8 +469,7 @@ class Helper {
 
   Future<bool> onWillPop() {
     DateTime now = DateTime.now();
-    if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+    if (now.difference(currentBackPressTime) > Duration(seconds: 2)) {
       currentBackPressTime = now;
       Fluttertoast.showToast(msg: S.of(context).tapAgainToLeave);
       return Future.value(false);

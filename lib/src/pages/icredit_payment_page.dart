@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
-import 'package:food_delivery_app/src/controllers/icredit_controller.dart';
-import 'package:food_delivery_app/src/elements/BlockButtonWidget.dart';
-import 'package:food_delivery_app/src/models/icredit_create_sale_response.dart';
+import '../controllers/icredit_controller.dart';
+import '../elements/BlockButtonWidget.dart';
+import '../models/icredit_create_sale_response.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';

@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -46,7 +45,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
     return Scaffold(
       key: _con.scaffoldKey,
       body:
-          _con.food == null || _con.food?.image == null
+          _con.food.image == null
               ? CircularLoadingWidget(height: 500)
               : RefreshIndicator(
                 onRefresh: () => _con.refreshFood(context),
@@ -106,8 +105,8 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Text(_con.food?.name ?? '', overflow: TextOverflow.ellipsis, maxLines: 2, style: Theme.of(context).textTheme.displaySmall),
-                                            Text(_con.food?.restaurant?.name ?? '', overflow: TextOverflow.ellipsis, maxLines: 2, style: Theme.of(context).textTheme.bodyMedium),
+                                            Text(_con.food.name ?? '', overflow: TextOverflow.ellipsis, maxLines: 2, style: Theme.of(context).textTheme.displaySmall),
+                                            Text(_con.food.restaurant.name ?? '', overflow: TextOverflow.ellipsis, maxLines: 2, style: Theme.of(context).textTheme.bodyMedium),
                                           ],
                                         ),
                                       ),
@@ -313,7 +312,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                 children: <Widget>[
                                   Expanded(
                                     child:
-                                        _con.favorite?.id != null
+                                        _con.favorite.id != null
                                             ? TextButton(
                                               onPressed: () {
                                                 _con.removeFromFavorite(_con.favorite);

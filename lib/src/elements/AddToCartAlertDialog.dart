@@ -64,7 +64,7 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
               child: Container(
                 height: 60,
                 width: 60,
-                decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(5)), image: DecorationImage(image: NetworkImage(food.restaurant.image?.thumb ?? ''), fit: BoxFit.cover)),
+                decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(5)), image: DecorationImage(image: NetworkImage(food.restaurant.image.thumb ?? ''), fit: BoxFit.cover)),
               ),
             ),
             const SizedBox(width: 15),

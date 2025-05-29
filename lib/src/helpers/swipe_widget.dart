@@ -1,14 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'size_change_notifier.dart';
 
 class ActionItems extends Object {
   ActionItems({required this.icon, required this.onPress, this.backgroudColor = Colors.grey}) {
-    assert(icon != null);
-    assert(onPress != null);
   }
 
   final Widget icon;
@@ -60,21 +56,6 @@ class _OnSlideState extends State<OnSlide> {
 
   @override
   Widget build(BuildContext context) {
-    if (childSize == null) {
-      return new NotificationListener(
-        child: new LayoutSizeChangeNotifier(
-          child: widget.child,
-        ),
-        onNotification: (LayoutSizeChangeNotification notification) {
-          childSize = notification.newSize;
-          scheduleMicrotask(() {
-            setState(() {});
-          });
-          return true;
-        },
-      );
-    }
-
     List<Widget> above = <Widget>[
       new Container(
         width: childSize.width,

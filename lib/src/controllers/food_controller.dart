@@ -4,7 +4,6 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../models/cart.dart';
-import '../models/extra.dart';
 import '../models/favorite.dart';
 import '../models/food.dart';
 import '../repository/cart_repository.dart';
@@ -58,7 +57,7 @@ class FoodController extends ControllerMVC {
   }
 
   bool isSameRestaurants(Food food) {
-    return carts.isEmpty || carts[0].food?.restaurant?.id == food.restaurant?.id;
+    return carts.isEmpty || carts[0].food?.restaurant.id == food.restaurant.id;
   }
 
   void addToCart(Food food, {bool reset = false}) async {

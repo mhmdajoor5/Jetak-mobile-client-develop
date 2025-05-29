@@ -12,8 +12,6 @@ import '../bottom_nav_bar_modules/home.dart';
 import '../bottom_nav_bar_modules/orders.dart';
 import '../bottom_nav_bar_modules/profile.dart';
 import '../bottom_nav_bar_modules/map.dart';
-import '../notifications.dart';
-import '../messages.dart';
 import '../bottom_nav_bar_modules/restaurants.dart';
 
 // ignore: must_be_immutable

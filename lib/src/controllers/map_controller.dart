@@ -88,7 +88,7 @@ class MapController extends ControllerMVC {
     final query =
         "origin=${currentAddress.latitude},${currentAddress.longitude}"
         "&destination=${currentRestaurant.latitude},${currentRestaurant.longitude}"
-        "&key=${sett.setting.value?.googleMapsKey}";
+        "&key=${sett.setting.value.googleMapsKey}";
 
     final res = await mapsUtil.get(query);
     if (res != null && res is List<LatLng>) {

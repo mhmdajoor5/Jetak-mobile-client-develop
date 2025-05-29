@@ -208,7 +208,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                             settingsRepo
                                                         .deliveryAddress
                                                         .value
-                                                        ?.address ==
+                                                        .address ==
                                                     null
                                                 ? Theme.of(
                                                   context,
@@ -224,7 +224,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                               settingsRepo
                                                           .deliveryAddress
                                                           .value
-                                                          ?.address ==
+                                                          .address ==
                                                       null
                                                   ? Theme.of(context).hintColor
                                                   : Theme.of(
@@ -241,7 +241,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                         settingsRepo
                                             .deliveryAddress
                                             .value
-                                            ?.address = null;
+                                            .address = null;
                                       });
                                     },
                                     child: Container(
@@ -257,7 +257,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                             settingsRepo
                                                         .deliveryAddress
                                                         .value
-                                                        ?.address !=
+                                                        .address !=
                                                     null
                                                 ? Theme.of(
                                                   context,
@@ -273,7 +273,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                               settingsRepo
                                                           .deliveryAddress
                                                           .value
-                                                          ?.address !=
+                                                          .address !=
                                                       null
                                                   ? Theme.of(context).hintColor
                                                   : Theme.of(
@@ -286,7 +286,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                 ],
                               ),
 
-                              if (settingsRepo.deliveryAddress.value?.address !=
+                              if (settingsRepo.deliveryAddress.value.address !=
                                   null)
                                 Padding(
                                   padding: const EdgeInsets.only(top: 12),
@@ -295,7 +295,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                         " " +
                                         settingsRepo
                                             .deliveryAddress
-                                            .value!
+                                            .value
                                             .address!,
                                     style:
                                         Theme.of(context).textTheme.bodySmall,

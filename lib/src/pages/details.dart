@@ -5,13 +5,8 @@ import '../../generated/l10n.dart';
 import '../controllers/restaurant_controller.dart';
 import '../elements/CircularLoadingWidget.dart';
 import '../elements/DrawerWidget.dart';
-import '../elements/PermissionDeniedWidget.dart';
-import '../models/conversation.dart';
 import '../models/restaurant.dart';
 import '../models/route_argument.dart';
-import '../repository/user_repository.dart';
-import 'chat.dart';
-import 'menu_list.dart';
 import 'restaurant.dart';
 
 class DetailsWidget extends StatefulWidget {

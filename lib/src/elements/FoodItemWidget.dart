@@ -1,12 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../generated/l10n.dart';
 import '../controllers/food_controller.dart';
 import '../helpers/helper.dart';
 import '../models/food.dart';
 import '../models/route_argument.dart';
-import 'CardWidget.dart' show CardWidget;
 
 class FoodItemWidget extends StatefulWidget {
   final String heroTag;
