@@ -245,7 +245,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             trailing: Text(
-                              _con.creditCard != null && _con.creditCard.number != null && _con.creditCard.number.isNotEmpty ? _con.creditCard.number.replaceRange(0, _con.creditCard.number.length - 4, '...') : '',
+                              _con.creditCard.number.isNotEmpty ? _con.creditCard.number.replaceRange(0, _con.creditCard.number.length - 4, '...') : '',
                               style: TextStyle(color: Theme.of(context).focusColor),
                             ),
                           ),

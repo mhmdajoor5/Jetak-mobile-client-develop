@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -106,10 +105,8 @@ void setBrightness(Brightness brightness) async {
 }
 
 Future<void> setDefaultLanguage(String language) async {
-  if (language != null) {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('language', language);
-  }
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('language', language);
 }
 
 Future<String> getDefaultLanguage(String defaultLanguage) async {

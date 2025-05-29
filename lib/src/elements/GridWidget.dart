@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-import '../elements/GridItemWidget.dart';
 import '../models/restaurant.dart';
-import 'CardWidget.dart' show CardWidget;
 import 'grid_card_widget.dart' show GridCardWidget;
 
 class GridWidget extends StatelessWidget {

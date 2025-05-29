@@ -85,7 +85,7 @@ class RestaurantController extends ControllerMVC {
 
     try {
       final Stream<Food> stream = await getFoodsOfRestaurant(
-        restaurant!.id!,
+        restaurant!.id,
         categories: [categoryId], page: 1,
       );
       List<Food> categoryFoods = [];

@@ -50,7 +50,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   height: 90,
                   width: 90,
                   fit: BoxFit.cover,
-                  imageUrl: widget.cart.food!.image!.thumb!,
+                  imageUrl: widget.cart.food!.image!.thumb,
                   placeholder: (context, url) => Image.asset('assets/img/loading.gif', fit: BoxFit.cover, height: 90, width: 90),
                   errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, ),
                 ),
@@ -64,10 +64,10 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(widget.cart.food!.name!, overflow: TextOverflow.ellipsis, maxLines: 2, style: Theme.of(context).textTheme.titleMedium),
+                          Text(widget.cart.food!.name, overflow: TextOverflow.ellipsis, maxLines: 2, style: Theme.of(context).textTheme.titleMedium),
                           Wrap(
-                            children: List.generate(widget.cart.extras!.length, (index) {
-                              return Text(widget.cart.extras![index].name + ', ', style: Theme.of(context).textTheme.bodySmall);
+                            children: List.generate(widget.cart.extras.length, (index) {
+                              return Text(widget.cart.extras[index].name + ', ', style: Theme.of(context).textTheme.bodySmall);
                             }),
                           ),
                           Wrap(
@@ -98,7 +98,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                           icon: Icon(Icons.add_circle_outline),
                           color: Theme.of(context).hintColor,
                         ),
-                        Text(widget.cart.quantity!.toString(), style: Theme.of(context).textTheme.titleMedium),
+                        Text(widget.cart.quantity.toString(), style: Theme.of(context).textTheme.titleMedium),
                         IconButton(
                           onPressed: () {
                             setState(() {

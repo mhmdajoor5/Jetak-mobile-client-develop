@@ -8,7 +8,6 @@ import '../helpers/helper.dart';
 import '../models/address.dart';
 import '../models/credit_card.dart';
 import '../models/user.dart' as userModel;
-import '../repository/user_repository.dart' as userRepo;
 
 ValueNotifier<userModel.User> currentUser = ValueNotifier(userModel.User());
 

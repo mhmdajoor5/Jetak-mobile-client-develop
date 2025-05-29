@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/src/helpers/phone_util.dart';
+import '../../helpers/phone_util.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../../generated/l10n.dart';
 import '../../controllers/user_controller.dart';
 import '../../elements/BlockButtonWidget.dart';
-import '../../elements/MobileVerificationBottomSheetWidget.dart';
 import '../../helpers/app_config.dart' as config;
 import '../../helpers/helper.dart';
 
@@ -83,6 +82,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                           if (input != null){
                             return input.length < 3 ? S.of(context).should_be_more_than_3_letters : null;
                           }
+                          return null;
                         },
                         decoration: InputDecoration(
                           labelText: S.of(context).full_name,
@@ -108,6 +108,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                           if (input != null){
                             return !input.contains('@') ? S.of(context).should_be_a_valid_email : null;
                           }
+                          return null;
                         },
                         decoration: InputDecoration(
                           labelText: S.of(context).email,
@@ -133,6 +134,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                           if (input != null){
                             return validatePhoneNumber(input);
                           }
+                          return null;
                         },
                         decoration: InputDecoration(
                           labelText: S.of(context).phoneNumber,
@@ -158,6 +160,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                           if (input != null){
                             return input.length < 6 ? S.of(context).should_be_more_than_6_letters : null;
                           }
+                          return null;
                         },
                         decoration: InputDecoration(
                           labelText: S.of(context).password,

@@ -36,7 +36,7 @@ class _ProfileWidgetState extends StateMVC<ProfileWidget> {
       appBar: AppBar(
         leading: new IconButton(
           icon: new Icon(Icons.sort, color: Theme.of(context).primaryColor),
-          onPressed: () => _con.scaffoldKey?.currentState?.openDrawer(),
+          onPressed: () => _con.scaffoldKey.currentState?.openDrawer(),
         ),
         automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -71,7 +71,7 @@ class _ProfileWidgetState extends StateMVC<ProfileWidget> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      currentUser.value?.bio ?? "",
+                      currentUser.value.bio ?? "",
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),

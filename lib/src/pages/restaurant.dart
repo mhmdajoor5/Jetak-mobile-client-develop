@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart' show FaIcon, FontAwesomeIcons;
-import 'package:map_launcher/map_launcher.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -10,9 +8,6 @@ import '../controllers/restaurant_controller.dart';
 import '../elements/CircularLoadingWidget.dart';
 import '../elements/FoodItemWidget.dart';
 import '../elements/GalleryCarouselWidget.dart' show ImageThumbCarouselWidget;
-import '../elements/ReviewsListWidget.dart';
-import '../elements/ShoppingCartButtonWidget.dart';
-import '../elements/ShoppingCartFloatButtonWidget.dart';
 import '../helpers/helper.dart';
 import '../models/cart.dart';
 import '../models/food.dart';
@@ -42,9 +37,9 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
   @override
   void initState() {
     _con.restaurant = widget.routeArgument?.param as Restaurant;
-    _con.listenForGalleries(_con.restaurant!.id!);
-    _con.listenForFeaturedFoods(_con.restaurant!.id!);
-    _con.listenForRestaurantReviews(id: _con.restaurant!.id!);
+    _con.listenForGalleries(_con.restaurant!.id);
+    _con.listenForFeaturedFoods(_con.restaurant!.id);
+    _con.listenForRestaurantReviews(id: _con.restaurant!.id);
     super.initState();
   }
 
@@ -122,7 +117,7 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
                                 child: CachedNetworkImage(
-                                  imageUrl: _con.restaurant!.image.url!,
+                                  imageUrl: _con.restaurant!.image.url,
                                   fit: BoxFit.cover,
                                   placeholder: (context, url) => Image.asset(
                                     'assets/img/loading.gif',
@@ -150,7 +145,7 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                         children: [
                           Positioned.fill(
                             child: CachedNetworkImage(
-                              imageUrl: _con.restaurant!.image.url!,
+                              imageUrl: _con.restaurant!.image.url,
                               fit: BoxFit.cover,
                               placeholder: (context, url) =>
                                   Image.asset(
@@ -190,11 +185,9 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                               backgroundColor: Colors.white,
                               radius: 50,
                               child: IconButton(
-                                icon: FaIcon(
-                                  FontAwesomeIcons.heart,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () {},
+                                icon: Icon(Icons.g_translate, color: Colors.red),
+
+                              onPressed: () {},
                               ),
                             ),
                           ),
@@ -334,7 +327,7 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                                     Icon(Icons.schedule, size: 14, color: Colors.grey.shade500),
                                     SizedBox(width: 4),
                                     Text(
-                                      _con.restaurant!.closed!
+                                      _con.restaurant!.closed
                                           ? S.of(context).closed
                                           : S.of(context).open_until(_con.restaurant?.closingTime ?? '22:00'),
                                       style: TextStyle(
@@ -455,8 +448,9 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                                   radius: 24,
                                   backgroundColor: Colors.transparent,
                                   child: IconButton(
-                                    icon: FaIcon(FontAwesomeIcons.share, size: 20,),
-                                    onPressed: () {
+                                                          icon: Icon(Icons.g_translate, color: Colors.red),
+
+    onPressed: () {
                                       // Add your onPressed logic here
                                     },
                                   ),

@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/generated/l10n.dart';
-import 'package:food_delivery_app/src/helpers/helper.dart';
-import 'package:food_delivery_app/src/models/card_item.dart';
+import '../helpers/helper.dart';
+import '../models/card_item.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../models/credit_card.dart';
@@ -10,7 +9,6 @@ import '../models/icredit_charge_simple_reesponse.dart';
 import '../models/icredit_complete_sale_response.dart';
 import '../models/icredit_create_sale_response.dart';
 import '../repository/icredit_repository.dart';
-import '../repository/user_repository.dart' as repository;
 
 class ICreditController extends ControllerMVC {
   late GlobalKey<ScaffoldState> scaffoldKey;
@@ -43,7 +41,7 @@ class ICreditController extends ControllerMVC {
     ICreditCompleteSaleResponse completeSaleResponse =
         await iCreditCompleteSale(iCreditCreateSaleResponse, response);
 
-    if (kDebugMode && scaffoldKey.currentContext! != null) {
+    if (kDebugMode) {
       ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
         content: Text(completeSaleResponse.debugMessage),
       ));

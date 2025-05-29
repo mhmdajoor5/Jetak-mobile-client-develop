@@ -1,7 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -12,7 +9,6 @@ import '../elements/FoodItemWidget.dart';
 // import '../elements/FoodsCarouselWidget.dart'; // لم تعد مستخدمة في هذا الجزء
 // import '../elements/SearchBarWidget.dart'; // لم تعد مستخدمة في هذا الجزء
 // import '../elements/ShoppingCartButtonWidget.dart'; // لم تعد مستخدمة في هذا الجزء
-import '../models/category.dart';
 import '../models/food.dart';
 import '../models/restaurant.dart';
 import '../models/route_argument.dart';

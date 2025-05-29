@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -28,27 +27,25 @@ class SplashScreenController extends ControllerMVC {
     FirebaseMessaging.instance.requestPermission(sound: true, badge: true, alert: true);
     configureFirebase(firebaseMessaging);
     settingRepo.setting.addListener(() {
-      if (settingRepo.setting.value.appName != null && settingRepo.setting.value.appName != '' && settingRepo.setting.value.mainColor != null) {
+      if (settingRepo.setting.value.appName != '') {
         progress.value["Setting"] = 41;
         // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
-        progress?.notifyListeners();
+        progress.notifyListeners();
       }
     });
     userRepo.currentUser.addListener(() {
       if (userRepo.currentUser.value.auth != null) {
         progress.value["User"] = 59;
-        progress?.notifyListeners();
+        progress.notifyListeners();
       }
     });
     Timer(Duration(seconds: 20), () {
-      if(scaffoldKey.currentContext! != null) {
-        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
-          content: Text(S
-              .of(state!.context)
-              .verify_your_internet_connection),
-        ));
-      }
-    });
+      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
+        content: Text(S
+            .of(state!.context)
+            .verify_your_internet_connection),
+      ));
+        });
   }
 
 

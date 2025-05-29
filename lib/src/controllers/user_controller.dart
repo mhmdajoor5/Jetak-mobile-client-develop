@@ -50,7 +50,7 @@ class UserController extends ControllerMVC {
   void _showLoader() {
     if (!_isLoaderVisible && context != null) {
       loader = Helper.overlayLoader(context!);
-      Overlay.of(context!)?.insert(loader);
+      Overlay.of(context!).insert(loader);
       _isLoaderVisible = true;
     }
   }
@@ -75,7 +75,7 @@ class UserController extends ControllerMVC {
     try {
       final value = await repository.login(user);
       _hideLoader();
-      if (value != null && value.apiToken != null) {
+      if (value.apiToken != null) {
         ScaffoldMessenger.of(context!).showSnackBar(
           SnackBar(
             content: Text(S.of(context!).login_successful),
@@ -110,7 +110,7 @@ class UserController extends ControllerMVC {
     try {
       final value = await repository.register(user);
       _hideLoader();
-      if (value != null && value.apiToken != null) {
+      if (value.apiToken != null) {
         ScaffoldMessenger.of(context!).showSnackBar(
           SnackBar(
             content: Text(S.of(context!).register_successful),

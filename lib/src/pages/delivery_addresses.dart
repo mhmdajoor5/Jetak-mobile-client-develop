@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 // import 'package:google_map_location_picker/google_map_location_picker.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -12,7 +11,6 @@ import '../elements/ShoppingCartButtonWidget.dart';
 import '../models/address.dart';
 import '../models/payment_method.dart';
 import '../models/route_argument.dart';
-import '../repository/settings_repository.dart';
 
 class DeliveryAddressesWidget extends StatefulWidget {
   final RouteArgument? routeArgument;

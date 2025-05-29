@@ -17,16 +17,16 @@ class CategoriesCarouselItemWidget extends StatelessWidget {
 
     if ((category.image?.url ?? '').toLowerCase().endsWith('.svg')) {
       imageWidget = SvgPicture.network(
-        category.image!.url!,
+        category.image!.url,
         fit: BoxFit.cover,
         color: Theme.of(context).colorScheme.secondary,
       );
     } else if (category.image?.icon != null &&
-        category.image!.icon!.isNotEmpty &&
-        category.image!.icon!.startsWith('http')) {
+        category.image!.icon.isNotEmpty &&
+        category.image!.icon.startsWith('http')) {
       imageWidget = CachedNetworkImage(
         fit: BoxFit.cover,
-        imageUrl: category.image!.icon!,
+        imageUrl: category.image!.icon,
         placeholder: (context, url) => Image.asset(
           'assets/img/restaurant.png',
           fit: BoxFit.cover,
@@ -76,11 +76,11 @@ class CategoriesCarouselItemWidget extends StatelessWidget {
                   fit: BoxFit.cover,
                 )
                     : (category.image?.icon != null &&
-                    category.image!.icon!.isNotEmpty &&
-                    category.image!.icon!.startsWith('http'))
+                    category.image!.icon.isNotEmpty &&
+                    category.image!.icon.startsWith('http'))
                     ? CachedNetworkImage(
                   fit: BoxFit.cover,
-                  imageUrl: category.image!.icon!,
+                  imageUrl: category.image!.icon,
                   placeholder: (context, url) => Image.asset(
                     'assets/img/restaurant.png',
                     fit: BoxFit.cover,

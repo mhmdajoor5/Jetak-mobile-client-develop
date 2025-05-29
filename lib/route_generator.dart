@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/src/models/credit_card.dart';
-import 'package:food_delivery_app/src/pages/icredit_payment_page.dart';
+import 'src/models/credit_card.dart';
+import 'src/pages/icredit_payment_page.dart';
 
 import 'src/models/restaurant.dart';
 import 'src/models/route_argument.dart';
@@ -20,7 +20,6 @@ import 'src/pages/favorites.dart';
 import 'src/pages/food.dart';
 import 'src/pages/forget_password.dart';
 import 'src/pages/help.dart';
-import 'src/pages/languages.dart';
 import 'src/pages/menu_list.dart';
 import 'src/pages/new_payment.dart';
 import 'src/pages/order_success.dart';
@@ -32,7 +31,6 @@ import 'src/pages/reviews.dart';
 import 'src/pages/settings.dart';
 import 'src/pages/auth/signup.dart';
 import 'src/pages/splash_screen.dart';
-import 'src/pages/tracking.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

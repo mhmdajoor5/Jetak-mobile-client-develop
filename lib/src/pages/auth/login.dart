@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../../generated/l10n.dart';
@@ -23,7 +22,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
   @override
   void initState() {
     super.initState();
-    if (userRepo.currentUser.value?.apiToken != null) {
+    if (userRepo.currentUser.value.apiToken != null) {
       Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
     }
   }
@@ -167,14 +166,14 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           IconButton(
-                            icon: FaIcon(FontAwesomeIcons.google, color: Colors.red),
+                            icon: Icon(Icons.g_translate, color: Colors.red),
                             iconSize: 30,
                             onPressed: () => _con.loginWithGoogle(),
                            // tooltip: 'تسجيل الدخول باستخدام Google',
                           ),
                           SizedBox(width: 20),
                           IconButton(
-                            icon: FaIcon(FontAwesomeIcons.facebook, color: Colors.blue),
+                            icon: Icon(Icons.g_translate, color: Colors.red),
                             iconSize: 30,
                             onPressed: () => _con.loginWithFacebook(),
                             //tooltip: 'تسجيل الدخول باستخدام Facebook',

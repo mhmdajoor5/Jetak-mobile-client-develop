@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/src/elements/MobileVerificationBottomSheetWidget.dart';
-import 'package:food_delivery_app/src/models/icredit_create_sale_body.dart';
-import 'package:food_delivery_app/src/models/icredit_create_sale_response.dart';
-import 'package:food_delivery_app/src/repository/icredit_repository.dart';
-import 'package:food_delivery_app/src/repository/user_repository.dart';
+import '../elements/MobileVerificationBottomSheetWidget.dart';
+import '../models/icredit_create_sale_body.dart';
+import '../models/icredit_create_sale_response.dart';
+import '../repository/icredit_repository.dart';
+import '../repository/user_repository.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 

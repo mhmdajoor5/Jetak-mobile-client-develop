@@ -68,7 +68,7 @@ class ChatRepository {
   }
 
   Future<void> addMessage(Conversation conversation, Chat chat) async {
-    await FirebaseFirestore.instance.collection("conversations").doc(conversation.id).collection("chats").add(chat.toMap() as Map<String, dynamic>);
+    await FirebaseFirestore.instance.collection("conversations").doc(conversation.id).collection("chats").add(chat.toMap());
     await updateConversation(conversation.id, conversation.toUpdatedMap());
   }
 
