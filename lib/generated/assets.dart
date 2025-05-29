@@ -39,9 +39,11 @@ class Assets {
   static const String imgCreditCard = 'assets/img/credit-card.svg';
   static const String imgEdit = 'assets/img/edit.svg';
   static const String imgEmptyWallet = 'assets/img/empty-wallet.svg';
+  static const String imgFacebookSvgIcon = 'assets/img/facebook_svg_icon.svg';
   static const String imgFilter = 'assets/img/filter.svg';
   static const String imgFrance = 'assets/img/france.png';
   static const String imgGermany = 'assets/img/germany.png';
+  static const String imgGoogleSvgIcon = 'assets/img/google_svg_icon.svg';
   static const String imgHome = 'assets/img/home.svg';
   static const String imgIcWaze = 'assets/img/ic_waze.svg';
   static const String imgIcredit = 'assets/img/icredit.jpg';
@@ -74,7 +76,7 @@ class Assets {
   static const String imgRestaurants = 'assets/img/restaurants.svg';
   static const String imgRing = 'assets/img/ring.svg';
   static const String imgRouting = 'assets/img/routing.svg';
-  static const String imgShareVs = 'assets/img/share-vs.svg';
+  static const String imgShareSvgIcon = 'assets/img/share_svg_icon.svg';
   static const String imgSpain = 'assets/img/spain.png';
   static const String imgStar = 'assets/img/star.svg';
   static const String imgStores = 'assets/img/stores.svg';
