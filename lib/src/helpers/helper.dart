@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:ui' as ui;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -54,11 +55,38 @@ class Helper {
 
   /// Save a list of cards to SharedPreferences
   static Future<void> saveCardsToSP(List<CardItem> cards) async {
+    try {
+      // Get SharedPreferences instance
+      final prefs = await SharedPreferences.getInstance();
+
+      // Remove duplicates before saving
+      final uniqueCards = cards.toSet().toList();
+
+      // Convert to JSON-serializable format
+      final cardListMap = uniqueCards.map((card) => card.toMap()).toList();
+
+      // Save to shared preferences
+      await prefs.setString('user_credit_cards', json.encode(cardListMap));
+
+      // Debug print
+      if (kDebugMode) {
+        print("CARDS SAVED (${uniqueCards.length} unique cards): ${uniqueCards.map((c) => c.cardNumber).join(', ')}");
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error saving cards: $e");
+      }
+      rethrow;
+    }
+  }
+
+  /// Clear all saved cards from SharedPreferences
+  static Future<void> clearSavedCards() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<Map<dynamic, dynamic>> cardListMap =
-    cards.map((card) => card.toMap()).toList();
-    await prefs.setString('user_credit_cards', json.encode(cardListMap));
-    print("CARDS SAVED: ${cards.length}");
+    await prefs.remove('user_credit_cards');
+    if (kDebugMode) {
+      print("All saved cards cleared.");
+    }
   }
 
   /// Add a single card to the list

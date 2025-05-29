@@ -131,26 +131,27 @@ class CartController extends ControllerMVC {
   /// TODO : here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   /// mElkerm : i made this change to be able to complete the order
   void goCheckout(BuildContext context) {
-    if (!currentUser.value.profileCompleted()) {
-      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
-        SnackBar(
-          content: Text(S.of(context).completeYourProfileDetailsToContinue),
-          action: SnackBarAction(
-            label: S.of(context).settings,
-            textColor: Theme.of(context).colorScheme.secondary,
-            onPressed: () {
-              Navigator.of(context).pushNamed('/Settings');
-            },
-          ),
-        ),
-      );
-    } else {
+    print("mElkerm : HEREEEEEE");
+    // if (!currentUser.value.profileCompleted()) {
+    //   ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+    //     SnackBar(
+    //       content: Text(S.of(context).completeYourProfileDetailsToContinue),
+    //       action: SnackBarAction(
+    //         label: S.of(context).settings,
+    //         textColor: Theme.of(context).colorScheme.secondary,
+    //         onPressed: () {
+    //           Navigator.of(context).pushNamed('/Settings');
+    //         },
+    //       ),
+    //     ),
+    //   );
+    // } else {
       if (carts[0].food!.restaurant.closed) {
         ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text(S.of(context).this_restaurant_is_closed_)));
       } else {
         Navigator.of(context).pushNamed('/DeliveryPickup');
       }
-    }
+    // }
   }
 
   Color getCouponIconColor() {

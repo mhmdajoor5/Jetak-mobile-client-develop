@@ -4,6 +4,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/profile_controller.dart';
+import '../helpers/helper.dart';
 import '../repository/settings_repository.dart';
 import '../repository/user_repository.dart';
 
@@ -102,6 +103,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                   Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 2);
                 });
               } else {
+                Helper.clearSavedCards();
                 Navigator.of(context).pushNamed('/Login');
               }
             },
