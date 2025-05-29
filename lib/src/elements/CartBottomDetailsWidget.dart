@@ -18,26 +18,26 @@ class CartBottomDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("mElkerm get price function !!!");
-    print(
-      Helper.getPrice(
-        0,
-        context,
-        style: Theme.of(context).textTheme.titleMedium,
-        zeroPlaceholder: 'Free',
-      ),
-    );
-    print("mElkerm : delvivery fees");
-    print(_con.carts[0].food!.restaurant!.deliveryFee);
-    print("mElkerm get price function ???");
-    print(
-      Helper.getPrice(
-        _con.carts[0].food!.restaurant!.deliveryFee,
-        context,
-        style: Theme.of(context).textTheme.titleMedium,
-        zeroPlaceholder: 'Free',
-      ),
-    );
+    // print("mElkerm get price function !!!");
+    // print(
+    //   Helper.getPrice(
+    //     0,
+    //     context,
+    //     style: Theme.of(context).textTheme.titleMedium,
+    //     zeroPlaceholder: 'Free',
+    //   ),
+    // );
+    // print("mElkerm : delvivery fees");
+    // print(_con.carts[0].food!.restaurant!.deliveryFee);
+    // print("mElkerm get price function ???");
+    // print(
+    //   Helper.getPrice(
+    //     _con.carts[0].food!.restaurant!.deliveryFee,
+    //     context,
+    //     style: Theme.of(context).textTheme.titleMedium,
+    //     zeroPlaceholder: 'Free',
+    //   ),
+    // );
 
     return _con.carts.isEmpty
         ? SizedBox(height: 0)
