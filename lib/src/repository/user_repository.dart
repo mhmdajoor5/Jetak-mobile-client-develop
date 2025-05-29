@@ -117,6 +117,7 @@ Future<void> logout() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.remove('current_user');
   await prefs.remove('credit_card');
+  Helper.clearSavedCards();
 }
 
 void setCurrentUser(String jsonString) async {

@@ -103,7 +103,6 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                   Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 2);
                 });
               } else {
-                Helper.clearSavedCards();
                 Navigator.of(context).pushNamed('/Login');
               }
             },
