@@ -69,7 +69,7 @@ Future<List<Category>> getCategoriesOfRestaurant(String restaurantId) async {
       print('mElkerm get Categories Response status REPOOOO SUCCESS: ${response.statusCode}');
       // final List<dynamic> data = json.decode(response.body);
       final Map<String, dynamic> decodedData = json.decode(response.body);
-      final List<dynamic> data = decodedData['categories']; //
+      final List<dynamic> data = decodedData['categories']['data']; //
       print( 'mElkerm get Categories Response data: ${data.length}');
       return data.map((json) => Category.fromJSON(json)).toList();
     } else {
