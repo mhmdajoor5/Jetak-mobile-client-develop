@@ -10,7 +10,7 @@ import '../models/restaurant.dart';
 import '../models/review.dart';
 import '../models/slide.dart';
 import '../repository/category_repository.dart';
-import '../repository/food_repository.dart';
+import '../repository/home/get_trending_foods_repo.dart';
 import '../repository/home/slider_repository.dart';
 import '../repository/restaurant_repository.dart';
 import '../repository/resturant/popular_reatauran_repository.dart';
@@ -98,12 +98,23 @@ class HomeController extends ControllerMVC {
   }
 
   Future<void> listenForTrendingFoods() async {
-    final Stream<Food> stream = await getTrendingFoods(deliveryAddress.value);
-    stream.listen((Food _food) {
-      setState(() => trendingFoods.add(_food));
-    }, onError: (a) {
-      print(a);
-    }, onDone: () {});
+
+
+    try {
+      final List<Food> foods = await getTrendingFoods();
+      setState(() {
+        trendingFoods = foods;
+      });
+    } catch (e) {
+      print('Error loading trending foods: $e');
+    }
+
+    // final Stream<Food> stream = await getTrendingFoods(deliveryAddress.value);
+    // stream.listen((Food _food) {
+    //   setState(() => trendingFoods.add(_food));
+    // }, onError: (a) {
+    //   print(a);
+    // }, onDone: () {});
   }
 
   void requestForCurrentLocation(BuildContext context) {
@@ -129,10 +140,11 @@ class HomeController extends ControllerMVC {
     });
     ///mElkerm here i need 5 apis
     await listenForSlides();
-    await listenForTopRestaurants();
-    await listenForTrendingFoods();
-    await listenForCategories();
     await listenForPopularRestaurants();
+
+    await listenForTrendingFoods();
+    await listenForTopRestaurants();
+    await listenForCategories();
     await listenForRecentReviews();
   }
 
