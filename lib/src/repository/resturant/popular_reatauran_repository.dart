@@ -11,7 +11,7 @@ Future<List<Restaurant>> fetchPopularRestaurants() async {
   try {
     final response = await http.get(
       ///'${GlobalConfiguration().getValue('api_base_url')}carts?$token&$resetParam'
-      Uri.parse('${GlobalConfiguration().getValue('api_base_url')}restaurants'),
+      Uri.parse('${GlobalConfiguration().getValue('api_base_url')}restaurants?popular=true'),
       headers: {'Content-Type': 'application/json'},
     );
 

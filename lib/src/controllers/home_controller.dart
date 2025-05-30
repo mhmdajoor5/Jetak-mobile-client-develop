@@ -11,6 +11,7 @@ import '../models/review.dart';
 import '../models/slide.dart';
 // import '../repository/category_repository.dart';
 import '../repository/home/get_categorizes_repository.dart';
+import '../repository/home/get_top_restorants_repo.dart';
 import '../repository/home/get_trending_foods_repo.dart';
 import '../repository/home/slider_repository.dart';
 import '../repository/restaurant_repository.dart';
@@ -32,7 +33,7 @@ class HomeController extends ControllerMVC {
     listenForTrendingFoods();
     listenForCategories();
     listenForPopularRestaurants();
-    listenForRecentReviews();
+    // listenForRecentReviews();
   }
 
   Future<void> listenForSlides() async {
@@ -78,10 +79,21 @@ class HomeController extends ControllerMVC {
   }
 
   Future<void> listenForTopRestaurants() async {
-    final Stream<Restaurant> stream = await getNearRestaurants(deliveryAddress.value, deliveryAddress.value);
-    stream.listen((Restaurant _restaurant) {
-      setState(() => topRestaurants.add(_restaurant));
-    }, onError: (a) {}, onDone: () {});
+
+    try {
+      final List<Restaurant> result = await getTopRestaurants();
+      setState(() {
+        topRestaurants = result;
+        print("mElkerm 5 get the Top Restaurants in the controller" + topRestaurants.length.toString() + " items found.");
+      });
+    } catch (e) {
+      print('Error loading top restaurants: $e');
+    }
+
+    // final Stream<Restaurant> stream = await getNearRestaurants(deliveryAddress.value, deliveryAddress.value);
+    // stream.listen((Restaurant _restaurant) {
+    //   setState(() => topRestaurants.add(_restaurant));
+    // }, onError: (a) {}, onDone: () {});
   }
 
   /// cahnge the stream to single request based on new repository
@@ -102,12 +114,12 @@ class HomeController extends ControllerMVC {
     // }, onError: (a) {}, onDone: () {});
   }
 
-  Future<void> listenForRecentReviews() async {
-    final Stream<Review> stream = await getRecentReviews();
-    stream.listen((Review _review) {
-      setState(() => recentReviews.add(_review));
-    }, onError: (a) {}, onDone: () {});
-  }
+  // Future<void> listenForRecentReviews() async {
+  //   final Stream<Review> stream = await getRecentReviews();
+  //   stream.listen((Review _review) {
+  //     setState(() => recentReviews.add(_review));
+  //   }, onError: (a) {}, onDone: () {});
+  // }
 
   Future<void> listenForTrendingFoods() async {
 
@@ -157,7 +169,7 @@ class HomeController extends ControllerMVC {
     await listenForCategories();
 
     await listenForTopRestaurants();
-    await listenForRecentReviews();
+    // await listenForRecentReviews();
   }
 
 
