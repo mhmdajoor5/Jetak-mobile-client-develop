@@ -43,9 +43,9 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
   @override
   void initState() {
     _con.restaurant = widget.routeArgument?.param as Restaurant;
-    _con.listenForGalleries(_con.restaurant!.id!);
+    // _con.listenForGalleries(_con.restaurant!.id!);
     _con.listenForFeaturedFoods(_con.restaurant!.id!);
-    _con.listenForRestaurantReviews(id: _con.restaurant!.id!);
+    // _con.listenForRestaurantReviews(id: _con.restaurant!.id!);
     super.initState();
   }
 
@@ -556,80 +556,84 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                                   galleriesList: _con.galleries,
                                 ),
 
+
+                                /// mElkerm menu Widget
                                 MenuWidget(
                                   routeArgument: RouteArgument(
                                     param: _con.restaurant,
                                   ),
                                 ),
 
-                                if (_con.featuredFoods.isNotEmpty) ...[
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 20,
-                                    ),
-                                    child: ListTile(
-                                      dense: true,
-                                      contentPadding: EdgeInsets.symmetric(
-                                        vertical: 0,
-                                      ),
-                                      leading: Icon(
-                                        Icons.restaurant,
-                                        color: Theme.of(context).hintColor,
-                                      ),
-                                      title: Text(
-                                        S.of(context).featured_foods,
-                                        style:
-                                            Theme.of(
-                                              context,
-                                            ).textTheme.headlineLarge,
-                                      ),
-                                    ),
-                                  ),
-                                  ListView.separated(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: _con.featuredFoods.length,
-                                    separatorBuilder:
-                                        (context, index) =>
-                                            SizedBox(height: 10),
-                                    itemBuilder:
-                                        (context, index) => FoodItemWidget(
-                                          heroTag: 'details_featured_food',
-                                          food: _con.featuredFoods[index],
-                                          onAdd:
-                                              () => _addToCart(
-                                                _con.featuredFoods[index],
-                                              ),
-                                        ),
-                                  ),
-                                ],
+                                /// mElkerm : Featured Foods list
+                                // if (_con.featuredFoods.isNotEmpty) ...[
+                                //   Padding(
+                                //     padding: const EdgeInsets.symmetric(
+                                //       horizontal: 20,
+                                //     ),
+                                //     child: ListTile(
+                                //       dense: true,
+                                //       contentPadding: EdgeInsets.symmetric(
+                                //         vertical: 0,
+                                //       ),
+                                //       leading: Icon(
+                                //         Icons.restaurant,
+                                //         color: Theme.of(context).hintColor,
+                                //       ),
+                                //       title: Text(
+                                //         S.of(context).featured_foods,
+                                //         style:
+                                //             Theme.of(
+                                //               context,
+                                //             ).textTheme.headlineLarge,
+                                //       ),
+                                //     ),
+                                //   ),
+                                //   ListView.separated(
+                                //     padding: EdgeInsets.symmetric(vertical: 10),
+                                //     shrinkWrap: true,
+                                //     physics: NeverScrollableScrollPhysics(),
+                                //     itemCount: _con.featuredFoods.length,
+                                //     separatorBuilder:
+                                //         (context, index) =>
+                                //             SizedBox(height: 10),
+                                //     itemBuilder:
+                                //         (context, index) => FoodItemWidget(
+                                //           heroTag: 'details_featured_food',
+                                //           food: _con.featuredFoods[index],
+                                //           onAdd:
+                                //               () => _addToCart(
+                                //                 _con.featuredFoods[index],
+                                //               ),
+                                //         ),
+                                //   ),
+                                // ],
 
-                                if (_con.reviews.isNotEmpty) ...[
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 10,
-                                      horizontal: 20,
-                                    ),
-                                    child: ListTile(
-                                      dense: true,
-                                      contentPadding: EdgeInsets.symmetric(
-                                        vertical: 0,
-                                      ),
-                                      leading: Icon(
-                                        Icons.recent_actors,
-                                        color: Theme.of(context).hintColor,
-                                      ),
-                                      title: Text(
-                                        S.of(context).what_they_say,
-                                        style:
-                                            Theme.of(
-                                              context,
-                                            ).textTheme.headlineLarge,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                /// mElkerm : reviews list
+                                // if (_con.reviews.isNotEmpty) ...[
+                                //   Padding(
+                                //     padding: const EdgeInsets.symmetric(
+                                //       vertical: 10,
+                                //       horizontal: 20,
+                                //     ),
+                                //     child: ListTile(
+                                //       dense: true,
+                                //       contentPadding: EdgeInsets.symmetric(
+                                //         vertical: 0,
+                                //       ),
+                                //       leading: Icon(
+                                //         Icons.recent_actors,
+                                //         color: Theme.of(context).hintColor,
+                                //       ),
+                                //       title: Text(
+                                //         S.of(context).what_they_say,
+                                //         style:
+                                //             Theme.of(
+                                //               context,
+                                //             ).textTheme.headlineLarge,
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ],
                               ],
                             ),
                           ),

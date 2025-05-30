@@ -114,6 +114,7 @@ class HomeController extends ControllerMVC {
       recentReviews = <Review>[];
       trendingFoods = <Food>[];
     });
+    ///mElkerm here i need 5 apis
     await listenForSlides();
     await listenForTopRestaurants();
     await listenForTrendingFoods();
