@@ -152,7 +152,7 @@ class _PaymentState extends State<Payment> {
       hint: S.of(context).enter_here,
       prefix: SvgPicture.asset(
         'assets/img/ticket-discount.svg',
-        width: 18,
+        width: 18
         height: 18,
         fit: BoxFit.scaleDown,
         colorFilter: ColorFilter.mode(AppColors.color9D9FA4, BlendMode.srcATop),

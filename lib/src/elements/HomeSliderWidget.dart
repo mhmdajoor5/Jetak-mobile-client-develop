@@ -61,7 +61,7 @@ class _HomeSliderWidgetState extends State<HomeSliderWidget> {
                                 child: CachedNetworkImage(
                                   height: 160,
                                   width: double.infinity,
-                                  fit: BoxFit.cover, // هذا هو التعديل المهم
+                                  fit: BoxFit.cover,
                                   imageUrl: slide.image.url,
                                   placeholder: (context, url) => Image.asset(
                                     'assets/img/loading.gif',
