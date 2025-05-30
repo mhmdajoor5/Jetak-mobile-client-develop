@@ -18,7 +18,7 @@ Future<List<Restaurant>> fetchPopularRestaurants() async {
     if (response.statusCode == 200) {
       // final List<dynamic> data = json.decode(response.body);
       final Map<String, dynamic> decodedData = json.decode(response.body);
-      final List<dynamic> data = decodedData['data']; //
+      final List<dynamic> data = decodedData['data']['data']; //
 
       return data.map((json) => Restaurant.fromJSON(json)).toList();
     } else {

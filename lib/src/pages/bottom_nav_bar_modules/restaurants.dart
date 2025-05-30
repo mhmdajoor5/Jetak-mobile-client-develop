@@ -57,7 +57,7 @@ class _RestaurantsWidgetState extends StateMVC<RestaurantsWidget> {
               _con.getPopularRestaurants? GridWidget(
                 restaurantsList: _con.popularRestaurants,
                 heroTag: 'home_restaurants',
-                itemCount: 6,
+                // itemCount: 6,
                 // shrinkWrap: true,
                 // isScrollable: false,
               ) : Center(
