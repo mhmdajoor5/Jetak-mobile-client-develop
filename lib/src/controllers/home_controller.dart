@@ -9,7 +9,8 @@ import '../models/food.dart';
 import '../models/restaurant.dart';
 import '../models/review.dart';
 import '../models/slide.dart';
-import '../repository/category_repository.dart';
+// import '../repository/category_repository.dart';
+import '../repository/home/get_categorizes_repository.dart';
 import '../repository/home/get_trending_foods_repo.dart';
 import '../repository/home/slider_repository.dart';
 import '../repository/restaurant_repository.dart';
@@ -57,12 +58,23 @@ class HomeController extends ControllerMVC {
   }
 
   Future<void> listenForCategories() async {
-    final Stream<Category> stream = await getCategories();
-    stream.listen((Category _category) {
-      setState(() => categories.add(_category));
-    }, onError: (a) {
-      print(a);
-    }, onDone: () {});
+
+    try {
+      final List<Category> result = await getCategories();
+      setState(() {
+        categories = result;
+      });
+    } catch (e) {
+      print('Error loading categories: $e');
+    }
+
+
+    // final Stream<Category> stream = await getCategories();
+    // stream.listen((Category _category) {
+    //   setState(() => categories.add(_category));
+    // }, onError: (a) {
+    //   print(a);
+    // }, onDone: () {});
   }
 
   Future<void> listenForTopRestaurants() async {
@@ -141,10 +153,10 @@ class HomeController extends ControllerMVC {
     ///mElkerm here i need 5 apis
     await listenForSlides();
     await listenForPopularRestaurants();
-
     await listenForTrendingFoods();
-    await listenForTopRestaurants();
     await listenForCategories();
+
+    await listenForTopRestaurants();
     await listenForRecentReviews();
   }
 
