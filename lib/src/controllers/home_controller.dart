@@ -11,10 +11,10 @@ import '../models/review.dart';
 import '../models/slide.dart';
 import '../repository/category_repository.dart';
 import '../repository/food_repository.dart';
+import '../repository/home/slider_repository.dart';
 import '../repository/restaurant_repository.dart';
 import '../repository/resturant/popular_reatauran_repository.dart';
 import '../repository/settings_repository.dart';
-import '../repository/slider_repository.dart';
 
 class HomeController extends ControllerMVC {
   List<Category> categories = <Category>[];
@@ -35,12 +35,25 @@ class HomeController extends ControllerMVC {
   }
 
   Future<void> listenForSlides() async {
-    final Stream<Slide> stream = await getSlides();
-    stream.listen((Slide _slide) {
-      setState(() => slides.add(_slide));
-    }, onError: (a) {
-      print(a);
-    }, onDone: () {});
+    print("mElkerm Strart to fetch the slides in the controller");
+
+    try {
+      final List<Slide> data = (await getSlides());
+      setState(() {
+        slides = data;
+        print("mElkerm get the sliders in the controller");
+
+      });
+    } catch (e) {
+      print("mElkerm Error loading slides: $e");
+    }
+
+    // final Stream<Slide> stream = await getSlides();
+    // stream.listen((Slide _slide) {
+    //   setState(() => slides.add(_slide));
+    // }, onError: (a) {
+    //   print(a);
+    // }, onDone: () {});
   }
 
   Future<void> listenForCategories() async {
