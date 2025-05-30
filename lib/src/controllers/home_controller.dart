@@ -12,6 +12,7 @@ import '../models/slide.dart';
 import '../repository/category_repository.dart';
 import '../repository/food_repository.dart';
 import '../repository/restaurant_repository.dart';
+import '../repository/resturant/popular_reatauran_repository.dart';
 import '../repository/settings_repository.dart';
 import '../repository/slider_repository.dart';
 
@@ -19,6 +20,7 @@ class HomeController extends ControllerMVC {
   List<Category> categories = <Category>[];
   List<Slide> slides = <Slide>[];
   List<Restaurant> topRestaurants = <Restaurant>[];
+  bool getPopularRestaurants = false;
   List<Restaurant> popularRestaurants = <Restaurant>[];
   List<Review> recentReviews = <Review>[];
   List<Food> trendingFoods = <Food>[];
@@ -57,11 +59,22 @@ class HomeController extends ControllerMVC {
     }, onError: (a) {}, onDone: () {});
   }
 
+  /// cahnge the stream to single request based on new repository
   Future<void> listenForPopularRestaurants() async {
-    final Stream<Restaurant> stream = await getPopularRestaurants(deliveryAddress.value);
-    stream.listen((Restaurant _restaurant) {
-      setState(() => popularRestaurants.add(_restaurant));
-    }, onError: (a) {}, onDone: () {});
+    getPopularRestaurants = false;
+    popularRestaurants = await fetchPopularRestaurants().then((onValue){
+      getPopularRestaurants = true;
+      return onValue;
+    }).catchError((error) {
+      print("Error fetching popular restaurants: $error");
+      return <Restaurant>[];
+    });
+    setState((){});
+
+    // final Stream<Restaurant> stream = await getPopularRestaurants(deliveryAddress.value);
+    // stream.listen((Restaurant _restaurant) {
+    //   setState(() => popularRestaurants.add(_restaurant));
+    // }, onError: (a) {}, onDone: () {});
   }
 
   Future<void> listenForRecentReviews() async {

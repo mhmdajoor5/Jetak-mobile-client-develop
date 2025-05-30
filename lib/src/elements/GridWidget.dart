@@ -7,8 +7,9 @@ import 'grid_card_widget.dart' show GridCardWidget;
 class GridWidget extends StatelessWidget {
   final List<Restaurant> restaurantsList;
   final String heroTag;
+  final int itemCount;
 
-  GridWidget({Key? key, required this.restaurantsList, required this.heroTag}) : super(key: key);
+  GridWidget({Key? key, required this.restaurantsList, required this.heroTag , this.itemCount = -1}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +32,8 @@ class GridWidget extends StatelessWidget {
       mainAxisSpacing: 15,
       crossAxisSpacing: 15,
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: restaurantsList.length,
+      physics: BouncingScrollPhysics(),
+      itemCount: itemCount == -1 ? restaurantsList.length : itemCount,
       itemBuilder: (context, index) {
         return GridCardWidget(restaurant: restaurantsList[index]);
 
