@@ -66,24 +66,37 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: CachedNetworkImage(
+              child: (widget.food.image?.thumb != null && widget.food.image!.thumb!.isNotEmpty)
+                  ? CachedNetworkImage(
                 height: 80,
                 width: 80,
                 fit: BoxFit.cover,
-                imageUrl: widget.food.image?.thumb ?? '',
-                placeholder: (context, url) =>
-                    Image.asset(
-                      'assets/img/loading.gif',
-                      height: 80,
-                      width: 80,
-                      fit: BoxFit.cover,
-                    ),
-                errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, ),
-
-                // errorWidget: (context, url, error) => Icon(Icons.error),
+                imageUrl: widget.food.image!.thumb!,
+                placeholder: (context, url) => Image.asset(
+                  'assets/img/loading.gif',
+                  height: 80,
+                  width: 80,
+                  fit: BoxFit.cover,
+                ),
+                errorWidget: (context, url, error) {
+                  print("Error loading image: $url - $error");
+                  return Image.asset(
+                    'assets/img/logo.png',
+                    fit: BoxFit.fill,
+                    height: 80,
+                    width: 80,
+                  );
+                },
+              )
+                  : Container(
+                height: 80,
+                width: 80,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-            ),
-            SizedBox(width: 10),
+            ),            SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
