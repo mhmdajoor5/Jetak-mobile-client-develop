@@ -91,7 +91,7 @@ class RestaurantAppBar extends StatelessWidget {
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
                   child: IconButton(
-                    icon: SvgPicture.asset('assets/icons/heart.svg'),
+                    icon: SvgPicture.asset('assets/img/heart.svg'),
                     onPressed: () {},
                   ),
                 ),

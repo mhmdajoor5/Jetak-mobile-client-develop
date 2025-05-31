@@ -46,33 +46,195 @@ class RestaurantDetailsSection extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                SvgPicture.asset('assets/img/star.svg'),
-                const SizedBox(width: 6),
-                Text(
-                  con.restaurant?.rate ?? '0.0',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey.shade500,
+                Flexible(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Icon(Icons.star, size: 14, color: Colors.amber),
+                      SvgPicture.asset('assets/img/star.svg',),
+                      SizedBox(width: 6),
+                      Text(
+                        con.restaurant!.rate ?? '0.0',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey.shade500,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 10),
-                Container(width: 1, height: 16, color: Colors.grey.shade300),
-                const SizedBox(width: 10),
-                SvgPicture.asset('assets/img/routing.svg'),
-                const SizedBox(width: 4),
-                Text(
-                  Helper.getDistance(
-                    con.restaurant!.distance,
-                    Helper.of(context).trans(setting.value.distanceUnit),
+                SizedBox(width: 10),
+                Container(
+                  height: 16,
+                  width: 1,
+                  color: Colors.grey.shade300,
+                ),
+                SizedBox(width: 8),
+                Flexible(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // FaIcon(FontAwesomeIcons.route, size: 14, color: Colors.grey.shade500),
+                      SvgPicture.asset('assets/img/routing.svg',),
+
+                      SizedBox(width: 4),
+                      Text(
+                        Helper.getDistance(
+                          con.restaurant!.distance,
+                          Helper.of(context).trans(setting.value.distanceUnit),
+                        ),
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey.shade500,
+                        ),
+                      ),
+                    ],
                   ),
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey.shade500,
+                ),
+                SizedBox(width: 8),
+                Container(
+                  height: 16,
+                  width: 1,
+                  color: Colors.grey.shade300,
+                ),
+                SizedBox(width: 8),
+                Flexible(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.schedule, size: 14, color: Colors.grey.shade500),
+                      SizedBox(width: 4),
+                      Text(
+                        con.restaurant!.closed!
+                            ? S.of(context).closed
+                            : S.of(context).open_until(con.restaurant?.closingTime ?? '22:00'),
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey.shade500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 8),
+                Container(
+                  height: 16,
+                  width: 1,
+                  color: Colors.grey.shade300,
+                ),
+                SizedBox(width: 8),
+                GestureDetector(
+                  onTap: () {
+                    print('More info tapped!');
+                  },
+                  child: Text(
+                    S.of(context).more,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff26386A),
+                      height: 1.6,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 20,),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: Colors.grey.shade200, width: 2.0),
+                    ),
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                      },
+                      icon:SvgPicture.asset('assets/img/truck-fast2.svg',),
+                      label: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          //SizedBox(width: 5),
+                          Text(
+                            'Delivery 20–30 mnt',
+                            style: TextStyle(color: Colors.black87, fontSize: 14),
+                          ),
+                          //SizedBox(width: 5),
+                          Icon(Icons.keyboard_arrow_down, color: Colors.black87,size: 23,),
+                        ],
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Color(0xFFF0F0F0),
+                        side: BorderSide(color: Colors.white, width: 5.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                        fixedSize: Size.fromHeight(60),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 12),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                    border: Border.all(color: Colors.white, width: 5.0),
+                  ),
+                  child: CircleAvatar(
+                    radius: 24,
+                    backgroundColor: Colors.transparent,
+                    child: IconButton(
+                      icon:SvgPicture.asset('assets/img/user-cirlce-add.svg',height: 25,width: 25,),
+                      onPressed: () {
+                        // Add your onPressed logic here
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(width: 12),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                    border: Border.all(color: Colors.white, width: 5.0),
+                  ),
+                  child: CircleAvatar(
+                    radius: 24,
+                    backgroundColor: Colors.transparent,
+                    child: IconButton(
+                      icon: SvgPicture.asset('assets/img/share.svg',color: Colors.black87,),
+                      onPressed: () {
+                        // Add your onPressed logic here
+                      },
+                    ),
                   ),
                 ),
               ],
