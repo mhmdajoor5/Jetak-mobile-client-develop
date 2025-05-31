@@ -1,16 +1,18 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/restaurant_controller.dart';
 import '../elements/CircularLoadingWidget.dart';
-
 // import '../elements/DrawerWidget.dart'; // لم تعد مستخدمة في هذا الجزء
 import '../elements/FoodItemWidget.dart';
-
 // import '../elements/FoodsCarouselWidget.dart'; // لم تعد مستخدمة في هذا الجزء
 // import '../elements/SearchBarWidget.dart'; // لم تعد مستخدمة في هذا الجزء
 // import '../elements/ShoppingCartButtonWidget.dart'; // لم تعد مستخدمة في هذا الجزء
+import '../models/category.dart';
 import '../models/food.dart';
 import '../models/restaurant.dart';
 import '../models/route_argument.dart';
@@ -22,7 +24,7 @@ class MenuWidget extends StatefulWidget {
   final GlobalKey<ScaffoldState>? parentScaffoldKey;
 
   MenuWidget({Key? key, this.parentScaffoldKey, this.routeArgument})
-    : super(key: key);
+      : super(key: key);
 }
 
 class _MenuWidgetState extends StateMVC<MenuWidget> {
@@ -35,7 +37,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
   @override
   void initState() {
     _con.restaurant = widget.routeArgument?.param as Restaurant;
-    // _con.listenForTrendingFoods(_con.restaurant!.id);
+    _con.listenForTrendingFoods(_con.restaurant!.id);
     _con.listenForCategories(_con.restaurant!.id);
     // selectedCategories = ['0'];
     // _con.listenForFoods(_con.restaurant!.id, 1);
@@ -55,55 +57,61 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
 
-          Column(
+          _con.categories.isEmpty
+              ? CircularLoadingWidget(height: 250)
+              : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ..._con.categories.map((category) {
-                final foods = category.foods ?? [];
-
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
-                      child: Text(
-                        category.name ?? '',
-                        style: Theme.of(context).textTheme.headlineMedium
-                            ?.copyWith(fontWeight: FontWeight.w700),
+            children: _con.categories.map((category) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    child: Text(
+                      category.name ?? '',
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
-                    if (foods.isEmpty)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(S.of(context).no_items_in_this_category),
-                      )
-                    else
-                      ListView.separated(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 20,
-                        ),
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: foods.length,
-                        separatorBuilder: (context, index) => const SizedBox(height: 10),
-                        itemBuilder: (context, index) {
-                          final food = foods[index];
-                          return FoodItemWidget(
-                            heroTag: 'menu_food_${food.id}_${category.id}',
-                            food: food,
-                            onAdd: () {},
-                          );
-                        },
-                      ),
-                    const SizedBox(height: 30),
-                  ],
-                );
-              }).toList(),
-            ],
+                  ),
+                  FutureBuilder<List<Food>>(
+                    future: _con.getFoodsByCategoryId(category.id!),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularLoadingWidget(height: 100);
+                      } else if (snapshot.hasError) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text('Error: ${snapshot.error}'),
+                        );
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(S.of(context).no_items_in_this_category),
+                        );
+                      } else {
+                        return ListView.separated(
+                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: snapshot.data!.length,
+                          separatorBuilder: (context, index) =>
+                              SizedBox(height: 10),
+                          itemBuilder: (context, index) {
+                            Food food = snapshot.data![index];
+                            return FoodItemWidget(
+                              heroTag: 'menu_food_${food.id}_${category.id}',
+                              food: food, onAdd: () {  },
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
+                  SizedBox(height: 30),
+                ],
+              );
+            }).toList(),
           ),
         ],
       ),

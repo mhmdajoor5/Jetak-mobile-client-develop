@@ -89,7 +89,7 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
                         return SizedBox(height: 10);
                       },
                       itemBuilder: (context, index) {
-                        return FoodItemWidget(heroTag: 'search_list', food: _con.foods.elementAt(index), onAdd: () {  },);
+                        return FoodItemWidget(heroTag: 'search_list', food: _con.foods.elementAt(index), onAdd: ( ) {  }, );
                       },
                     ),
                     Padding(

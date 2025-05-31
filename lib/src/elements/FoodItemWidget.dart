@@ -10,6 +10,7 @@ class FoodItemWidget extends StatefulWidget {
   final String heroTag;
   final Food food;
   final VoidCallback onAdd;
+  //final Function(Food) onAdd;
 
   const FoodItemWidget({Key? key, required this.food, required this.heroTag,
    required this.onAdd,
@@ -20,15 +21,20 @@ class FoodItemWidget extends StatefulWidget {
 }
 
 class _FoodItemWidgetState extends State<FoodItemWidget> {
-  int cartCount = 0;
-  double totalPrice = 0;
-
-  void _addToCart() {
-    setState(() {
-      cartCount++;
-      totalPrice += widget.food.price;
-    });
+  void _handleAdd() {
+    FoodController().addToCart(widget.food);
+    widget.onAdd();
   }
+  // int cartCount = 0;
+  // double totalPrice = 0.0;
+  // List<Food> cartItems = [];
+  //
+  // void _addToCart() {
+  //   setState(() {
+  //     cartCount++;
+  //     totalPrice += widget.food.price;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -149,13 +155,16 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
                         width: 24,
                         height: 24,
                         child: GestureDetector(
-                          onTap: () {
-                              FoodController().addToCart(widget.food);
-                              _addToCart();
-                          },
                           // onTap: () {
-                          //   widget.onAdd();
+                          //   setState(() {
+                          //     cartCount++;
+                          //     totalPrice += widget.food.price;
+                          //     cartItems.add(widget.food);
+                          //   });
+                          //   FoodController().addToCart(widget.food);
+                          //   _addToCart();
                           // },
+                          onTap: _handleAdd,
                           child: Container(
                             decoration: BoxDecoration(
                               color: Color(0xFF26386A),

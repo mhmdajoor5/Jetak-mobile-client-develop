@@ -4,9 +4,6 @@ import '../../../generated/l10n.dart';
 import '../../controllers/home_controller.dart';
 import '../../elements/GridWidget.dart';
 
-/// mElkerm : Bottom nav bar item popular resturant
-
-
 class RestaurantsWidget extends StatefulWidget {
   final GlobalKey<ScaffoldState>? parentScaffoldKey;
 
@@ -54,17 +51,11 @@ class _RestaurantsWidgetState extends StateMVC<RestaurantsWidget> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
             children: [
-              _con.getPopularRestaurants? GridWidget(
+              GridWidget(
                 restaurantsList: _con.popularRestaurants,
                 heroTag: 'home_restaurants',
-                // itemCount: 6,
                 // shrinkWrap: true,
                 // isScrollable: false,
-              ) : Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child:CircularProgressIndicator(),
-                ),
               ),
             ],
           ),
