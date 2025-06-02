@@ -21,6 +21,8 @@ class DeliveryPickupController extends CartController {
   PaymentMethodList? list;
   List<model.Address> addresses = [];
 
+  String userDeliverAddress = '';
+
   DeliveryPickupController() {
     scaffoldKey = GlobalKey<ScaffoldState>();
     super.listenForCarts();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'src/controllers/delivery_pickup_controller.dart';
 import 'src/models/credit_card.dart';
 import 'src/pages/icredit_payment_page.dart';
 
@@ -141,9 +142,11 @@ class RouteGenerator {
           builder: (_) => PaymentMethodsWidget(routeArgument: args),
         );
       case '/DeliveryAddresses':
+        final List<dynamic> arguments = args is List ? args : [false, DeliveryPickupController()];
         return MaterialPageRoute(
           builder: (_) => DeliveryAddressesWidget(
-            shouldChooseDeliveryHere: args is bool ? args : false,
+            shouldChooseDeliveryHere: arguments[0] as bool,
+            conDeliverPickupController: arguments[1] as DeliveryPickupController,
           ),
         );
       case '/DeliveryPickup':

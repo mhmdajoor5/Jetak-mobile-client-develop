@@ -85,7 +85,9 @@ class _DeliveryPickupWidgetState extends State<DeliveryPickupWidget> {
               const SizedBox(height: 24),
               if (selectedTap == 1) ...[
                 _buildAddressField(TextEditingController(), () async {
-                  var address = await Navigator.of(context).pushNamed('/DeliveryAddresses', arguments: true);
+                  var address = await Navigator.of(
+                    context,
+                  ).pushNamed('/DeliveryAddresses', arguments: [true,_con]);
                   if (address != null) {
                     setState(() {
                       _con.deliveryAddress = address as Address;
@@ -101,7 +103,10 @@ class _DeliveryPickupWidgetState extends State<DeliveryPickupWidget> {
                 ),
               ],
               const SizedBox(height: 24),
-              Text(S.of(context).payment_method, style: AppTextStyles.font16W600Black),
+              Text(
+                S.of(context).payment_method,
+                style: AppTextStyles.font16W600Black,
+              ),
               const SizedBox(height: 12),
               PaymentMethodCard(
                 title: S.of(context).credit_card,
@@ -119,7 +124,10 @@ class _DeliveryPickupWidgetState extends State<DeliveryPickupWidget> {
               const SizedBox(height: 16),
               _buildPromoCodeField(TextEditingController()),
               const SizedBox(height: 24),
-              Text(S.of(context).add_courier_tip, style: AppTextStyles.font16W600Black),
+              Text(
+                S.of(context).add_courier_tip,
+                style: AppTextStyles.font16W600Black,
+              ),
               const SizedBox(height: 12),
               CourierTip(
                 values: [0, 1, 2, 10],
@@ -164,7 +172,10 @@ class _DeliveryPickupWidgetState extends State<DeliveryPickupWidget> {
   Widget _buildAddressField(TextEditingController controller, VoidCallback? onChangePressed) {
     return CustomTextField(
       controller: controller,
-      lableText: S.of(context).address,
+      lableText:
+           _con.userDeliverAddress == ''
+              ? S.of(context).address
+              : _con.userDeliverAddress.toString(),
       prefix: SvgPicture.asset(
         'assets/img/location.svg',
         width: 18,
