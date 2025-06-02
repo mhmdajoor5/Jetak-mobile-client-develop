@@ -1,5 +1,7 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -16,6 +18,9 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends StateMVC<LoginWidget> {
+  // final GoogleSignIn googleSignIn = GoogleSignIn(
+  //   clientId: '263784919474-1puhiq82690jqq2dn5354veeprjpclkh.apps.googleusercontent.com', // ← ضع هنا الـ Client ID الصحيح من Google Console
+  // );
   late UserController _con;
 
   _LoginWidgetState() : super(UserController()) {
@@ -24,9 +29,21 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
   @override
   void initState() {
     super.initState();
+    getDeviceToken();
     if (userRepo.currentUser.value?.apiToken != null) {
       Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
     }
+  }
+
+  void getDeviceToken() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    String? token = await messaging.getToken();
+    print('Device Token: $token');
+
+    // if (token != null) {
+    //   final snackBar = SnackBar(content: Text("Device Token: $token"));
+    //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    // }
   }
 
   @override

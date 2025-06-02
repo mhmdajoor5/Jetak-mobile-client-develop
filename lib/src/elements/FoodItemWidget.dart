@@ -22,7 +22,7 @@ class FoodItemWidget extends StatefulWidget {
 
 class _FoodItemWidgetState extends State<FoodItemWidget> {
   void _handleAdd() {
-    FoodController().addToCart(widget.food);
+    //FoodController().addToCart(widget.food);
     widget.onAdd();
   }
   // int cartCount = 0;

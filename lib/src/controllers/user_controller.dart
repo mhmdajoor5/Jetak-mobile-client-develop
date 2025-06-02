@@ -8,6 +8,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
@@ -180,26 +181,50 @@ class UserController extends ControllerMVC {
   Future<void> loginWithGoogle() async {
     if (context == null) return;
     _showLoader();
+
     try {
-      final account = await GoogleSignIn().signIn();
-      if (account == null) throw 'canceled';
+      final googleSignIn = GoogleSignIn();
+      final account = await googleSignIn.signIn();
+      if (account == null) throw 'Login cancelled';
+
       final auth = await account.authentication;
-      final token = auth.idToken;
-      final response = await http.post(
-        Uri.parse('https://your.api.com/social-login/google'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'token': token}),
+      if (auth.accessToken == null || auth.idToken == null) {
+        throw 'Missing token(s)';
+      }
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: auth.accessToken,
+        idToken: auth.idToken,
       );
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      print('Access token: ${auth.accessToken}');
+      print('ID token: ${auth.idToken}');
+
+      final response = await http.post(
+        Uri.parse('https://carrytechnologies.co/api/login/social/google'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'provider': 'google',
+          'token': auth.accessToken,
+        }),
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
       if (response.statusCode == 200) {
         _hideLoader();
         _showSnackBar(S.of(context!).login_successful);
         Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
       } else {
-        throw 'error';
+        print('Server error: ${response.body}');
+        throw 'Server error: ${response.body}';
       }
     } catch (e) {
       _hideLoader();
-      _showSnackBar('Google login failed');
+      _showSnackBar('فشل تسجيل الدخول باستخدام Google');
+      print('Login error: $e');
     }
   }
 
@@ -221,7 +246,8 @@ class UserController extends ControllerMVC {
       final response = await http.post(
         Uri.parse('https://your.api.com/social-login/facebook'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'token': token}),
+        body: jsonEncode({
+          'token': token}),
       );
 
       if (response.statusCode == 200) {

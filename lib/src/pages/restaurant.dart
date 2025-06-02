@@ -62,8 +62,10 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
       } else {
         _cart.add(Cart(food: food, quantity: 1));
       }
+      print('تمت الإضافة. العدد: $cartCount، السعر: $totalPrice');
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -187,16 +189,16 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                             height: 60,
                             child: CircleAvatar(
                               backgroundColor: Colors.white,
-                              radius: 50,
+                              radius: 30,
                               child: IconButton(
-                                icon: SvgPicture.asset(
-                                  'assets/icons/heart.svg',
+                                icon:
+                                SvgPicture.asset(
+                                  'assets/img/heart.svg',
                                 ),
                                 onPressed: () {},
                               ),
                             ),
                           ),
-
                         ],
                       ),
                     ),
@@ -419,7 +421,7 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                                   radius: 24,
                                   backgroundColor: Colors.transparent,
                                   child: IconButton(
-                                    icon: SvgPicture.asset('assets/img/share.svg',color: Colors.black87,),
+                                    icon: SvgPicture.asset('assets/img/share_social_icon.svg',height: 25,width: 25,),
                                     onPressed: () {
                                       // Add your onPressed logic here
                                     },

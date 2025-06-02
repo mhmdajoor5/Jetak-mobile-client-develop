@@ -12,7 +12,20 @@
           "package_name": "com.carryeats.customer"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "651078762961-5g4pqk4sab1kjap08cad1ulljh5tvb79.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carryeats.customer",
+            "certificate_hash": "a027d88f242cee82e2f655558375a021cedd74ca"
+          }
+        },
+        {
+          "client_id": "651078762961-o6a07j1vgesm6jrbs813ul6u6j3mq85c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDSJvSnckxw1YY04qzvuvXQklq_pI25KqQ"
@@ -23,7 +36,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651078762961-o6a07j1vgesm6jrbs813ul6u6j3mq85c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "651078762961-2tp1mn4j200i1dp64ldks931pgik0uli.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.carry.carrydriver"
+              }
+            }
+          ]
         }
       }
     },
@@ -34,7 +59,12 @@
           "package_name": "com.carryeats.manager"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "651078762961-o6a07j1vgesm6jrbs813ul6u6j3mq85c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDSJvSnckxw1YY04qzvuvXQklq_pI25KqQ"
@@ -45,7 +75,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651078762961-o6a07j1vgesm6jrbs813ul6u6j3mq85c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "651078762961-2tp1mn4j200i1dp64ldks931pgik0uli.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.carry.carrydriver"
+              }
+            }
+          ]
         }
       }
     },
@@ -56,7 +98,12 @@
           "package_name": "com.smartersvision.food_delivery_owner"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "651078762961-o6a07j1vgesm6jrbs813ul6u6j3mq85c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDSJvSnckxw1YY04qzvuvXQklq_pI25KqQ"
@@ -67,7 +114,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651078762961-o6a07j1vgesm6jrbs813ul6u6j3mq85c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "651078762961-2tp1mn4j200i1dp64ldks931pgik0uli.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.carry.carrydriver"
+              }
+            }
+          ]
         }
       }
     },
@@ -78,7 +137,12 @@
           "package_name": "com.zeidat.food_delivery"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "651078762961-o6a07j1vgesm6jrbs813ul6u6j3mq85c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDSJvSnckxw1YY04qzvuvXQklq_pI25KqQ"
@@ -89,7 +153,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651078762961-o6a07j1vgesm6jrbs813ul6u6j3mq85c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "651078762961-2tp1mn4j200i1dp64ldks931pgik0uli.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.carry.carrydriver"
+              }
+            }
+          ]
         }
       }
     },
@@ -100,7 +176,12 @@
           "package_name": "com.zeidat.food_delivery_owner"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "651078762961-o6a07j1vgesm6jrbs813ul6u6j3mq85c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDSJvSnckxw1YY04qzvuvXQklq_pI25KqQ"
@@ -111,7 +192,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651078762961-o6a07j1vgesm6jrbs813ul6u6j3mq85c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "651078762961-2tp1mn4j200i1dp64ldks931pgik0uli.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.carry.carrydriver"
+              }
+            }
+          ]
         }
       }
     },
@@ -122,7 +215,12 @@
           "package_name": "com.zeidat.foodmanager"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "651078762961-o6a07j1vgesm6jrbs813ul6u6j3mq85c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDSJvSnckxw1YY04qzvuvXQklq_pI25KqQ"
@@ -133,7 +231,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651078762961-o6a07j1vgesm6jrbs813ul6u6j3mq85c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "651078762961-2tp1mn4j200i1dp64ldks931pgik0uli.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.carry.carrydriver"
+              }
+            }
+          ]
         }
       }
     },
@@ -144,7 +254,12 @@
           "package_name": "com.zeidat.jetakdelivery"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "651078762961-o6a07j1vgesm6jrbs813ul6u6j3mq85c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDSJvSnckxw1YY04qzvuvXQklq_pI25KqQ"
@@ -155,7 +270,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651078762961-o6a07j1vgesm6jrbs813ul6u6j3mq85c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "651078762961-2tp1mn4j200i1dp64ldks931pgik0uli.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.carry.carrydriver"
+              }
+            }
+          ]
         }
       }
     }
