@@ -4,6 +4,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/delivery_addresses_controller.dart';
+import '../controllers/delivery_pickup_controller.dart';
 import '../elements/CircularLoadingWidget.dart';
 import '../elements/DeliveryAddressDialog.dart';
 import '../elements/DeliveryAddressesItemWidget.dart';
@@ -15,8 +16,10 @@ import '../models/route_argument.dart';
 class DeliveryAddressesWidget extends StatefulWidget {
   final RouteArgument? routeArgument;
   final bool shouldChooseDeliveryHere ;
+  late DeliveryPickupController conDeliverPickupController ;
 
-  DeliveryAddressesWidget({Key? key, this.routeArgument, required this.shouldChooseDeliveryHere}) : super(key: key);
+
+  DeliveryAddressesWidget({Key? key, this.routeArgument, required this.shouldChooseDeliveryHere , required this.conDeliverPickupController}) : super(key: key);
 
   @override
   _DeliveryAddressesWidgetState createState() => _DeliveryAddressesWidgetState();
@@ -61,8 +64,8 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
                 child: ListTile(
                   leading: Icon(Icons.map, color: Theme.of(context).hintColor),
                   title: Text(
-                    S.of(context).delivery_addresses,
-                    style: Theme.of(context).textTheme.headlineLarge
+                      S.of(context).delivery_addresses,
+                      style: Theme.of(context).textTheme.headlineLarge
                   ),
                   subtitle: Text(
                     S.of(context).long_press_to_edit_item_swipe_item_to_delete_it,
@@ -166,6 +169,13 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
           padding: const EdgeInsets.symmetric(horizontal: 80.0,vertical: 10),
           child: ElevatedButton(
             onPressed: () {
+              setState((){
+                print("mElkerm : address before update -> ${widget.conDeliverPickupController.userDeliverAddress}");
+                widget.conDeliverPickupController.userDeliverAddress = selectedAddress!.address.toString();
+                print("mElkerm : address after update -> ${widget.conDeliverPickupController.userDeliverAddress}");
+                // _conDeliverPickupController.deliveryAddress = selectedAddress;
+                // _conDeliverPickupController.userDeliverAddress = selectedAddress!.address.toString();
+              });
               Navigator.of(context).pop(selectedAddress); // Pass back the selected address
             },
             style: ElevatedButton.styleFrom(
