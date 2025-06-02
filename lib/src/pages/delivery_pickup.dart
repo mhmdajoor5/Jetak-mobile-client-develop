@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/delivery_pickup_controller.dart';
-import '../elements/CartBottomDetailsWidget.dart';
-import '../elements/DeliveryAddressDialog.dart';
-import '../elements/DeliveryAddressesItemWidget.dart';
-import '../elements/NotDeliverableAddressesItemWidget.dart';
-import '../elements/PickUpMethodItemWidget.dart';
-import '../elements/ShoppingCartButtonWidget.dart';
+import '../elements/back_button.dart';
+import '../elements/order_summary.dart';
+import '../elements/tip_item.dart';
+import '../elements/custom_material_button.dart';
+import '../elements/custom_tab_bar.dart';
+import '../elements/custom_text_field.dart';
+import '../elements/payment_method_card.dart';
+import '../helpers/app_colors.dart';
+import '../helpers/app_text_styles.dart';
 import '../helpers/helper.dart';
 import '../models/address.dart';
 import '../models/payment_method.dart';
@@ -17,121 +20,165 @@ import '../models/route_argument.dart';
 class DeliveryPickupWidget extends StatefulWidget {
   final RouteArgument? routeArgument;
 
-  DeliveryPickupWidget({Key? key, this.routeArgument}) : super(key: key);
+  const DeliveryPickupWidget({super.key, this.routeArgument});
 
   @override
-  _DeliveryPickupWidgetState createState() => _DeliveryPickupWidgetState();
+  State<DeliveryPickupWidget> createState() => _DeliveryPickupWidgetState();
 }
 
-class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
+int selectedTap = 1;
+String selectedPaymentMethod = '';
+double? _tipValue = 0;
+
+class _DeliveryPickupWidgetState extends State<DeliveryPickupWidget> {
   late DeliveryPickupController _con;
 
-  _DeliveryPickupWidgetState() : super(DeliveryPickupController()) {
-    _con = controller as DeliveryPickupController;
+  _DeliveryPickupWidgetState() {
+    _con = DeliveryPickupController();
   }
 
   @override
   Widget build(BuildContext context) {
     if (_con.list == null) {
-      _con.list = new PaymentMethodList(context);
-      //      widget.pickup = widget.list.pickupList.elementAt(0);
-      //      widget.delivery = widget.list.pickupList.elementAt(1);
+      _con.list = PaymentMethodList(context);
     }
-    return Scaffold(
-      key: _con.scaffoldKey,
-      bottomNavigationBar: CartBottomDetailsWidget(con: _con, deliveryPickupController: _con),
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back),
-          color: Theme.of(context).hintColor,
-        ),
-        title: Text(S.of(context).delivery_or_pickup, style: Theme.of(context).textTheme.headlineSmall?.merge(TextStyle(letterSpacing: 1.3))),
-        actions: <Widget>[new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).colorScheme.secondary)],
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 10),
-              child: ListTile(
-                contentPadding: EdgeInsets.symmetric(vertical: 0),
-                leading: Icon(Icons.domain, color: Theme.of(context).hintColor),
-                title: Text(S.of(context).pickup, maxLines: 1, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.headlineLarge),
-                subtitle: Text(S.of(context).pickup_your_food_from_the_restaurant, maxLines: 1, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.bodySmall),
-              ),
-            ),
-            PickUpMethodItem(
-              paymentMethod: _con.getPickUpMethod(),
-              onPressed: (paymentMethod) {
-                _con.togglePickUp();
-              },
-            ),
-            Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 10, left: 20, right: 10),
-                  child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(vertical: 0),
-                    trailing: TextButton(
-                      child: Text("edit"),
-                      onPressed: () async {
-                        var address = await Navigator.of(context).pushNamed('/DeliveryAddresses', arguments: true);
 
-                        if (address != null) {
-                          setState(() {
-                            _con.deliveryAddress = address as Address;
-                          });
-                        }
-                      },
-                    ),
-                    leading: Icon(Icons.map, color: Theme.of(context).hintColor),
-                    title: Text(S.of(context).delivery, maxLines: 1, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.headlineLarge),
-                  ),
-                ),
-                _con.carts.isNotEmpty && Helper.canDelivery(_con.carts[0].food!.restaurant, carts: _con.carts)
-                    ? DeliveryAddressesItemWidget(
-                      paymentMethod: _con.getDeliveryMethod(),
-                      address: _con.deliveryAddress,
-                      onPressed: (Address _address) {
-                        if (_con.deliveryAddress?.id == null || _con.deliveryAddress?.id == 'null') {
-                          DeliveryAddressDialog(
-                            context: context,
-                            address: _address,
-                            onChanged: (Address _address) {
-                              _con.addAddress(_address);
-                            },
-                          );
-                        } else {
-                          _con.toggleDelivery();
-                        }
-                      },
-                      onLongPress: (Address _address) {
-                        DeliveryAddressDialog(
-                          context: context,
-                          address: _address,
-                          onChanged: (Address _address) {
-                            _con.updateAddress(_address);
-                          },
-                        );
-                      },
-                    )
-                    : NotDeliverableAddressesItemWidget(),
-              ],
-            ),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        forceMaterialTransparency: true,
+        centerTitle: true,
+        leading: Padding(
+          padding: EdgeInsetsDirectional.only(start: 16),
+          child: CustomBackButton(onTap: () => Navigator.pop(context)),
+        ),
+        title: Text(
+          S.of(context).delivery_or_pickup,
+          style: AppTextStyles.font16W600Black,
         ),
       ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: CustomMaterialButton(onPressed: () {}),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 24),
+              CustomTabBar(
+                tabs: [
+                  TabItem(
+                    text: S.of(context).delivery,
+                    isSelected: selectedTap == 1,
+                    onPressed: () => setState(() => selectedTap = 1),
+                  ),
+                  TabItem(
+                    text: S.of(context).pickup,
+                    isSelected: selectedTap == 2,
+                    onPressed: () => setState(() => selectedTap = 2),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              if (selectedTap == 1) ...[
+                _buildAddressField(TextEditingController(), () async {
+                  var address = await Navigator.of(context).pushNamed('/DeliveryAddresses', arguments: true);
+                  if (address != null) {
+                    setState(() {
+                      _con.deliveryAddress = address as Address;
+                    });
+                  }
+                }),
+              ] else ...[
+                PaymentMethodCard(
+                  title: S.of(context).pickup,
+                  image: 'assets/img/shop.svg',
+                  isSelected: true,
+                  onTap: () {},
+                ),
+              ],
+              const SizedBox(height: 24),
+              Text(S.of(context).payment_method, style: AppTextStyles.font16W600Black),
+              const SizedBox(height: 12),
+              PaymentMethodCard(
+                title: S.of(context).credit_card,
+                image: 'assets/img/card.svg',
+                isSelected: selectedPaymentMethod.contains('credit'),
+                onTap: () => setState(() => selectedPaymentMethod = 'credit'),
+              ),
+              const SizedBox(height: 8),
+              PaymentMethodCard(
+                title: S.of(context).cash,
+                image: 'assets/img/empty-wallet.svg',
+                isSelected: selectedPaymentMethod.contains('cash'),
+                onTap: () => setState(() => selectedPaymentMethod = 'cash'),
+              ),
+              const SizedBox(height: 16),
+              _buildPromoCodeField(TextEditingController()),
+              const SizedBox(height: 24),
+              Text(S.of(context).add_courier_tip, style: AppTextStyles.font16W600Black),
+              const SizedBox(height: 12),
+              CourierTip(
+                values: [0, 1, 2, 10],
+                onValueChanged: (value) => _tipValue = value,
+              ),
+              const SizedBox(height: 24),
+              OrderSummary(
+                itemSubtotlalPrice: 30.5,
+                serviceFeePrice: 0.99,
+                deliveryPrice: 0.99,
+                promoPrice: 1.0,
+              ),
+              const SizedBox(height: 150),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPromoCodeField(TextEditingController controller) {
+    return CustomTextField(
+      lableText: S.of(context).add_a_promo_code,
+      hint: S.of(context).enter_here,
+      prefix: SvgPicture.asset(
+        'assets/img/ticket-discount.svg',
+        width: 18,
+        height: 18,
+        fit: BoxFit.scaleDown,
+        colorFilter: ColorFilter.mode(AppColors.color9D9FA4, BlendMode.srcATop),
+      ),
+      suffix: const Icon(
+        Icons.arrow_forward_ios,
+        size: 12,
+        color: AppColors.color9D9FA4,
+      ),
+      controller: controller,
+      onSuffixTapped: () {},
+    );
+  }
+
+  Widget _buildAddressField(TextEditingController controller, VoidCallback? onChangePressed) {
+    return CustomTextField(
+      controller: controller,
+      lableText: S.of(context).address,
+      prefix: SvgPicture.asset(
+        'assets/img/location.svg',
+        width: 18,
+        height: 18,
+        fit: BoxFit.scaleDown,
+      ),
+      suffix: Padding(
+        padding: const EdgeInsets.only(top: 17.5),
+        child: Text(
+          S.of(context).change,
+          style: AppTextStyles.font12W400Grey.copyWith(color: AppColors.color26386A),
+        ),
+      ),
+      onSuffixTapped: onChangePressed,
     );
   }
 }
