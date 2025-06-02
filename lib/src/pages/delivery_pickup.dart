@@ -138,12 +138,12 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                 onValueChanged: (value) => _tipValue = value,
               ),
               const SizedBox(height: 24),
-              OrderSummary(
-                itemSubtotlalPrice: 30.5,
-                serviceFeePrice: 0.99,
-                deliveryPrice: 0.99,
-                promoPrice: 1.0,
-              ),
+              // OrderSummary(
+              //   itemSubtotlalPrice: 30.5,
+              //   serviceFeePrice: 0.99,
+              //   deliveryPrice: 0.99,
+              //   promoPrice: 1.0,
+              // ),
               CartBottomDetailsWidget(con: _con, deliveryPickupController: _con),
               const SizedBox(height: 150),
             ],

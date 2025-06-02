@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../generated/l10n.dart';
 import '../controllers/cart_controller.dart';
 import '../controllers/delivery_pickup_controller.dart';
+import '../helpers/app_colors.dart';
+import '../helpers/app_text_styles.dart';
 import '../helpers/helper.dart';
 
 class CartBottomDetailsWidget extends StatelessWidget {
@@ -42,22 +44,11 @@ class CartBottomDetailsWidget extends StatelessWidget {
     return _con.carts.isEmpty
         ? SizedBox(height: 0)
         : Container(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(20),
-              topLeft: Radius.circular(20),
-              bottomLeft: Radius.circular(20),
-              bottomRight: Radius.circular(20),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(context).focusColor.withOpacity(0.15),
-                offset: Offset(0, -2),
-                blurRadius: 5.0,
-              ),
-            ],
+            color: AppColors.colorFAFAFA,
+            border: Border.all(color: AppColors.colorF1F1F1),
+            borderRadius: BorderRadius.circular(12),
           ),
           child: SizedBox(
             width: MediaQuery.of(context).size.width - 40,
@@ -65,13 +56,21 @@ class CartBottomDetailsWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
+
+                Text(
+                  S.of(context).order_summary,
+                  style: AppTextStyles.font16W600Black,
+                ),
+                SizedBox(height: 4),
+                Text(S.of(context).include_tax, style: AppTextStyles.font12W400Grey),
+                SizedBox(height: 16),
                 /// mElkerm : subTotal
                 Row(
                   children: <Widget>[
                     Expanded(
                       child: Text(
                         S.of(context).subtotal,
-                        style: Theme.of(context).textTheme.bodyLarge,
+                          style: AppTextStyles.font12W400Grey
                       ),
                     ),
                     Helper.getPrice(
@@ -90,7 +89,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
                     Expanded(
                       child: Text(
                         S.of(context).delivery_fee,
-                        style: Theme.of(context).textTheme.bodyLarge,
+                          style: AppTextStyles.font12W400Grey
                       ),
                     ),
                     if (deliveryPickupController != null &&
@@ -127,7 +126,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
                     Expanded(
                       child: Text(
                         '${S.of(context).tax} (${_con.carts[0].food!.restaurant!.defaultTax}%)',
-                        style: Theme.of(context).textTheme.bodyLarge,
+                          style: AppTextStyles.font12W400Grey
                       ),
                     ),
                     Helper.getPrice(
@@ -138,46 +137,59 @@ class CartBottomDetailsWidget extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 10),
-
-                /// mElkerm : CheckOut Button
-                Stack(
-                  fit: StackFit.loose,
-                  alignment: AlignmentDirectional.centerEnd,
-                  children: <Widget>[
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width - 40,
-                      child: MaterialButton(
-                        onPressed:
-                            _con.isLoading
-                                ? null
-                                : () {
-                                  _con.goCheckout(context);
-                                },
-                        disabledColor: Theme.of(
-                          context,
-                        ).focusColor.withOpacity(0.5),
-                        padding: EdgeInsets.symmetric(vertical: 14),
-                        color:
-                            !_con.carts[0].food!.restaurant!.closed
-                                ? Theme.of(context).colorScheme.secondary
-                                : Theme.of(context).focusColor.withOpacity(0.5),
-                        shape: StadiumBorder(),
-                        child: Text(
-                          S.of(context).checkout,
-                          textAlign: TextAlign.start,
-                          style: Theme.of(context).textTheme.bodyLarge?.merge(
-                            TextStyle(color: Theme.of(context).primaryColor),
-                          ),
-                        ),
-                      ),
+                Divider(color: AppColors.colorF1F1F1),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      S.of(context).total,
+                      style: AppTextStyles.font16W600Black,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: _buildPriceWidget(context),
-                    ),
+                    Text("\$${_con.total}", style: AppTextStyles.font16W600Black),
                   ],
                 ),
                 SizedBox(height: 10),
+
+
+                /// mElkerm : CheckOut Button
+                // Stack(
+                //   fit: StackFit.loose,
+                //   alignment: AlignmentDirectional.centerEnd,
+                //   children: <Widget>[
+                //     SizedBox(
+                //       width: MediaQuery.of(context).size.width - 40,
+                //       child: MaterialButton(
+                //         onPressed:
+                //             _con.isLoading
+                //                 ? null
+                //                 : () {
+                //                   _con.goCheckout(context);
+                //                 },
+                //         disabledColor: Theme.of(
+                //           context,
+                //         ).focusColor.withOpacity(0.5),
+                //         padding: EdgeInsets.symmetric(vertical: 14),
+                //         color:
+                //             !_con.carts[0].food!.restaurant!.closed
+                //                 ? Theme.of(context).colorScheme.secondary
+                //                 : Theme.of(context).focusColor.withOpacity(0.5),
+                //         shape: StadiumBorder(),
+                //         child: Text(
+                //           S.of(context).checkout,
+                //           textAlign: TextAlign.start,
+                //           style: Theme.of(context).textTheme.bodyLarge?.merge(
+                //             TextStyle(color: Theme.of(context).primaryColor),
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //     Padding(
+                //       padding: const EdgeInsets.symmetric(horizontal: 20),
+                //       child: _buildPriceWidget(context),
+                //     ),
+                //   ],
+                // ),
+                // SizedBox(height: 10),
               ],
             ),
           ),
@@ -220,8 +232,6 @@ class CartBottomDetailsWidget extends StatelessWidget {
     );
   }
 }
-
-
 
 /*
 if (deliveryPickupController != null &&
