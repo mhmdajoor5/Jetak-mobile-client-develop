@@ -188,14 +188,18 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                             icon: SvgPicture.asset('assets/img/google_svg_icon.svg', height: 20,width: 20,),
                             iconSize: 10,
                             onPressed: () => _con.loginWithGoogle(),
-                           // tooltip: 'تسجيل الدخول باستخدام Google',
                           ),
                           SizedBox(width: 20),
                           IconButton(
                             icon: SvgPicture.asset('assets/img/facebook_svg_icon.svg',height: 20,width: 20, ),
                             iconSize: 10,
                             onPressed: () => _con.loginWithFacebook(),
-                            //tooltip: 'تسجيل الدخول باستخدام Facebook',
+                          ),
+                          SizedBox(width: 20),
+                          IconButton(
+                            icon: SvgPicture.asset('assets/img/apple_icon.svg',height: 20,width: 20, ),
+                            iconSize: 10,
+                            onPressed: () => _con.signInWithApple(),
                           ),
                         ],
                       )
