@@ -7,7 +7,7 @@ import '../elements/CircularLoadingWidget.dart';
 import '../elements/DrawerWidget.dart';
 import '../models/restaurant.dart';
 import '../models/route_argument.dart';
-import 'restaurant.dart';
+import 'RestaurantWidget.dart';
 
 class DetailsWidget extends StatefulWidget {
   late final RouteArgument routeArgument;
