@@ -230,7 +230,7 @@ class RestaurantDetailsSection extends StatelessWidget {
                     radius: 24,
                     backgroundColor: Colors.transparent,
                     child: IconButton(
-                      icon: SvgPicture.asset('assets/img/share.svg',color: Colors.black87,),
+                      icon: SvgPicture.asset('assets/img/icon-color.svg',width: 18,),
                       onPressed: () {
                         // Add your onPressed logic here
                       },
