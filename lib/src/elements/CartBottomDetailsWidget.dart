@@ -42,13 +42,14 @@ class CartBottomDetailsWidget extends StatelessWidget {
     return _con.carts.isEmpty
         ? SizedBox(height: 0)
         : Container(
-          height: 200,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(20),
               topLeft: Radius.circular(20),
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
             ),
             boxShadow: [
               BoxShadow(

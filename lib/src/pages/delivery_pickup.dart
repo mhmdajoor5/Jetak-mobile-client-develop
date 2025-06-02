@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/delivery_pickup_controller.dart';
+import '../elements/CartBottomDetailsWidget.dart';
 import '../elements/back_button.dart';
 import '../elements/order_summary.dart';
 import '../elements/tip_item.dart';
@@ -23,18 +25,18 @@ class DeliveryPickupWidget extends StatefulWidget {
   const DeliveryPickupWidget({super.key, this.routeArgument});
 
   @override
-  State<DeliveryPickupWidget> createState() => _DeliveryPickupWidgetState();
+  _DeliveryPickupWidgetState createState() => _DeliveryPickupWidgetState();
 }
 
 int selectedTap = 1;
 String selectedPaymentMethod = '';
 double? _tipValue = 0;
 
-class _DeliveryPickupWidgetState extends State<DeliveryPickupWidget> {
+class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   late DeliveryPickupController _con;
 
-  _DeliveryPickupWidgetState() {
-    _con = DeliveryPickupController();
+  _DeliveryPickupWidgetState() : super(DeliveryPickupController()) {
+    _con = controller as DeliveryPickupController;
   }
 
   @override
@@ -44,6 +46,8 @@ class _DeliveryPickupWidgetState extends State<DeliveryPickupWidget> {
     }
 
     return Scaffold(
+
+
       appBar: AppBar(
         forceMaterialTransparency: true,
         centerTitle: true,
@@ -134,12 +138,13 @@ class _DeliveryPickupWidgetState extends State<DeliveryPickupWidget> {
                 onValueChanged: (value) => _tipValue = value,
               ),
               const SizedBox(height: 24),
-              OrderSummary(
-                itemSubtotlalPrice: 30.5,
-                serviceFeePrice: 0.99,
-                deliveryPrice: 0.99,
-                promoPrice: 1.0,
-              ),
+              // OrderSummary(
+              //   itemSubtotlalPrice: 30.5,
+              //   serviceFeePrice: 0.99,
+              //   deliveryPrice: 0.99,
+              //   promoPrice: 1.0,
+              // ),
+              CartBottomDetailsWidget(con: _con, deliveryPickupController: _con),
               const SizedBox(height: 150),
             ],
           ),

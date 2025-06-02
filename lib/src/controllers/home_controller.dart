@@ -39,16 +39,19 @@ class HomeController extends ControllerMVC {
   Future<void> listenForSlides() async {
     print("mElkerm Strart to fetch the slides in the controller");
 
-    try {
-      final List<Slide> data = (await getSlides());
-      setState(() {
-        slides = data;
-        print("mElkerm get the sliders in the controller");
+    if(slides == null || slides.isEmpty){
+      try {
+        final List<Slide> data = (await getSlides());
+        setState(() {
+          slides = data;
+          print("mElkerm get the sliders in the controller");
 
-      });
-    } catch (e) {
-      print("mElkerm Error loading slides: $e");
+        });
+      } catch (e) {
+        print("mElkerm Error loading slides: $e");
+      }
     }
+
 
     // final Stream<Slide> stream = await getSlides();
     // stream.listen((Slide _slide) {
@@ -59,15 +62,18 @@ class HomeController extends ControllerMVC {
   }
 
   Future<void> listenForCategories() async {
-
-    try {
-      final List<Category> result = await getCategories();
-      setState(() {
-        categories = result;
-      });
-    } catch (e) {
-      print('Error loading categories: $e');
+    if(categories == null || categories.isEmpty){
+      try {
+        final List<Category> result = await getCategories();
+        setState(() {
+          categories = result;
+        });
+      } catch (e) {
+        print('Error loading categories: $e');
+      }
     }
+
+
 
 
     // final Stream<Category> stream = await getCategories();
@@ -80,15 +86,19 @@ class HomeController extends ControllerMVC {
 
   Future<void> listenForTopRestaurants() async {
 
-    try {
-      final List<Restaurant> result = await getTopRestaurants();
-      setState(() {
-        topRestaurants = result;
-        print("mElkerm 5 get the Top Restaurants in the controller" + topRestaurants.length.toString() + " items found.");
-      });
-    } catch (e) {
-      print('Error loading top restaurants: $e');
+    if(topRestaurants == null || topRestaurants.isEmpty){
+      try {
+        final List<Restaurant> result = await getTopRestaurants();
+        setState(() {
+          topRestaurants = result;
+          print("mElkerm 5 get the Top Restaurants in the controller" + topRestaurants.length.toString() + " items found.");
+        });
+      } catch (e) {
+        print('Error loading top restaurants: $e');
+      }
     }
+
+
 
     // final Stream<Restaurant> stream = await getNearRestaurants(deliveryAddress.value, deliveryAddress.value);
     // stream.listen((Restaurant _restaurant) {
@@ -98,15 +108,18 @@ class HomeController extends ControllerMVC {
 
   /// cahnge the stream to single request based on new repository
   Future<void> listenForPopularRestaurants() async {
-    getPopularRestaurants = false;
-    popularRestaurants = await fetchPopularRestaurants().then((onValue){
-      getPopularRestaurants = true;
-      return onValue;
-    }).catchError((error) {
-      print("Error fetching popular restaurants: $error");
-      return <Restaurant>[];
-    });
-    setState((){});
+    if(popularRestaurants == null || popularRestaurants.isEmpty){
+      getPopularRestaurants = false;
+      popularRestaurants = await fetchPopularRestaurants().then((onValue){
+        getPopularRestaurants = true;
+        return onValue;
+      }).catchError((error) {
+        print("Error fetching popular restaurants: $error");
+        return <Restaurant>[];
+      });
+      setState((){});
+    }
+
 
     // final Stream<Restaurant> stream = await getPopularRestaurants(deliveryAddress.value);
     // stream.listen((Restaurant _restaurant) {
@@ -122,16 +135,19 @@ class HomeController extends ControllerMVC {
   // }
 
   Future<void> listenForTrendingFoods() async {
-
-
-    try {
-      final List<Food> foods = await getTrendingFoods();
-      setState(() {
-        trendingFoods = foods;
-      });
-    } catch (e) {
-      print('Error loading trending foods: $e');
+    if(trendingFoods == null || trendingFoods.isEmpty){
+      try {
+        final List<Food> foods = await getTrendingFoods();
+        setState(() {
+          trendingFoods = foods;
+        });
+      } catch (e) {
+        print('Error loading trending foods: $e');
+      }
     }
+
+
+
 
     // final Stream<Food> stream = await getTrendingFoods(deliveryAddress.value);
     // stream.listen((Food _food) {
