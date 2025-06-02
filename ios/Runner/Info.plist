@@ -116,5 +116,11 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<string>YES</string>
+	<key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+        </array>
 </dict>
 </plist>

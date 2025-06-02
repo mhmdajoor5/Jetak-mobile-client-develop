@@ -9,6 +9,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'dart:io';
 
 import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
@@ -264,30 +266,27 @@ class UserController extends ControllerMVC {
     }
   }
 
+  Future<void> signInWithApple() async {
+    if (Platform.isIOS) {
+      try {
+        final credential = await SignInWithApple.getAppleIDCredential(
+          scopes: [
+            AppleIDAuthorizationScopes.email,
+            AppleIDAuthorizationScopes.fullName,
+          ],
+        );
 
-//   Future<void> loginWithApple() async {
-//     if (context == null) return;
-//     _showLoader();
-//     try {
-//       final credential = await SignInWithApple.getAppleIDCredential(
-//         scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
-//       );
-//       final oauthCred = OAuthProvider("apple.com").credential(
-//         idToken: credential.identityToken,
-//         accessToken: credential.authorizationCode,
-//       );
-//       final userCred = await FirebaseAuth.instance.signInWithCredential(oauthCred);
-//       if (userCred.user != null) {
-//         _hideLoader();
-//         _showSnackBar(S.of(context!).login_successful);
-//         Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
-//       }
-//     } catch (e) {
-//       _hideLoader();
-//       _showSnackBar('Apple login failed');
-//     }
-//   }
-// }
+        print('User ID: ${credential.userIdentifier}');
+        print('Email: ${credential.email}');
+        print('Name: ${credential.givenName} ${credential.familyName}');
+
+      } catch (e) {
+        print('Apple Sign-In Error: $e');
+      }
+    } else {
+      print('Sign in with Apple is only available on iOS');
+    }
+  }
 
   void resetPassword() async {
     if (context == null) return;
