@@ -60,10 +60,10 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
           style: AppTextStyles.font16W600Black,
         ),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        child: CustomMaterialButton(onPressed: () {}),
-      ),
+      // floatingActionButton: Padding(
+      //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      //   child: CustomMaterialButton(onPressed: () {}),
+      // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),

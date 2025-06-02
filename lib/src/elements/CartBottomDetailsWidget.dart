@@ -6,6 +6,7 @@ import '../controllers/delivery_pickup_controller.dart';
 import '../helpers/app_colors.dart';
 import '../helpers/app_text_styles.dart';
 import '../helpers/helper.dart';
+import 'custom_material_button.dart' show CustomMaterialButton;
 
 class CartBottomDetailsWidget extends StatelessWidget {
   const CartBottomDetailsWidget({
@@ -53,16 +54,28 @@ class CartBottomDetailsWidget extends StatelessWidget {
           child: SizedBox(
             width: MediaQuery.of(context).size.width - 40,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
 
                 Text(
                   S.of(context).order_summary,
-                  style: AppTextStyles.font16W600Black,
+                  style: TextStyle(
+                    fontFamily: 'Nunito',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF272727),
+                  ),
                 ),
                 SizedBox(height: 4),
-                Text(S.of(context).include_tax, style: AppTextStyles.font12W400Grey),
+                Text(S.of(context).include_tax,
+                  style: TextStyle(
+                    fontFamily: 'Nunito',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF9D9FA4),
+                  ),
+                ),
                 SizedBox(height: 16),
                 /// mElkerm : subTotal
                 Row(
@@ -70,7 +83,12 @@ class CartBottomDetailsWidget extends StatelessWidget {
                     Expanded(
                       child: Text(
                         S.of(context).subtotal,
-                          style: AppTextStyles.font12W400Grey
+                        style: TextStyle(
+                          fontFamily: 'Nunito',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF9D9FA4),
+                        ),
                       ),
                     ),
                     Helper.getPrice(
@@ -89,7 +107,12 @@ class CartBottomDetailsWidget extends StatelessWidget {
                     Expanded(
                       child: Text(
                         S.of(context).delivery_fee,
-                          style: AppTextStyles.font12W400Grey
+                        style: TextStyle(
+                          fontFamily: 'Nunito',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF9D9FA4),
+                        ),
                       ),
                     ),
                     if (deliveryPickupController != null &&
@@ -126,13 +149,23 @@ class CartBottomDetailsWidget extends StatelessWidget {
                     Expanded(
                       child: Text(
                         '${S.of(context).tax} (${_con.carts[0].food!.restaurant!.defaultTax}%)',
-                          style: AppTextStyles.font12W400Grey
+                        style: TextStyle(
+                          fontFamily: 'Nunito',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF9D9FA4),
+                        ),
                       ),
                     ),
                     Helper.getPrice(
                       _con.taxAmount,
                       context,
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: TextStyle(
+                        fontFamily: 'Nunito',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF272727),
+                      ),
                     ),
                   ],
                 ),
@@ -143,7 +176,12 @@ class CartBottomDetailsWidget extends StatelessWidget {
                   children: [
                     Text(
                       S.of(context).total,
-                      style: AppTextStyles.font16W600Black,
+                      style: TextStyle(
+                        fontFamily: 'Nunito',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF272727),
+                      ),
                     ),
                     Text("\$${_con.total}", style: AppTextStyles.font16W600Black),
                   ],
@@ -152,44 +190,25 @@ class CartBottomDetailsWidget extends StatelessWidget {
 
 
                 /// mElkerm : CheckOut Button
-                // Stack(
-                //   fit: StackFit.loose,
-                //   alignment: AlignmentDirectional.centerEnd,
-                //   children: <Widget>[
-                //     SizedBox(
-                //       width: MediaQuery.of(context).size.width - 40,
-                //       child: MaterialButton(
-                //         onPressed:
-                //             _con.isLoading
-                //                 ? null
-                //                 : () {
-                //                   _con.goCheckout(context);
-                //                 },
-                //         disabledColor: Theme.of(
-                //           context,
-                //         ).focusColor.withOpacity(0.5),
-                //         padding: EdgeInsets.symmetric(vertical: 14),
-                //         color:
-                //             !_con.carts[0].food!.restaurant!.closed
-                //                 ? Theme.of(context).colorScheme.secondary
-                //                 : Theme.of(context).focusColor.withOpacity(0.5),
-                //         shape: StadiumBorder(),
-                //         child: Text(
-                //           S.of(context).checkout,
-                //           textAlign: TextAlign.start,
-                //           style: Theme.of(context).textTheme.bodyLarge?.merge(
-                //             TextStyle(color: Theme.of(context).primaryColor),
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //     Padding(
-                //       padding: const EdgeInsets.symmetric(horizontal: 20),
-                //       child: _buildPriceWidget(context),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 10),
+                Stack(
+                  fit: StackFit.loose,
+                  alignment: AlignmentDirectional.centerEnd,
+                  children: <Widget>[
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 40,
+                      child: CustomMaterialButton(
+                        onPressed: _con.isLoading ? null : () => _con.goCheckout(context),
+
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: _buildPriceWidget(context),
+                    ),
+                  ],
+                ),
+                // CustomMaterialButton(onPressed: () {})
+                SizedBox(height: 10),
               ],
             ),
           ),
