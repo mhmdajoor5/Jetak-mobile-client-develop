@@ -15,9 +15,11 @@ import '../elements/payment_method_card.dart';
 import '../helpers/app_colors.dart';
 import '../helpers/app_text_styles.dart';
 import '../helpers/helper.dart';
+import '../helpers/swipe_button_widget.dart';
 import '../models/address.dart';
 import '../models/payment_method.dart';
 import '../models/route_argument.dart';
+import 'order_success.dart';
 
 class DeliveryPickupWidget extends StatefulWidget {
   final RouteArgument? routeArgument;
@@ -39,14 +41,46 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
     _con = controller as DeliveryPickupController;
   }
 
+  double returnTheTotal(){
+    if (selectedTap == 2) {
+      return _con.total - _con.deliveryFee;
+    }
+
+    return _con.total;
+  }
   @override
   Widget build(BuildContext context) {
     if (_con.list == null) {
       _con.list = PaymentMethodList(context);
     }
 
+
+
     return Scaffold(
 
+      bottomNavigationBar:                     Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SwipeButtonWidget(
+          context: context,
+          numOfItems: _con.carts.length,
+          onSwipe: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder:
+                    (_) => OrderSuccessWidget(
+                  routeArgument: RouteArgument(
+                    param:
+                    selectedTap == 1
+                        ? 'Cash on Delivery'
+                        : 'Pay on Pickup',
+                  ),
+                ),
+              ),
+            );
+          },
+          totalPrice: returnTheTotal(),
+        ),
+      ),
 
       appBar: AppBar(
         forceMaterialTransparency: true,

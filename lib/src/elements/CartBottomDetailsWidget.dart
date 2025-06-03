@@ -5,6 +5,7 @@ import '../controllers/cart_controller.dart';
 import '../helpers/app_colors.dart';
 import '../helpers/app_text_styles.dart';
 import '../helpers/helper.dart';
+import '../helpers/swipe_button_widget.dart';
 import '../models/route_argument.dart';
 import '../pages/order_success.dart';
 import 'custom_material_button.dart' show CustomMaterialButton;
@@ -152,40 +153,42 @@ class CartBottomDetailsWidget extends StatelessWidget {
                 SizedBox(height: 10),
 
                 // Checkout Button
-                Stack(
-                  fit: StackFit.loose,
-                  alignment: AlignmentDirectional.centerEnd,
-                  children: <Widget>[
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width - 40,
-                      child: CustomMaterialButton(
-                        onPressed: _con.isLoading
-                            ? null
-                            : () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => OrderSuccessWidget(
-                                routeArgument: RouteArgument(
-                                  param: selectedTap == 1? 'Cash on Delivery' : 'Pay on Pickup',
-                                ),
-                              ),
-                            ),
-                          );
-                          print("mElkerm : Order Success");
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: _buildPriceWidget(context),
-                    ),
-                  ],
-                ),
+                // Stack(
+                //   fit: StackFit.loose,
+                //   alignment: AlignmentDirectional.centerEnd,
+                //   children: <Widget>[
+                //     SizedBox(
+                //       width: MediaQuery.of(context).size.width - 40,
+                //       child: CustomMaterialButton(
+                //         onPressed: _con.isLoading
+                //             ? null
+                //             : () {
+                //           Navigator.of(context).push(
+                //             MaterialPageRoute(
+                //               builder: (_) => OrderSuccessWidget(
+                //                 routeArgument: RouteArgument(
+                //                   param: selectedTap == 1? 'Cash on Delivery' : 'Pay on Pickup',
+                //                 ),
+                //               ),
+                //             ),
+                //           );
+                //           print("mElkerm : Order Success");
+                //         },
+                //       ),
+                //     ),
+                //     Padding(
+                //       padding: const EdgeInsets.symmetric(horizontal: 20),
+                //       child: _buildPriceWidget(context),
+                //     ),
+                //   ],
+                // ),
+
                 SizedBox(height: 10),
               ],
             ),
           ),
         );
+
   }
 
   Widget _buildPriceWidget(BuildContext context) {
@@ -213,4 +216,6 @@ class CartBottomDetailsWidget extends StatelessWidget {
       zeroPlaceholder: 'Free',
     );
   }
+
+
 }
