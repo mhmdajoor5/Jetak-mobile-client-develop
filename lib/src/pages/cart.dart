@@ -37,6 +37,12 @@ class _CartWidgetState extends StateMVC<CartWidget> {
     return WillPopScope(
       onWillPop: Helper.of(context).onWillPop,
       child: Scaffold(
+        // floatingActionButton: IconButton(
+        //   onPressed: () async {
+        //      _con.removeFromCart(_con.carts[0]);
+        //   },
+        //   icon: Icon(Icons.delete),
+        // ),
         key: _con.scaffoldKey,
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -162,55 +168,74 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                     ),
                                   ),
                                   SizedBox(width: 12),
-                                  Row(
+                                  Column(
                                     children: [
-                                      InkWell(
-                                        onTap:
-                                            () => _con.decrementQuantity(cart),
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: Container(
-                                          width: 36,
-                                          height: 36,
-                                          decoration: BoxDecoration(
-                                            color: Color(0xFFE0E0E0),
-                                            shape: BoxShape.circle,
+                                      Row(
+                                        children: [
+                                          InkWell(
+                                            onTap:
+                                                () => _con.decrementQuantity(
+                                                  cart,
+                                                ),
+                                            borderRadius: BorderRadius.circular(
+                                              20,
+                                            ),
+                                            child: Container(
+                                              width: 36,
+                                              height: 36,
+                                              decoration: BoxDecoration(
+                                                color: Color(0xFFE0E0E0),
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: Icon(
+                                                Icons.remove,
+                                                color: Color(0xFF9098B1),
+                                                size: 20,
+                                              ),
+                                            ),
                                           ),
-                                          child: Icon(
-                                            Icons.remove,
-                                            color: Color(0xFF9098B1),
-                                            size: 20,
+                                          SizedBox(width: 10),
+                                          Text(
+                                            cart.quantity?.toString() ?? '1',
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.titleMedium?.copyWith(
+                                              color: Color(0xFF223263),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            ),
                                           ),
-                                        ),
+                                          SizedBox(width: 10),
+                                          InkWell(
+                                            onTap:
+                                                () => _con.incrementQuantity(
+                                                  cart,
+                                                ),
+                                            borderRadius: BorderRadius.circular(
+                                              20,
+                                            ),
+                                            child: Container(
+                                              width: 36,
+                                              height: 36,
+                                              decoration: BoxDecoration(
+                                                color: Color(0xFF223263),
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: Icon(
+                                                Icons.add,
+                                                color: Colors.white,
+                                                size: 20,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      SizedBox(width: 10),
-                                      Text(
-                                        cart.quantity?.toString() ?? '1',
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.titleMedium?.copyWith(
-                                          color: Color(0xFF223263),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      SizedBox(width: 10),
-                                      InkWell(
-                                        onTap:
-                                            () => _con.incrementQuantity(cart),
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: Container(
-                                          width: 36,
-                                          height: 36,
-                                          decoration: BoxDecoration(
-                                            color: Color(0xFF223263),
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Icon(
-                                            Icons.add,
-                                            color: Colors.white,
-                                            size: 20,
-                                          ),
-                                        ),
+                                      // Spacer(),
+                                      IconButton(
+                                        onPressed: () async {
+                                          _con.removeFromCart(cart);
+                                        },
+                                        icon: Icon(Icons.delete),
                                       ),
                                     ],
                                   ),
