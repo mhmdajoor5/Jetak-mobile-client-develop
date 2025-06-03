@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'dart:io' show Platform;
 
 import '../../../generated/l10n.dart';
 import '../../controllers/user_controller.dart';

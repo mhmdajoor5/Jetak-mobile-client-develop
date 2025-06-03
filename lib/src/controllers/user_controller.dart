@@ -201,7 +201,7 @@ class UserController extends ControllerMVC {
       await FirebaseAuth.instance.signInWithCredential(credential);
 
       print('Access token: ${auth.accessToken}');
-      print('ID token: ${auth.idToken}');
+      print('ID token: ${auth.accessToken}');
 
       final response = await http.post(
         Uri.parse('https://carrytechnologies.co/api/login/social/google'),
