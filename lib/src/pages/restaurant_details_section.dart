@@ -49,87 +49,74 @@ class RestaurantDetailsSection extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 8,
+              runSpacing: 8,
               children: [
-                Flexible(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Icon(Icons.star, size: 14, color: Colors.amber),
-                      SvgPicture.asset('assets/img/star.svg',),
-                      SizedBox(width: 6),
-                      Text(
-                        con.restaurant!.rate ?? '0.0',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.grey.shade500,
-                        ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset('assets/img/star.svg'),
+                    SizedBox(width: 6),
+                    Text(
+                      con.restaurant!.rate ?? '0.0',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey.shade500,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 10),
                 Container(
                   height: 16,
                   width: 1,
                   color: Colors.grey.shade300,
                 ),
-                SizedBox(width: 8),
-                Flexible(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // FaIcon(FontAwesomeIcons.route, size: 14, color: Colors.grey.shade500),
-                      SvgPicture.asset('assets/img/routing.svg',),
-
-                      SizedBox(width: 4),
-                      Text(
-                        Helper.getDistance(
-                          con.restaurant!.distance,
-                          Helper.of(context).trans(setting.value.distanceUnit),
-                        ),
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.grey.shade500,
-                        ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset('assets/img/routing.svg'),
+                    SizedBox(width: 4),
+                    Text(
+                      Helper.getDistance(
+                        con.restaurant!.distance,
+                        Helper.of(context).trans(setting.value.distanceUnit),
                       ),
-                    ],
-                  ),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 8),
                 Container(
                   height: 16,
                   width: 1,
                   color: Colors.grey.shade300,
                 ),
-                SizedBox(width: 8),
-                Flexible(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.schedule, size: 14, color: Colors.grey.shade500),
-                      SizedBox(width: 4),
-                      Text(
-                        con.restaurant!.closed!
-                            ? S.of(context).closed
-                            : S.of(context).open_until(con.restaurant?.closingTime ?? '22:00'),
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.grey.shade500,
-                        ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.schedule, size: 14, color: Colors.grey.shade500),
+                    SizedBox(width: 4),
+                    Text(
+                      con.restaurant!.closed!
+                          ? S.of(context).closed
+                          : S.of(context).open_until(con.restaurant?.closingTime ?? '22:00'),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey.shade500,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 8),
                 Container(
                   height: 16,
                   width: 1,
                   color: Colors.grey.shade300,
                 ),
-                SizedBox(width: 8),
                 GestureDetector(
                   onTap: () {
                     print('More info tapped!');
