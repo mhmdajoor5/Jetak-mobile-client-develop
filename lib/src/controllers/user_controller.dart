@@ -9,7 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+// import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'dart:io';
 
 import '../../generated/l10n.dart';
@@ -266,27 +266,27 @@ class UserController extends ControllerMVC {
     }
   }
 
-  Future<void> signInWithApple() async {
-    if (Platform.isIOS) {
-      try {
-        final credential = await SignInWithApple.getAppleIDCredential(
-          scopes: [
-            AppleIDAuthorizationScopes.email,
-            AppleIDAuthorizationScopes.fullName,
-          ],
-        );
-
-        print('User ID: ${credential.userIdentifier}');
-        print('Email: ${credential.email}');
-        print('Name: ${credential.givenName} ${credential.familyName}');
-
-      } catch (e) {
-        print('Apple Sign-In Error: $e');
-      }
-    } else {
-      print('Sign in with Apple is only available on iOS');
-    }
-  }
+  // Future<void> signInWithApple() async {
+  //   if (Platform.isIOS) {
+  //     try {
+  //       final credential = await SignInWithApple.getAppleIDCredential(
+  //         scopes: [
+  //           AppleIDAuthorizationScopes.email,
+  //           AppleIDAuthorizationScopes.fullName,
+  //         ],
+  //       );
+  //
+  //       print('User ID: ${credential.userIdentifier}');
+  //       print('Email: ${credential.email}');
+  //       print('Name: ${credential.givenName} ${credential.familyName}');
+  //
+  //     } catch (e) {
+  //       print('Apple Sign-In Error: $e');
+  //     }
+  //   } else {
+  //     print('Sign in with Apple is only available on iOS');
+  //   }
+  // }
 
   void resetPassword() async {
     if (context == null) return;

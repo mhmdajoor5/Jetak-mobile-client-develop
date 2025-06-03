@@ -166,7 +166,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (_) => OrderSuccessWidget(
                                 routeArgument: RouteArgument(
-                                  param: 'Cash on Delivery',
+                                  param: selectedTap == 1? 'Cash on Delivery' : 'Pay on Pickup',
                                 ),
                               ),
                             ),

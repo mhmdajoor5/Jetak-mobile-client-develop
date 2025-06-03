@@ -44,7 +44,7 @@ dependencies:
   cloud_firestore: ^5.6.7 # Updated
   google_sign_in: ^6.3.0
   flutter_facebook_auth: ^7.1.2
-  sign_in_with_apple: ^5.0.0
+#  sign_in_with_apple: ^5.0.0
   http: ^1.1.0
 
   flutter_native_splash: ^2.3.10 # Updated (Note: color format "6a1b9a" should be "0x6a1b9a" or "6A1B9A" if that was an issue)
@@ -64,6 +64,7 @@ dependencies:
   # get user location
   geolocator: ^14.0.1 # Updated
   geocoding: ^3.0.0
+  flutter_swipe_button: ^2.1.3
 
 
 

@@ -5,6 +5,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../generated/l10n.dart';
 import '../controllers/cart_controller.dart';
 import '../helpers/helper.dart';
+import '../helpers/swipe_button_widget.dart';
 import '../models/route_argument.dart';
 import '../repository/settings_repository.dart';
 import '../controllers/food_controller.dart';
@@ -206,6 +207,8 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                   ),
                 ),
                 SizedBox(width: 12),
+                // swipeButtonWidget(context: context,),
+                // SizedBox(width: 12),
                 ElevatedButton(
                   onPressed: _con.isLoading ? null : () => _con.goCheckout(context),
                   style: ElevatedButton.styleFrom(

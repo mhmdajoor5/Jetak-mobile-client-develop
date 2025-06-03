@@ -199,7 +199,8 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                           IconButton(
                             icon: SvgPicture.asset('assets/img/apple_icon.svg',height: 20,width: 20, ),
                             iconSize: 10,
-                            onPressed: () => _con.signInWithApple(),
+                            onPressed: (){},
+                            // onPressed: () => _con.signInWithApple(),
                           ),
                         ],
                       )
