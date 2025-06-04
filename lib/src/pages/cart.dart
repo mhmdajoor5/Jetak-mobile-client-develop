@@ -95,152 +95,137 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                 ),
                             itemBuilder: (context, index) {
                               final cart = _con.carts[index];
-                              return Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Image.network(
-                                      cart.food?.image?.thumb ?? '',
-                                      width: 70,
-                                      height: 70,
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) =>
-                                              Container(
-                                                width: 70,
-                                                height: 70,
-                                                color: Colors.grey[200],
-                                                child: Icon(
-                                                  Icons.image,
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
+                              return Dismissible(
+                                key: ValueKey(cart.id), // Make sure cart.id is unique
+                                direction: DismissDirection.horizontal,
+                                onDismissed: (direction) {
+                                  _con.removeFromCart(cart);
+                                },
+                                background: Container(
+                                  color: Colors.redAccent,
+                                  alignment: Alignment.centerLeft,
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  child: Icon(Icons.delete, color: Colors.white),
+                                ),
+                                secondaryBackground: Container(
+                                  color: Colors.redAccent,
+                                  alignment: Alignment.centerRight,
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  child: Icon(Icons.delete, color: Colors.white),
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.network(
+                                        cart.food?.image?.thumb ?? '',
+                                        width: 70,
+                                        height: 70,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) => Container(
+                                          width: 70,
+                                          height: 70,
+                                          color: Colors.grey[200],
+                                          child: Icon(Icons.image, color: Colors.grey),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(width: 16),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          cart.food?.name ?? '',
-                                          style: Theme.of(
-                                            context,
-                                          ).textTheme.titleMedium?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xFF223263),
-                                          ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        SizedBox(height: 4),
-                                        Text(
-                                          cart.food?.description?.replaceAll(
-                                                RegExp(r'<[^>]*>|&[^;]+;'),
-                                                '',
-                                              ) ??
-                                              '',
-                                          style: Theme.of(
-                                            context,
-                                          ).textTheme.bodySmall?.copyWith(
-                                            color: Color(0xFF9098B1),
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 13,
-                                          ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        SizedBox(height: 8),
-                                        Helper.getPrice(
-                                          cart.food?.price ?? 0,
-                                          context,
-                                          style: Theme.of(
-                                            context,
-                                          ).textTheme.titleMedium?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xFF223263),
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(width: 12),
-                                  Column(
-                                    children: [
-                                      Row(
+                                    SizedBox(width: 16),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          InkWell(
-                                            onTap:
-                                                () => _con.decrementQuantity(
-                                                  cart,
-                                                ),
-                                            borderRadius: BorderRadius.circular(
-                                              20,
-                                            ),
-                                            child: Container(
-                                              width: 36,
-                                              height: 36,
-                                              decoration: BoxDecoration(
-                                                color: Color(0xFFE0E0E0),
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child: Icon(
-                                                Icons.remove,
-                                                color: Color(0xFF9098B1),
-                                                size: 20,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: 10),
                                           Text(
-                                            cart.quantity?.toString() ?? '1',
-                                            style: Theme.of(
-                                              context,
-                                            ).textTheme.titleMedium?.copyWith(
-                                              color: Color(0xFF223263),
+                                            cart.food?.name ?? '',
+                                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 16,
+                                              color: Color(0xFF223263),
                                             ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
-                                          SizedBox(width: 10),
-                                          InkWell(
-                                            onTap:
-                                                () => _con.incrementQuantity(
-                                                  cart,
-                                                ),
-                                            borderRadius: BorderRadius.circular(
-                                              20,
+                                          SizedBox(height: 4),
+                                          Text(
+                                            cart.food?.description?.replaceAll(
+                                              RegExp(r'<[^>]*>|&[^;]+;'),
+                                              '',
+                                            ) ??
+                                                '',
+                                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                              color: Color(0xFF9098B1),
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 13,
                                             ),
-                                            child: Container(
-                                              width: 36,
-                                              height: 36,
-                                              decoration: BoxDecoration(
-                                                color: Color(0xFF223263),
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child: Icon(
-                                                Icons.add,
-                                                color: Colors.white,
-                                                size: 20,
-                                              ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          SizedBox(height: 8),
+                                          Helper.getPrice(
+                                            cart.food?.price ?? 0,
+                                            context,
+                                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xFF223263),
+                                              fontSize: 18,
                                             ),
                                           ),
                                         ],
                                       ),
-                                      // Spacer(),
-                                      IconButton(
-                                        onPressed: () async {
-                                          _con.removeFromCart(cart);
-                                        },
-                                        icon: Icon(Icons.delete),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              );
+                                    ),
+                                    SizedBox(width: 12),
+                                    Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            InkWell(
+                                              onTap: () => _con.decrementQuantity(cart),
+                                              borderRadius: BorderRadius.circular(20),
+                                              child: Container(
+                                                width: 36,
+                                                height: 36,
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xFFE0E0E0),
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Icon(Icons.remove, color: Color(0xFF9098B1), size: 20),
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Text(
+                                              cart.quantity?.toString() ?? '1',
+                                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                                color: Color(0xFF223263),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            InkWell(
+                                              onTap: () => _con.incrementQuantity(cart),
+                                              borderRadius: BorderRadius.circular(20),
+                                              child: Container(
+                                                width: 36,
+                                                height: 36,
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xFF223263),
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Icon(Icons.add, color: Colors.white, size: 20),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        // IconButton(
+                                        //   onPressed: () => _con.removeFromCart(cart),
+                                        //   icon: Icon(Icons.delete),
+                                        // ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )
+                              ;
                             },
                           ),
                 ),
