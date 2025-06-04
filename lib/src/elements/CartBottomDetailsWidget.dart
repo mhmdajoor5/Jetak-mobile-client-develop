@@ -2,75 +2,75 @@ import 'package:flutter/material.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/cart_controller.dart';
-import '../controllers/delivery_pickup_controller.dart';
+import '../helpers/app_colors.dart';
+import '../helpers/app_text_styles.dart';
 import '../helpers/helper.dart';
+import '../helpers/swipe_button_widget.dart';
+import '../models/route_argument.dart';
+import '../pages/order_success.dart';
+import 'custom_material_button.dart' show CustomMaterialButton;
 
 class CartBottomDetailsWidget extends StatelessWidget {
   const CartBottomDetailsWidget({
     Key? key,
     required CartController con,
-    this.deliveryPickupController,
+    required this.selectedTap,
   }) : _con = con,
        super(key: key);
 
   final CartController _con;
-  final DeliveryPickupController? deliveryPickupController;
+  final int selectedTap;
 
   @override
   Widget build(BuildContext context) {
-    // print("mElkerm get price function !!!");
-    // print(
-    //   Helper.getPrice(
-    //     0,
-    //     context,
-    //     style: Theme.of(context).textTheme.titleMedium,
-    //     zeroPlaceholder: 'Free',
-    //   ),
-    // );
-    // print("mElkerm : delvivery fees");
-    // print(_con.carts[0].food!.restaurant!.deliveryFee);
-    // print("mElkerm get price function ???");
-    // print(
-    //   Helper.getPrice(
-    //     _con.carts[0].food!.restaurant!.deliveryFee,
-    //     context,
-    //     style: Theme.of(context).textTheme.titleMedium,
-    //     zeroPlaceholder: 'Free',
-    //   ),
-    // );
-
     return _con.carts.isEmpty
         ? SizedBox(height: 0)
         : Container(
-          height: 200,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(20),
-              topLeft: Radius.circular(20),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(context).focusColor.withOpacity(0.15),
-                offset: Offset(0, -2),
-                blurRadius: 5.0,
-              ),
-            ],
+            color: AppColors.colorFAFAFA,
+            border: Border.all(color: AppColors.colorF1F1F1),
+            borderRadius: BorderRadius.circular(12),
           ),
           child: SizedBox(
             width: MediaQuery.of(context).size.width - 40,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                /// mElkerm : subTotal
+                Text(
+                  S.of(context).order_summary,
+                  style: TextStyle(
+                    fontFamily: 'Nunito',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF272727),
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  S.of(context).include_tax,
+                  style: TextStyle(
+                    fontFamily: 'Nunito',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF9D9FA4),
+                  ),
+                ),
+                SizedBox(height: 16),
+
+                // Subtotal
                 Row(
                   children: <Widget>[
                     Expanded(
                       child: Text(
                         S.of(context).subtotal,
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: TextStyle(
+                          fontFamily: 'Nunito',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF9D9FA4),
+                        ),
                       ),
                     ),
                     Helper.getPrice(
@@ -83,104 +83,112 @@ class CartBottomDetailsWidget extends StatelessWidget {
                 ),
                 SizedBox(height: 5),
 
-                /// mElkerm : delivery Fee
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        S.of(context).delivery_fee,
-                        style: Theme.of(context).textTheme.bodyLarge,
+                // Delivery Fee – يظهر فقط إذا كانت Delivery
+                if (selectedTap == 1)
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          S.of(context).delivery_fee,
+                          style: TextStyle(
+                            fontFamily: 'Nunito',
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF9D9FA4),
+                          ),
+                        ),
                       ),
-                    ),
-                    if (deliveryPickupController != null &&
-                        deliveryPickupController!.getPickUpMethod().selected)
-                      Helper.getPrice(
-                        0,
-                        context,
-                        style: Theme.of(context).textTheme.titleMedium,
-                        zeroPlaceholder: 'Free',
-                      )
-                    else if (Helper.canDelivery(
-                      _con.carts[0].food!.restaurant!,
-                      carts: _con.carts,
-                    ))
                       Helper.getPrice(
                         _con.carts[0].food!.restaurant!.deliveryFee,
                         context,
                         style: Theme.of(context).textTheme.titleMedium,
                         zeroPlaceholder: 'Free',
-                      )
-                    else
-                      Helper.getPrice(
-                        0,
-                        context,
-                        style: Theme.of(context).textTheme.titleMedium,
-                        zeroPlaceholder: 'Free',
                       ),
-                  ],
-                ),
+                    ],
+                  ),
 
-                /// mElkerm : Tax
+                // Tax
                 Row(
                   children: <Widget>[
                     Expanded(
                       child: Text(
                         '${S.of(context).tax} (${_con.carts[0].food!.restaurant!.defaultTax}%)',
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: TextStyle(
+                          fontFamily: 'Nunito',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF9D9FA4),
+                        ),
                       ),
                     ),
                     Helper.getPrice(
                       _con.taxAmount,
                       context,
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: TextStyle(
+                        fontFamily: 'Nunito',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF272727),
+                      ),
                     ),
                   ],
                 ),
                 SizedBox(height: 10),
-
-                /// mElkerm : CheckOut Button
-                Stack(
-                  fit: StackFit.loose,
-                  alignment: AlignmentDirectional.centerEnd,
-                  children: <Widget>[
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width - 40,
-                      child: MaterialButton(
-                        onPressed:
-                            _con.isLoading
-                                ? null
-                                : () {
-                                  _con.goCheckout(context);
-                                },
-                        disabledColor: Theme.of(
-                          context,
-                        ).focusColor.withOpacity(0.5),
-                        padding: EdgeInsets.symmetric(vertical: 14),
-                        color:
-                            !_con.carts[0].food!.restaurant!.closed
-                                ? Theme.of(context).colorScheme.secondary
-                                : Theme.of(context).focusColor.withOpacity(0.5),
-                        shape: StadiumBorder(),
-                        child: Text(
-                          S.of(context).checkout,
-                          textAlign: TextAlign.start,
-                          style: Theme.of(context).textTheme.bodyLarge?.merge(
-                            TextStyle(color: Theme.of(context).primaryColor),
-                          ),
-                        ),
+                Divider(color: AppColors.colorF1F1F1),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      S.of(context).total,
+                      style: TextStyle(
+                        fontFamily: 'Nunito',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF272727),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: _buildPriceWidget(context),
-                    ),
+                    _buildPriceWidget(context),
                   ],
                 ),
+                SizedBox(height: 10),
+
+                // Checkout Button
+                // Stack(
+                //   fit: StackFit.loose,
+                //   alignment: AlignmentDirectional.centerEnd,
+                //   children: <Widget>[
+                //     SizedBox(
+                //       width: MediaQuery.of(context).size.width - 40,
+                //       child: CustomMaterialButton(
+                //         onPressed: _con.isLoading
+                //             ? null
+                //             : () {
+                //           Navigator.of(context).push(
+                //             MaterialPageRoute(
+                //               builder: (_) => OrderSuccessWidget(
+                //                 routeArgument: RouteArgument(
+                //                   param: selectedTap == 1? 'Cash on Delivery' : 'Pay on Pickup',
+                //                 ),
+                //               ),
+                //             ),
+                //           );
+                //           print("mElkerm : Order Success");
+                //         },
+                //       ),
+                //     ),
+                //     Padding(
+                //       padding: const EdgeInsets.symmetric(horizontal: 20),
+                //       child: _buildPriceWidget(context),
+                //     ),
+                //   ],
+                // ),
+
                 SizedBox(height: 10),
               ],
             ),
           ),
         );
+
   }
 
   Widget _buildPriceWidget(BuildContext context) {
@@ -192,8 +200,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
       TextStyle(color: Theme.of(context).primaryColor),
     );
 
-    if (deliveryPickupController != null &&
-        deliveryPickupController!.getPickUpMethod().selected) {
+    if (selectedTap == 2) {
       return Helper.getPrice(
         total - deliveryFee,
         context,
@@ -202,50 +209,13 @@ class CartBottomDetailsWidget extends StatelessWidget {
       );
     }
 
-    if (Helper.canDelivery(restaurant, carts: _con.carts)) {
-      return Helper.getPrice(
-        total,
-        context,
-        style: textStyle,
-        zeroPlaceholder: 'Free',
-      );
-    }
-
     return Helper.getPrice(
-      total - deliveryFee,
+      total,
       context,
       style: textStyle,
       zeroPlaceholder: 'Free',
     );
   }
+
+
 }
-
-
-
-/*
-if (deliveryPickupController != null &&
-                        deliveryPickupController!.getPickUpMethod().selected)
-                      Helper.getPrice(
-                        0,
-                        context,
-                        style: Theme.of(context).textTheme.titleMedium,
-                        zeroPlaceholder: 'Free',
-                      )
-                    else if (Helper.canDelivery(
-                      _con.carts[0].food!.restaurant!,
-                      carts: _con.carts,
-                    ))
-                      Helper.getPrice(
-                        _con.carts[0].food!.restaurant!.deliveryFee,
-                        context,
-                        style: Theme.of(context).textTheme.titleMedium,
-                        zeroPlaceholder: 'Free',
-                      )
-                    else
-                      Helper.getPrice(
-                        0,
-                        context,
-                        style: Theme.of(context).textTheme.titleMedium,
-                        zeroPlaceholder: 'Free',
-                      ),
- */

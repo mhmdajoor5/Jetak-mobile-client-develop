@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'dart:io' show Platform;
 
 import '../../../generated/l10n.dart';
 import '../../controllers/user_controller.dart';
@@ -199,7 +200,8 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                           IconButton(
                             icon: SvgPicture.asset('assets/img/apple_icon.svg',height: 20,width: 20, ),
                             iconSize: 10,
-                            onPressed: () => _con.signInWithApple(),
+                            onPressed: (){},
+                            // onPressed: () => _con.signInWithApple(),
                           ),
                         ],
                       )
