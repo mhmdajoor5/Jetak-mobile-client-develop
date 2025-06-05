@@ -356,7 +356,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                               Navigator.of(context).pushNamed("/Login");
                                             } else {
                                               if (_con.isSameRestaurants(_con.food)) {
-                                                _con.addToCart(_con.food);
+                                                _con.addToCart(_con.food , context);
                                               } else {
                                                 showDialog(
                                                   context: context,
@@ -366,7 +366,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                                       oldFood: _con.carts.elementAt(0).food!,
                                                       newFood: _con.food,
                                                       onPressed: (food, {reset = true}) {
-                                                        return _con.addToCart(_con.food, reset: true);
+                                                        return _con.addToCart(_con.food,context , reset: true);
                                                       },
                                                     );
                                                   },

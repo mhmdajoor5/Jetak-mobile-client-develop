@@ -60,7 +60,7 @@ class FoodController extends ControllerMVC {
     return carts.isEmpty || carts[0].food?.restaurant.id == food.restaurant.id;
   }
 
-  void addToCart(Food food, {bool reset = false}) async {
+  void addToCart(Food food,  BuildContext context ,{bool reset = false} ) async {
     setState(() => loadCart = true);
 
     final Cart newCart = Cart(food: food, extras: food.extras.where((e) => e.checked).toList(), quantity: quantity);
@@ -79,8 +79,8 @@ class FoodController extends ControllerMVC {
     } else {
       await addCart(newCart, reset);
       setState(() => loadCart = false);
-      ScaffoldMessenger.of(scaffoldKey.currentState!.context).showSnackBar(SnackBar(content: Text(S.of(state!.context).this_food_was_added_to_cart)));
-      Navigator.pop(scaffoldKey.currentState!.context);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).this_food_was_added_to_cart)));
+      Navigator.pop(context);
     }
   }
 
