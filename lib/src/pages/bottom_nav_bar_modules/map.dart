@@ -29,6 +29,7 @@ class _MapWidgetState extends StateMVC<MapWidget> {
   @override
   void initState() {
     super.initState();
+    _con.goCurrentLocation();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _con.goCurrentLocation();
       if (widget.routeArgument?.param is Restaurant) {
