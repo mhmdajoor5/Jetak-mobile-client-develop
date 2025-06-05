@@ -80,7 +80,7 @@ class FoodController extends ControllerMVC {
       await addCart(newCart, reset);
       setState(() => loadCart = false);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).this_food_was_added_to_cart)));
-      Navigator.pop(context);
+      // Navigator.pop(context);
     }
   }
 
