@@ -9,11 +9,13 @@ import '../models/category.dart';
 import '../models/food.dart';
 import '../models/gallery.dart';
 import '../models/restaurant.dart';
+import '../models/resturant/most_order_model.dart';
 import '../models/review.dart';
 import '../repository/category_repository.dart';
 import '../repository/food_repository.dart';
 import '../repository/gallery_repository.dart';
 import '../repository/restaurant_repository.dart';
+import '../repository/resturant/get_most_order_repo.dart';
 import '../repository/settings_repository.dart';
 
 class RestaurantController extends ControllerMVC {
@@ -37,6 +39,31 @@ class RestaurantController extends ControllerMVC {
 
   RestaurantController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
+  }
+  List<MostOrderModel> popularFoodForRest = <MostOrderModel>[];
+  bool getMostOrderDone = false;
+
+  Future<void> listenForMostOrderRest({required restId}) async {
+    print("mElkerm ##### fetching most ordered foods for restaurant: $restId");
+
+    setState(() {
+      getMostOrderDone = false;
+      popularFoodForRest = [];
+    });
+
+    try {
+      final result = await getMostOrder(restID: restId);
+      setState(() {
+        popularFoodForRest = result;
+        getMostOrderDone = true;
+      });
+      print("mElkerm ##### successfully fetched most ordered foods for restaurant");
+    } catch (error) {
+      print("mElkerm ##### Error fetching popular restaurants: $error");
+      setState(() {
+        getMostOrderDone = true;
+      });
+    }
   }
 
   Future<dynamic> listenForRestaurant({

@@ -14,7 +14,8 @@ class RestaurantWidget extends StatefulWidget {
   final RouteArgument? routeArgument;
   final GlobalKey<ScaffoldState>? parentScaffoldKey;
 
-  RestaurantWidget({Key? key, this.parentScaffoldKey, this.routeArgument}) : super(key: key);
+  RestaurantWidget({Key? key, this.parentScaffoldKey, this.routeArgument})
+    : super(key: key);
 
   @override
   _RestaurantWidgetState createState() => _RestaurantWidgetState();
@@ -47,6 +48,7 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
   void initState() {
     _con.restaurant = widget.routeArgument?.param as Restaurant;
     _con.listenForFeaturedFoods(_con.restaurant!.id!);
+    _con.listenForMostOrderRest(restId: _con.restaurant!.id!);
     super.initState();
   }
 
