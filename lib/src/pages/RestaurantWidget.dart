@@ -76,10 +76,7 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                 ),
               ],
             ),
-            RestaurantBottomCart(
-              cartCount: cartCount,
-              totalPrice: totalPrice,
-            )
+            RestaurantBottomCart()
           ],
         ),
       ),
