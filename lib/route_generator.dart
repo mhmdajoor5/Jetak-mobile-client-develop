@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'src/controllers/delivery_pickup_controller.dart';
 import 'src/models/credit_card.dart';
+import 'src/pages/Home/OffersNearYouPage.dart' show OffersNearYouPage;
 import 'src/pages/icredit_payment_page.dart';
 
 import 'src/models/restaurant.dart';
@@ -183,6 +184,8 @@ class RouteGenerator {
         return MaterialPageRoute<CreditCard>(
           builder: (_) => AddNewCardWidget(),
         );
+      case '/OffersNearYou':
+        return MaterialPageRoute(builder: (_) => OffersNearYouPage());
       case '/RazorPay':
         return MaterialPageRoute(
           builder: (_) => RazorPayPaymentWidget(
