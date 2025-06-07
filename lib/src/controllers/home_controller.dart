@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' show ScaffoldState;
 import 'package:geolocator/geolocator.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:geocoding/geocoding.dart';
@@ -19,6 +20,9 @@ import '../repository/resturant/popular_reatauran_repository.dart';
 import '../repository/settings_repository.dart';
 
 class HomeController extends ControllerMVC {
+  // Add scaffoldKey
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   List<Category> categories = <Category>[];
   List<Slide> slides = <Slide>[];
   List<Restaurant> topRestaurants = <Restaurant>[];
@@ -26,135 +30,68 @@ class HomeController extends ControllerMVC {
   List<Restaurant> popularRestaurants = <Restaurant>[];
   List<Review> recentReviews = <Review>[];
   List<Food> trendingFoods = <Food>[];
+  
+  // Loading states
+  bool isLoadingSlides = false;
+  bool isLoadingCategories = false;
+  bool isLoadingTopRestaurants = false;
+  bool isLoadingPopularRestaurants = false;
+  bool isLoadingTrendingFoods = false;
+
+  // Data loading completion state
+  bool _isDataLoaded = false;
+
+  // Getter for _isDataLoaded
+  bool get isDataLoaded => _isDataLoaded;
+
+  // Method to reset data loading state
+  void resetDataLoading() {
+    _isDataLoaded = false;
+  }
 
   HomeController() {
-    listenForTopRestaurants();
-    listenForSlides();
-    listenForTrendingFoods();
-    listenForCategories();
-    listenForPopularRestaurants();
-    // listenForRecentReviews();
+    loadAllData();
   }
 
-  Future<void> listenForSlides() async {
-    print("mElkerm Strart to fetch the slides in the controller");
+  Future<void> loadAllData() async {
+    if (_isDataLoaded) return; // Skip if already loaded
+    
+    try {
+      // Load all data in parallel
+      final results = await Future.wait([
+        getSlides(),
+        getCategories(),
+        getTopRestaurants(),
+        fetchPopularRestaurants(),
+        getTrendingFoods(),
+      ]);
 
-    if(slides == null || slides.isEmpty){
-      try {
-        final List<Slide> data = (await getSlides());
-        setState(() {
-          slides = data;
-          print("mElkerm get the sliders in the controller");
+      // Update data directly without setState
+      slides = results[0] as List<Slide>;
+      categories = results[1] as List<Category>;
+      topRestaurants = results[2] as List<Restaurant>;
+      popularRestaurants = results[3] as List<Restaurant>;
+      trendingFoods = results[4] as List<Food>;
+      getPopularRestaurants = true;
 
-        });
-      } catch (e) {
-        print("mElkerm Error loading slides: $e");
-      }
+      _isDataLoaded = true;
+      setState(() {}); // Single UI update
+    } catch (e) {
+      print('Error loading all data: $e');
+      rethrow;
     }
-
-
-    // final Stream<Slide> stream = await getSlides();
-    // stream.listen((Slide _slide) {
-    //   setState(() => slides.add(_slide));
-    // }, onError: (a) {
-    //   print(a);
-    // }, onDone: () {});
   }
 
-  Future<void> listenForCategories() async {
-    if(categories == null || categories.isEmpty){
-      try {
-        final List<Category> result = await getCategories();
-        setState(() {
-          categories = result;
-        });
-      } catch (e) {
-        print('Error loading categories: $e');
-      }
-    }
+  Future<void> refreshHome() async {
+    _isDataLoaded = false;
+    slides = [];
+    categories = [];
+    topRestaurants = [];
+    popularRestaurants = [];
+    recentReviews = [];
+    trendingFoods = [];
 
-
-
-
-    // final Stream<Category> stream = await getCategories();
-    // stream.listen((Category _category) {
-    //   setState(() => categories.add(_category));
-    // }, onError: (a) {
-    //   print(a);
-    // }, onDone: () {});
-  }
-
-  Future<void> listenForTopRestaurants() async {
-
-    if(topRestaurants == null || topRestaurants.isEmpty){
-      try {
-        final List<Restaurant> result = await getTopRestaurants();
-        setState(() {
-          topRestaurants = result;
-          print("mElkerm 5 get the Top Restaurants in the controller" + topRestaurants.length.toString() + " items found.");
-        });
-      } catch (e) {
-        print('Error loading top restaurants: $e');
-      }
-    }
-
-
-
-    // final Stream<Restaurant> stream = await getNearRestaurants(deliveryAddress.value, deliveryAddress.value);
-    // stream.listen((Restaurant _restaurant) {
-    //   setState(() => topRestaurants.add(_restaurant));
-    // }, onError: (a) {}, onDone: () {});
-  }
-
-  /// cahnge the stream to single request based on new repository
-  Future<void> listenForPopularRestaurants() async {
-    if(popularRestaurants == null || popularRestaurants.isEmpty){
-      getPopularRestaurants = false;
-      popularRestaurants = await fetchPopularRestaurants().then((onValue){
-        getPopularRestaurants = true;
-        return onValue;
-      }).catchError((error) {
-        print("Error fetching popular restaurants: $error");
-        return <Restaurant>[];
-      });
-      setState((){});
-    }
-
-
-    // final Stream<Restaurant> stream = await getPopularRestaurants(deliveryAddress.value);
-    // stream.listen((Restaurant _restaurant) {
-    //   setState(() => popularRestaurants.add(_restaurant));
-    // }, onError: (a) {}, onDone: () {});
-  }
-
-  // Future<void> listenForRecentReviews() async {
-  //   final Stream<Review> stream = await getRecentReviews();
-  //   stream.listen((Review _review) {
-  //     setState(() => recentReviews.add(_review));
-  //   }, onError: (a) {}, onDone: () {});
-  // }
-
-  Future<void> listenForTrendingFoods() async {
-    if(trendingFoods == null || trendingFoods.isEmpty){
-      try {
-        final List<Food> foods = await getTrendingFoods();
-        setState(() {
-          trendingFoods = foods;
-        });
-      } catch (e) {
-        print('Error loading trending foods: $e');
-      }
-    }
-
-
-
-
-    // final Stream<Food> stream = await getTrendingFoods(deliveryAddress.value);
-    // stream.listen((Food _food) {
-    //   setState(() => trendingFoods.add(_food));
-    // }, onError: (a) {
-    //   print(a);
-    // }, onDone: () {});
+    await loadAllData();
   }
 
   void requestForCurrentLocation(BuildContext context) {
@@ -168,26 +105,6 @@ class HomeController extends ControllerMVC {
       loader.remove();
     });
   }
-
-  Future<void> refreshHome() async {
-    setState(() {
-      slides = <Slide>[];
-      categories = <Category>[];
-      topRestaurants = <Restaurant>[];
-      popularRestaurants = <Restaurant>[];
-      recentReviews = <Review>[];
-      trendingFoods = <Food>[];
-    });
-    ///mElkerm here i need 5 apis
-    await listenForSlides();
-    await listenForPopularRestaurants();
-    await listenForTrendingFoods();
-    await listenForCategories();
-
-    await listenForTopRestaurants();
-    // await listenForRecentReviews();
-  }
-
 
   // get the current location and store the address in new var and have init value = null
   String? currentLocationName = null;

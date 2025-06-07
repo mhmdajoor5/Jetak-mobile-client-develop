@@ -15,6 +15,7 @@ import '../Home/home_search_section.dart' show HomeSearchSection;
 import '../Home/home_slider_section.dart' show HomeSliderSection;
 import '../Home/home_top_restaurants_section.dart' show HomeTopRestaurantsSection;
 import '../Home/home_trending_section.dart' show HomeTrendingSection;
+
 class HomeWidget extends StatefulWidget {
   final GlobalKey<ScaffoldState>? parentScaffoldKey;
 
@@ -45,9 +46,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
               children: [
                 HomeHeaderSection(
                   currentLocationName: _con.currentLocationName,
-                  onChangeLocation: () => setState(() {
-                    _con.getCurrentLocation();
-                  }),
+                  onChangeLocation: () => _con.getCurrentLocation(),
                   parentScaffoldKey: widget.parentScaffoldKey,
                 ),
                 ...settingsRepo.setting.value.homeSections.map((section) {
@@ -69,30 +68,6 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                       return HomeTopRestaurantsSection(
                         restaurants: _con.topRestaurants,
                       );
-                    case 'trending_week_heading':
-                      return _con.trendingFoods.isEmpty
-                          ? SizedBox()
-                          : Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: ListTile(
-                          dense: true,
-                          contentPadding: EdgeInsets.zero,
-                          leading: Icon(
-                            Icons.trending_up,
-                            color: Theme.of(context).hintColor,
-                          ),
-                          title: Text(
-                            S.of(context).trending_this_week,
-                            style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontFamily: 'Nunito'),
-                          ),
-                          subtitle: Text(
-                            S.of(context).clickOnTheFoodToGetMoreDetailsAboutIt,
-                            maxLines: 2,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(fontFamily: 'Nunito'),
-                          ),
-                        ),
-                      );
-
                     case 'trending_week':
                       return _con.trendingFoods.isEmpty
                           ? SizedBox()
@@ -105,7 +80,6 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                         categories: _con.categories,
                       );
                     case 'popular':
-                    case 'popular_heading':
                       return HomePopularSection(
                         restaurants: _con.popularRestaurants,
                       );

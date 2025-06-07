@@ -10,16 +10,18 @@ import '../../models/restaurant.dart';
 Future<List<Restaurant>> fetchPopularRestaurants() async {
   try {
     final response = await http.get(
-      ///'${GlobalConfiguration().getValue('api_base_url')}carts?$token&$resetParam'
       Uri.parse('${GlobalConfiguration().getValue('api_base_url')}restaurants?popular=true'),
-      headers: {'Content-Type': 'application/json'},
-    );
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
+    ).timeout(Duration(seconds: 2));
 
     if (response.statusCode == 200) {
-      // final List<dynamic> data = json.decode(response.body);
       final Map<String, dynamic> decodedData = json.decode(response.body);
-      final List<dynamic> data = decodedData['data']['data']; //
-
+      final List<dynamic> data = decodedData['data']['data'];
       return data.map((json) => Restaurant.fromJSON(json)).toList();
     } else {
       throw Exception('Failed to load restaurants');

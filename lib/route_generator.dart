@@ -33,8 +33,11 @@ import 'src/pages/reviews.dart';
 import 'src/pages/settings.dart';
 import 'src/pages/auth/signup.dart';
 import 'src/pages/splash_screen.dart';
+import 'src/controllers/home_controller.dart';
 
 class RouteGenerator {
+  static final HomeController homeController = HomeController();
+
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
 
@@ -48,7 +51,7 @@ class RouteGenerator {
       case '/Payment':
         return MaterialPageRoute(builder: (_) => Payment());
       case '/Splash':
-        return MaterialPageRoute(builder: (_) => SplashScreen());
+        return MaterialPageRoute(builder: (_) => SplashScreen(con: homeController));
       case '/SignUp':
       case '/MobileVerification':
       case '/MobileVerification2':

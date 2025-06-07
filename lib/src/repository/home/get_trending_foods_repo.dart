@@ -10,12 +10,17 @@ import '../../models/food.dart';
 
 Future<List<Food>> getTrendingFoods() async {
   print("mElkerm Strart to fetch the trending foods for home page in the repository");
-  try{
+  try {
     final response = await http.get(
       ///    https://carrytechnologies.co/api/foods?trending=week
       Uri.parse('${GlobalConfiguration().getValue('api_base_url')}foods?trending=week'),
-      headers: {'Content-Type': 'application/json'},
-    );
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
+    ).timeout(Duration(seconds: 2));
 
     if (response.statusCode == 200) {
       print( "mElkerm 00 : trending foods for home pagein the repository: ${response.body}");
@@ -29,10 +34,9 @@ Future<List<Food>> getTrendingFoods() async {
 
     } else {
       print("mElkerm Error loading trending foods for home page: in repo ${response.statusCode}");
-      throw Exception('Failed to load slides');
+      throw Exception('Failed to load trending foods');
     }
-  }catch(err) {
-    throw Exception('Error: $err');
+  } catch (e) {
+    throw Exception('Error: $e');
   }
-
 }

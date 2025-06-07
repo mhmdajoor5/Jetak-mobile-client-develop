@@ -21,12 +21,16 @@ import '../../models/restaurant.dart';
 
 Future<List<Restaurant>> getTopRestaurants() async {
   print("mElkerm 555 Strart to fetch the Top Restaurants in the repository");
-  try{
-    //https://carrytechnologies.co/api/restaurants?offers=ture
+  try {
     final response = await http.get(
       Uri.parse('${GlobalConfiguration().getValue('api_base_url')}restaurants?offers=ture'),
-      headers: {'Content-Type': 'application/json'},
-    );
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
+    ).timeout(Duration(seconds: 2));
 
     if (response.statusCode == 200) {
       print( "mElkerm 555 00 : get the Top Restaurants in the repository: ${response.body}");
@@ -37,13 +41,11 @@ Future<List<Restaurant>> getTopRestaurants() async {
 
       print("mElkerm 555 get the Top Restaurants in the repository");
       return data.map((item) => Restaurant.fromJSON(item)).toList();
-
     } else {
       print("mElkerm 555 Error loading Top Restaurants: in repo ${response.statusCode}");
-      throw Exception('Failed to load slides');
+      throw Exception('Failed to load restaurants');
     }
-  }catch(err) {
-    throw Exception('Error: $err');
+  } catch (e) {
+    throw Exception('Error: $e');
   }
-
 }

@@ -32,7 +32,7 @@ class HomeTopRestaurantsSection extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  // Navigator.pushNamed(context, '/OffersNearYouPage');
+                  Navigator.pushNamed(context, '/OffersNearYou');
                 },
                 child: Text(
                   'See all',
