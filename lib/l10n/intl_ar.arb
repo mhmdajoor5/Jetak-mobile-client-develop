@@ -219,6 +219,9 @@
   "login_with_apple":    "تسجيل الدخول عبر آبل",
   "maps": "الخرائط",
   "login_success": "تم تسجيل الدخول بنجاح!",
-  "choose_your_location" : "برجاء تحديد موقعك"
-  
+  "choose_your_location" : "برجاء تحديد موقعك",
+  "card_added_successfully": "تمت إضافة البطاقة بنجاح!",
+  "card_add_failed": "حدث خطأ أثناء إضافة البطاقة!",
+  "card_deleted_successfully": "تم حذف البطاقة بنجاح!",
+  "delete": "حذف"
 }

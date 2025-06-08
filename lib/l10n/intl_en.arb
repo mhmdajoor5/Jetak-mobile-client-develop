@@ -292,6 +292,9 @@
   "login_with_apple":    "Login with Apple",
   "login_success": "Login successful!",
   "maps": "Maps",
-  "choose_your_location" : "Please , Choose Your Location"
-
+  "choose_your_location" : "Please , Choose Your Location",
+  "card_added_successfully": "Card added successfully!",
+  "card_add_failed": "Failed to add the card!",
+  "card_deleted_successfully": "Card deleted successfully!",
+  "delete": "Delete"
 }

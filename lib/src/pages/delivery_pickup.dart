@@ -20,6 +20,7 @@ import '../models/address.dart';
 import '../models/payment_method.dart';
 import '../models/route_argument.dart';
 import 'order_success.dart';
+import '../models/card_item.dart';
 
 class DeliveryPickupWidget extends StatefulWidget {
   final RouteArgument? routeArgument;
@@ -33,12 +34,27 @@ class DeliveryPickupWidget extends StatefulWidget {
 int selectedTap = 1;
 String selectedPaymentMethod = '';
 double? _tipValue = 0;
+bool showCards = false;
 
 class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   late DeliveryPickupController _con;
 
+  List<CardItem> savedCards = [];
+  int selectedCardIndex = -1;
+
   _DeliveryPickupWidgetState() : super(DeliveryPickupController()) {
     _con = controller as DeliveryPickupController;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedCards();
+  }
+
+  Future<void> _loadSavedCards() async {
+    savedCards = await Helper.getSavedCards();
+    setState(() {});
   }
 
   double returnTheTotal(){
@@ -146,31 +162,128 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                 style: AppTextStyles.font16W600Black,
               ),
               const SizedBox(height: 12),
-              PaymentMethodCard(
-                title: S.of(context).credit_card,
-                image: 'assets/img/card.svg',
-                isSelected: selectedPaymentMethod.contains('credit'),
-                onTap: () => setState(() => selectedPaymentMethod = 'credit'),
+              GestureDetector(
+                onTap: () => setState(() {
+                  showCards = !showCards;
+                  selectedPaymentMethod = 'credit';
+                  selectedCardIndex = savedCards.isNotEmpty ? selectedCardIndex : -1;
+                }),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: selectedPaymentMethod == 'credit' ? AppColors.cardBgLightColor.withOpacity(0.08) : Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: selectedPaymentMethod == 'credit' ? AppColors.cardBgLightColor : Colors.transparent,
+                      width: 1.5,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1),
+                        blurRadius: 5,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset('assets/img/card.svg', width: 28, height: 28, color: AppColors.cardBgLightColor),
+                      SizedBox(width: 12),
+                      Expanded(child: Text(S.of(context).credit_card, style: AppTextStyles.font16W600Black)),
+                      if (selectedPaymentMethod == 'credit') Icon(Icons.check, color: AppColors.cardBgLightColor),
+                      Icon(showCards ? Icons.expand_less : Icons.expand_more, color: AppColors.cardBgLightColor),
+                    ],
+                  ),
+                ),
               ),
+              if (showCards && selectedPaymentMethod == 'credit')
+                Column(
+                  children: [
+                    const SizedBox(height: 8),
+                    if (savedCards.isNotEmpty)
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: savedCards.length,
+                        itemBuilder: (context, index) {
+                          final card = savedCards[index];
+                          return Dismissible(
+                            key: Key(card.cardNumber + card.cardHolderName),
+                            direction: DismissDirection.endToStart,
+                            background: Container(
+                              alignment: Alignment.centerRight,
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              color: Colors.red,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  SvgPicture.asset('assets/img/trash.svg', width: 24, height: 24),
+                                  SizedBox(width: 8),
+                                  Text(S.of(context).delete, style: TextStyle(color: Colors.white)),
+                                ],
+                              ),
+                            ),
+                            onDismissed: (direction) async {
+                              await Helper.removeCardFromSP(index);
+                              await _loadSavedCards();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(S.of(context).card_deleted_successfully),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                              if (selectedCardIndex == index) {
+                                setState(() => selectedCardIndex = -1);
+                              }
+                            },
+                            child: ListTile(
+                              leading: SvgPicture.asset('assets/img/card.svg', width: 28, height: 28, color: AppColors.cardBgLightColor),
+                              title: Text('**** **** **** ${card.cardNumber.substring(card.cardNumber.length - 4)}'),
+                              subtitle: Text(card.cardHolderName),
+                              trailing: selectedCardIndex == index ? Icon(Icons.check, color: AppColors.cardBgLightColor) : null,
+                              onTap: () {
+                                setState(() {
+                                  selectedCardIndex = index;
+                                  selectedPaymentMethod = 'credit';
+                                });
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    ListTile(
+                      leading: SvgPicture.asset('assets/img/add_card.svg', width: 28, height: 28, color: AppColors.cardBgLightColor),
+                      title: Text('add_new_card'),
+                      onTap: () {
+                        setState(() => selectedPaymentMethod = 'credit');
+                        Navigator.of(context).pushNamed('/add_new_card').then((result) async {
+                          if (result == true || result != null) {
+                            await _loadSavedCards();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(S.of(context).card_added_successfully),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          }
+                        });
+                      },
+                    ),
+                  ],
+                ),
               const SizedBox(height: 8),
               PaymentMethodCard(
                 title: S.of(context).cash,
                 image: 'assets/img/empty-wallet.svg',
                 isSelected: selectedPaymentMethod.contains('cash'),
-                onTap: () => setState(() => selectedPaymentMethod = 'cash'),
+                onTap: () => setState(() {
+                  selectedPaymentMethod = 'cash';
+                  selectedCardIndex = -1;
+                  showCards = false;
+                }),
               ),
               const SizedBox(height: 16),
               _buildPromoCodeField(TextEditingController()),
-              const SizedBox(height: 24),
-              Text(
-                S.of(context).add_courier_tip,
-                style: AppTextStyles.font16W600Black,
-              ),
-              const SizedBox(height: 12),
-              CourierTip(
-                values: [0, 1, 2, 10],
-                onValueChanged: (value) => _tipValue = value,
-              ),
               const SizedBox(height: 24),
               // OrderSummary(
               //   itemSubtotlalPrice: .00,
