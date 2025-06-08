@@ -121,6 +121,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Default Credit Card"),
         "deliverable": MessageLookupByLibrary.simpleMessage("Deliverable"),
         "delivery": MessageLookupByLibrary.simpleMessage("Delivery"),
+        "deliveryAddressOutsideRange": MessageLookupByLibrary.simpleMessage(
+            "The delivery address is outside the restaurant\'s range"),
         "deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants":
             MessageLookupByLibrary.simpleMessage(
                 "Delivery address outside the delivery range of this restaurants."),

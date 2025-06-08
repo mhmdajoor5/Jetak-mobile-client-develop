@@ -80,6 +80,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "default_credit_card":
             MessageLookupByLibrary.simpleMessage("بطاقة الائتمان الافتراضية"),
         "delivery": MessageLookupByLibrary.simpleMessage("توصيل"),
+        "deliveryAddressOutsideRange": MessageLookupByLibrary.simpleMessage(
+            "عنوان التوصيل خارج نطاق المطعم"),
         "delivery_addresses":
             MessageLookupByLibrary.simpleMessage("عناوين التوصيل"),
         "delivery_fee": MessageLookupByLibrary.simpleMessage("Delivery Fee"),

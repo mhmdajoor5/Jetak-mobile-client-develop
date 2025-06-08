@@ -2989,6 +2989,16 @@ class S {
       args: [],
     );
   }
+
+  /// `The delivery address is outside the restaurant's range`
+  String get deliveryAddressOutsideRange {
+    return Intl.message(
+      'The delivery address is outside the restaurant\'s range',
+      name: 'deliveryAddressOutsideRange',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
