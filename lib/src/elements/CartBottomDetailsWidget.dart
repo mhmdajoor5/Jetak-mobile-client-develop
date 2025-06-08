@@ -196,8 +196,8 @@ class CartBottomDetailsWidget extends StatelessWidget {
     final total = _con.total;
     final deliveryFee = restaurant.deliveryFee;
 
-    final textStyle = Theme.of(context).textTheme.headlineLarge?.merge(
-      TextStyle(color: Theme.of(context).primaryColor),
+    final textStyle = Theme.of(context).textTheme.bodyMedium?.merge(
+      TextStyle(color: Color(0xFF272727)),
     );
 
     if (selectedTap == 2) {

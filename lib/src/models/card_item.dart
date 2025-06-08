@@ -35,4 +35,17 @@ class CardItem {
       cardExpirationDate: map["cardExpirationDate"],
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CardItem &&
+          runtimeType == other.runtimeType &&
+          cardNumber == other.cardNumber &&
+          cardHolderName == other.cardHolderName &&
+          cardCVV == other.cardCVV &&
+          cardExpirationDate == other.cardExpirationDate;
+
+  @override
+  int get hashCode => cardNumber.hashCode ^ cardHolderName.hashCode ^ cardCVV.hashCode ^ cardExpirationDate.hashCode;
 }

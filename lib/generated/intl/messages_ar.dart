@@ -47,6 +47,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "application_preferences":
             MessageLookupByLibrary.simpleMessage("تفضيلات التطبيق"),
         "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
+        "card_add_failed": MessageLookupByLibrary.simpleMessage(
+            "حدث خطأ أثناء إضافة البطاقة!"),
+        "card_added_successfully":
+            MessageLookupByLibrary.simpleMessage("تمت إضافة البطاقة بنجاح!"),
+        "card_deleted_successfully":
+            MessageLookupByLibrary.simpleMessage("تم حذف البطاقة بنجاح!"),
         "cart": MessageLookupByLibrary.simpleMessage("سلة التسوق"),
         "carts_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("تم تحديث العربة بنجاح"),
@@ -79,6 +85,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dark_mode": MessageLookupByLibrary.simpleMessage("الوضع الداكن"),
         "default_credit_card":
             MessageLookupByLibrary.simpleMessage("بطاقة الائتمان الافتراضية"),
+        "delete": MessageLookupByLibrary.simpleMessage("حذف"),
         "delivery": MessageLookupByLibrary.simpleMessage("توصيل"),
         "deliveryAddressOutsideRange": MessageLookupByLibrary.simpleMessage(
             "عنوان التوصيل خارج نطاق المطعم"),

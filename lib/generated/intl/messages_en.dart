@@ -57,6 +57,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "cancelOrder": MessageLookupByLibrary.simpleMessage("Cancel Order"),
         "canceled": MessageLookupByLibrary.simpleMessage("Canceled"),
+        "card_add_failed":
+            MessageLookupByLibrary.simpleMessage("Failed to add the card!"),
+        "card_added_successfully":
+            MessageLookupByLibrary.simpleMessage("Card added successfully!"),
+        "card_deleted_successfully":
+            MessageLookupByLibrary.simpleMessage("Card deleted successfully!"),
         "card_number": MessageLookupByLibrary.simpleMessage("CARD NUMBER"),
         "cart": MessageLookupByLibrary.simpleMessage("Cart"),
         "carts_refreshed_successfuly": MessageLookupByLibrary.simpleMessage(
@@ -119,6 +125,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dark_mode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
         "default_credit_card":
             MessageLookupByLibrary.simpleMessage("Default Credit Card"),
+        "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "deliverable": MessageLookupByLibrary.simpleMessage("Deliverable"),
         "delivery": MessageLookupByLibrary.simpleMessage("Delivery"),
         "deliveryAddressOutsideRange": MessageLookupByLibrary.simpleMessage(
