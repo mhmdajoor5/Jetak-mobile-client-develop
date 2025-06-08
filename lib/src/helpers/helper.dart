@@ -92,10 +92,8 @@ class Helper {
   /// Add a single card to the list
   static Future<void> addCardToSP(CardItem card) async {
     List<CardItem> cards = await getSavedCards();
-    if (!cards.contains(card)) {
-      cards.add(card);
-      await saveCardsToSP(cards);
-    }
+    cards.add(card);
+    await saveCardsToSP(cards);
   }
 
   /// Retrieve the list of saved cards
