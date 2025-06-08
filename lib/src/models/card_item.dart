@@ -6,9 +6,9 @@ class CardItem {
 
   CardItem(
       {required this.cardNumber,
-      required this.cardHolderName,
-      required this.cardCVV,
-      required this.cardExpirationDate});
+        required this.cardHolderName,
+        required this.cardCVV,
+        required this.cardExpirationDate});
 
   String get formattedCardNumber {
     return '${cardNumber.substring(0, 3)}-${cardNumber.substring(4, 7)}-${cardNumber.substring(8, 11)}-${cardNumber.substring(12, 15)}';
@@ -35,4 +35,17 @@ class CardItem {
       cardExpirationDate: map["cardExpirationDate"],
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is CardItem &&
+              runtimeType == other.runtimeType &&
+              cardNumber == other.cardNumber &&
+              cardHolderName == other.cardHolderName &&
+              cardCVV == other.cardCVV &&
+              cardExpirationDate == other.cardExpirationDate;
+
+  @override
+  int get hashCode => cardNumber.hashCode ^ cardHolderName.hashCode ^ cardCVV.hashCode ^ cardExpirationDate.hashCode;
 }

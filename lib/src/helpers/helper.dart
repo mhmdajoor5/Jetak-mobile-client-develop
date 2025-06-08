@@ -92,8 +92,10 @@ class Helper {
   /// Add a single card to the list
   static Future<void> addCardToSP(CardItem card) async {
     List<CardItem> cards = await getSavedCards();
-    cards.add(card);
-    await saveCardsToSP(cards);
+    if (!cards.contains(card)) {
+      cards.add(card);
+      await saveCardsToSP(cards);
+    }
   }
 
   /// Retrieve the list of saved cards
@@ -156,10 +158,10 @@ class Helper {
 
   static Future<map.Marker> getMarker(Map<String, dynamic> res) async {
     final Uint8List? markerIcon =
-        await getBytesFromAsset('assets/img/marker.png', 120);
+    await getBytesFromAsset('assets/img/marker.png', 120);
     final map.Marker marker = map.Marker(
         markerId: map.MarkerId(res['id']),
-       // icon: BitmapDescriptor.fromBytes(markerIcon),
+        // icon: BitmapDescriptor.fromBytes(markerIcon),
 //        onTap: () {
 //          //print(res.name);
 //        },
@@ -180,7 +182,7 @@ class Helper {
   static Future<map.Marker> getMyPositionMarker(
       double latitude, double longitude) async {
     final Uint8List? markerIcon =
-        await getBytesFromAsset('assets/img/my_marker.png', 120);
+    await getBytesFromAsset('assets/img/my_marker.png', 120);
     final map.Marker marker = map.Marker(
         markerId: map.MarkerId(Random().nextInt(100).toString()),
         icon: map.BitmapDescriptor.fromBytes(markerIcon!),
@@ -200,8 +202,8 @@ class Helper {
     }
     list.addAll(
         List.generate(5 - rate.floor() - (rate - rate.floor()).ceil(), (index) {
-      return Icon(Icons.star_border, size: size, color: Color(0xFFFFB24D));
-    }));
+          return Icon(Icons.star_border, size: size, color: Color(0xFFFFB24D));
+        }));
     return list;
   }
 
@@ -221,50 +223,50 @@ class Helper {
         maxLines: 1,
         text: setting.value.currencyRight == false
             ? TextSpan(
-                text: setting.value.defaultCurrency,
-                style: style == null
-                    ? Theme.of(context).textTheme.titleMedium!.merge(
-                          TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium
-                                      !.fontSize! -
-                                  6),
-                        )
-                    : style.merge(TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: style.fontSize! - 6)),
-                children: <TextSpan>[
-                  TextSpan(
-                      text: myPrice.toStringAsFixed(
-                              setting.value.currencyDecimalDigits),
-                      style: style ?? Theme.of(context).textTheme.titleMedium),
-                ],
-              )
-            : TextSpan(
+          text: setting.value.defaultCurrency,
+          style: style == null
+              ? Theme.of(context).textTheme.titleMedium!.merge(
+            TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                !.fontSize! -
+                    6),
+          )
+              : style.merge(TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: style.fontSize! - 6)),
+          children: <TextSpan>[
+            TextSpan(
                 text: myPrice.toStringAsFixed(
-                        setting.value.currencyDecimalDigits),
-                style: style ?? Theme.of(context).textTheme.titleMedium,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: setting.value.defaultCurrency,
-                    style: style == null
-                        ? Theme.of(context).textTheme.titleMedium?.merge(
-                              TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium
-                                          !.fontSize! -
-                                      6),
-                            )
-                        : style.merge(TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: style.fontSize! - 6)),
-                  ),
-                ],
-              ),
+                    setting.value.currencyDecimalDigits),
+                style: style ?? Theme.of(context).textTheme.titleMedium),
+          ],
+        )
+            : TextSpan(
+          text: myPrice.toStringAsFixed(
+              setting.value.currencyDecimalDigits),
+          style: style ?? Theme.of(context).textTheme.titleMedium,
+          children: <TextSpan>[
+            TextSpan(
+              text: setting.value.defaultCurrency,
+              style: style == null
+                  ? Theme.of(context).textTheme.titleMedium?.merge(
+                TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                    !.fontSize! -
+                        6),
+              )
+                  : style.merge(TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: style.fontSize! - 6)),
+            ),
+          ],
+        ),
       );
     } catch (e) {
       return Text('');
