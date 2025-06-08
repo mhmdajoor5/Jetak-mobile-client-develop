@@ -19,7 +19,7 @@ class S {
 
   static S get current {
     assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
     return _current!;
   }
 
@@ -42,7 +42,7 @@ class S {
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
     assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
     return instance!;
   }
 
@@ -2985,6 +2985,46 @@ class S {
     return Intl.message(
       'Please , Choose Your Location',
       name: 'choose_your_location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Card added successfully!`
+  String get card_added_successfully {
+    return Intl.message(
+      'Card added successfully!',
+      name: 'card_added_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to add the card!`
+  String get card_add_failed {
+    return Intl.message(
+      'Failed to add the card!',
+      name: 'card_add_failed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Card deleted successfully!`
+  String get card_deleted_successfully {
+    return Intl.message(
+      'Card deleted successfully!',
+      name: 'card_deleted_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message(
+      'Delete',
+      name: 'delete',
       desc: '',
       args: [],
     );
