@@ -292,6 +292,8 @@
   "login_with_apple":    "Login with Apple",
   "login_success": "Login successful!",
   "maps": "Maps",
-  "choose_your_location" : "Please , Choose Your Location"
+  "choose_your_location" : "Please , Choose Your Location",
+  "deliveryAddressOutsideRange": "The delivery address is outside the restaurant's range"
+
 
 }
