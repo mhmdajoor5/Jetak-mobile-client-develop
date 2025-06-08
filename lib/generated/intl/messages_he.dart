@@ -65,8 +65,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "chats": MessageLookupByLibrary.simpleMessage("צ\'אטים"),
         "check_on_waze": MessageLookupByLibrary.simpleMessage("בדוק ב-Waze:"),
         "checkout": MessageLookupByLibrary.simpleMessage("ביצוע הזמנה"),
-        "choose_your_location":
-            MessageLookupByLibrary.simpleMessage("אנא בחר את המיקום שלך"),
+        "choose_your_location": MessageLookupByLibrary.simpleMessage(
+            "Please , Choose Your Location"),
         "clear": MessageLookupByLibrary.simpleMessage("נקה"),
         "clickOnTheFoodToGetMoreDetailsAboutIt":
             MessageLookupByLibrary.simpleMessage(
@@ -112,8 +112,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("כרטיס אשראי ברירת מחדל"),
         "deliverable": MessageLookupByLibrary.simpleMessage("ניתן למשלוח"),
         "delivery": MessageLookupByLibrary.simpleMessage("משלוח"),
-        "deliveryAddressOutsideRange": MessageLookupByLibrary.simpleMessage(
-            "כתובת המשלוח נמצאת מחוץ לטווח המסעדה"),
         "deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants":
             MessageLookupByLibrary.simpleMessage(
                 "כתובת המשלוח מחוץ לטווח המשלוח של המסעדות הללו."),

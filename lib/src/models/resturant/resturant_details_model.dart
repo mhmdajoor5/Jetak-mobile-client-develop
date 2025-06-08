@@ -1,12 +1,10 @@
 class RestaurantDetailsModel {
   final RestaurantModelInCaseDetails restaurant;
   final List<CategoryElement> categories;
-  final bool canDeliver;
 
   RestaurantDetailsModel({
     required this.restaurant,
     required this.categories,
-    required this.canDeliver,
   });
 
   factory RestaurantDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -16,14 +14,12 @@ class RestaurantDetailsModel {
           ?.map((i) => CategoryElement.fromJson(i as Map<String, dynamic>))
           .toList() ??
           [],
-      canDeliver: json["canDeliver"]?.toString().toLowerCase() == 'true',
     );
   }
 
   Map<String, dynamic> toJson() => {
     "restaurant": restaurant.toJson(),
     "categories": categories.map((x) => x.toJson()).toList(),
-    "canDeliver": canDeliver,
   };
 }
 

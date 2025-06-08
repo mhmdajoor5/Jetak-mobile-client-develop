@@ -277,8 +277,6 @@
   "login_with_apple":    "התחבר עם אפל",
   "login_success": "התחברות הצליחה!",
   "maps": "מפות",
-  "choose_your_location": "אנא בחר את המיקום שלך",
-  "deliveryAddressOutsideRange": "כתובת המשלוח נמצאת מחוץ לטווח המסעדה"
-
+  "choose_your_location" : "Please , Choose Your Location"
 
 }
