@@ -219,7 +219,6 @@
   "login_with_apple":    "تسجيل الدخول عبر آبل",
   "maps": "الخرائط",
   "login_success": "تم تسجيل الدخول بنجاح!",
-  "choose_your_location" : "برجاء تحديد موقعك",
-  "deliveryAddressOutsideRange": "عنوان التوصيل خارج نطاق المطعم"
-
+  "choose_your_location" : "برجاء تحديد موقعك"
+  
 }

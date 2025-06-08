@@ -128,8 +128,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "deliverable": MessageLookupByLibrary.simpleMessage("Deliverable"),
         "delivery": MessageLookupByLibrary.simpleMessage("Delivery"),
-        "deliveryAddressOutsideRange": MessageLookupByLibrary.simpleMessage(
-            "The delivery address is outside the restaurant\'s range"),
         "deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants":
             MessageLookupByLibrary.simpleMessage(
                 "Delivery address outside the delivery range of this restaurants."),
