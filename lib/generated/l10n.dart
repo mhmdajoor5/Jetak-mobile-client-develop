@@ -2989,6 +2989,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Your address is out of the delivery range. Please select pickup or change your address.`
+  String get deliveryAddressOutsideRange {
+    return Intl.message(
+      'Your address is out of the delivery range. Please select pickup or change your address.',
+      name: 'deliveryAddressOutsideRange',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

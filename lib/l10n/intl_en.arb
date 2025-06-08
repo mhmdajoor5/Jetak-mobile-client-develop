@@ -292,6 +292,6 @@
   "login_with_apple":    "Login with Apple",
   "login_success": "Login successful!",
   "maps": "Maps",
-  "choose_your_location" : "Please , Choose Your Location"
-
+  "choose_your_location" : "Please , Choose Your Location",
+  "deliveryAddressOutsideRange": "Your address is out of the delivery range. Please select pickup or change your address."
 }

@@ -277,6 +277,7 @@
   "login_with_apple":    "התחבר עם אפל",
   "login_success": "התחברות הצליחה!",
   "maps": "מפות",
-  "choose_your_location" : "Please , Choose Your Location"
+  "choose_your_location" : "Please , Choose Your Location",
+  "deliveryAddressOutsideRange": "הכתובת שלך מחוץ לאזור המשלוח. אנא בחר באיסוף עצמי או שנה את הכתובת."
 
 }

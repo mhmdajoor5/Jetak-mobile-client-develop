@@ -112,6 +112,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("כרטיס אשראי ברירת מחדל"),
         "deliverable": MessageLookupByLibrary.simpleMessage("ניתן למשלוח"),
         "delivery": MessageLookupByLibrary.simpleMessage("משלוח"),
+        "deliveryAddressOutsideRange": MessageLookupByLibrary.simpleMessage(
+            "הכתובת שלך מחוץ לאזור המשלוח. אנא בחר באיסוף עצמי או שנה את הכתובת."),
         "deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants":
             MessageLookupByLibrary.simpleMessage(
                 "כתובת המשלוח מחוץ לטווח המשלוח של המסעדות הללו."),
