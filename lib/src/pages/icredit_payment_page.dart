@@ -246,9 +246,6 @@ class _ICreditPaymentWidgetState extends StateMVC<ICreditPaymentWidget> {
       setState(() {
         isLoading = false;
       });
-
-      Navigator.of(context).pushNamed('/OrderSuccess',
-          arguments: new RouteArgument(param: 'Credit Card'));
     } else {
       print('invalid!');
     }

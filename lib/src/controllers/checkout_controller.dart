@@ -107,6 +107,14 @@ class CheckoutController extends CartController {
   }
 
   void addOrder(List<Cart> carts) {
+    if (payment == null) {
+      print('❌ payment is null');
+      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+        SnackBar(content: Text('خطأ في طريقة الدفع')),
+      );
+      return;
+    }
+
     Order _order = Order();
     _order.foodOrders = <FoodOrder>[];
     _order.tax = carts[0].food?.restaurant.defaultTax ?? 0.0;
@@ -126,9 +134,12 @@ class CheckoutController extends CartController {
       _order.foodOrders.add(_foodOrder);
     }
 
+    print('📦 جاري إضافة الطلب...');
+    print('📦 طريقة الدفع: ${payment?.method}');
+
     orderRepo.addOrder(_order, payment!)
         .then((value) async {
-      print('📦 ✅ Response من السيرفر بعد تنفيذ الطلب: $value'); // 👈 هنا نطبع الريسبونس
+      print('📦 ✅ Response من السيرفر بعد تنفيذ الطلب: $value');
       settingRepo.coupon = Coupon.fromJSON({});
       return value;
     })
@@ -138,10 +149,18 @@ class CheckoutController extends CartController {
       });
       Navigator.of(scaffoldKey.currentContext!).pushNamed(
         '/OrderSuccess',
-        arguments: RouteArgument(param: 'Credit Card (Stripe Gateway)'),
+        arguments: RouteArgument(param: payment?.method ?? 'Unknown'),
       );
+    })
+        .catchError((error) {
+      print('❌ خطأ في إضافة الطلب: $error');
+      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+        SnackBar(content: Text('حدث خطأ أثناء إضافة الطلب')),
+      );
+      setState(() {
+        loading = false;
+      });
     });
-
   }
 
   void updateCreditCard(CreditCard creditCard) {

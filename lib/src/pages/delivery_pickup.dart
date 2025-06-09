@@ -70,8 +70,10 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   }
 
   Future<void> completeSale() async {
+    print('--- [DEBUG] بدء عملية الطلب ---');
     if (selectedTap == 1) {
       if (_con.deliveryAddress == null) {
+        print('[DEBUG] لم يتم اختيار عنوان!');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('الرجاء اختيار عنوان التوصيل'),
@@ -82,7 +84,9 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       }
 
       final canDeliver = await _con.checkDeliveryArea();
+      print('[DEBUG] نتيجة checkDeliveryArea: $canDeliver');
       if (!canDeliver) {
+        print('[DEBUG] العنوان خارج نطاق التوصيل!');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('عذراً، عنوانك خارج منطقة التوصيل المتاحة'),
@@ -94,10 +98,11 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       }
     }
 
+    print('[DEBUG] بعد التحقق من التوصيل، أكمل باقي خطوات الطلب');
     if (selectedPaymentMethod == 'credit' && selectedCardIndex != -1) {
-      print('--- بدء عملية الدفع عبر iCredit (DeliveryPickupWidget) ---');
+      print('[DEBUG] طريقة الدفع: بطاقة ائتمان، بطاقة مختارة: $selectedCardIndex');
       if (selectedCardIndex == -1) {
-        print('لم يتم اختيار أي بطاقة!');
+        print('[DEBUG] لم يتم اختيار أي بطاقة!');
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("Please select a card"),
         ));
@@ -105,15 +110,15 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       }
 
       final selectedCard = savedCards[selectedCardIndex];
-      print('بيانات البطاقة: cardNumber=${selectedCard.cardNumber}, holderName=${selectedCard.cardHolderName}, expDateYymm=${selectedCard.cardExpirationDate}, cvv=${selectedCard.cardCVV}');
+      print('[DEBUG] بيانات البطاقة: cardNumber=${selectedCard.cardNumber}, holderName=${selectedCard.cardHolderName}, expDateYymm=${selectedCard.cardExpirationDate}, cvv=${selectedCard.cardCVV}');
       setState(() {
         // isLoading = true;
       });
 
       try {
-        // إنشاء عملية بيع أولاً
+        print('[DEBUG] بدء إنشاء عملية البيع iCreditCreateSale');
         ICreditCreateSaleResponse saleResponse = await iCreditCreateSale(fromList(_con.carts));
-        print('رد iCreditCreateSale:');
+        print('[DEBUG] رد iCreditCreateSale:');
         print(saleResponse.clientMessage);
         print(saleResponse.debugMessage);
         print(saleResponse.status);
@@ -121,6 +126,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         print(saleResponse.creditboxToken);
         print(saleResponse.totalAmount);
         
+        print('[DEBUG] بدء عملية iCreditChargeSimple');
         ICreditChargeSimpleResponse response = await iCreditChargeSimple(
           selectedCard.cardCVV,
           selectedCard.cardHolderName,
@@ -128,18 +134,18 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
           selectedCard.cardExpirationDate,
           saleResponse,
         );
-        print('رد iCreditChargeSimple:');
+        print('[DEBUG] رد iCreditChargeSimple:');
         print('status: ${response.status}');
         print('amount: ${response.amount}');
         print('customerTransactionId: ${response.customerTransactionId}');
         print('token: ${response.token}');
 
         if (response.status == 0) {
-          print('--- عملية الدفع عبر iCredit نجحت (DeliveryPickupWidget) ---');
-          Navigator.of(context).pushNamed('/OrderSuccess',
-              arguments: RouteArgument(param: 'Credit Card'));
+          print('[DEBUG] --- عملية الدفع عبر iCredit نجحت (DeliveryPickupWidget) ---');
+          // تم حذف الانتقال المباشر لشاشة النجاح هنا
+          // دع الكنترولر يدير الانتقال بعد نجاح الطلب
         } else {
-          print('--- عملية الدفع عبر iCredit فشلت (DeliveryPickupWidget) ---');
+          print('[DEBUG] --- عملية الدفع عبر iCredit فشلت (DeliveryPickupWidget) ---');
           String errorMessage = 'فشلت عملية الدفع';
           if (response.status == 4) {
             errorMessage = 'تم رفض البطاقة من قبل البنك. يرجى التحقق من:\n'
@@ -161,7 +167,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
           );
         }
       } catch (e) {
-        print("Error completing sale: $e");
+        print("[DEBUG] Error completing sale: $e");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('حدث خطأ أثناء عملية الدفع'),
@@ -174,6 +180,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         });
       }
     } else {
+      print('[DEBUG] طريقة الدفع ليست بطاقة ائتمان أو لم يتم اختيار بطاقة.');
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_) => OrderSuccessWidget(
@@ -183,6 +190,8 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
           ),
         ),
       );
+      // تم حذف الانتقال المباشر لشاشة النجاح هنا أيضاً
+      // دع الكنترولر يدير الانتقال بعد نجاح الطلب
     }
   }
 

@@ -1,11 +1,108 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
 
-class TrackingModernWidget extends StatelessWidget {
-  const TrackingModernWidget({super.key});
+import '../controllers/tracking_controller.dart';
+import '../models/route_argument.dart';
+
+class TrackingModernWidget extends StatefulWidget {
+  final RouteArgument? routeArgument;
+  const TrackingModernWidget({Key? key, this.routeArgument}) : super(key: key);
+
+  @override
+  _TrackingModernWidgetState createState() => _TrackingModernWidgetState();
+}
+
+class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
+  late TrackingController _con;
+  GoogleMapController? _mapController;
+
+  _TrackingModernWidgetState() : super(TrackingController()) {
+    _con = controller as TrackingController;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.routeArgument != null && widget.routeArgument!.id != null) {
+      _con.listenForOrder(orderId: widget.routeArgument!.id!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    print('order.id: [32m[1m[4m[7m${_con.order.id}[0m');
+    print('foodOrders.length: [34m${_con.order.foodOrders.length}[0m');
+    print('address: [35m${_con.order.deliveryAddress.address}[0m');
+    // حماية من محاولة قراءة بيانات غير جاهزة
+    if (_con.order.id == null || _con.order.foodOrders.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+          title: Text(
+            "Tracking",
+            style: TextStyle(
+              fontFamily: "Nunito",
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+              color: Color(0xFF272727),
+            ),
+          ),
+          leading: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Container(
+              margin: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                border: Border.all(color: Color(0xFFE7E7E9)),
+              ),
+              child: Icon(Icons.arrow_back, color: Colors.black),
+            ),
+          ),
+        ),
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    // استخراج الإحداثيات إذا توفرت
+    double? restaurantLat;
+    double? restaurantLng;
+    double? clientLat;
+    double? clientLng;
+    try {
+      if (_con.order.foodOrders.isNotEmpty) {
+        restaurantLat = double.tryParse(_con.order.foodOrders[0].food?.restaurant.latitude ?? '');
+        restaurantLng = double.tryParse(_con.order.foodOrders[0].food?.restaurant.longitude ?? '');
+      }
+      clientLat = _con.order.deliveryAddress.latitude;
+      clientLng = _con.order.deliveryAddress.longitude;
+    } catch (e) {}
+
+    Set<Marker> markers = {};
+    List<LatLng> polylinePoints = [];
+    if (restaurantLat != null && restaurantLng != null) {
+      markers.add(Marker(
+        markerId: MarkerId('restaurant'),
+        position: LatLng(restaurantLat, restaurantLng),
+        infoWindow: InfoWindow(title: 'Restaurant'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      ));
+      polylinePoints.add(LatLng(restaurantLat, restaurantLng));
+    }
+    if (clientLat != null && clientLng != null) {
+      markers.add(Marker(
+        markerId: MarkerId('client'),
+        position: LatLng(clientLat, clientLng),
+        infoWindow: InfoWindow(title: 'Client'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+      ));
+      polylinePoints.add(LatLng(clientLat, clientLng));
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -33,14 +130,33 @@ class TrackingModernWidget extends StatelessWidget {
           ),
         ),
       ),
-
       body: Stack(
         children: [
           Container(
             height: MediaQuery.of(context).size.height * 0.5,
             width: double.infinity,
-            color: Colors.grey[200],
-            child: Center(child: Text("Map Here", style: TextStyle(fontSize: 20))),
+            child: (restaurantLat != null && restaurantLng != null && clientLat != null && clientLng != null)
+                ? GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(
+                        (restaurantLat + clientLat) / 2,
+                        (restaurantLng + clientLng) / 2,
+                      ),
+                      zoom: 13,
+                    ),
+                    markers: markers,
+                    polylines: {
+                      if (polylinePoints.length == 2)
+                        Polyline(
+                          polylineId: PolylineId('route'),
+                          points: polylinePoints,
+                          color: Colors.blue,
+                          width: 4,
+                        ),
+                    },
+                    onMapCreated: (controller) => _mapController = controller,
+                  )
+                : Center(child: Text("Map Here", style: TextStyle(fontSize: 20))),
           ),
           Align(
             alignment: Alignment.bottomCenter,
@@ -77,7 +193,7 @@ class TrackingModernWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Angel Donin",
+                            "Angel Donin", // TODO: استبدل باسم الكابتن الحقيقي عند توفره
                             style: TextStyle(
                               fontFamily: "Nunito",
                               fontWeight: FontWeight.w500,
@@ -89,7 +205,7 @@ class TrackingModernWidget extends StatelessWidget {
                           ),
                           SizedBox(height: 4,),
                           Text(
-                            "Courier",
+                            "Courier", // TODO: استبدل بنوع الكابتن الحقيقي عند توفره
                             style: TextStyle(
                               fontFamily: "Nunito",
                               fontWeight: FontWeight.w400,
@@ -136,11 +252,11 @@ class TrackingModernWidget extends StatelessWidget {
                   SizedBox(height: 20),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: _buildStepProgress(),
+                    child: _buildStepProgress(), // TODO: اربطه بمراحل الطلب الحقيقية
                   ),
                   SizedBox(height: 20),
-                  _buildInfoTile("Delivery time", "assets/img/clock.svg", "30 Minutes"),
-                  _buildInfoTile("Delivery address", "assets/img/locationorder.svg", "6391 Elgin St. Celina, Delaware "),
+                  _buildInfoTile("Delivery time", "assets/img/clock.svg", "30 Minutes"), // TODO: اربطه بوقت التوصيل المتوقع الحقيقي
+                  _buildInfoTile("Delivery address", "assets/img/locationorder.svg", _con.order.deliveryAddress.address ?? ""),
                 ],
               ),
             ),
@@ -151,6 +267,7 @@ class TrackingModernWidget extends StatelessWidget {
   }
 
   Widget _buildStepProgress() {
+    // TODO: اربط الخطوات بحالة الطلب الحقيقية من _con.orderStatus
     return Row(
       children: [
         _buildStepIcon('assets/img/receipt-item.svg', true),
@@ -204,125 +321,57 @@ class TrackingModernWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildStepIcon(String svgAsset, bool active) {
+  Widget _buildStepIcon(String asset, bool active) {
     return Container(
-      width: 48,
-      height: 48,
+      padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: active ? Color(0xFF26386A) : Colors.white,
-        border: Border.all(
-          color: active ? Color(0xFF26386A) : Color(0xFFE7E7E9),
-          width: 1,
-        ),
+        color: active ? Color(0xFF26386A) : Color(0xFFE7E7E9),
         shape: BoxShape.circle,
       ),
-      child: Center(
-        child: SvgPicture.asset(
-          svgAsset,
-          width: 20,
-          height: 20,
-          colorFilter: ColorFilter.mode(
-            active ? Colors.white : Color(0xFF26386A),
-            BlendMode.srcIn,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInfoTile(String label, String svgAsset, String text) {
-    return Stack(
-      children: [
-        Container(
-          width: double.infinity,
-          margin: EdgeInsets.only(top: 12),
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          decoration: BoxDecoration(
-            border: Border.all(color: Color(0xFFE7E7E9)),
-            borderRadius: BorderRadius.circular(24),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: SvgPicture.asset(
-                  svgAsset,
-                  width: 20,
-                  height: 20,
-                  // color: Colors.white,
-                  fit: BoxFit.contain,
-                ),
-              ),
-              SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  text,
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Color(0xFF272727),
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Positioned(
-          left: 20,
-          top: 0,
-          child: Container(
-            color: Colors.white,
-            padding: EdgeInsets.symmetric(horizontal: 4),
-            child: Text(
-              label,
-              style: TextStyle(
-                fontSize: 14,
-                color: Color(0xFFA0A2A8),
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-        ),
-      ],
+      child: SvgPicture.asset(asset, width: 24, height: 24, color: Colors.white),
     );
   }
 
   Widget _buildActionIconPhone() {
     return Container(
-      width: 48,
-      height: 48,
+      padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Color(0xFFFAFAFA),
+        color: Color(0xFFF5F5F5),
         shape: BoxShape.circle,
-        border: Border.all(color: Color(0xFFE7E7E9), width: 1),
       ),
-      child: Center(
-        child: SvgPicture.asset(
-          'assets/img/vector.svg',
-          width: 20,
-          height: 20,
-          color: Colors.black,
-        ),
-      ),
+      child: Icon(Icons.phone, color: Color(0xFF26386A)),
     );
   }
 
   Widget _buildActionIconMassge() {
     return Container(
-      width: 48,
-      height: 48,
+      padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Color(0xFFFAFAFA),
+        color: Color(0xFFF5F5F5),
         shape: BoxShape.circle,
-        border: Border.all(color: Color(0xFFE7E7E9), width: 1),
       ),
-      child: Center(
-        child: SvgPicture.asset(
-          'assets/img/message-text.svg',
-          width: 20,
-          height: 20,
-          color: Colors.black,
-        ),
+      child: Icon(Icons.message, color: Color(0xFF26386A)),
+    );
+  }
+
+  Widget _buildInfoTile(String title, String icon, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        children: [
+          SvgPicture.asset(icon, width: 20, height: 20, color: Color(0xFF26386A)),
+          SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: TextStyle(fontSize: 12, color: Color(0xFF9D9FA4))),
+                SizedBox(height: 2),
+                Text(value, style: TextStyle(fontSize: 16, color: Color(0xFF26386A), fontWeight: FontWeight.w600)),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -324,8 +324,8 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
 
       if (response.status == 0) {
         print('--- عملية الدفع عبر iCredit نجحت (payment_methods.dart) ---');
-        Navigator.of(context).pushNamed('/OrderSuccess',
-            arguments: RouteArgument(param: 'Credit Card'));
+        // تم حذف الانتقال المباشر لشاشة النجاح هنا
+        // دع الكنترولر يدير الانتقال بعد نجاح الطلب
       } else {
         print('--- عملية الدفع عبر iCredit فشلت (payment_methods.dart) ---');
         showPaymentFailureSheet();

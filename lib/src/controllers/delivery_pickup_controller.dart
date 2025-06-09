@@ -50,6 +50,7 @@ class DeliveryPickupController extends CartController {
 
   Future<bool> checkDeliveryArea() async {
     try {
+      print('checkDeliveryArea: restaurant_id=${carts.first.food?.restaurant.id}, lat=${deliveryAddress?.latitude}, lng=${deliveryAddress?.longitude}');
       final response = await http.post(
         Uri.parse('https://carrytechnologies.co/api/check-delivery'),
         headers: {'Content-Type': 'application/json'},
@@ -59,10 +60,11 @@ class DeliveryPickupController extends CartController {
           'longitude': deliveryAddress?.longitude ?? 0,
         }),
       );
-
+      print('checkDeliveryArea response: status=${response.statusCode}, body=${response.body}');
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return data['can_deliver'] ?? false;
+        print('checkDeliveryArea parsed data: $data');
+        return data['is_delivery'] ?? data['can_deliver'] ?? false;
       }
       return false;
     } catch (e) {

@@ -9,7 +9,7 @@ import '../models/order_status.dart';
 import '../repository/order_repository.dart';
 
 class TrackingController extends ControllerMVC {
-  late Order order;
+  Order order = Order();
   List<OrderStatus> orderStatus = <OrderStatus>[];
   late GlobalKey<ScaffoldState> scaffoldKey;
 
