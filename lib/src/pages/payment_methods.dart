@@ -295,7 +295,9 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
   }
 
   Future<void> completeSale() async {
+    print('--- بدء عملية الدفع عبر iCredit (payment_methods.dart) ---');
     if (selectedCardIndex.value == -1) {
+      print('لم يتم اختيار أي بطاقة!');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Please select a card"),
       ));
@@ -303,6 +305,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
     }
 
     final selectedCard = savedCards[selectedCardIndex.value];
+    print('بيانات البطاقة: cardNumber=${selectedCard.cardNumber}, holderName=${selectedCard.cardHolderName}, expDateYymm=${selectedCard.cardExpirationDate}, cvv=${selectedCard.cardCVV}');
     setState(() {
       isLoading = true;
     });
@@ -315,11 +318,16 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
         selectedCard.cardExpirationDate,
         widget.routeArgument as ICreditCreateSaleResponse,
       );
+      print('رد iCreditChargeSimple:');
+      print(response);
+      print('status: [32m${response.status}[0m, customerTransactionId: ${response.customerTransactionId}');
 
       if (response.status == 0) {
+        print('--- عملية الدفع عبر iCredit نجحت (payment_methods.dart) ---');
         Navigator.of(context).pushNamed('/OrderSuccess',
             arguments: RouteArgument(param: 'Credit Card'));
       } else {
+        print('--- عملية الدفع عبر iCredit فشلت (payment_methods.dart) ---');
         showPaymentFailureSheet();
       }
     } catch (e) {

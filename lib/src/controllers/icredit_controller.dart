@@ -28,8 +28,15 @@ class ICreditController extends ControllerMVC {
       String cardNumber,
       String expDateYymm,
       ICreditCreateSaleResponse iCreditCreateSaleResponse) async {
+    print('--- بدء عملية الدفع عبر iCredit ---');
+    print('بيانات البطاقة: cardNumber=$cardNumber, holderName=$holderName, expDateYymm=$expDateYymm, cvv=$cvv');
+    print('بيانات البيع: saleToken=${iCreditCreateSaleResponse.saleToken}, creditboxToken=${iCreditCreateSaleResponse.creditboxToken}, totalAmount=${iCreditCreateSaleResponse.totalAmount}');
+    
     ICreditChargeSimpleResponse response = await iCreditChargeSimple(
         cvv, holderName, cardNumber, expDateYymm, iCreditCreateSaleResponse);
+    print('رد iCreditChargeSimple:');
+    print(response);
+    print('status: ${response.status}, customerTransactionId: ${response.customerTransactionId}');
 
     Helper.addCardToSP(CardItem(
       cardNumber: cardNumber,
@@ -40,11 +47,19 @@ class ICreditController extends ControllerMVC {
 
     ICreditCompleteSaleResponse completeSaleResponse =
         await iCreditCompleteSale(iCreditCreateSaleResponse, response);
+    print('رد iCreditCompleteSale:');
+    print(completeSaleResponse);
+    print('status: ${completeSaleResponse.status}, debugMessage: ${completeSaleResponse.debugMessage}');
 
     if (kDebugMode) {
       ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
         content: Text(completeSaleResponse.debugMessage),
       ));
+    }
+    if (completeSaleResponse.status == 0) {
+      print('--- عملية الدفع عبر iCredit نجحت ---');
+    } else {
+      print('--- عملية الدفع عبر iCredit فشلت ---');
     }
   }
 

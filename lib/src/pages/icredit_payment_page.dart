@@ -206,6 +206,8 @@ class _ICreditPaymentWidgetState extends StateMVC<ICreditPaymentWidget> {
   }
 
   void _onValidate() async {
+    print('--- بدء عملية الدفع عبر iCredit (icredit_payment_page.dart) ---');
+    print('بيانات البطاقة: cardNumber=$cardNumber, holderName=$cardHolderName, expiryDate=$expiryDate, cvv=$cvvCode');
     if (formKey.currentState?.validate() ?? false) {
       print('valid!');
 
@@ -222,8 +224,8 @@ class _ICreditPaymentWidgetState extends StateMVC<ICreditPaymentWidget> {
           expiryDate,
         );
 
+        print('تم حفظ البطاقة محلياً: ${creditCard.number}');
         Navigator.pop(context, creditCard);
-
         return;
       }
 
@@ -233,6 +235,7 @@ class _ICreditPaymentWidgetState extends StateMVC<ICreditPaymentWidget> {
         cardNumber.replaceAll(" ", ""),
         expiryDate,
       );
+      print('تم حفظ البطاقة محلياً: $cardNumber');
       await _con.completeSale(
           cvvCode,
           cardHolderName,

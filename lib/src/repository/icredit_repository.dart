@@ -55,3 +55,7 @@ Future<ICreditCompleteSaleResponse> iCreditCompleteSale(ICreditCreateSaleRespons
 
   return ICreditCompleteSaleResponse.fromMap(jsonDecode(response.body) as Map<String, dynamic>);
 }
+
+Future<void> completeSale() async {
+  // هنا تضع رسائل الطباعة
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'dart:convert';
 
 import '../../generated/l10n.dart';
 import '../controllers/delivery_pickup_controller.dart';
@@ -17,11 +18,14 @@ import '../helpers/app_text_styles.dart';
 import '../helpers/helper.dart';
 import '../helpers/swipe_button_widget.dart';
 import '../models/address.dart';
+import '../models/icredit_charge_simple_reesponse.dart';
+import '../models/icredit_create_sale_response.dart' show ICreditCreateSaleResponse;
 import '../models/payment_method.dart';
 import '../models/route_argument.dart';
 import 'order_success.dart';
 import '../models/card_item.dart';
-
+import '../models/icredit_create_sale_body.dart';
+import '../repository/icredit_repository.dart';
 
 class DeliveryPickupWidget extends StatefulWidget {
   final RouteArgument? routeArgument;
@@ -62,7 +66,6 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
     if (selectedTap == 2) {
       return _con.total - _con.deliveryFee;
     }
-
     return _con.total;
   }
 
@@ -85,11 +88,6 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
             content: Text('عذراً، عنوانك خارج منطقة التوصيل المتاحة'),
             backgroundColor: Colors.red,
             duration: Duration(seconds: 5),
-            action: SnackBarAction(
-              label: 'حسناً',
-              textColor: Colors.white,
-              onPressed: () {},
-            ),
           ),
         );
         return;
@@ -97,6 +95,84 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
     }
 
     if (selectedPaymentMethod == 'credit' && selectedCardIndex != -1) {
+      print('--- بدء عملية الدفع عبر iCredit (DeliveryPickupWidget) ---');
+      if (selectedCardIndex == -1) {
+        print('لم يتم اختيار أي بطاقة!');
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Please select a card"),
+        ));
+        return;
+      }
+
+      final selectedCard = savedCards[selectedCardIndex];
+      print('بيانات البطاقة: cardNumber=${selectedCard.cardNumber}, holderName=${selectedCard.cardHolderName}, expDateYymm=${selectedCard.cardExpirationDate}, cvv=${selectedCard.cardCVV}');
+      setState(() {
+        // isLoading = true;
+      });
+
+      try {
+        // إنشاء عملية بيع أولاً
+        ICreditCreateSaleResponse saleResponse = await iCreditCreateSale(fromList(_con.carts));
+        print('رد iCreditCreateSale:');
+        print(saleResponse.clientMessage);
+        print(saleResponse.debugMessage);
+        print(saleResponse.status);
+        print(saleResponse.saleToken);
+        print(saleResponse.creditboxToken);
+        print(saleResponse.totalAmount);
+        
+        ICreditChargeSimpleResponse response = await iCreditChargeSimple(
+          selectedCard.cardCVV,
+          selectedCard.cardHolderName,
+          selectedCard.cardNumber,
+          selectedCard.cardExpirationDate,
+          saleResponse,
+        );
+        print('رد iCreditChargeSimple:');
+        print('status: ${response.status}');
+        print('amount: ${response.amount}');
+        print('customerTransactionId: ${response.customerTransactionId}');
+        print('token: ${response.token}');
+
+        if (response.status == 0) {
+          print('--- عملية الدفع عبر iCredit نجحت (DeliveryPickupWidget) ---');
+          Navigator.of(context).pushNamed('/OrderSuccess',
+              arguments: RouteArgument(param: 'Credit Card'));
+        } else {
+          print('--- عملية الدفع عبر iCredit فشلت (DeliveryPickupWidget) ---');
+          String errorMessage = 'فشلت عملية الدفع';
+          if (response.status == 4) {
+            errorMessage = 'تم رفض البطاقة من قبل البنك. يرجى التحقق من:\n'
+                '• رصيد البطاقة كافٍ\n'
+                '• بيانات البطاقة صحيحة\n'
+                '• البطاقة مفعلة وغير محظورة';
+          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(errorMessage),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 5),
+              action: SnackBarAction(
+                label: 'حسناً',
+                textColor: Colors.white,
+                onPressed: () {},
+              ),
+            ),
+          );
+        }
+      } catch (e) {
+        print("Error completing sale: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('حدث خطأ أثناء عملية الدفع'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      } finally {
+        setState(() {
+          // isLoading = false;
+        });
+      }
     } else {
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -115,9 +191,9 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
     if (_con.list == null) {
       _con.list = PaymentMethodList(context);
     }
+
     return Scaffold(
-      bottomNavigationBar:
-      Padding(
+      bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SwipeButtonWidget(
           context: context,
@@ -139,10 +215,6 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
           style: AppTextStyles.font16W600Black,
         ),
       ),
-      // floatingActionButton: Padding(
-      //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      //   child: CustomMaterialButton(onPressed: () {}),
-      // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -168,9 +240,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
               const SizedBox(height: 24),
               if (selectedTap == 1) ...[
                 _buildAddressField(TextEditingController(), () async {
-                  var address = await Navigator.of(
-                    context,
-                  ).pushNamed('/DeliveryAddresses', arguments: [true,_con]);
+                  var address = await Navigator.of(context).pushNamed('/DeliveryAddresses', arguments: [true,_con]);
                   if (address != null) {
                     setState(() {
                       _con.deliveryAddress = address as Address;
@@ -314,12 +384,6 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
               const SizedBox(height: 16),
               _buildPromoCodeField(TextEditingController()),
               const SizedBox(height: 24),
-              // OrderSummary(
-              //   itemSubtotlalPrice: .00,
-              //   serviceFeePrice: 0.99,
-              //   deliveryPrice:  selectedTap == 2 ? 0 : _con.deliveryFee,
-              //   promoPrice: 1.0,
-              // ),
               CartBottomDetailsWidget(
                 con: _con,
                 selectedTap: selectedTap,

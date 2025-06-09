@@ -18,4 +18,14 @@ class ICreditChargeSimpleResponse {
       token: map["Token"]?.toString() ?? '',
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "Amount": amount,
+      "CardNum": cardNum,
+      "CustomerTransactionId": customerTransactionId,
+      "Status": status,
+      "Token": token,
+    };
+  }
 }

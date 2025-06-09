@@ -7,6 +7,7 @@ class ICreditCreateSaleResponse {
   final String saleToken;
   final int status;
   final double totalAmount;
+  final String paymentPageUrl;
 
   ICreditCreateSaleResponse({
     required this.clientMessage,
@@ -17,6 +18,7 @@ class ICreditCreateSaleResponse {
     required this.saleToken,
     required this.status,
     required this.totalAmount,
+    this.paymentPageUrl = '',
   });
 
   factory ICreditCreateSaleResponse.fromMap(Map<String, dynamic> map) {
@@ -29,6 +31,21 @@ class ICreditCreateSaleResponse {
       saleToken: map["SaleToken"]?.toString() ?? '',
       status: map["Status"] ?? 0,
       totalAmount: (map["TotalAmount"] is num) ? (map["TotalAmount"] as num).toDouble() : double.tryParse(map["TotalAmount"]?.toString() ?? '0') ?? 0.0,
+      paymentPageUrl: map["PaymentPageUrl"]?.toString() ?? '',
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "ClientMessage": clientMessage,
+      "CreditboxToken": creditboxToken,
+      "Currency": currency,
+      "DebugMessage": debugMessage,
+      "PrivateSaleToken": privateSaleToken,
+      "SaleToken": saleToken,
+      "Status": status,
+      "TotalAmount": totalAmount,
+      "PaymentPageUrl": paymentPageUrl,
+    };
   }
 }
