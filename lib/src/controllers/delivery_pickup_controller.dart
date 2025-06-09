@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import '../elements/MobileVerificationBottomSheetWidget.dart';
 import '../models/icredit_create_sale_body.dart';
 import '../models/icredit_create_sale_response.dart';
@@ -43,6 +46,29 @@ class DeliveryPickupController extends CartController {
         ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text("Error fetching addresses")));
       },
     );
+  }
+
+  Future<bool> checkDeliveryArea() async {
+    try {
+      final response = await http.post(
+        Uri.parse('https://carrytechnologies.co/api/check-delivery'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'restaurant_id': carts.first.food?.restaurant.id,
+          'latitude': deliveryAddress?.latitude ?? 0,
+          'longitude': deliveryAddress?.longitude ?? 0,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data['can_deliver'] ?? false;
+      }
+      return false;
+    } catch (e) {
+      print('Error checking delivery area: $e');
+      return false;
+    }
   }
 
   void listenForDeliveryAddress() {

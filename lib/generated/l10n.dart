@@ -2999,6 +2999,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Card deleted successfully`
+  String get card_deleted_successfully {
+    return Intl.message(
+      'Card deleted successfully',
+      name: 'card_deleted_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Card added successfully`
+  String get card_added_successfully {
+    return Intl.message(
+      'Card added successfully',
+      name: 'card_added_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message(
+      'Delete',
+      name: 'delete',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

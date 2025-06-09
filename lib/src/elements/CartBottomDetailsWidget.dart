@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-
 import '../../generated/l10n.dart';
 import '../controllers/cart_controller.dart';
 import '../helpers/app_colors.dart';

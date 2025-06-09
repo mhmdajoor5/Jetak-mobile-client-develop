@@ -278,6 +278,8 @@
   "login_success": "התחברות הצליחה!",
   "maps": "מפות",
   "choose_your_location" : "Please , Choose Your Location",
-  "deliveryAddressOutsideRange": "הכתובת שלך מחוץ לאזור המשלוח. אנא בחר באיסוף עצמי או שנה את הכתובת."
-
+  "deliveryAddressOutsideRange": "הכתובת שלך מחוץ לאזור המשלוח. אנא בחר באיסוף עצמי או שנה את הכתובת.",
+  "card_deleted_successfully": "הכרטיס נמחק בהצלחה",
+  "card_added_successfully": "הכרטיס נוסף בהצלחה",
+  "delete": "מחיקה"
 }

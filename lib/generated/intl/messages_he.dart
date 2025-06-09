@@ -53,6 +53,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("ביטול"),
         "cancelOrder": MessageLookupByLibrary.simpleMessage("בטל הזמנה"),
         "canceled": MessageLookupByLibrary.simpleMessage("בוטל"),
+        "card_added_successfully":
+            MessageLookupByLibrary.simpleMessage("הכרטיס נוסף בהצלחה"),
+        "card_deleted_successfully":
+            MessageLookupByLibrary.simpleMessage("הכרטיס נמחק בהצלחה"),
         "card_number": MessageLookupByLibrary.simpleMessage("מספר כרטיס"),
         "cart": MessageLookupByLibrary.simpleMessage("עגלה"),
         "carts_refreshed_successfuly":
@@ -110,6 +114,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dark_mode": MessageLookupByLibrary.simpleMessage("מצב חשוך"),
         "default_credit_card":
             MessageLookupByLibrary.simpleMessage("כרטיס אשראי ברירת מחדל"),
+        "delete": MessageLookupByLibrary.simpleMessage("מחיקה"),
         "deliverable": MessageLookupByLibrary.simpleMessage("ניתן למשלוח"),
         "delivery": MessageLookupByLibrary.simpleMessage("משלוח"),
         "deliveryAddressOutsideRange": MessageLookupByLibrary.simpleMessage(

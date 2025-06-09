@@ -220,5 +220,8 @@
   "maps": "الخرائط",
   "login_success": "تم تسجيل الدخول بنجاح!",
   "choose_your_location" : "برجاء تحديد موقعك",
-  "deliveryAddressOutsideRange": "عنوانك خارج نطاق التوصيل. يرجى اختيار الاستلام من المتجر أو تغيير العنوان."
+  "deliveryAddressOutsideRange": "عنوانك خارج نطاق التوصيل. يرجى اختيار الاستلام من المتجر أو تغيير العنوان.",
+  "card_deleted_successfully": "تم حذف البطاقة بنجاح",
+  "card_added_successfully": "تمت إضافة البطاقة بنجاح",
+  "delete": "حذف"
 }

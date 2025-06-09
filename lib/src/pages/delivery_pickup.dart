@@ -22,6 +22,7 @@ import '../models/route_argument.dart';
 import 'order_success.dart';
 import '../models/card_item.dart';
 
+
 class DeliveryPickupWidget extends StatefulWidget {
   final RouteArgument? routeArgument;
 
@@ -64,36 +65,64 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
 
     return _con.total;
   }
+
+  Future<void> completeSale() async {
+    if (selectedTap == 1) {
+      if (_con.deliveryAddress == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('الرجاء اختيار عنوان التوصيل'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      final canDeliver = await _con.checkDeliveryArea();
+      if (!canDeliver) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('عذراً، عنوانك خارج منطقة التوصيل المتاحة'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 5),
+            action: SnackBarAction(
+              label: 'حسناً',
+              textColor: Colors.white,
+              onPressed: () {},
+            ),
+          ),
+        );
+        return;
+      }
+    }
+
+    if (selectedPaymentMethod == 'credit' && selectedCardIndex != -1) {
+    } else {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => OrderSuccessWidget(
+            routeArgument: RouteArgument(
+              param: selectedTap == 1 ? 'Cash on Delivery' : 'Pay on Pickup',
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_con.list == null) {
       _con.list = PaymentMethodList(context);
     }
-
-
-
     return Scaffold(
-
-      bottomNavigationBar:                     Padding(
+      bottomNavigationBar:
+      Padding(
         padding: const EdgeInsets.all(16.0),
         child: SwipeButtonWidget(
           context: context,
           numOfItems: _con.carts.length,
-          onSwipe: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder:
-                    (_) => OrderSuccessWidget(
-                  routeArgument: RouteArgument(
-                    param:
-                    selectedTap == 1
-                        ? 'Cash on Delivery'
-                        : 'Pay on Pickup',
-                  ),
-                ),
-              ),
-            );
-          },
+          onSwipe: () async => await completeSale(),
           totalPrice: returnTheTotal(),
         ),
       ),

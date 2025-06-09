@@ -293,5 +293,8 @@
   "login_success": "Login successful!",
   "maps": "Maps",
   "choose_your_location" : "Please , Choose Your Location",
-  "deliveryAddressOutsideRange": "Your address is out of the delivery range. Please select pickup or change your address."
+  "deliveryAddressOutsideRange": "Your address is out of the delivery range. Please select pickup or change your address.",
+  "card_deleted_successfully": "Card deleted successfully",
+  "card_added_successfully": "Card added successfully",
+  "delete": "Delete"
 }
