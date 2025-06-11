@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'dart:convert';
-
 import '../../generated/l10n.dart';
 import '../controllers/delivery_pickup_controller.dart';
 import '../elements/CartBottomDetailsWidget.dart';

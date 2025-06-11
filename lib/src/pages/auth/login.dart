@@ -186,25 +186,27 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           IconButton(
-                            icon: SvgPicture.asset('assets/img/google_svg_icon.svg', height: 20,width: 20,),
+                            icon: SvgPicture.asset('assets/img/google_svg_icon.svg', height: 20, width: 20),
                             iconSize: 10,
                             onPressed: () => _con.loginWithGoogle(),
                           ),
-                          SizedBox(width: 20),
-                          IconButton(
-                            icon: SvgPicture.asset('assets/img/facebook_svg_icon.svg',height: 20,width: 20, ),
-                            iconSize: 10,
-                            onPressed: () => _con.loginWithFacebook(),
-                          ),
-                          SizedBox(width: 20),
-                          IconButton(
-                            icon: SvgPicture.asset('assets/img/apple_icon.svg',height: 20,width: 20, ),
-                            iconSize: 10,
-                            onPressed: (){},
-                            // onPressed: () => _con.signInWithApple(),
-                          ),
+                          if (!Platform.isIOS) ...[
+                            SizedBox(width: 20),
+                            IconButton(
+                              icon: SvgPicture.asset('assets/img/facebook_svg_icon.svg', height: 20, width: 20),
+                              iconSize: 10,
+                              onPressed: () => _con.loginWithFacebook(),
+                            ),
+                            SizedBox(width: 20),
+                            IconButton(
+                              icon: SvgPicture.asset('assets/img/apple_icon.svg', height: 20, width: 20),
+                              iconSize: 10,
+                              onPressed: () {},
+                            ),
+                          ],
                         ],
-                      )
+                      ),
+
 //                      SizedBox(height: 10),
                     ],
                   ),
