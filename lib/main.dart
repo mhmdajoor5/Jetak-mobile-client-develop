@@ -31,6 +31,15 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
+  Future<void> main() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await GlobalConfiguration().loadFromAsset("configurations");
+    await Firebase.initializeApp();
+
+    await userRepo.getCurrentUser();
+    runApp(MyApp());
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(

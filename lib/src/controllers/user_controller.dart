@@ -131,6 +131,54 @@ class UserController extends ControllerMVC {
     }
   }
 
+  Future<void> registerWithGoogle() async {
+    if (context == null) return;
+    final loaderTimer = Timer(const Duration(milliseconds: 300), _showLoader);
+
+    try {
+      final googleSignIn = GoogleSignIn();
+      final account = await googleSignIn.signIn();
+      if (account == null) throw 'تم إلغاء تسجيل الدخول من قبل المستخدم';
+
+      final auth = await account.authentication;
+      if (auth.accessToken == null || auth.idToken == null) {
+        throw 'بيانات Google مفقودة';
+      }
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: auth.accessToken,
+        idToken: auth.idToken,
+      );
+
+      final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+      final firebaseUser = userCredential.user;
+
+      final response = await http.post(
+        Uri.parse('https://carrytechnologies.co/api/register/social/google'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'provider': 'google',
+          'token': auth.accessToken,
+        }),
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        _hideLoader();
+        _showSnackBar(S.of(context!).register_successful);
+        Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
+      } else {
+        throw 'فشل التسجيل: ${response.body}';
+      }
+    } catch (e) {
+      _hideLoader();
+      _showSnackBar('فشل التسجيل باستخدام Google');
+      print('Register error: $e');
+    }
+  }
+
   Future<void> verifyPhone(model.User user) async {
     if (context == null) return;
 
@@ -182,7 +230,7 @@ class UserController extends ControllerMVC {
 
   Future<void> loginWithGoogle() async {
     if (context == null) return;
-    _showLoader();
+    final loaderTimer = Timer(const Duration(milliseconds: 300), _showLoader);
 
     try {
       final googleSignIn = GoogleSignIn();
@@ -216,6 +264,12 @@ class UserController extends ControllerMVC {
       print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        model.User userData = model.User.fromJSON(responseData['data']);
+        repository.currentUser.value = userData;
+        repository.currentUser.value.auth = true;
+       // await repository.setCurrentUser(userData);
+
         _hideLoader();
         _showSnackBar(S.of(context!).login_successful);
         Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
@@ -232,7 +286,8 @@ class UserController extends ControllerMVC {
 
   Future<void> loginWithFacebook() async {
     if (context == null) return;
-    _showLoader();
+    final loaderTimer = Timer(const Duration(milliseconds: 300), _showLoader);
+
     try {
       final result = await FacebookAuth.instance.login();
 

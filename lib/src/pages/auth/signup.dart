@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import '../../helpers/phone_util.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -199,24 +200,30 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                         },
                       ),
                       SizedBox(height: 25),
-//                      MaterialButton(
-//      elevation: 0,
-//      focusElevation: 0,
-//      highlightElevation: 0,
-//                        onPressed: () {
-//                          Navigator.of(context).pushNamed('/MobileVerification');
-//                        },
-//                        padding: EdgeInsets.symmetric(vertical: 14),
-//                        color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
-//                        shape: StadiumBorder(),
-//                        child: Text(
-//                          'Register with Google',
-//                          textAlign: TextAlign.start,
-//                          style: TextStyle(
-//                            color: Theme.of(context).colorScheme.secondary,
-//                          ),
-//                        ),
-//                      ),
+                      MaterialButton(
+                        elevation: 0,
+                        focusElevation: 0,
+                        highlightElevation: 0,
+                        onPressed: () {
+                          print('Register with Google clicked');
+                        },
+                        padding: EdgeInsets.symmetric(vertical: 14),
+                        //color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+                       // shape: StadiumBorder(),
+                        child:
+                            IconButton(
+                              icon: SvgPicture.asset('assets/img/google_svg_icon.svg', height: 20,width: 20,),
+                              iconSize: 10,
+                              onPressed: () => _con.registerWithGoogle(),
+                            ),
+                            // Text(
+                            //   'Register with Google',
+                            //   style: TextStyle(
+                            //     color: Theme.of(context).colorScheme.secondary,
+                            //     fontWeight: FontWeight.w600,
+                            //   ),
+                            // ),
+                      ),
                     ],
                   ),
                 ),

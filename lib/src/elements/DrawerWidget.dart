@@ -20,104 +20,99 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              currentUser.value.apiToken != null ? Navigator.of(context).pushNamed('/Profile') : Navigator.of(context).pushNamed('/Login');
-            },
-            child:
-                currentUser.value.apiToken != null
+    return ValueListenableBuilder(
+      valueListenable: currentUser,
+      builder: (context, user, _) {
+        return Drawer(
+          child: ListView(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  user.apiToken != null
+                      ? Navigator.of(context).pushNamed('/Profile')
+                      : Navigator.of(context).pushNamed('/Login');
+                },
+                child: user.apiToken != null
                     ? UserAccountsDrawerHeader(
-                      decoration: BoxDecoration(color: Theme.of(context).hintColor.withOpacity(0.1)),
-                      accountName: Text(currentUser.value.name ?? '', style: Theme.of(context).textTheme.headlineSmall),
-                      accountEmail: Text(currentUser.value.email ?? '', style: Theme.of(context).textTheme.bodySmall),
-                      currentAccountPicture: Stack(
-                        children: [
-                          SizedBox(
-                            width: 80,
+                  decoration: BoxDecoration(color: Theme.of(context).hintColor.withOpacity(0.1)),
+                  accountName: Text(user.name ?? '', style: Theme.of(context).textTheme.headlineSmall),
+                  accountEmail: Text(user.email ?? '', style: Theme.of(context).textTheme.bodySmall),
+                  currentAccountPicture: Stack(
+                    children: [
+                      SizedBox(
+                        width: 80,
+                        height: 80,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(80)),
+                          child: CachedNetworkImage(
                             height: 80,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.all(Radius.circular(80)),
-                              child: CachedNetworkImage(
-                                height: 80,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                                imageUrl: currentUser.value.image?.thumb ?? '',
-                                placeholder: (context, url) => Image.asset('assets/img/loading.gif', fit: BoxFit.cover, width: double.infinity, height: 80),
-                                errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, ),
-                              ),
-                            ),
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            imageUrl: user.image?.thumb ?? '',
+                            placeholder: (context, url) => Image.asset('assets/img/loading.gif', fit: BoxFit.cover, width: double.infinity, height: 80),
+                            errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill),
                           ),
-                          if (currentUser.value.verifiedPhone ?? false) Positioned(top: 0, right: 0, child: Icon(Icons.check_circle, color: Theme.of(context).colorScheme.secondary, size: 24)),
-                        ],
+                        ),
                       ),
-                    )
+                      if (user.verifiedPhone ?? false)
+                        Positioned(top: 0, right: 0, child: Icon(Icons.check_circle, color: Theme.of(context).colorScheme.secondary, size: 24)),
+                    ],
+                  ),
+                )
                     : Container(
-                      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
-                      decoration: BoxDecoration(color: Theme.of(context).hintColor.withOpacity(0.1)),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(Icons.person, size: 32, color: Theme.of(context).colorScheme.secondary.withOpacity(1)),
-                          const SizedBox(width: 30),
-                          Text(S.of(context).guest, style: Theme.of(context).textTheme.headlineSmall),
-                        ],
-                      ),
-                    ),
+                  padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
+                  decoration: BoxDecoration(color: Theme.of(context).hintColor.withOpacity(0.1)),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.person, size: 32, color: Theme.of(context).colorScheme.secondary.withOpacity(1)),
+                      const SizedBox(width: 30),
+                      Text(S.of(context).guest, style: Theme.of(context).textTheme.headlineSmall),
+                    ],
+                  ),
+                ),
+              ),
+              _buildTile(context, '/Pages', S.of(context).home, Icons.home, 2),
+              _buildTile(context, '/Pages', S.of(context).notifications, Icons.notifications, 0),
+              _buildTile(context, '/Pages', S.of(context).my_orders, Icons.local_mall, 3),
+              _buildTile(context, '/Favorites', S.of(context).favorite_foods, Icons.favorite),
+              _buildTile(context, '/Pages', S.of(context).messages, Icons.chat, 4),
+              _buildDividerTile(context, S.of(context).application_preferences),
+              _buildTile(context, '/Help', S.of(context).help__support, Icons.help),
+              ListTile(
+                onTap: () {
+                  if (user.apiToken != null) {
+                    Navigator.of(context).pushNamed('/Settings');
+                  } else {
+                    Navigator.of(context).pushReplacementNamed('/Login');
+                  }
+                },
+                leading: Icon(Icons.settings, color: Theme.of(context).focusColor.withOpacity(1)),
+                title: Text(S.of(context).settings, style: Theme.of(context).textTheme.titleMedium),
+              ),
+              ListTile(
+                onTap: () {
+                  if (user.apiToken != null) {
+                    logout().then((_) {
+                      Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 2);
+                    });
+                  } else {
+                    Navigator.of(context).pushNamed('/Login');
+                  }
+                },
+                leading: Icon(Icons.exit_to_app, color: Theme.of(context).focusColor.withOpacity(1)),
+                title: Text(user.apiToken != null ? S.of(context).log_out : S.of(context).login, style: Theme.of(context).textTheme.titleMedium),
+              ),
+              if (user.apiToken == null) _buildTile(context, '/SignUp', S.of(context).register, Icons.person_add),
+              if (setting.value.enableVersion)
+                ListTile(
+                  dense: true,
+                  title: Text('${S.of(context).version} ${setting.value.appVersion}', style: Theme.of(context).textTheme.bodyMedium),
+                  trailing: Icon(Icons.remove, color: Theme.of(context).focusColor.withOpacity(0.3)),
+                ),
+            ],
           ),
-          _buildTile(context, '/Pages', S.of(context).home, Icons.home, 2),
-          _buildTile(context, '/Pages', S.of(context).notifications, Icons.notifications, 0),
-          _buildTile(context, '/Pages', S.of(context).my_orders, Icons.local_mall, 3),
-          _buildTile(context, '/Favorites', S.of(context).favorite_foods, Icons.favorite),
-          _buildTile(context, '/Pages', S.of(context).messages, Icons.chat, 4),
-          _buildDividerTile(context, S.of(context).application_preferences),
-          _buildTile(context, '/Help', S.of(context).help__support, Icons.help),
-          ListTile(
-            onTap: () {
-              if (currentUser.value.apiToken != null) {
-                Navigator.of(context).pushNamed('/Settings');
-              } else {
-                Navigator.of(context).pushReplacementNamed('/Login');
-              }
-            },
-            leading: Icon(Icons.settings, color: Theme.of(context).focusColor.withOpacity(1)),
-            title: Text(S.of(context).settings, style: Theme.of(context).textTheme.titleMedium),
-          ),
-          // _buildTile(context, '/Languages', S.of(context).languages, Icons.translate),
-          // ListTile(
-          //   onTap: () {
-          //     final brightness = Theme.of(context).brightness;
-          //     final newBrightness = brightness == Brightness.dark ? Brightness.light : Brightness.dark;
-          //     setBrightness(newBrightness);
-          //     setting.value.brightness.value = newBrightness;
-          //     setting.notifyListeners();
-          //   },
-          //   leading: Icon(Icons.brightness_6, color: Theme.of(context).focusColor.withOpacity(1)),
-          //   title: Text(Theme.of(context).brightness == Brightness.dark ? S.of(context).light_mode : S.of(context).dark_mode, style: Theme.of(context).textTheme.titleMedium),
-          // ),
-          ListTile(
-            onTap: () {
-              if (currentUser.value.apiToken != null) {
-                logout().then((_) {
-                  Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 2);
-                });
-              } else {
-                Navigator.of(context).pushNamed('/Login');
-              }
-            },
-            leading: Icon(Icons.exit_to_app, color: Theme.of(context).focusColor.withOpacity(1)),
-            title: Text(currentUser.value.apiToken != null ? S.of(context).log_out : S.of(context).login, style: Theme.of(context).textTheme.titleMedium),
-          ),
-          if (currentUser.value.apiToken == null) _buildTile(context, '/SignUp', S.of(context).register, Icons.person_add),
-          if (setting.value.enableVersion)
-            ListTile(
-              dense: true,
-              title: Text('${S.of(context).version} ${setting.value.appVersion}', style: Theme.of(context).textTheme.bodyMedium),
-              trailing: Icon(Icons.remove, color: Theme.of(context).focusColor.withOpacity(0.3)),
-            ),
-        ],
-      ),
+        );
+      },
     );
   }
 
