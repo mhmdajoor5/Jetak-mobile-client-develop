@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
+import '../helpers/app_colors.dart';
+
 class CircularLoadingWidget extends StatefulWidget {
   final double? height;
+  final Color? color;
 
-  CircularLoadingWidget({Key? key, this.height}) : super(key: key);
+  CircularLoadingWidget({Key? key, this.height, this.color}) : super(key: key);
 
   @override
   _CircularLoadingWidgetState createState() => _CircularLoadingWidgetState();
@@ -39,6 +42,6 @@ class _CircularLoadingWidgetState extends State<CircularLoadingWidget> with Sing
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(opacity: (animation.value / 100).clamp(0.0, 1.0), child: SizedBox(height: animation.value, child: Center(child: CircularProgressIndicator())));
+    return Opacity(opacity: (animation.value / 100).clamp(0.0, 1.0), child: SizedBox(height: animation.value, child: Center(child: CircularProgressIndicator(color: widget.color ?? AppColors.color26386A,))));
   }
 }

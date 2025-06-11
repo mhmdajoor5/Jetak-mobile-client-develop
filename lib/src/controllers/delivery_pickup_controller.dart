@@ -104,6 +104,7 @@ class DeliveryPickupController extends CartController {
         notifyListeners();
       }
       print("Error determining closest address: $e");
+      if(scaffoldKey.currentContext != null)
       ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text("Error determining closest address")));
     }
   }

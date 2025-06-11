@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -7,7 +9,6 @@ import '../models/cart.dart';
 import '../models/coupon.dart';
 import '../repository/cart_repository.dart';
 import '../repository/coupon_repository.dart';
-import '../repository/user_repository.dart';
 
 class CartController extends ControllerMVC {
   List<Cart> carts = <Cart>[];
@@ -39,15 +40,23 @@ class CartController extends ControllerMVC {
       },
       onError: (e) {
         print(e);
-        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text(S.of(state!.context).verify_your_internet_connection)));
+        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+          SnackBar(
+            content: Text(S.of(state!.context).verify_your_internet_connection),
+          ),
+        );
       },
       onDone: () {
         if (carts.isNotEmpty) {
-          estimatedTime = carts.map((e) => e.food!.estTime).reduce((a, b) => a > b ? a : b);
+          estimatedTime = carts
+              .map((e) => e.food!.estTime)
+              .reduce((a, b) => a > b ? a : b);
           calculateSubtotal();
         }
         if (message != null) {
-          ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text(message)));
+          ScaffoldMessenger.of(
+            scaffoldKey.currentContext!,
+          ).showSnackBar(SnackBar(content: Text(message)));
         }
         onLoadingCartDone();
       },
@@ -74,7 +83,15 @@ class CartController extends ControllerMVC {
     setState(() => carts.remove(cart));
     await removeCart(cart);
     calculateSubtotal();
-    ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text(S.of(state!.context).the_food_was_removed_from_your_cart(cart.food!.name))));
+    ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+      SnackBar(
+        content: Text(
+          S
+              .of(state!.context)
+              .the_food_was_removed_from_your_cart(cart.food!.name),
+        ),
+      ),
+    );
   }
 
   void calculateSubtotal() {
@@ -89,9 +106,13 @@ class CartController extends ControllerMVC {
         subTotal += cartPrice;
       });
 
-      deliveryFee = Helper.canDelivery(carts[0].food!.restaurant, carts: carts) ? carts[0].food!.restaurant.deliveryFee : 0;
+      deliveryFee =
+          Helper.canDelivery(carts[0].food!.restaurant, carts: carts)
+              ? carts[0].food!.restaurant.deliveryFee
+              : 0;
 
-      taxAmount = (subTotal + deliveryFee) * carts[0].food!.restaurant.defaultTax / 100;
+      taxAmount =
+          (subTotal + deliveryFee) * carts[0].food!.restaurant.defaultTax / 100;
       total = subTotal + taxAmount + deliveryFee;
       setState(() {});
     }
@@ -106,7 +127,11 @@ class CartController extends ControllerMVC {
       },
       onError: (e) {
         print(e);
-        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text(S.of(state!.context).verify_your_internet_connection)));
+        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+          SnackBar(
+            content: Text(S.of(state!.context).verify_your_internet_connection),
+          ),
+        );
       },
       onDone: () => listenForCarts(),
     );
@@ -146,11 +171,13 @@ class CartController extends ControllerMVC {
     //     ),
     //   );
     // } else {
-      if (carts[0].food!.restaurant.closed) {
-        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text(S.of(context).this_restaurant_is_closed_)));
-      } else {
-        Navigator.of(context).pushNamed('/DeliveryPickup');
-      }
+    if (carts[0].food!.restaurant.closed) {
+      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+        SnackBar(content: Text(S.of(context).this_restaurant_is_closed_)),
+      );
+    } else {
+      Navigator.of(context).pushNamed('/DeliveryPickup');
+    }
     // }
   }
 

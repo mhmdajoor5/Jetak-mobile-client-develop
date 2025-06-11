@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -40,7 +41,7 @@ class CheckoutController extends CartController {
 
   void checkAndAddOrder(List<Cart> carts) async {
     print('▶️ تم استدعاء checkAndAddOrder');
-    final double? latitude  = settingRepo.deliveryAddress.value?.latitude;
+    final double? latitude = settingRepo.deliveryAddress.value?.latitude;
     final double? longitude = settingRepo.deliveryAddress.value?.longitude;
 
     int? restaurantId;
@@ -68,7 +69,10 @@ class CheckoutController extends CartController {
     } else {
       ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
         SnackBar(content: Text('العنوان خارج نطاق التوصيل الخاص بالمطعم')),
-      );setState(() { loading = false; });
+      );
+      setState(() {
+        loading = false;
+      });
     }
   }
 
@@ -109,65 +113,70 @@ class CheckoutController extends CartController {
   void addOrder(List<Cart> carts) {
     if (payment == null) {
       print('❌ payment is null');
-      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
-        SnackBar(content: Text('خطأ في طريقة الدفع')),
-      );
+      ScaffoldMessenger.of(
+        scaffoldKey.currentContext!,
+      ).showSnackBar(SnackBar(content: Text('خطأ في طريقة الدفع')));
       return;
     }
 
     Order _order = Order();
     _order.foodOrders = <FoodOrder>[];
     _order.tax = carts[0].food?.restaurant.defaultTax ?? 0.0;
-    _order.deliveryFee = (payment?.method == 'Pay on Pickup')
-        ? 0
-        : carts[0].food?.restaurant.deliveryFee ?? 0;
+    _order.deliveryFee =
+        (payment?.method == 'Pay on Pickup')
+            ? 0
+            : carts[0].food?.restaurant.deliveryFee ?? 0;
     OrderStatus _orderStatus = OrderStatus()..id = '1';
     _order.orderStatus = _orderStatus;
     _order.deliveryAddress = settingRepo.deliveryAddress.value;
 
     for (var _cart in carts) {
-      FoodOrder _foodOrder = FoodOrder()
-        ..quantity = _cart.quantity
-        ..price = _cart.food?.price ?? 0.0
-        ..food = _cart.food
-        ..extras = _cart.extras;
+      FoodOrder _foodOrder =
+          FoodOrder()
+            ..quantity = _cart.quantity
+            ..price = _cart.food?.price ?? 0.0
+            ..food = _cart.food
+            ..extras = _cart.extras;
       _order.foodOrders.add(_foodOrder);
     }
 
     print('📦 جاري إضافة الطلب...');
     print('📦 طريقة الدفع: ${payment?.method}');
 
-    orderRepo.addOrder(_order, payment!)
+    orderRepo
+        .addOrder(_order, payment!)
         .then((value) async {
-      print('📦 ✅ Response من السيرفر بعد تنفيذ الطلب: $value');
-      settingRepo.coupon = Coupon.fromJSON({});
-      return value;
-    })
+          print('📦 ✅ Response من السيرفر بعد تنفيذ الطلب: $value');
+          settingRepo.coupon = Coupon.fromJSON({});
+          return value;
+        })
         .then((value) {
-      setState(() {
-        loading = false;
-      });
-      Navigator.of(scaffoldKey.currentContext!).pushNamed(
-        '/OrderSuccess',
-        arguments: RouteArgument(param: payment?.method ?? 'Unknown'),
-      );
-    })
+          setState(() {
+            loading = false;
+          });
+          // Navigator.of(scaffoldKey.currentContext!).pushNamed(
+          //   '/OrderSuccess',
+          //   arguments: RouteArgument(param: payment?.method ?? 'Unknown'),
+          // );
+        })
         .catchError((error) {
-      print('❌ خطأ في إضافة الطلب: $error');
-      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
-        SnackBar(content: Text('حدث خطأ أثناء إضافة الطلب')),
-      );
-      setState(() {
-        loading = false;
-      });
-    });
+          print('❌ خطأ في إضافة الطلب: $error');
+          ScaffoldMessenger.of(
+            scaffoldKey.currentContext!,
+          ).showSnackBar(SnackBar(content: Text('حدث خطأ أثناء إضافة الطلب')));
+          setState(() {
+            loading = false;
+          });
+        });
   }
 
   void updateCreditCard(CreditCard creditCard) {
     userRepo.setCreditCard(creditCard).then((_) {
       setState(() {});
       ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
-        SnackBar(content: Text(S.of(state!.context).payment_card_updated_successfully)),
+        SnackBar(
+          content: Text(S.of(state!.context).payment_card_updated_successfully),
+        ),
       );
     });
   }
