@@ -15,6 +15,7 @@ import '../repository/home/get_categorizes_repository.dart';
 import '../repository/home/get_top_restorants_repo.dart';
 import '../repository/home/get_trending_foods_repo.dart';
 import '../repository/home/slider_repository.dart';
+import '../repository/order/order_track_repo.dart';
 import '../repository/restaurant_repository.dart';
 import '../repository/resturant/popular_reatauran_repository.dart';
 import '../repository/settings_repository.dart';
@@ -64,6 +65,7 @@ class HomeController extends ControllerMVC {
         getTopRestaurants(),
         fetchPopularRestaurants(),
         getTrendingFoods(),
+        // getTrackingOrderModel(orderId: '225')
       ]);
 
       // Update data directly without setState
