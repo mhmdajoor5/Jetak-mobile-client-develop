@@ -13,7 +13,7 @@ class TrackingOrderModel {
     return TrackingOrderModel(
       success: json["success"].toString().toLowerCase() == 'true',
       data: Data.fromJson(json["data"]),
-      message: json["message"],
+      message: json["message"] ?? '',
     );
   }
 }
@@ -22,30 +22,31 @@ class Data {
   List<StatusHistory> statusHistory;
   dynamic preparationTime;
   dynamic estimatedTime;
-  DeliveryAddress deliveryAddress;
-  Driver driver;
+  DeliveryAddress? deliveryAddress;
+  Driver? driver;
 
   Data({
     required this.statusHistory,
-    required this.preparationTime,
-    required this.estimatedTime,
-    required this.deliveryAddress,
-    required this.driver,
+    this.preparationTime,
+    this.estimatedTime,
+    this.deliveryAddress,
+    this.driver,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) {
     return Data(
-      statusHistory: (json["status_history"] != null)
-          ? List<StatusHistory>.from(
-          (json["status_history"] as List).map((i) => StatusHistory.fromJson(i)))
-          : [],
+      statusHistory: (json["status_history"] as List?)
+          ?.map((i) => StatusHistory.fromJson(i))
+          .toList() ??
+          [],
       preparationTime: json["preparation_time"],
       estimatedTime: json["estimated_time"],
-      deliveryAddress: DeliveryAddress.fromJson(json["delivery_address"]),
-      driver: Driver.fromJson(json["driver"]),
+      deliveryAddress: json["delivery_address"] != null
+          ? DeliveryAddress.fromJson(json["delivery_address"])
+          : null,
+      driver: json["driver"] != null ? Driver.fromJson(json["driver"]) : null,
     );
   }
-
 }
 
 class DeliveryAddress {
@@ -66,10 +67,10 @@ class DeliveryAddress {
   factory DeliveryAddress.fromJson(Map<String, dynamic> json) {
     return DeliveryAddress(
       id: int.parse(json["id"].toString()),
-      address: json["address"],
-      latitude: double.parse(json["latitude"].toString()),
-      longitude: double.parse(json["longitude"].toString()),
-      description: json["description"],
+      address: json["address"] ?? '',
+      latitude: double.tryParse(json["latitude"].toString()) ?? 0.0,
+      longitude: double.tryParse(json["longitude"].toString()) ?? 0.0,
+      description: json["description"] ?? '',
     );
   }
 }
@@ -96,9 +97,9 @@ class Driver {
   factory Driver.fromJson(Map<String, dynamic> json) {
     return Driver(
       id: int.parse(json["id"].toString()),
-      name: json["name"],
+      name: json["name"] ?? '',
       phone: json["phone"],
-      email: json["email"],
+      email: json["email"] ?? '',
       latitude: json["latitude"],
       longitude: json["longitude"],
       avatar: json["avatar"],
@@ -129,9 +130,8 @@ class StatusHistory {
       statusId: int.parse(json["status_id"].toString()),
       statusName: json["status_name"] ?? '',
       notes: json["notes"] ?? '',
-      createdAt: DateTime.parse(json["created_at"]),
+      createdAt: DateTime.tryParse(json["created_at"] ?? '') ?? DateTime.now(),
       userName: json["user_name"] ?? '',
     );
   }
-
 }

@@ -5,7 +5,9 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
 import '../models/order.dart';
+import '../models/order/tracking_order_model.dart';
 import '../models/order_status.dart';
+import '../repository/order/order_track_repo.dart';
 import '../repository/order_repository.dart';
 
 class TrackingController extends ControllerMVC {
@@ -36,6 +38,42 @@ class TrackingController extends ControllerMVC {
         ));
       }
     });
+  }
+
+  TrackingOrderModel? trackingOrderDetails  = null;
+  Future<void> getOrderDetailsTracking({required String orderId, String? message}) async {
+    print("mElkerm ##### Start fetching tracking order data for order ID: $orderId");
+
+    setState(() {
+      // You can set a loading flag here if needed
+    });
+
+    try {
+      // final result = await getTrackingOrderModel(orderId: '225');
+      final result = await getTrackingOrderModel(orderId: orderId);
+
+      setState(() {
+        // Assume your screen uses this `trackingOrderList`
+        trackingOrderDetails = result;
+      });
+
+      if (message != null) {
+        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+          SnackBar(content: Text(message)),
+        );
+      }
+
+      // Optionally call another method after loading
+      listenForOrderStatus();
+
+      print("mElkerm ##### Successfully fetched tracking data");
+
+    } catch (error) {
+      print("mElkerm ##### Error fetching tracking order data: $error");
+      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+        SnackBar(content: Text(S.of(state!.context).verify_your_internet_connection)),
+      );
+    }
   }
 
   void listenForOrderStatus() async {
@@ -91,6 +129,7 @@ class TrackingController extends ControllerMVC {
   Future<void> refreshOrder() async {
     order = new Order();
     listenForOrder(orderId: order.id, message: S.of(state!.context).tracking_refreshed_successfuly);
+    getOrderDetailsTracking(orderId: order.id, message: S.of(state!.context).tracking_refreshed_successfuly);
   }
 
   void doCancelOrder() {

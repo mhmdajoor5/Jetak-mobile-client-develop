@@ -32,6 +32,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
   @override
   void initState() {
     _con.listenForOrder(orderId: widget.routeArgument!.id!);
+    _con.getOrderDetailsTracking(orderId: widget.routeArgument!.id!);
     _tabController = TabController(length: 2, initialIndex: _tabIndex, vsync: this);
     _tabController.addListener(_handleTabSelection);
     super.initState();

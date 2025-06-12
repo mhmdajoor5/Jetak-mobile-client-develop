@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../../models/order/tracking_order_model.dart';
 
-Future<List<TrackingOrderModel>> getTrackingOrderModel({required String orderId}) async {
+Future<TrackingOrderModel> getTrackingOrderModel({required String orderId}) async {
   print("mElkerm !!!!!!!!!! ##### Start to fetch the Tracking Order Data in the repository");
   try {
     final response = await http.get(
@@ -18,7 +18,7 @@ Future<List<TrackingOrderModel>> getTrackingOrderModel({required String orderId}
       final Map<String, dynamic> data = json.decode(response.body);
       print("mElkerm !!!!!!!!!! ##### 11 : Tracking Order Data parsed successfully.");
 
-      return [TrackingOrderModel.fromJson(data)];
+      return TrackingOrderModel.fromJson(data);
     } else {
       print("mElkerm !!!!!!!!!! ##### Error loading Tracking Order Data : in repo ${response.statusCode}");
       throw Exception('Failed to load Tracking Order Data: ${response.statusCode}');

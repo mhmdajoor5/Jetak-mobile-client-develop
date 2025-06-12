@@ -131,9 +131,11 @@ class RouteGenerator {
       //     ),
       //   );
       case '/Tracking':
+        final args = settings.arguments as RouteArgument?;
         return MaterialPageRoute(
-          builder: (_) => TrackingModernWidget(),
+          builder: (_) => TrackingModernWidget(routeArgument: args),
         );
+
 
       case '/Reviews':
         return MaterialPageRoute(

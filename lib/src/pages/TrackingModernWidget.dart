@@ -8,6 +8,7 @@ import '../models/route_argument.dart';
 
 class TrackingModernWidget extends StatefulWidget {
   final RouteArgument? routeArgument;
+
   const TrackingModernWidget({Key? key, this.routeArgument}) : super(key: key);
 
   @override
@@ -27,12 +28,13 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     super.initState();
     if (widget.routeArgument != null && widget.routeArgument!.id != null) {
       _con.listenForOrder(orderId: widget.routeArgument!.id!);
+      _con.getOrderDetailsTracking(orderId: widget.routeArgument!.id!);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    print('order.id: [32m[1m[4m[7m${_con.order.id}[0m');
+    print('order.id: [32m[1m[4m[7m${widget.routeArgument?.id}[0m');
     print('foodOrders.length: [34m${_con.order.foodOrders.length}[0m');
     print('address: [35m${_con.order.deliveryAddress.address}[0m');
     // حماية من محاولة قراءة بيانات غير جاهزة
@@ -75,8 +77,12 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     double? clientLng;
     try {
       if (_con.order.foodOrders.isNotEmpty) {
-        restaurantLat = double.tryParse(_con.order.foodOrders[0].food?.restaurant.latitude ?? '');
-        restaurantLng = double.tryParse(_con.order.foodOrders[0].food?.restaurant.longitude ?? '');
+        restaurantLat = double.tryParse(
+          _con.order.foodOrders[0].food?.restaurant.latitude ?? '',
+        );
+        restaurantLng = double.tryParse(
+          _con.order.foodOrders[0].food?.restaurant.longitude ?? '',
+        );
       }
       clientLat = _con.order.deliveryAddress.latitude;
       clientLng = _con.order.deliveryAddress.longitude;
@@ -85,21 +91,25 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     Set<Marker> markers = {};
     List<LatLng> polylinePoints = [];
     if (restaurantLat != null && restaurantLng != null) {
-      markers.add(Marker(
-        markerId: MarkerId('restaurant'),
-        position: LatLng(restaurantLat, restaurantLng),
-        infoWindow: InfoWindow(title: 'Restaurant'),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-      ));
+      markers.add(
+        Marker(
+          markerId: MarkerId('restaurant'),
+          position: LatLng(restaurantLat, restaurantLng),
+          infoWindow: InfoWindow(title: 'Restaurant'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        ),
+      );
       polylinePoints.add(LatLng(restaurantLat, restaurantLng));
     }
     if (clientLat != null && clientLng != null) {
-      markers.add(Marker(
-        markerId: MarkerId('client'),
-        position: LatLng(clientLat, clientLng),
-        infoWindow: InfoWindow(title: 'Client'),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-      ));
+      markers.add(
+        Marker(
+          markerId: MarkerId('client'),
+          position: LatLng(clientLat, clientLng),
+          infoWindow: InfoWindow(title: 'Client'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+        ),
+      );
       polylinePoints.add(LatLng(clientLat, clientLng));
     }
 
@@ -135,28 +145,34 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
           Container(
             height: MediaQuery.of(context).size.height * 0.5,
             width: double.infinity,
-            child: (restaurantLat != null && restaurantLng != null && clientLat != null && clientLng != null)
-                ? GoogleMap(
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(
-                        (restaurantLat + clientLat) / 2,
-                        (restaurantLng + clientLng) / 2,
-                      ),
-                      zoom: 13,
-                    ),
-                    markers: markers,
-                    polylines: {
-                      if (polylinePoints.length == 2)
-                        Polyline(
-                          polylineId: PolylineId('route'),
-                          points: polylinePoints,
-                          color: Colors.blue,
-                          width: 4,
+            child:
+                (restaurantLat != null &&
+                        restaurantLng != null &&
+                        clientLat != null &&
+                        clientLng != null)
+                    ? GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(
+                          (restaurantLat + clientLat) / 2,
+                          (restaurantLng + clientLng) / 2,
                         ),
-                    },
-                    onMapCreated: (controller) => _mapController = controller,
-                  )
-                : Center(child: Text("Map Here", style: TextStyle(fontSize: 20))),
+                        zoom: 13,
+                      ),
+                      markers: markers,
+                      polylines: {
+                        if (polylinePoints.length == 2)
+                          Polyline(
+                            polylineId: PolylineId('route'),
+                            points: polylinePoints,
+                            color: Colors.blue,
+                            width: 4,
+                          ),
+                      },
+                      onMapCreated: (controller) => _mapController = controller,
+                    )
+                    : Center(
+                      child: Text("Map Here", style: TextStyle(fontSize: 20)),
+                    ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
@@ -186,14 +202,19 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
                     children: [
                       CircleAvatar(
                         radius: 24,
-                        backgroundImage: AssetImage("assets/images/image-removebg-preview.png"),
+                        backgroundImage: AssetImage(
+                          "assets/images/image-removebg-preview.png",
+                        ),
                       ),
                       SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          /// TODO : driver name
                           Text(
-                            "Angel Donin", // TODO: استبدل باسم الكابتن الحقيقي عند توفره
+                            _con.trackingOrderDetails?.data.driver?.name ?? "not available now",
+
+                            // TODO: استبدل باسم الكابتن الحقيقي عند توفره
                             style: TextStyle(
                               fontFamily: "Nunito",
                               fontWeight: FontWeight.w500,
@@ -203,9 +224,11 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
                               color: Color(0xFF272727),
                             ),
                           ),
-                          SizedBox(height: 4,),
+                          SizedBox(height: 4),
+                          /// TODO : driver type
                           Text(
-                            "Courier", // TODO: استبدل بنوع الكابتن الحقيقي عند توفره
+                            "Courier",
+                            // TODO: استبدل بنوع الكابتن الحقيقي عند توفره
                             style: TextStyle(
                               fontFamily: "Nunito",
                               fontWeight: FontWeight.w400,
@@ -229,34 +252,55 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
                             child: CircleAvatar(
                               radius: 8,
                               backgroundColor: Colors.red,
-                              child: Text("3", style: TextStyle(color: Colors.white, fontSize: 10)),
+                              child: Text(
+                                "3",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                ),
+                              ),
                             ),
-                          )
+                          ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                   SizedBox(height: 20),
                   LayoutBuilder(
-                    builder: (context, constraints) => Row(
-                      children: List.generate((constraints.maxWidth / 10).floor(), (index) {
-                        return Container(
-                          width: 6,
-                          height: 1,
-                          margin: EdgeInsets.symmetric(horizontal: 2),
-                          color: Color(0xFFE7E7E9),
-                        );
-                      }),
-                    ),
+                    builder:
+                        (context, constraints) => Row(
+                          children: List.generate(
+                            (constraints.maxWidth / 10).floor(),
+                            (index) {
+                              return Container(
+                                width: 6,
+                                height: 1,
+                                margin: EdgeInsets.symmetric(horizontal: 2),
+                                color: Color(0xFFE7E7E9),
+                              );
+                            },
+                          ),
+                        ),
                   ),
                   SizedBox(height: 20),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: _buildStepProgress(), // TODO: اربطه بمراحل الطلب الحقيقية
+                    child:
+                        _buildStepProgress(), // TODO: اربطه بمراحل الطلب الحقيقية
                   ),
                   SizedBox(height: 20),
-                  _buildInfoTile("Delivery time", "assets/img/clock.svg", "30 Minutes"), // TODO: اربطه بوقت التوصيل المتوقع الحقيقي
-                  _buildInfoTile("Delivery address", "assets/img/locationorder.svg", _con.order.deliveryAddress.address ?? ""),
+                  /// TODO: delivery time
+                  _buildInfoTile(
+                    "Delivery time",
+                    "assets/img/clock.svg",
+                    _con.trackingOrderDetails?.data.estimatedTime ?? "not available now",
+                  ),
+                  // TODO: اربطه بوقت التوصيل المتوقع الحقيقي
+                  _buildInfoTile(
+                    "Delivery address",
+                    "assets/img/locationorder.svg",
+                    _con.order.deliveryAddress.address ?? "",
+                  ),
                 ],
               ),
             ),
@@ -328,7 +372,12 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         color: active ? Color(0xFF26386A) : Color(0xFFE7E7E9),
         shape: BoxShape.circle,
       ),
-      child: SvgPicture.asset(asset, width: 24, height: 24, color: Colors.white),
+      child: SvgPicture.asset(
+        asset,
+        width: 24,
+        height: 24,
+        color: Colors.white,
+      ),
     );
   }
 
@@ -359,15 +408,30 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
-          SvgPicture.asset(icon, width: 20, height: 20, color: Color(0xFF26386A)),
+          SvgPicture.asset(
+            icon,
+            width: 20,
+            height: 20,
+            color: Color(0xFF26386A),
+          ),
           SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: TextStyle(fontSize: 12, color: Color(0xFF9D9FA4))),
+                Text(
+                  title,
+                  style: TextStyle(fontSize: 12, color: Color(0xFF9D9FA4)),
+                ),
                 SizedBox(height: 2),
-                Text(value, style: TextStyle(fontSize: 16, color: Color(0xFF26386A), fontWeight: FontWeight.w600)),
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Color(0xFF26386A),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ],
             ),
           ),
