@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -23,9 +24,117 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     _con = controller as TrackingController;
   }
 
+  bool _isLoadingRoute = true;
+
+  final String _apiKey = 'AIzaSyDdyth2EiAjU9m9eE_obC5fnTY1yeVNTJU';
+
+  // Markers
+  final LatLng _restaurantLocation = LatLng(31.532640, 35.098614);
+  final LatLng _clientLocation = LatLng(31.536833, 35.050363);
+
+  // Polyline
+  PolylinePoints polylinePoints = PolylinePoints();
+  Map<PolylineId, Polyline> polylines = {};
+  List<LatLng> polylineCoordinates = [];
+
+  // Method to get the route polyline
+  // Update your _getPolyline method to this:
+  _getPolyline() async {
+    try {
+      setState(() => _isLoadingRoute = true);
+
+      print("Attempting to fetch route...");
+
+      final result = await polylinePoints.getRouteBetweenCoordinates(
+        googleApiKey: _apiKey,
+
+        request: PolylineRequest(origin:         PointLatLng(_restaurantLocation.latitude, _restaurantLocation.longitude),
+            destination:         PointLatLng(_clientLocation.latitude, _clientLocation.longitude),
+            mode: TravelMode.driving),
+      );
+
+      print("Route API response received. Status: ${result.status}");
+      print("Points count: ${result.points.length}");
+
+      if (result.points.isEmpty) {
+        print("No points received. Error: ${result.errorMessage}");
+        throw Exception(result.errorMessage ?? "No route points received");
+      }
+
+      polylineCoordinates = result.points
+          .map((point) => LatLng(point.latitude, point.longitude))
+          .toList();
+
+      _addPolyline();
+
+    } catch (e) {
+      print("Error in _getPolyline: $e");
+      // Show error to user if needed
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to load route: ${e.toString()}")),
+      );
+    } finally {
+      setState(() => _isLoadingRoute = false);
+    }
+  }
+  // Method to add polyline to the map
+  _addPolyline() {
+    try {
+      if (polylineCoordinates.isEmpty) {
+        throw Exception("No coordinates to draw polyline");
+      }
+
+      final id = PolylineId("route_${DateTime.now().millisecondsSinceEpoch}");
+      final polyline = Polyline(
+        polylineId: id,
+        color: Colors.blue,
+        points: polylineCoordinates,
+        width: 4,
+        geodesic: true,
+      );
+
+      setState(() {
+        polylines = {id: polyline}; // Replace existing polylines
+      });
+
+      // Zoom to fit the route
+      _mapController?.animateCamera(
+        CameraUpdate.newLatLngBounds(
+          _boundsFromLatLngList(polylineCoordinates),
+          50.0, // padding
+        ),
+      );
+
+      print("Polyline added successfully with ${polylineCoordinates.length} points");
+    } catch (e) {
+      print("Error in _addPolyline: $e");
+    }
+  }
+  // Helper method to calculate bounds from a list of coordinates
+  LatLngBounds _boundsFromLatLngList(List<LatLng> list) {
+    double? x0, x1, y0, y1;
+    for (LatLng latLng in list) {
+      if (x0 == null) {
+        x0 = x1 = latLng.latitude;
+        y0 = y1 = latLng.longitude;
+      } else {
+        if (latLng.latitude > x1!) x1 = latLng.latitude;
+        if (latLng.latitude < x0) x0 = latLng.latitude;
+        if (latLng.longitude > y1!) y1 = latLng.longitude;
+        if (latLng.longitude < y0!) y0 = latLng.longitude;
+      }
+    }
+    return LatLngBounds(
+      northeast: LatLng(x1!, y1!),
+      southwest: LatLng(x0!, y0!),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
+    _getPolyline();
+
     if (widget.routeArgument != null && widget.routeArgument!.id != null) {
       _con.listenForOrder(orderId: widget.routeArgument!.id!);
       _con.getOrderDetailsTracking(orderId: widget.routeArgument!.id!);
@@ -142,39 +251,97 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       ),
       body: Stack(
         children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.5,
-            width: double.infinity,
-            child:
-                (restaurantLat != null &&
-                        restaurantLng != null &&
-                        clientLat != null &&
-                        clientLng != null)
-                    ? GoogleMap(
-                      initialCameraPosition: CameraPosition(
-                        target: LatLng(
-                          (restaurantLat + clientLat) / 2,
-                          (restaurantLng + clientLng) / 2,
-                        ),
-                        zoom: 13,
-                      ),
-                      markers: markers,
-                      polylines: {
-                        if (polylinePoints.length == 2)
-                          Polyline(
-                            polylineId: PolylineId('route'),
-                            points: polylinePoints,
-                            color: Colors.blue,
-                            width: 4,
-                          ),
-                      },
-                      onMapCreated: (controller) => _mapController = controller,
-                    )
-                    : Center(
-                      child: Text("Map Here", style: TextStyle(fontSize: 20)),
+          // Container(
+          //   height: MediaQuery.of(context).size.height * 0.5,
+          //   width: double.infinity,
+          //   child: GoogleMap(
+          //     initialCameraPosition: CameraPosition(
+          //       target: LatLng(
+          //         (21.771909 + 21.826662) / 2,
+          //         (39.219161 + 39.199765) / 2,
+          //       ),
+          //       zoom: 12,
+          //     ),
+          //     markers: {
+          //       Marker(
+          //         markerId: MarkerId('restaurant'),
+          //         position: LatLng(21.771909, 39.219161),
+          //       ),
+          //       Marker(
+          //         markerId: MarkerId('client'),
+          //         position: LatLng(21.826662, 39.199765),
+          //       ),
+          //     },
+          //     polylines: {
+          //       Polyline(
+          //         polylineId: PolylineId('route'),
+          //         points: [
+          //           LatLng(21.771909, 39.219161),
+          //           LatLng(21.826662, 39.199765),
+          //         ],
+          //         color: Colors.red,
+          //         width: 6,
+          //       ),
+          //     },
+          //     onMapCreated: (controller) => _mapController = controller,
+          //   ),
+          // ),
+// Update your GoogleMap widget to this:
+// Replace your Container with this more robust version
+          Expanded(
+            child: Stack(
+              children: [
+                GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(
+                      (_restaurantLocation.latitude + _clientLocation.latitude) / 2,
+                      (_restaurantLocation.longitude + _clientLocation.longitude) / 2,
                     ),
-          ),
-          Align(
+                    zoom: 12,
+                  ),
+                  markers: {
+                    Marker(
+                      markerId: MarkerId('restaurant'),
+                      position: _restaurantLocation,
+                      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+                    ),
+                    Marker(
+                      markerId: MarkerId('client'),
+                      position: _clientLocation,
+                      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+                    ),
+                  },
+                  polylines: polylines.values.toSet(),
+                  onMapCreated: (controller) {
+                    _mapController = controller;
+                    // Wait for map to settle before getting route
+                    Future.delayed(Duration(milliseconds: 500), _getPolyline);
+                  },
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: true,
+                  zoomControlsEnabled: false,
+                ),
+                if (_isLoadingRoute)
+                  Center(
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircularProgressIndicator(),
+                          SizedBox(height: 8),
+                          Text("Loading route..."),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),          Align(
             alignment: Alignment.bottomCenter,
             child: Container(
               padding: EdgeInsets.all(20),
@@ -212,7 +379,8 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
                         children: [
                           /// TODO : driver name
                           Text(
-                            _con.trackingOrderDetails?.data.driver?.name ?? "not available now",
+                            _con.trackingOrderDetails?.data.driver?.name ??
+                                "not available now",
 
                             // TODO: استبدل باسم الكابتن الحقيقي عند توفره
                             style: TextStyle(
@@ -225,6 +393,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
                             ),
                           ),
                           SizedBox(height: 4),
+
                           /// TODO : driver type
                           Text(
                             "Courier",
@@ -289,11 +458,13 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
                         _buildStepProgress(), // TODO: اربطه بمراحل الطلب الحقيقية
                   ),
                   SizedBox(height: 20),
+
                   /// TODO: delivery time
                   _buildInfoTile(
                     "Delivery time",
                     "assets/img/clock.svg",
-                    _con.trackingOrderDetails?.data.estimatedTime ?? "not available now",
+                    _con.trackingOrderDetails?.data.estimatedTime ??
+                        "not available now",
                   ),
                   // TODO: اربطه بوقت التوصيل المتوقع الحقيقي
                   _buildInfoTile(
