@@ -12,6 +12,7 @@ class GridCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Rating: ${restaurant.rate}');
     return InkWell(
       onTap: () {
         print("mElkerm");
@@ -58,37 +59,37 @@ class GridCardWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(
-                  top: 12,
-                  left: 12,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.85),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/img/ticket-discount.svg',
-                          height: 16,
-                          width: 16,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          '20% off (up to \$50)',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'Nunito',
-                            color: Color(0xFF26386A),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                // Positioned(
+                //   top: 12,
+                //   left: 12,
+                //   child: Container(
+                //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                //     decoration: BoxDecoration(
+                //       color: Colors.white.withOpacity(0.85),
+                //       borderRadius: BorderRadius.circular(20),
+                //     ),
+                //     child: Row(
+                //       mainAxisSize: MainAxisSize.min,
+                //       children: [
+                //         SvgPicture.asset(
+                //           'assets/img/ticket-discount.svg',
+                //           height: 16,
+                //           width: 16,
+                //         ),
+                //         SizedBox(width: 5),
+                //         Text(
+                //           '20% off (up to \$50)',
+                //           style: TextStyle(
+                //             fontSize: 12,
+                //             fontWeight: FontWeight.w500,
+                //             //fontFamily: 'Nunito',
+                //             color: Color(0xFF26386A),
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
               ],
             ),
             Padding(
@@ -101,7 +102,7 @@ class GridCardWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: TextStyle(
-                      fontFamily: 'Nunito',
+                      //fontFamily: 'Nunito',
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
                       color: Color(0xFF272727),
@@ -114,7 +115,7 @@ class GridCardWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     style: TextStyle(
-                      fontFamily: 'Nunito',
+                      //fontFamily: 'Nunito',
                       fontWeight: FontWeight.w400,
                       fontSize: 12,
                       color: Color(0xFF9D9FA4),
@@ -129,7 +130,7 @@ class GridCardWidget extends StatelessWidget {
                       Text(
                         "20-30 min",
                         style: TextStyle(
-                          fontFamily: 'Nunito',
+                          //fontFamily: 'Nunito',
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           height: 1.6,
@@ -142,7 +143,7 @@ class GridCardWidget extends StatelessWidget {
                       Text(
                         restaurant.rate.toString(),
                         style: TextStyle(
-                          fontFamily: 'Nunito',
+                          //fontFamily: 'Nunito',
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           height: 1.6,

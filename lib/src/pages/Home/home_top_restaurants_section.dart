@@ -23,7 +23,7 @@ class HomeTopRestaurantsSection extends StatelessWidget {
               Text(
                 'Offers near you',
                 style: TextStyle(
-                  fontFamily: 'Nunito',
+                  //fontFamily: 'Nunito',
                   fontWeight: FontWeight.w500,
                   fontSize: 21,
                   height: 1.6,
@@ -37,7 +37,7 @@ class HomeTopRestaurantsSection extends StatelessWidget {
                 child: Text(
                   'See all',
                   style: TextStyle(
-                    fontFamily: 'Nunito',
+                    //fontFamily: 'Nunito',
                     fontWeight: FontWeight.w400,
                     fontSize: 18,
                     height: 1.6,

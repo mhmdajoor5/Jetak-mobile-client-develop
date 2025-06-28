@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../../generated/l10n.dart';
+import '../../elements/CaregoriesCarouselWidget.dart';
+import '../../models/category.dart';
 import '../../models/restaurant.dart';
 import '../../elements/grid_card_widget.dart';
 import 'dart:convert';
@@ -22,12 +24,33 @@ class _RestaurantsWidgetState extends State<RestaurantsWidget> {
   final PagingController<int, Restaurant> _pagingController =
   PagingController(firstPageKey: 1);
 
+  List<Category> categories = [];
+
   @override
   void initState() {
+    super.initState();
+    _loadCategories();
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
-    super.initState();
+  }
+
+  Future<void> _loadCategories() async {
+    try {
+      final response = await http.get(Uri.parse('https://carrytechnologies.co/api/categories'));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final List list = data['data']; // عدل حسب هيكل JSON الصحيح
+        setState(() {
+          categories = list.map((e) => Category.fromJSON(e)).toList();
+        });
+        print('Loaded categories count: ${categories.length}');
+      } else {
+        print('Failed to load categories, status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error loading categories: $e');
+    }
   }
 
   Future<void> _fetchPage(int pageKey) async {
@@ -84,26 +107,36 @@ class _RestaurantsWidgetState extends State<RestaurantsWidget> {
               ?.merge(TextStyle(letterSpacing: 1.3)),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: RefreshIndicator(
-          onRefresh: () => Future.sync(() => _pagingController.refresh()),
-          child: PagedMasonryGridView.count(
-            pagingController: _pagingController,
-            crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-            mainAxisSpacing: 15,
-            crossAxisSpacing: 15,
-            builderDelegate: PagedChildBuilderDelegate<Restaurant>(
-              itemBuilder: (context, item, index) => GridCardWidget(
-                restaurant: item,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          _pagingController.refresh();
+          await _loadCategories();
+        },
+        child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: CategoriesCarouselWidget(categories: categories),
+                ),
               ),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                sliver: PagedSliverList<int, Restaurant>(
+                  pagingController: _pagingController,
+                  builderDelegate: PagedChildBuilderDelegate<Restaurant>(
+                    itemBuilder: (context, item, index) => Padding(
+                      padding: const EdgeInsets.only(bottom: 15),
+                      child: GridCardWidget(restaurant: item),
+                    ),
               noItemsFoundIndicatorBuilder: (_) => Center(
                 child: Text('S.of(context).no_restaurants_found'),
               ),
-            ),
-          ),
-        ),
-      ),
+              ),
+              ),
+              ),
+             ] ),
+    ),
     );
   }
 }

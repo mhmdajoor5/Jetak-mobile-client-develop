@@ -85,6 +85,19 @@ class _MyAppState extends State<MyApp> {
               primary: Colors.white,
               secondary: config.Colors().accentColor(1),
             ),
+            appBarTheme: AppBarTheme(
+              //backgroundColor: Colors.white,
+              elevation: 0,
+              centerTitle: true,
+              iconTheme: IconThemeData(color: config.Colors().secondColor(1)),
+              titleTextStyle: TextStyle(
+                fontFamily: 'Cairo',
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: config.Colors().secondColor(1),
+              ),
+            ),
+
             floatingActionButtonTheme: const FloatingActionButtonThemeData(
               elevation: 0,
               foregroundColor: Colors.white,
@@ -119,6 +132,19 @@ class _MyAppState extends State<MyApp> {
               primary: const Color(0xFF252525),
               secondary: config.Colors().accentDarkColor(1),
             ),
+            appBarTheme: AppBarTheme(
+              //backgroundColor: const Color(0xFF252525),
+              elevation: 0,
+              centerTitle: true,
+              iconTheme: IconThemeData(color: Colors.white),
+              titleTextStyle: TextStyle(
+                fontFamily: 'Cairo',
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+
             dividerTheme: DividerThemeData(
               color: config.Colors().accentColor(0.1),
             ),

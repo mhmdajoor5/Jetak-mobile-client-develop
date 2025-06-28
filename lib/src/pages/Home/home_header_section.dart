@@ -29,7 +29,7 @@ class HomeHeaderSection extends StatelessWidget {
                 Text(
                   "Your location",
                   style: TextStyle(
-                    fontFamily: 'Nunito',
+                    //fontFamily: 'Nunito',
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xFF9D9FA4),
@@ -53,7 +53,7 @@ class HomeHeaderSection extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            fontFamily: 'Nunito',
+                            //fontFamily: 'Nunito',
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                             color: Color(0xFF1F2F56),

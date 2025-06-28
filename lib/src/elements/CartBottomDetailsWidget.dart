@@ -41,7 +41,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
             Text(
               S.of(context).order_summary,
               style: TextStyle(
-                fontFamily: 'Nunito',
+                //fontFamily: 'Nunito',
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
                 color: Color(0xFF272727),
@@ -51,7 +51,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
             Text(
               S.of(context).include_tax,
               style: TextStyle(
-                fontFamily: 'Nunito',
+                //fontFamily: 'Nunito',
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
                 color: Color(0xFF9D9FA4),
@@ -66,7 +66,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
                   child: Text(
                     S.of(context).subtotal,
                     style: TextStyle(
-                      fontFamily: 'Nunito',
+                     // fontFamily: 'Nunito',
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: Color(0xFF9D9FA4),
@@ -91,7 +91,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
                     child: Text(
                       S.of(context).delivery_fee,
                       style: TextStyle(
-                        fontFamily: 'Nunito',
+                        //fontFamily: 'Nunito',
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: Color(0xFF9D9FA4),
@@ -114,7 +114,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
                   child: Text(
                     '${S.of(context).tax} (${_con.carts[0].food!.restaurant!.defaultTax}%)',
                     style: TextStyle(
-                      fontFamily: 'Nunito',
+                      //fontFamily: 'Nunito',
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: Color(0xFF9D9FA4),
@@ -125,7 +125,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
                   _con.taxAmount,
                   context,
                   style: TextStyle(
-                    fontFamily: 'Nunito',
+                    //fontFamily: 'Nunito',
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xFF272727),
@@ -141,7 +141,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
                 Text(
                   S.of(context).total,
                   style: TextStyle(
-                    fontFamily: 'Nunito',
+                    //fontFamily: 'Nunito',
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xFF272727),

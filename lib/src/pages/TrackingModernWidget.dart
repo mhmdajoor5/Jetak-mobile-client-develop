@@ -156,7 +156,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
           title: Text(
             "Tracking",
             style: TextStyle(
-              fontFamily: "Nunito",
+              //fontFamily: "Nunito",
               fontWeight: FontWeight.w600,
               fontSize: 16,
               color: Color(0xFF272727),
@@ -230,7 +230,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         title: Text(
           "Tracking",
           style: TextStyle(
-            fontFamily: "Nunito",
+            //fontFamily: "Nunito",
             fontWeight: FontWeight.w600,
             fontSize: 16,
             color: Color(0xFF272727),

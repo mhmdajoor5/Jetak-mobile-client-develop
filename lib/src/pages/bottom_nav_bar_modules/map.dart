@@ -46,45 +46,41 @@ class _MapWidgetState extends StateMVC<MapWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0,
-        centerTitle: true,
-        leading:
-            _con.currentRestaurant.latitude == null
-                ? IconButton(
-                  icon: Icon(Icons.sort, color: Theme.of(context).hintColor),
-                  onPressed:
-                      () =>
-                          widget.parentScaffoldKey?.currentState?.openDrawer(),
-                )
-                : IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Theme.of(context).hintColor,
-                  ),
-                  onPressed:
-                      () => Navigator.of(
-                        context,
-                      ).pushNamed('/Pages', arguments: 2),
-                ),
+        centerTitle: Theme.of(context).appBarTheme.centerTitle ?? true,
+        leading: _con.currentRestaurant.latitude == null
+            ? IconButton(
+          icon: Icon(
+            Icons.sort,
+            color: Theme.of(context).appBarTheme.iconTheme?.color,
+          ),
+          onPressed: () => widget.parentScaffoldKey?.currentState?.openDrawer(),
+        )
+            : IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).appBarTheme.iconTheme?.color,
+          ),
+          onPressed: () => Navigator.of(context).pushNamed('/Pages', arguments: 2),
+        ),
         title: Text(
           S.of(context).maps_explorer,
-          style: Theme.of(
-            context,
-          ).textTheme.headlineSmall?.merge(TextStyle(letterSpacing: 1.3)),
+          style: Theme.of(context).appBarTheme.titleTextStyle?.merge(
+            const TextStyle(letterSpacing: 1.3),
+          ),
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.my_location, color: Theme.of(context).hintColor),
+            icon: Icon(Icons.my_location, color: Theme.of(context).appBarTheme.iconTheme?.color),
             onPressed: _con.goCurrentLocation,
           ),
           IconButton(
-            icon: Icon(Icons.filter_list, color: Theme.of(context).hintColor),
-            onPressed:
-                () => widget.parentScaffoldKey?.currentState?.openEndDrawer(),
+            icon: Icon(Icons.filter_list, color: Theme.of(context).appBarTheme.iconTheme?.color),
+            onPressed: () => widget.parentScaffoldKey?.currentState?.openEndDrawer(),
           ),
         ],
       ),
+
       body:
           _con.currentRestaurant.id == '-50'
               ? SizedBox()

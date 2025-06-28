@@ -84,7 +84,7 @@ class CardWidget extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            fontFamily: 'Nunito',
+                            //fontFamily: 'Nunito',
                             color: Color(0xFF26386A),
                           ),
                         ),
@@ -110,7 +110,7 @@ class CardWidget extends StatelessWidget {
                           overflow: TextOverflow.fade,
                           softWrap: false,
                           style: TextStyle(
-                            fontFamily: 'Nunito',
+                            //fontFamily: 'Nunito',
                             fontWeight: FontWeight.w600,
                             fontSize: 14,
                             color: Color(0xFF272727),
@@ -123,7 +123,7 @@ class CardWidget extends StatelessWidget {
                           overflow: TextOverflow.fade,
                           softWrap: false,
                           style: TextStyle(
-                            fontFamily: 'Nunito',
+                            //fontFamily: 'Nunito',
                             fontWeight: FontWeight.w400,
                             fontSize: 12,
                             color: Color(0xFF9D9FA4),
@@ -211,7 +211,7 @@ class CardWidget extends StatelessWidget {
                       Text(
                         restaurant.rate.toString(),
                         style: TextStyle(
-                          fontFamily: 'Nunito',
+                          //fontFamily: 'Nunito',
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           height: 1.6,
@@ -224,7 +224,7 @@ class CardWidget extends StatelessWidget {
                       Text(
                         "20-30 min",
                         style: TextStyle(
-                          fontFamily: 'Nunito',
+                          //fontFamily: 'Nunito',
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           height: 1.6,

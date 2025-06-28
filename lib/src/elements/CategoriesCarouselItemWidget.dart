@@ -100,7 +100,7 @@ class CategoriesCarouselItemWidget extends StatelessWidget {
           SizedBox(height: 5),
           Container(margin: EdgeInsetsDirectional.only(start: this.marginLeft, end: 20), child: Text(category.name!, overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              fontFamily: 'Nunito',
+              //fontFamily: 'Nunito',
               fontWeight: FontWeight.w400,
               fontSize: 13,
               height: 1.6,

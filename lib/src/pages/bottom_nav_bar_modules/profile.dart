@@ -34,22 +34,31 @@ class _ProfileWidgetState extends StateMVC<ProfileWidget> {
       key: _con.scaffoldKey,
       drawer: DrawerWidget(),
       appBar: AppBar(
-        leading: new IconButton(
-          icon: new Icon(Icons.sort, color: Theme.of(context).primaryColor),
+        automaticallyImplyLeading: false,
+        elevation: Theme.of(context).appBarTheme.elevation ?? 0,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        centerTitle: Theme.of(context).appBarTheme.centerTitle ?? true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.sort,
+            color: Theme.of(context).appBarTheme.iconTheme?.color,
+          ),
           onPressed: () => _con.scaffoldKey.currentState?.openDrawer(),
         ),
-        automaticallyImplyLeading: false,
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        elevation: 0,
-        centerTitle: true,
         title: Text(
           S.of(context).profile,
-          style: Theme.of(context).textTheme.headlineSmall?.merge(TextStyle(letterSpacing: 1.3, color: Theme.of(context).primaryColor)),
+          style: Theme.of(context).appBarTheme.titleTextStyle?.merge(
+            const TextStyle(letterSpacing: 1.3),
+          ),
         ),
         actions: <Widget>[
-          new ShoppingCartButtonWidget(iconColor: Theme.of(context).primaryColor, labelColor: Theme.of(context).hintColor),
+          ShoppingCartButtonWidget(
+            iconColor: Theme.of(context).appBarTheme.iconTheme?.color,
+            labelColor: Theme.of(context).colorScheme.secondary,
+          ),
         ],
       ),
+
       body: currentUser.value.apiToken == null
           ? PermissionDeniedWidget()
           : SingleChildScrollView(

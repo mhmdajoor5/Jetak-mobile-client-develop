@@ -160,7 +160,7 @@ class _PagesWidgetState extends State<PagesWidget> {
                         Text(
                           S.of(context).home,
                           style: TextStyle(
-                            fontFamily: 'Nunito',
+                            //fontFamily: 'Nunito',
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             height: 1.6,
@@ -184,7 +184,7 @@ class _PagesWidgetState extends State<PagesWidget> {
                         Text(
                           S.of(context).home,
                           style: TextStyle(
-                            fontFamily: 'Nunito',
+                            //fontFamily: 'Nunito',
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             height: 1.6,
@@ -207,7 +207,7 @@ class _PagesWidgetState extends State<PagesWidget> {
                         Text(
                           S.of(context).restaurants,
                           style: TextStyle(
-                            fontFamily: 'Nunito',
+                            //fontFamily: 'Nunito',
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             height: 1.6,
@@ -231,7 +231,7 @@ class _PagesWidgetState extends State<PagesWidget> {
                         Text(
                           S.of(context).restaurants,
                           style: TextStyle(
-                            fontFamily: 'Nunito',
+                            //fontFamily: 'Nunito',
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             height: 1.6,
@@ -271,7 +271,7 @@ class _PagesWidgetState extends State<PagesWidget> {
                         Text(
                           S.of(context).stores,
                           style: TextStyle(
-                            fontFamily: 'Nunito',
+                            //fontFamily: 'Nunito',
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             height: 1.6,
@@ -295,7 +295,7 @@ class _PagesWidgetState extends State<PagesWidget> {
                         Text(
                           S.of(context).maps,
                           style: TextStyle(
-                            fontFamily: 'Nunito',
+                            //fontFamily: 'Nunito',
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             height: 1.6,
@@ -319,7 +319,7 @@ class _PagesWidgetState extends State<PagesWidget> {
                         Text(
                           S.of(context).maps,
                           style: TextStyle(
-                            fontFamily: 'Nunito',
+                            //fontFamily: 'Nunito',
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             height: 1.6,
@@ -342,7 +342,7 @@ class _PagesWidgetState extends State<PagesWidget> {
                         Text(
                           S.of(context).profile,
                           style: TextStyle(
-                            fontFamily: 'Nunito',
+                            //fontFamily: 'Nunito',
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             height: 1.6,
@@ -366,7 +366,7 @@ class _PagesWidgetState extends State<PagesWidget> {
                         Text(
                           S.of(context).profile,
                           style: TextStyle(
-                            fontFamily: 'Nunito',
+                            //fontFamily: 'Nunito',
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             height: 1.6,

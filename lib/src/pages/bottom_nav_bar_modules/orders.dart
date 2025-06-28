@@ -31,14 +31,30 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
     return Scaffold(
       key: _con.scaffoldKey,
       appBar: AppBar(
-        leading: new IconButton(icon: new Icon(Icons.sort, color: Theme.of(context).hintColor), onPressed: () => widget.parentScaffoldKey?.currentState?.openDrawer()),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: true,
-        title: Text(S.of(context).my_orders, style: Theme.of(context).textTheme.headlineSmall?.merge(TextStyle(letterSpacing: 1.3))),
-        actions: <Widget>[new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).colorScheme.secondary)],
+        automaticallyImplyLeading: false,
+        centerTitle: Theme.of(context).appBarTheme.centerTitle ?? true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.sort,
+            color: Theme.of(context).appBarTheme.iconTheme?.color,
+          ),
+          onPressed: () => widget.parentScaffoldKey?.currentState?.openDrawer(),
+        ),
+        title: Text(
+          S.of(context).my_orders,
+          style: Theme.of(context).appBarTheme.titleTextStyle?.merge(
+            const TextStyle(letterSpacing: 1.3),
+          ),
+        ),
+        actions: <Widget>[
+          ShoppingCartButtonWidget(
+            iconColor: Theme.of(context).appBarTheme.iconTheme?.color,
+            labelColor: Theme.of(context).colorScheme.secondary,
+          ),
+        ],
       ),
+
       body:
           currentUser.value.apiToken == null
               ? PermissionDeniedWidget()
