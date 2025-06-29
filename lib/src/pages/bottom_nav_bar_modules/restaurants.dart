@@ -3,6 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../../generated/l10n.dart';
 import '../../elements/CaregoriesCarouselWidget.dart';
+import '../../elements/SearchBarWidget.dart';
 import '../../models/category.dart';
 import '../../models/restaurant.dart';
 import '../../elements/grid_card_widget.dart';
@@ -117,9 +118,21 @@ class _RestaurantsWidgetState extends State<RestaurantsWidget> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: SearchBarWidget(
+                    onClickFilter: (val) {
+                      print("Filter clicked: $val");
+                    },
+                  ),
+                ),
+              ),
+
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: CategoriesCarouselWidget(categories: categories),
                 ),
               ),
+
               SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 sliver: PagedSliverList<int, Restaurant>(

@@ -10,16 +10,41 @@ class GridCardWidget extends StatelessWidget {
 
   const GridCardWidget({Key? key, required this.restaurant}) : super(key: key);
 
+  String _getDiscountText() {
+    print("Entered _getDiscountText");
+
+    if (restaurant.coupon != null && restaurant.coupon!.valid) {
+      print("Found valid coupon: ${restaurant.coupon!.discountType}");
+      return restaurant.coupon!.discountType == 'percent'
+          ? '-${restaurant.coupon!.discount?.toStringAsFixed(0)}% off'
+          : '-${restaurant.coupon!.discount?.toStringAsFixed(0)} ₪ off';
+    } else if (restaurant.discountables.isNotEmpty &&
+        restaurant.discountables[0].coupon != null &&
+        restaurant.discountables[0].coupon!.valid) {
+      final dCoupon = restaurant.discountables[0].coupon!;
+      print("Found valid discountable coupon: ${dCoupon.discountType}");
+      return dCoupon.discountType == 'percent'
+          ? '-${dCoupon.discount?.toStringAsFixed(0)}% off'
+          : '-${dCoupon.discount?.toStringAsFixed(0)} ₪ off';
+    } else {
+      print("No valid coupon");
+      return '';
+    }
+  }
+
+
+  bool _hasValidDiscount() {
+    return (restaurant.coupon != null && restaurant.coupon!.valid) ||
+        (restaurant.discountables.isNotEmpty &&
+            restaurant.discountables[0].coupon != null &&
+            restaurant.discountables[0].coupon!.valid);
+  }
+
   @override
   Widget build(BuildContext context) {
-    print('Rating: ${restaurant.rate}');
     return InkWell(
       onTap: () {
-        print("mElkerm");
-        // print(restaurant.name);
-        // Navigator.of(context).pushNamed('/Details', arguments: restaurant);
         Navigator.of(context).pushNamed('/Details', arguments: restaurant);
-
       },
       child: Container(
         margin: EdgeInsets.all(8),
@@ -59,37 +84,37 @@ class GridCardWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Positioned(
-                //   top: 12,
-                //   left: 12,
-                //   child: Container(
-                //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                //     decoration: BoxDecoration(
-                //       color: Colors.white.withOpacity(0.85),
-                //       borderRadius: BorderRadius.circular(20),
-                //     ),
-                //     child: Row(
-                //       mainAxisSize: MainAxisSize.min,
-                //       children: [
-                //         SvgPicture.asset(
-                //           'assets/img/ticket-discount.svg',
-                //           height: 16,
-                //           width: 16,
-                //         ),
-                //         SizedBox(width: 5),
-                //         Text(
-                //           '20% off (up to \$50)',
-                //           style: TextStyle(
-                //             fontSize: 12,
-                //             fontWeight: FontWeight.w500,
-                //             //fontFamily: 'Nunito',
-                //             color: Color(0xFF26386A),
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
+                if (_hasValidDiscount())
+                  Positioned(
+                    top: 12,
+                    left: 12,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.85),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/img/ticket-discount.svg',
+                            height: 16,
+                            width: 16,
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            _getDiscountText(),
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF26386A),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
               ],
             ),
             Padding(
@@ -102,7 +127,6 @@ class GridCardWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: TextStyle(
-                      //fontFamily: 'Nunito',
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
                       color: Color(0xFF272727),
@@ -115,7 +139,6 @@ class GridCardWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     style: TextStyle(
-                      //fontFamily: 'Nunito',
                       fontWeight: FontWeight.w400,
                       fontSize: 12,
                       color: Color(0xFF9D9FA4),
@@ -130,7 +153,6 @@ class GridCardWidget extends StatelessWidget {
                       Text(
                         "20-30 min",
                         style: TextStyle(
-                          //fontFamily: 'Nunito',
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           height: 1.6,
@@ -143,7 +165,6 @@ class GridCardWidget extends StatelessWidget {
                       Text(
                         restaurant.rate.toString(),
                         style: TextStyle(
-                          //fontFamily: 'Nunito',
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           height: 1.6,
