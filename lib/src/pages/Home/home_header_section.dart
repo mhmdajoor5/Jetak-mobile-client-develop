@@ -48,8 +48,10 @@ class HomeHeaderSection extends StatelessWidget {
                       SizedBox(width: 4),
                       Expanded(
                         child: Text(
-                          currentLocationName ??
-                              S.of(context).choose_your_location,
+                          (currentLocationName != null && currentLocationName!.trim().isNotEmpty)
+                              ? currentLocationName!
+                              : S.of(context).choose_your_location,
+
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

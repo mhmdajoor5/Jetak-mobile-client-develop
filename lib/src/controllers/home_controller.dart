@@ -55,20 +55,16 @@ class HomeController extends ControllerMVC {
   }
 
   Future<void> loadAllData() async {
-    if (_isDataLoaded) return; // Skip if already loaded
-    
+    if (_isDataLoaded) return;
     try {
-      // Load all data in parallel
       final results = await Future.wait([
         getSlides(),
         getCategories(),
         getTopRestaurants(),
         fetchPopularRestaurants(),
         getTrendingFoods(),
-        // getTrackingOrderModel(orderId: '225')
       ]);
 
-      // Update data directly without setState
       slides = results[0] as List<Slide>;
       categories = results[1] as List<Category>;
       topRestaurants = results[2] as List<Restaurant>;
@@ -77,12 +73,18 @@ class HomeController extends ControllerMVC {
       getPopularRestaurants = true;
 
       _isDataLoaded = true;
-      setState(() {}); // Single UI update
+
+      await getCurrentLocation();
+      print("Detected location: $currentLocationName");
+
+
+      setState(() {});
     } catch (e) {
       print('Error loading all data: $e');
       rethrow;
     }
   }
+
 
   Future<void> refreshHome() async {
     _isDataLoaded = false;
@@ -169,6 +171,7 @@ class HomeController extends ControllerMVC {
         desiredAccuracy: LocationAccuracy.high,
       );
 
+      print("📍 Latitude: ${position.latitude}, Longitude: ${position.longitude}");
 
       // Get address from coordinates
       List<Placemark> placemarks = await placemarkFromCoordinates(
@@ -178,19 +181,35 @@ class HomeController extends ControllerMVC {
 
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks[0];
-        setState((){
-          currentLocationName = ' ${place.locality}, ${place.country}';
+
+        String city = place.locality ?? place.subAdministrativeArea ?? '';
+        String country = place.country ?? '';
+
+        String fullAddress = '$city, $country'.trim();
+
+        // في حال كانت البيانات فارغة، اطبع محتويات الـ Placemark للمساعدة
+        if (fullAddress.isEmpty) {
+          print("⚠️ Placemark is empty: $place");
+          fullAddress = "${position.latitude}, ${position.longitude}";
+        }
+
+        setState(() {
+          currentLocationName = fullAddress;
         });
-        print(currentLocationName);
+
+        print("📌 Place info: Name: $city, Country: $country");
         return currentLocationName;
+      } else {
+        print("⚠️ placemarks.isEmpty");
       }
 
       return null;
     } catch (e) {
-      print('Error getting location: $e');
+      print('❌ Error getting location: $e');
       return null;
     }
   }
+
 
 // Usage example:
 // String? location = await getCurrentLocation();

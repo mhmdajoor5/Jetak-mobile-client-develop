@@ -30,6 +30,12 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
 
   _HomeWidgetState() : super(HomeController()) {
     _con = controller as HomeController;
+
+    @override
+    void initState() {
+      super.initState();
+      _con.getCurrentLocation().then((_) => setState(() {}));
+    }
   }
 
   @override
@@ -46,7 +52,10 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
               children: [
                 HomeHeaderSection(
                   currentLocationName: _con.currentLocationName,
-                  onChangeLocation: () => _con.getCurrentLocation(),
+                  onChangeLocation: () async {
+                    await _con.getCurrentLocation();
+                    setState(() {});
+                  },
                   parentScaffoldKey: widget.parentScaffoldKey,
                 ),
                 ...settingsRepo.setting.value.homeSections.map((section) {
