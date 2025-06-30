@@ -78,12 +78,12 @@ dev_dependencies:
 dependency_overrides:
   firebase_core_platform_interface: 4.8.0 # Try updating this or removing if firebase_core itself is recent enough
 
-flutter_native_splash:
-  image: assets/img/carry_eats_hub_splash.png
-  # color: "6a1b9a" # Correct format is usually "0xFF6A1B9A" or just "6A1B9A" for hex
-  color: "6A1B9A" # Or "0xFF6A1B9A"
-  android: true
-  fill: true
+# flutter_native_splash:
+#   image: assets/img/carry_eats_hub_splash.png
+#   # color: "6a1b9a" # Correct format is usually "0xFF6A1B9A" or just "6A1B9A" for hex
+#   color: "6A1B9A" # Or "0xFF6A1B9A"
+#   android: true
+#   fill: true
 
 flutter:
   uses-material-design: true
