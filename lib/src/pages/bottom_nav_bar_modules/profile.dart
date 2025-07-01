@@ -74,7 +74,9 @@ class _ProfileWidgetState extends StateMVC<ProfileWidget> {
                     ),
                     title: Text(
                       S.of(context).about,
-                      style: Theme.of(context).textTheme.headlineLarge
+                      style: Theme.of(context).appBarTheme.titleTextStyle?.merge(
+                        const TextStyle(letterSpacing: 1.3),
+                      ),
                     ),
                   ),
                   Padding(
@@ -92,7 +94,9 @@ class _ProfileWidgetState extends StateMVC<ProfileWidget> {
                     ),
                     title: Text(
                       S.of(context).recent_orders,
-                      style: Theme.of(context).textTheme.headlineLarge
+                      style: Theme.of(context).appBarTheme.titleTextStyle?.merge(
+                        const TextStyle(letterSpacing: 1.3),
+                      ),
                     ),
                   ),
                   _con.recentOrders.isEmpty

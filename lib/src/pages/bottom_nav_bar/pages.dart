@@ -160,7 +160,7 @@ class _PagesWidgetState extends State<PagesWidget> {
                         Text(
                           S.of(context).home,
                           style: TextStyle(
-                            //fontFamily: 'Nunito',
+                            //fontFamily: 'Cairo',
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             height: 1.6,

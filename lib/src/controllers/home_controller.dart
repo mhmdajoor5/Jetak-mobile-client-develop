@@ -110,35 +110,29 @@ class HomeController extends ControllerMVC {
     });
   }
 
-  // get the current location and store the address in new var and have init value = null
   String? currentLocationName = null;
   Future<bool> requestLocationPermission() async {
     print("Starting location permission request");
 
-    // First check if location services are enabled
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     print("Location services enabled: $serviceEnabled");
 
     if (!serviceEnabled) {
       print("Location services are disabled - prompting user to enable");
-      // Direct the user to enable location services
       bool enabled = await Geolocator.openLocationSettings();
       if (!enabled) {
         print("User didn't enable location services");
         return false;
       }
-      // Check again after they return
       serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) return false;
     }
 
-    // Now check permissions
     LocationPermission permission = await Geolocator.checkPermission();
     print("Current permission status: $permission");
 
     if (permission == LocationPermission.deniedForever) {
       print("Permissions permanently denied - directing to app settings");
-      // Direct user to app settings to enable permissions
       await Geolocator.openAppSettings();
       return false;
     }
@@ -166,14 +160,12 @@ class HomeController extends ControllerMVC {
         return null;
       }
 
-      // Get current position
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
 
       print("📍 Latitude: ${position.latitude}, Longitude: ${position.longitude}");
 
-      // Get address from coordinates
       List<Placemark> placemarks = await placemarkFromCoordinates(
         position.latitude,
         position.longitude,
@@ -187,7 +179,6 @@ class HomeController extends ControllerMVC {
 
         String fullAddress = '$city, $country'.trim();
 
-        // في حال كانت البيانات فارغة، اطبع محتويات الـ Placemark للمساعدة
         if (fullAddress.isEmpty) {
           print("⚠️ Placemark is empty: $place");
           fullAddress = "${position.latitude}, ${position.longitude}";
@@ -209,11 +200,6 @@ class HomeController extends ControllerMVC {
       return null;
     }
   }
-
-
-// Usage example:
-// String? location = await getCurrentLocation();
-// print(currentLocationName); // Will contain the address
 
 
 }
