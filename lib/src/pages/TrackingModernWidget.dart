@@ -48,9 +48,17 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       final result = await polylinePoints.getRouteBetweenCoordinates(
         googleApiKey: _apiKey,
 
-        request: PolylineRequest(origin:         PointLatLng(_restaurantLocation.latitude, _restaurantLocation.longitude),
-            destination:         PointLatLng(_clientLocation.latitude, _clientLocation.longitude),
-            mode: TravelMode.driving),
+        request: PolylineRequest(
+          origin: PointLatLng(
+            _restaurantLocation.latitude,
+            _restaurantLocation.longitude,
+          ),
+          destination: PointLatLng(
+            _clientLocation.latitude,
+            _clientLocation.longitude,
+          ),
+          mode: TravelMode.driving,
+        ),
       );
 
       print("Route API response received. Status: ${result.status}");
@@ -61,12 +69,12 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         throw Exception(result.errorMessage ?? "No route points received");
       }
 
-      polylineCoordinates = result.points
-          .map((point) => LatLng(point.latitude, point.longitude))
-          .toList();
+      polylineCoordinates =
+          result.points
+              .map((point) => LatLng(point.latitude, point.longitude))
+              .toList();
 
       _addPolyline();
-
     } catch (e) {
       print("Error in _getPolyline: $e");
       // Show error to user if needed
@@ -77,6 +85,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       setState(() => _isLoadingRoute = false);
     }
   }
+
   // Method to add polyline to the map
   _addPolyline() {
     try {
@@ -105,11 +114,14 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         ),
       );
 
-      print("Polyline added successfully with ${polylineCoordinates.length} points");
+      print(
+        "Polyline added successfully with ${polylineCoordinates.length} points",
+      );
     } catch (e) {
       print("Error in _addPolyline: $e");
     }
   }
+
   // Helper method to calculate bounds from a list of coordinates
   LatLngBounds _boundsFromLatLngList(List<LatLng> list) {
     double? x0, x1, y0, y1;
@@ -286,16 +298,20 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
           //     onMapCreated: (controller) => _mapController = controller,
           //   ),
           // ),
-// Update your GoogleMap widget to this:
-// Replace your Container with this more robust version
+          // Update your GoogleMap widget to this:
+          // Replace your Container with this more robust version
           Expanded(
             child: Stack(
               children: [
                 GoogleMap(
                   initialCameraPosition: CameraPosition(
                     target: LatLng(
-                      (_restaurantLocation.latitude + _clientLocation.latitude) / 2,
-                      (_restaurantLocation.longitude + _clientLocation.longitude) / 2,
+                      (_restaurantLocation.latitude +
+                              _clientLocation.latitude) /
+                          2,
+                      (_restaurantLocation.longitude +
+                              _clientLocation.longitude) /
+                          2,
                     ),
                     zoom: 12,
                   ),
@@ -303,12 +319,16 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
                     Marker(
                       markerId: MarkerId('restaurant'),
                       position: _restaurantLocation,
-                      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+                      icon: BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueRed,
+                      ),
                     ),
                     Marker(
                       markerId: MarkerId('client'),
                       position: _clientLocation,
-                      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+                      icon: BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueBlue,
+                      ),
                     ),
                   },
                   polylines: polylines.values.toSet(),
@@ -341,7 +361,8 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
                   ),
               ],
             ),
-          ),          Align(
+          ),
+          Align(
             alignment: Alignment.bottomCenter,
             child: Container(
               padding: EdgeInsets.all(20),

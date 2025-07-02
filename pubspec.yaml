@@ -39,7 +39,8 @@ dependencies:
   dotted_line: ^3.0.1
 
   ## Firebase - Update all to be compatible and recent
-  firebase_core: ^3.13.0 # Updated
+  # firebase_core: ^3.13.0 # Updated
+  firebase_core: ^3.15.0
   firebase_auth: ^5.5.3 # Updated
   firebase_messaging: ^15.2.5 # Updated
   cloud_firestore: ^5.6.7 # Updated
@@ -65,7 +66,8 @@ dependencies:
   bot_toast: ^4.1.3
   # get user location
   geolocator: ^14.0.1 # Updated
-  geocoding: ^3.0.0
+  # geocoding: ^3.0.0
+  geocoding: ^4.0.0
 
 
 
@@ -74,9 +76,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-# Consider if this override is still needed with updated firebase_core
-dependency_overrides:
-  firebase_core_platform_interface: 4.8.0 # Try updating this or removing if firebase_core itself is recent enough
+# # Consider if this override is still needed with updated firebase_core
+# dependency_overrides:
+#   firebase_core_platform_interface: 4.8.0 # Try updating this or removing if firebase_core itself is recent enough
 
 # flutter_native_splash:
 #   image: assets/img/carry_eats_hub_splash.png
