@@ -62,36 +62,76 @@ class CardWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(
-                  top: 12,
-                  left: 12,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Color(0xFFEDEFF1),
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          'assets/img/ticket-discount.svg',
-                          height: 18,
-                          width: 18,
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          ' 20% off (up to \$50)',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            //fontFamily: 'Nunito',
-                            color: Color(0xFF26386A),
+                if (restaurant.coupon != null && restaurant.coupon!.valid)
+                  Positioned(
+                    top: 12,
+                    left: 12,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFEDEFF1),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/img/ticket-discount.svg',
+                            height: 18,
+                            width: 18,
                           ),
-                        ),
-                      ],
+                          SizedBox(width: 4),
+                          Text(
+                                () {
+                              String discountText = '';
+                              if (restaurant.coupon!.discountType == 'percent') {
+                                discountText = '${restaurant.coupon!.discount?.toInt() ?? 0}% off';
+                              } else if (restaurant.coupon!.discountType == 'fixed') {
+                                discountText = '\$${restaurant.coupon!.discount?.toStringAsFixed(2) ?? '0'} off';
+                              } else {
+                                discountText = 'خصم';
+                              }
+                              return discountText;
+                            }(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF26386A),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
+                // Positioned(
+                //   top: 12,
+                //   left: 12,
+                //   child: Container(
+                //     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                //     decoration: BoxDecoration(
+                //       color: Color(0xFFEDEFF1),
+                //       borderRadius: BorderRadius.circular(24),
+                //     ),
+                //     child: Row(
+                //       children: [
+                //         SvgPicture.asset(
+                //           'assets/img/ticket-discount.svg',
+                //           height: 18,
+                //           width: 18,
+                //         ),
+                //         SizedBox(width: 4),
+                //         Text(
+                //           ' 20% off (up to \$50)',
+                //           style: TextStyle(
+                //             fontSize: 14,
+                //             fontWeight: FontWeight.w500,
+                //             //fontFamily: 'Nunito',
+                //             color: Color(0xFF26386A),
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
               ],
             ),
             Padding(

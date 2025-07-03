@@ -78,7 +78,7 @@ class _MyAppState extends State<MyApp> {
           theme: _setting.brightness.value == Brightness.light
               ? ThemeData(
             useMaterial3: true,
-            fontFamily: 'Cairo',
+            fontFamily: 'Nunito',
             colorScheme: ColorScheme.fromSeed(
               seedColor: config.Colors().mainColor(1),
               brightness: Brightness.light,
@@ -91,7 +91,7 @@ class _MyAppState extends State<MyApp> {
               centerTitle: true,
               iconTheme: IconThemeData(color: config.Colors().secondColor(1)),
               titleTextStyle: TextStyle(
-                fontFamily: 'Cairo',
+                fontFamily: 'Nunito',
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: config.Colors().secondColor(1),
@@ -124,7 +124,7 @@ class _MyAppState extends State<MyApp> {
               : ThemeData(
             useMaterial3: true,
             brightness: Brightness.dark,
-            fontFamily: 'Cairo',
+            fontFamily: 'Nunito',
             scaffoldBackgroundColor: const Color(0xFF2C2C2C),
             colorScheme: ColorScheme.fromSeed(
               seedColor: config.Colors().mainDarkColor(1),
@@ -138,7 +138,7 @@ class _MyAppState extends State<MyApp> {
               centerTitle: true,
               iconTheme: IconThemeData(color: Colors.white),
               titleTextStyle: TextStyle(
-                fontFamily: 'Cairo',
+                fontFamily: 'Nunito',
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
