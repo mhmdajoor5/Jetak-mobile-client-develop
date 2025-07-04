@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/mhmdwael/development/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/mhmdwael/PhpstormProjects/blog/Jetak-mobile-client-develop"
+export "FLUTTER_ROOT=/Users/mohamedelkerm/fvm/versions/stable"
+export "FLUTTER_APPLICATION_PATH=/Users/mohamedelkerm/FlutterProjects/Jetak/ClientApp/Jetak-mobile-client-develop"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=2.7.0"

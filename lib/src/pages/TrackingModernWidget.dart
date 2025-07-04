@@ -26,11 +26,11 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
 
   bool _isLoadingRoute = true;
 
-  final String _apiKey = 'AIzaSyDdyth2EiAjU9m9eE_obC5fnTY1yeVNTJU';
+  final String _apiKey = 'AIzaSyDa5865xd383IlBX694cl6zPeCtzXQ6XPs';
 
   // Markers
-  final LatLng _restaurantLocation = LatLng(31.532640, 35.098614);
-  final LatLng _clientLocation = LatLng(31.536833, 35.050363);
+//  final LatLng _restaurantLocation = LatLng(31.532640, 35.098614);
+//  final LatLng _clientLocation = LatLng(31.536833, 35.050363);
 
   // Polyline
   PolylinePoints polylinePoints = PolylinePoints();
@@ -48,9 +48,17 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       final result = await polylinePoints.getRouteBetweenCoordinates(
         googleApiKey: _apiKey,
 
-        request: PolylineRequest(origin:         PointLatLng(_restaurantLocation.latitude, _restaurantLocation.longitude),
-            destination:         PointLatLng(_clientLocation.latitude, _clientLocation.longitude),
-            mode: TravelMode.driving),
+        request: PolylineRequest(
+          origin: PointLatLng(
+            _con.restaurantLocation.latitude,
+            _con.restaurantLocation.longitude,
+          ),
+          destination: PointLatLng(
+            _con.clientLocation.latitude,
+            _con.clientLocation.longitude,
+          ),
+          mode: TravelMode.driving,
+        ),
       );
 
       print("Route API response received. Status: ${result.status}");
@@ -61,12 +69,12 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         throw Exception(result.errorMessage ?? "No route points received");
       }
 
-      polylineCoordinates = result.points
-          .map((point) => LatLng(point.latitude, point.longitude))
-          .toList();
+      polylineCoordinates =
+          result.points
+              .map((point) => LatLng(point.latitude, point.longitude))
+              .toList();
 
       _addPolyline();
-
     } catch (e) {
       print("Error in _getPolyline: $e");
       // Show error to user if needed
@@ -77,6 +85,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       setState(() => _isLoadingRoute = false);
     }
   }
+
   // Method to add polyline to the map
   _addPolyline() {
     try {
@@ -105,11 +114,14 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         ),
       );
 
-      print("Polyline added successfully with ${polylineCoordinates.length} points");
+      print(
+        "Polyline added successfully with ${polylineCoordinates.length} points",
+      );
     } catch (e) {
       print("Error in _addPolyline: $e");
     }
   }
+
   // Helper method to calculate bounds from a list of coordinates
   LatLngBounds _boundsFromLatLngList(List<LatLng> list) {
     double? x0, x1, y0, y1;
@@ -286,29 +298,38 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
           //     onMapCreated: (controller) => _mapController = controller,
           //   ),
           // ),
-// Update your GoogleMap widget to this:
-// Replace your Container with this more robust version
+          // Update your GoogleMap widget to this:
+          // Replace your Container with this more robust version
           Expanded(
             child: Stack(
               children: [
                 GoogleMap(
                   initialCameraPosition: CameraPosition(
                     target: LatLng(
-                      (_restaurantLocation.latitude + _clientLocation.latitude) / 2,
-                      (_restaurantLocation.longitude + _clientLocation.longitude) / 2,
+                      (_con.restaurantLocation.latitude +
+                              _con.clientLocation.latitude) /
+                          2,
+                      (_con.restaurantLocation.longitude +
+                              _con.clientLocation.longitude) /
+                          2,
                     ),
+
                     zoom: 12,
                   ),
                   markers: {
                     Marker(
                       markerId: MarkerId('restaurant'),
-                      position: _restaurantLocation,
-                      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+                      position: _con.restaurantLocation,
+                      icon: BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueRed,
+                      ),
                     ),
                     Marker(
                       markerId: MarkerId('client'),
-                      position: _clientLocation,
-                      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+                      position: _con.clientLocation,
+                      icon: BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueBlue,
+                      ),
                     ),
                   },
                   polylines: polylines.values.toSet(),
@@ -341,7 +362,8 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
                   ),
               ],
             ),
-          ),          Align(
+          ),
+          Align(
             alignment: Alignment.bottomCenter,
             child: Container(
               padding: EdgeInsets.all(20),
@@ -454,8 +476,9 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
                   SizedBox(height: 20),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child:
-                        _buildStepProgress(), // TODO: اربطه بمراحل الطلب الحقيقية
+                    child: _buildStepProgress(
+                      _con.order.orderStatus.id,
+                    ), // TODO: اربطه بمراحل الطلب الحقيقية
                   ),
                   SizedBox(height: 20),
 
@@ -481,7 +504,22 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     );
   }
 
-  Widget _buildStepProgress() {
+  Widget _buildStepProgress1() {
+    // TODO: اربط الخطوات بحالة الطلب الحقيقية من _con.orderStatus
+    return Row(
+      children: [
+        _buildStepIcon('assets/img/receipt-item.svg', true),
+        _buildDashedLine(false),
+        _buildStepIcon('assets/img/reserve.svg', false),
+        _buildDashedLine(false),
+        _buildStepIcon('assets/img/truck-fast.svg', false),
+        _buildDashedLine(false),
+        _buildStepIcon('assets/img/tick-circle.svg', false),
+      ],
+    );
+  }
+
+  Widget _buildStepProgress2() {
     // TODO: اربط الخطوات بحالة الطلب الحقيقية من _con.orderStatus
     return Row(
       children: [
@@ -494,6 +532,68 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         _buildStepIcon('assets/img/tick-circle.svg', false),
       ],
     );
+  }
+
+  Widget _buildStepProgress3() {
+    // TODO: اربط الخطوات بحالة الطلب الحقيقية من _con.orderStatus
+    return Row(
+      children: [
+        _buildStepIcon('assets/img/receipt-item.svg', true),
+        _buildDashedLine(true),
+        _buildStepIcon('assets/img/reserve.svg', true),
+        _buildDashedLine(true),
+        _buildStepIcon('assets/img/truck-fast.svg', true),
+        _buildDashedLine(false),
+        _buildStepIcon('assets/img/tick-circle.svg', false),
+      ],
+    );
+  }
+
+  Widget _buildStepProgress4() {
+    // TODO: اربط الخطوات بحالة الطلب الحقيقية من _con.orderStatus
+    return Row(
+      children: [
+        _buildStepIcon('assets/img/receipt-item.svg', true),
+        _buildDashedLine(true),
+        _buildStepIcon('assets/img/reserve.svg', true),
+        _buildDashedLine(true),
+        _buildStepIcon('assets/img/truck-fast.svg', true),
+        _buildDashedLine(true),
+        _buildStepIcon('assets/img/tick-circle.svg', true),
+      ],
+    );
+  }
+
+  Widget _buildStepProgress(String? statusId) {
+    switch (statusId) {
+      case '1' || '2':
+        return _buildStepProgress1(); // Pending
+      case '3':
+        return _buildStepProgress2(); // Pending
+      case '4':
+        return _buildStepProgress3(); // Pending
+      case '5':
+        return _buildStepProgress4(); // Pending
+      default:
+        return _buildStepProgress1(); // Pending
+    }
+  }
+
+  IconData _getStatusIcon(String? statusId) {
+    switch (statusId) {
+      case '1':
+        return Icons.schedule; // Pending
+      case '2':
+        return Icons.restaurant; // Preparing
+      case '3':
+        return Icons.shopping_bag; // Ready for pickup
+      case '4':
+        return Icons.delivery_dining; // On the way
+      case '5':
+        return Icons.check_circle; // Delivered
+      default:
+        return Icons.info;
+    }
   }
 
   Widget _buildDashedLine(bool active) {

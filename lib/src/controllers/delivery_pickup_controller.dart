@@ -64,7 +64,10 @@ class DeliveryPickupController extends CartController {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         print('checkDeliveryArea parsed data: $data');
-        return data['is_delivery'] ?? data['can_deliver'] ?? false;
+        // return data['is_delivery'] ?? data['can_deliver'] ?? false;
+        ///TODO : mElkerm Make sure the response contains a 'success' key make it dynamic
+
+        return true;
       }
       return false;
     } catch (e) {
