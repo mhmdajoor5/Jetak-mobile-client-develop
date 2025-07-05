@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
 import '../../generated/l10n.dart';
@@ -21,6 +22,8 @@ class CheckoutController extends CartController {
   Payment? payment;
   CreditCard creditCard = CreditCard();
   bool loading = true;
+  final LatLng restaurantLocation = LatLng(31.532640, 35.098614);
+  final LatLng clientLocation = LatLng(31.536833, 35.050363);
 
   CheckoutController() {
     this.scaffoldKey = GlobalKey<ScaffoldState>();
@@ -64,6 +67,7 @@ class CheckoutController extends CartController {
 
     print('Allowed to deliver? $allowed');
 
+    /// TODO : make it allowed only
     if (allowed) {
       addOrder(carts);
     } else {
