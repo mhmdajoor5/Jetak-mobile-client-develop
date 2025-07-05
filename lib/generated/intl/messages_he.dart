@@ -263,6 +263,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("כתובת חדשה התווספה בהצלחה"),
         "new_order_from_client":
             MessageLookupByLibrary.simpleMessage("הזמנה חדשה מלקוח"),
+        "no_restaurants_found":
+            MessageLookupByLibrary.simpleMessage("לא נמצאו מסעדות"),
+        "no_stores_found":
+            MessageLookupByLibrary.simpleMessage("לא נמצאו חנויות"),
         "notValidAddress":
             MessageLookupByLibrary.simpleMessage("כתובת לא תקפה"),
         "not_a_valid_address":

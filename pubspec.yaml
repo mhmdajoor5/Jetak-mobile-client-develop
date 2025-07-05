@@ -151,6 +151,12 @@ flutter:
           weight: 800
         - asset: assets/fonts/cairo/Cairo-Black.ttf
           weight: 900
+    - family: Titr
+      fonts:
+        - asset: assets/fonts/Titr/0 Titr Bold Bold.ttf
+    - family: VarelaRound
+      fonts:
+        - asset: assets/fonts/VarelaRound/VarelaRound-Regular.ttf
 
 flutter_intl:
   enabled: true

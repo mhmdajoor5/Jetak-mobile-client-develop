@@ -27,6 +27,7 @@ class Restaurant {
   List<User> users;
   Coupon? coupon;
   List<Discountable> discountables;
+  String? restaurantType;
 
   Restaurant({
     this.id = '',
@@ -49,6 +50,7 @@ class Restaurant {
     this.distance = 0.0,
     this.closingTime = '22:00',
     this.coupon,
+    this.restaurantType,
     List<User>? users,
     List<Discountable>? discountables,
   })  : image = image ?? Media(),
@@ -79,6 +81,7 @@ class Restaurant {
         closed: jsonMap?['closed'] ?? false,
         availableForDelivery: jsonMap?['available_for_delivery'] ?? false,
         closingTime: jsonMap?['closing_time']?.toString() ?? '22:00',
+        restaurantType: jsonMap?['restaurant_type']?.toString(),
         distance: (jsonMap?['distance'] != null)
             ? double.tryParse(jsonMap!['distance'].toString()) ?? 0.0
             : 0.0,

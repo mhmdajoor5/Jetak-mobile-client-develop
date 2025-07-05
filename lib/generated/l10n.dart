@@ -3029,6 +3029,26 @@ class S {
       args: [],
     );
   }
+
+  /// `No restaurants found`
+  String get no_restaurants_found {
+    return Intl.message(
+      'No restaurants found',
+      name: 'no_restaurants_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No stores found`
+  String get no_stores_found {
+    return Intl.message(
+      'No stores found',
+      name: 'no_stores_found',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

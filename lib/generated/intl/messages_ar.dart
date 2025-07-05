@@ -208,6 +208,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("New order from client"),
         "no_items_in_this_category":
             MessageLookupByLibrary.simpleMessage("لا توجد عناصر في هذه الفئة"),
+        "no_restaurants_found":
+            MessageLookupByLibrary.simpleMessage("لم يتم العثور على مطاعم"),
+        "no_stores_found":
+            MessageLookupByLibrary.simpleMessage("لم يتم العثور على متاجر"),
         "notValidAddress":
             MessageLookupByLibrary.simpleMessage("Not valid address"),
         "not_a_valid_address":

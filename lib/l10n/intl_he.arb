@@ -281,5 +281,7 @@
   "deliveryAddressOutsideRange": "הכתובת שלך מחוץ לאזור המשלוח. אנא בחר באיסוף עצמי או שנה את הכתובת.",
   "card_deleted_successfully": "הכרטיס נמחק בהצלחה",
   "card_added_successfully": "הכרטיס נוסף בהצלחה",
-  "delete": "מחיקה"
+  "delete": "מחיקה",
+  "no_restaurants_found": "לא נמצאו מסעדות",
+  "no_stores_found": "לא נמצאו חנויות"
 }
