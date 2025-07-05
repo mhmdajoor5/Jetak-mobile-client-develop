@@ -68,7 +68,7 @@ class CheckoutController extends CartController {
     print('Allowed to deliver? $allowed');
 
     /// TODO : make it allowed only
-    if (!allowed) {
+    if (allowed) {
       addOrder(carts);
     } else {
       ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
