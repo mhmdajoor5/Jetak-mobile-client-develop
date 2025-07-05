@@ -20,11 +20,11 @@ class TrackingController extends ControllerMVC {
   TrackingController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }
+
   /// TODO make it dynamic
   LatLng restaurantLocation = LatLng(0.0, 0.0);
 
   LatLng clientLocation = LatLng(0.0, 0.0);
-
 
   Future<void> setClientLocationFromDevice() async {
     print("mElkerm Tracking Controller ▶ Getting current device location...");
@@ -50,7 +50,9 @@ class TrackingController extends ControllerMVC {
     }
 
     if (permission == LocationPermission.deniedForever) {
-      print("mElkerm Tracking Controller ❌ Location permission permanently denied.");
+      print(
+        "mElkerm Tracking Controller ❌ Location permission permanently denied.",
+      );
       return;
     }
 
@@ -59,66 +61,95 @@ class TrackingController extends ControllerMVC {
       desiredAccuracy: LocationAccuracy.high,
     );
 
-    print("mElkerm Tracking Controller ✅ Location obtained: ${position.latitude}, ${position.longitude}");
+    print(
+      "mElkerm Tracking Controller ✅ Location obtained: ${position.latitude}, ${position.longitude}",
+    );
 
     setState(() {
       clientLocation = LatLng(position.latitude, position.longitude);
     });
   }
 
-
   void listenForOrder({required String orderId, String? message}) async {
-    print("mElkerm Tracking Controller ▶ Starting listenForOrder for ID: $orderId");
+    print(
+      "mElkerm Tracking Controller ▶ Starting listenForOrder for ID: $orderId",
+    );
     final Stream<Order> stream = await getOrder(orderId);
-    print("mElkerm Tracking Controller ✅ Stream obtained for order ID: $orderId");
+    print(
+      "mElkerm Tracking Controller ✅ Stream obtained for order ID: $orderId",
+    );
 
-    stream.listen((Order _order) {
-      setState(() {
-        print("mElkerm Tracking Controller ▶ Received order data");
-        print("mElkerm Tracking Controller → order id: ${_order.id}");
-        print("mElkerm Tracking Controller → order status id: ${_order.orderStatus.id}");
-        print("mElkerm Tracking Controller → order status: ${_order.orderStatus.status}");
-        print("mElkerm Tracking Controller → order date: ${_order.dateTime}");
-        print("mElkerm Tracking Controller → payment method: ${_order.payment.method}");
-        print("mElkerm Tracking Controller → active: ${_order.active}");
-        print("mElkerm Tracking Controller → hint: ${_order.hint}");
-        print("mElkerm Tracking Controller → lat: ${_order.deliveryAddress.longitude}");
-        print("mElkerm Tracking Controller → lang: ${_order.deliveryAddress.latitude}");
-        restaurantLocation = LatLng(
-          double.tryParse(_order.deliveryAddress.latitude.toString()) ?? 0.0,
-          35.4219985,
+    stream.listen(
+      (Order _order) {
+        setState(() {
+          print("mElkerm Tracking Controller ▶ Received order data");
+          print("mElkerm Tracking Controller → order id: ${_order.id}");
+          print(
+            "mElkerm Tracking Controller → order status id: ${_order.orderStatus.id}",
+          );
+          print(
+            "mElkerm Tracking Controller → order status: ${_order.orderStatus.status}",
+          );
+          print("mElkerm Tracking Controller → order date: ${_order.dateTime}");
+          print(
+            "mElkerm Tracking Controller → payment method: ${_order.payment.method}",
+          );
+          print("mElkerm Tracking Controller → active: ${_order.active}");
+          print("mElkerm Tracking Controller → hint: ${_order.hint}");
+          print(
+            "mElkerm Tracking Controller → lat: ${_order.deliveryAddress.longitude}",
+          );
+          print(
+            "mElkerm Tracking Controller → lang: ${_order.deliveryAddress.latitude}",
+          );
+          restaurantLocation = LatLng(
+            double.tryParse(_order.deliveryAddress.latitude.toString()) ?? 0.0,
+            35.4219985,
+          );
+
+          print(
+            "mElkerm Tracking Controller → restaurant location: $restaurantLocation",
+          );
+          // setClientLocationFromDevice();
+
+          restaurantLocation = LatLng(31.532640, 35.098614);
+          clientLocation = LatLng(31.536833, 35.050363);
+          print(
+            "mElkerm Tracking Controller → restaurant location: $restaurantLocation",
+          );
+
+          order = _order;
+        });
+      },
+      onError: (a) {
+        print("mElkerm Tracking Controller ❌ Error in listenForOrder: $a");
+        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+          SnackBar(
+            content: Text(S.of(state!.context).verify_your_internet_connection),
+          ),
         );
-
-        print("mElkerm Tracking Controller → restaurant location: $restaurantLocation");
-        // setClientLocationFromDevice();
-
-
-        restaurantLocation = LatLng(31.532640, 35.098614);
-        clientLocation = LatLng(31.536833, 35.050363);
-        print("mElkerm Tracking Controller → restaurant location: $restaurantLocation");
-
-        order = _order;
-      });
-    }, onError: (a) {
-      print("mElkerm Tracking Controller ❌ Error in listenForOrder: $a");
-      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
-        content: Text(S.of(state!.context).verify_your_internet_connection),
-      ));
-    }, onDone: () {
-      print("mElkerm Tracking Controller ✅ listenForOrder stream done");
-      listenForOrderStatus();
-      if (message != null) {
-        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
-          content: Text(message),
-        ));
-      }
-    });
+      },
+      onDone: () {
+        print("mElkerm Tracking Controller ✅ listenForOrder stream done");
+        listenForOrderStatus();
+        if (message != null) {
+          ScaffoldMessenger.of(
+            scaffoldKey.currentContext!,
+          ).showSnackBar(SnackBar(content: Text(message)));
+        }
+      },
+    );
   }
 
   TrackingOrderModel? trackingOrderDetails = null;
 
-  Future<void> getOrderDetailsTracking({required String orderId, String? message}) async {
-    print("mElkerm Tracking Controller ▶ Start getOrderDetailsTracking for ID: $orderId");
+  Future<void> getOrderDetailsTracking({
+    required String orderId,
+    String? message,
+  }) async {
+    print(
+      "mElkerm Tracking Controller ▶ Start getOrderDetailsTracking for ID: $orderId",
+    );
     setState(() {
       // Optional: loading state
     });
@@ -132,17 +163,20 @@ class TrackingController extends ControllerMVC {
       });
 
       if (message != null) {
-        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
-          SnackBar(content: Text(message)),
-        );
+        ScaffoldMessenger.of(
+          scaffoldKey.currentContext!,
+        ).showSnackBar(SnackBar(content: Text(message)));
       }
 
       listenForOrderStatus();
-
     } catch (error) {
-      print("mElkerm Tracking Controller ❌ Error fetching tracking data: $error");
+      print(
+        "mElkerm Tracking Controller ❌ Error fetching tracking data: $error",
+      );
       ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
-        SnackBar(content: Text(S.of(state!.context).verify_your_internet_connection)),
+        SnackBar(
+          content: Text(S.of(state!.context).verify_your_internet_connection),
+        ),
       );
     }
   }
@@ -152,16 +186,22 @@ class TrackingController extends ControllerMVC {
     final Stream<OrderStatus> stream = await getOrderStatus();
     print("mElkerm Tracking Controller ✅ OrderStatus stream obtained");
 
-    stream.listen((OrderStatus _orderStatus) {
-      setState(() {
-        print("mElkerm Tracking Controller → Received status: ${_orderStatus.status} (ID: ${_orderStatus.id})");
-        orderStatus.add(_orderStatus);
-      });
-    }, onError: (a) {
-      print("mElkerm Tracking Controller ❌ Error in order status stream: $a");
-    }, onDone: () {
-      print("mElkerm Tracking Controller ✅ Order status stream done");
-    });
+    stream.listen(
+      (OrderStatus _orderStatus) {
+        setState(() {
+          print(
+            "mElkerm Tracking Controller → Received status: ${_orderStatus.status} (ID: ${_orderStatus.id})",
+          );
+          orderStatus.add(_orderStatus);
+        });
+      },
+      onError: (a) {
+        print("mElkerm Tracking Controller ❌ Error in order status stream: $a");
+      },
+      onDone: () {
+        print("mElkerm Tracking Controller ✅ Order status stream done");
+      },
+    );
   }
 
   List<Step> getTrackingSteps(BuildContext context, int currentOrderStatus) {
@@ -170,7 +210,9 @@ class TrackingController extends ControllerMVC {
     List<OrderStatus> statuses = [...this.orderStatus];
 
     for (OrderStatus status in statuses) {
-      print("mElkerm Tracking Controller → Status name: ${status.status}, ID: ${status.id}");
+      print(
+        "mElkerm Tracking Controller → Status name: ${status.status}, ID: ${status.id}",
+      );
     }
 
     statuses.removeWhere((element) => element.id == "6" || element.id == "7");
@@ -179,25 +221,29 @@ class TrackingController extends ControllerMVC {
     }
 
     statuses.forEach((OrderStatus _orderStatus) {
-      _orderStatusSteps.add(Step(
-        state: StepState.complete,
-        title: Text(
-          _orderStatus.status,
-          style: Theme.of(context).textTheme.titleMedium,
+      _orderStatusSteps.add(
+        Step(
+          state: StepState.complete,
+          title: Text(
+            _orderStatus.status,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          subtitle:
+              order.orderStatus.id == _orderStatus.id
+                  ? Text(
+                    '${DateFormat('HH:mm | yyyy-MM-dd').format(order.dateTime)}',
+                    style: Theme.of(context).textTheme.bodySmall,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                  : SizedBox(height: 0),
+          content: SizedBox(
+            width: double.infinity,
+            child: Text('${Helper.skipHtml(order.hint)}'),
+          ),
+          isActive:
+              (currentOrderStatus + 1) >= (int.tryParse(_orderStatus.id)!),
         ),
-        subtitle: order.orderStatus.id == _orderStatus.id
-            ? Text(
-          '${DateFormat('HH:mm | yyyy-MM-dd').format(order.dateTime)}',
-          style: Theme.of(context).textTheme.bodySmall,
-          overflow: TextOverflow.ellipsis,
-        )
-            : SizedBox(height: 0),
-        content: SizedBox(
-          width: double.infinity,
-          child: Text('${Helper.skipHtml(order.hint)}'),
-        ),
-        isActive: (currentOrderStatus + 1) >= (int.tryParse(_orderStatus.id)!),
-      ));
+      );
     });
 
     print("mElkerm Tracking Controller ✅ Finished building steps");
@@ -207,30 +253,45 @@ class TrackingController extends ControllerMVC {
   Future<void> refreshOrder() async {
     print("mElkerm Tracking Controller ▶ Refreshing order");
     order = new Order();
-    listenForOrder(orderId: order.id, message: S.of(state!.context).tracking_refreshed_successfuly);
-    getOrderDetailsTracking(orderId: order.id, message: S.of(state!.context).tracking_refreshed_successfuly);
+    listenForOrder(
+      orderId: order.id,
+      message: S.of(state!.context).tracking_refreshed_successfuly,
+    );
+    getOrderDetailsTracking(
+      orderId: order.id,
+      message: S.of(state!.context).tracking_refreshed_successfuly,
+    );
   }
 
   void doCancelOrder() {
     print("mElkerm Tracking Controller ▶ Starting cancel order");
-    cancelOrder(this.order).then((value) {
-      setState(() {
-        print("mElkerm Tracking Controller ✅ Order marked as inactive");
-        this.order.active = false;
-      });
-    }).catchError((e) {
-      print("mElkerm Tracking Controller ❌ Error cancelling order: $e");
-      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
-        content: Text(e),
-      ));
-    }).whenComplete(() {
-      print("mElkerm Tracking Controller ✅ Cancel order flow complete");
-      orderStatus = [];
-      listenForOrderStatus();
-      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
-        content: Text(S.of(state!.context).orderThisorderidHasBeenCanceled(this.order.id)),
-      ));
-    });
+    cancelOrder(this.order)
+        .then((value) {
+          setState(() {
+            print("mElkerm Tracking Controller ✅ Order marked as inactive");
+            this.order.active = false;
+          });
+        })
+        .catchError((e) {
+          print("mElkerm Tracking Controller ❌ Error cancelling order: $e");
+          ScaffoldMessenger.of(
+            scaffoldKey.currentContext!,
+          ).showSnackBar(SnackBar(content: Text(e)));
+        })
+        .whenComplete(() {
+          print("mElkerm Tracking Controller ✅ Cancel order flow complete");
+          orderStatus = [];
+          listenForOrderStatus();
+          ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+            SnackBar(
+              content: Text(
+                S
+                    .of(state!.context)
+                    .orderThisorderidHasBeenCanceled(this.order.id),
+              ),
+            ),
+          );
+        });
   }
 
   bool canCancelOrder(Order order) {

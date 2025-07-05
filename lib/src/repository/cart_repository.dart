@@ -12,7 +12,8 @@ import '../repository/user_repository.dart' as userRepo;
 Future<Stream<Cart>> getCart() async {
   final User user = userRepo.currentUser.value;
   final String token = 'api_token=${user.apiToken}&';
-  final String url = '${GlobalConfiguration().getValue('api_base_url')}carts?${token}with=food;food.restaurant;extras&search=user_id:${user.id}&searchFields=user_id:=';
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url')}carts?${token}with=food;food.restaurant;extras&search=user_id:${user.id}&searchFields=user_id:=';
 
   print('🔍 getCart ▶ URL: $url');
 
@@ -42,18 +43,23 @@ Future<Stream<Cart>> getCart() async {
   }
 }
 
-
 Future<Stream<int>> getCartCount() async {
   print("mElkerm start to fetch the cart data");
   final User user = userRepo.currentUser.value;
   final String token = 'api_token=${user.apiToken}&';
-  final String url = '${GlobalConfiguration().getValue('api_base_url')}carts/count?${token}search=user_id:${user.id}&searchFields=user_id:=';
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url')}carts/count?${token}search=user_id:${user.id}&searchFields=user_id:=';
 
   final client = http.Client();
-  final streamedRest = await client.send(http.Request('GET', Uri.parse(url))).then((value){
-    print("mElkerm Fetch the data success ${value.stream}");
-  });
-  return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getIntData(data as Map<String, dynamic>?));
+  final streamedRest = await client
+      .send(http.Request('GET', Uri.parse(url)))
+      .then((value) {
+        print("mElkerm Fetch the data success ${value.stream}");
+      });
+  return streamedRest.stream
+      .transform(utf8.decoder)
+      .transform(json.decoder)
+      .map((data) => Helper.getIntData(data as Map<String, dynamic>?));
 }
 
 Future<Cart> addCart(Cart cart, bool reset) async {
@@ -61,10 +67,15 @@ Future<Cart> addCart(Cart cart, bool reset) async {
   cart.userId = user.id!;
   final String token = 'api_token=${user.apiToken}';
   final String resetParam = 'reset=${reset ? 1 : 0}';
-  final String url = '${GlobalConfiguration().getValue('api_base_url')}carts?$token&$resetParam';
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url')}carts?$token&$resetParam';
 
   final client = http.Client();
-  final response = await client.post(Uri.parse(url), headers: {HttpHeaders.contentTypeHeader: 'application/json'}, body: json.encode(cart.toMap()));
+  final response = await client.post(
+    Uri.parse(url),
+    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    body: json.encode(cart.toMap()),
+  );
 
   try {
     final decoded = json.decode(response.body)['data'] as Map<String, dynamic>;
@@ -81,10 +92,15 @@ Future<Cart> updateCart(Cart cart) async {
 
   cart.userId = user.id!;
   final String token = 'api_token=${user.apiToken}';
-  final String url = '${GlobalConfiguration().getValue('api_base_url')}carts/${cart.id}?$token';
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url')}carts/${cart.id}?$token';
 
   final client = http.Client();
-  final response = await client.put(Uri.parse(url), headers: {HttpHeaders.contentTypeHeader: 'application/json'}, body: json.encode(cart.toMap()));
+  final response = await client.put(
+    Uri.parse(url),
+    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    body: json.encode(cart.toMap()),
+  );
 
   return Cart.fromJSON(json.decode(response.body)['data']);
 }
@@ -98,7 +114,8 @@ Future<bool> removeCart(Cart cart) async {
   }
 
   final String token = 'api_token=${user.apiToken}';
-  final String url = '${GlobalConfiguration().getValue('api_base_url')}carts/${cart.id}?$token';
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url')}carts/${cart.id}?$token';
 
   print('🔍 removeCart ▶ DELETE URL: $url');
 

@@ -43,14 +43,18 @@ class DeliveryPickupController extends CartController {
       onDone: () => _setClosestAddressAsDefault(),
       onError: (e) {
         print(e);
-        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text("Error fetching addresses")));
+        ScaffoldMessenger.of(
+          scaffoldKey.currentContext!,
+        ).showSnackBar(SnackBar(content: Text("Error fetching addresses")));
       },
     );
   }
 
   Future<bool> checkDeliveryArea() async {
     try {
-      print('checkDeliveryArea: restaurant_id=${carts.first.food?.restaurant.id}, lat=${deliveryAddress?.latitude}, lng=${deliveryAddress?.longitude}');
+      print(
+        'checkDeliveryArea: restaurant_id=${carts.first.food?.restaurant.id}, lat=${deliveryAddress?.latitude}, lng=${deliveryAddress?.longitude}',
+      );
       final response = await http.post(
         Uri.parse('https://carrytechnologies.co/api/check-delivery'),
         headers: {'Content-Type': 'application/json'},
@@ -60,7 +64,9 @@ class DeliveryPickupController extends CartController {
           'longitude': deliveryAddress?.longitude ?? 0,
         }),
       );
-      print('checkDeliveryArea response: status=${response.statusCode}, body=${response.body}');
+      print(
+        'checkDeliveryArea response: status=${response.statusCode}, body=${response.body}',
+      );
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         print('checkDeliveryArea parsed data: $data');
@@ -85,11 +91,23 @@ class DeliveryPickupController extends CartController {
     try {
       if (!await _handleLocationPermission()) return;
 
-      final Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      final Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
 
       addresses.sort((a, b) {
-        final double distA = Helper.calculateDistance(position.latitude, position.longitude, a.latitude ?? 0.0, a.longitude ?? 0.0);
-        final double distB = Helper.calculateDistance(position.latitude, position.longitude, b.latitude ?? 0.0, b.longitude ?? 0.0);
+        final double distA = Helper.calculateDistance(
+          position.latitude,
+          position.longitude,
+          a.latitude ?? 0.0,
+          a.longitude ?? 0.0,
+        );
+        final double distB = Helper.calculateDistance(
+          position.latitude,
+          position.longitude,
+          b.latitude ?? 0.0,
+          b.longitude ?? 0.0,
+        );
         return distA.compareTo(distB);
       });
 
@@ -98,7 +116,9 @@ class DeliveryPickupController extends CartController {
           deliveryAddress = addresses.first;
           settingRepo.deliveryAddress.value = addresses.first;
         });
-        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text("Closest address set as default")));
+        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+          SnackBar(content: Text("Closest address set as default")),
+        );
       }
     } catch (e) {
       if (addresses.isNotEmpty) {
@@ -107,8 +127,10 @@ class DeliveryPickupController extends CartController {
         notifyListeners();
       }
       print("Error determining closest address: $e");
-      if(scaffoldKey.currentContext != null)
-      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text("Error determining closest address")));
+      if (scaffoldKey.currentContext != null)
+        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+          SnackBar(content: Text("Error determining closest address")),
+        );
     }
   }
 
@@ -118,9 +140,21 @@ class DeliveryPickupController extends CartController {
     if (status.isGranted) return true;
 
     if (status.isDenied) {
-      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text("Location permission is required to find the closest address.")));
+      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Location permission is required to find the closest address.",
+          ),
+        ),
+      );
     } else if (status.isPermanentlyDenied) {
-      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text("Location permission is permanently denied. Please enable it in your device settings.")));
+      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Location permission is permanently denied. Please enable it in your device settings.",
+          ),
+        ),
+      );
       await openAppSettings();
     }
     return false;
@@ -136,7 +170,13 @@ class DeliveryPickupController extends CartController {
           });
         })
         .whenComplete(() {
-          ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text(S.of(state!.context).new_address_added_successfully)));
+          ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+            SnackBar(
+              content: Text(
+                S.of(state!.context).new_address_added_successfully,
+              ),
+            ),
+          );
         });
   }
 
@@ -150,7 +190,13 @@ class DeliveryPickupController extends CartController {
           });
         })
         .whenComplete(() {
-          ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text(S.of(state!.context).the_address_updated_successfully)));
+          ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+            SnackBar(
+              content: Text(
+                S.of(state!.context).the_address_updated_successfully,
+              ),
+            ),
+          );
         });
   }
 
@@ -190,21 +236,27 @@ class DeliveryPickupController extends CartController {
             (_) => AnimatedPadding(
               duration: Duration(milliseconds: 150),
               curve: Curves.easeOut,
-              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
               child: MobileVerificationBottomSheetWidget(
                 scaffoldKey: scaffoldKey,
                 user: currentUser.value,
                 valueChangedCallback: (verified) async {
                   if (verified) {
                     Navigator.pop(context);
-                    await _createSale(context); // ✅ انتقل للصفحة التالية بعد التحقق
+                    await _createSale(
+                      context,
+                    ); // ✅ انتقل للصفحة التالية بعد التحقق
                   }
                 },
               ),
             ),
         useRootNavigator: true,
         isScrollControlled: true,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+        ),
       );
 
       if (!currentUser.value.verifiedPhone) return;
@@ -216,12 +268,20 @@ class DeliveryPickupController extends CartController {
   Future<void> _createSale(BuildContext context) async {
     setState(() => isLoading = true);
 
-    final List<Item> items = fromList(carts)..add(Item(quantity: 1, unitPrice: carts.first.food?.restaurant.deliveryFee ?? 0, description: 'Delivery Fee'));
+    final List<Item> items = fromList(carts)..add(
+      Item(
+        quantity: 1,
+        unitPrice: carts.first.food?.restaurant.deliveryFee ?? 0,
+        description: 'Delivery Fee',
+      ),
+    );
 
     final ICreditCreateSaleResponse response = await iCreditCreateSale(items);
 
     setState(() => isLoading = false);
 
-    Navigator.of(context).pushNamed(getSelectedMethod().route, arguments: response);
+    Navigator.of(
+      context,
+    ).pushNamed(getSelectedMethod().route, arguments: response);
   }
 }

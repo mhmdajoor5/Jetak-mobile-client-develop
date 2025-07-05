@@ -64,11 +64,13 @@ class _PagesWidgetState extends State<PagesWidget> {
         case 1:
           widget.currentPage = RestaurantsWidget(
             parentScaffoldKey: widget.scaffoldKey,
+            restaurantType: 'restaurant',
           ); //
           break;
         case 2:
-          widget.currentPage = OrdersWidget(
+          widget.currentPage = StoresWidget(
             parentScaffoldKey: widget.scaffoldKey,
+            restaurantType: 'store',
           );
           break;
         case 3:
@@ -76,14 +78,16 @@ class _PagesWidgetState extends State<PagesWidget> {
             parentScaffoldKey: widget.scaffoldKey,
             routeArgument: widget.routeArgument,
           );
-      /// mElkerm : add profile Screen to the bottom nav bar
+
+        /// mElkerm : add profile Screen to the bottom nav bar
         case 4:
           widget.currentPage = ProfileWidget(
             parentScaffoldKey: widget.scaffoldKey,
           );
         default:
-          widget.currentPage = OrdersWidget(
+          widget.currentPage = StoresWidget(
             parentScaffoldKey: widget.scaffoldKey,
+            restaurantType: 'store',
           );
         // case 1:
         //   widget.currentPage = MapWidget(parentScaffoldKey: widget.scaffoldKey, routeArgument: widget.routeArgument);

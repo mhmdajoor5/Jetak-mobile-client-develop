@@ -296,5 +296,7 @@
   "deliveryAddressOutsideRange": "Your address is out of the delivery range. Please select pickup or change your address.",
   "card_deleted_successfully": "Card deleted successfully",
   "card_added_successfully": "Card added successfully",
-  "delete": "Delete"
+  "delete": "Delete",
+  "no_restaurants_found": "No restaurants found",
+  "no_stores_found": "No stores found"
 }

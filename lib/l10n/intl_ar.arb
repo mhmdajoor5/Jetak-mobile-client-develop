@@ -223,5 +223,7 @@
   "deliveryAddressOutsideRange": "عنوانك خارج نطاق التوصيل. يرجى اختيار الاستلام من المتجر أو تغيير العنوان.",
   "card_deleted_successfully": "تم حذف البطاقة بنجاح",
   "card_added_successfully": "تمت إضافة البطاقة بنجاح",
-  "delete": "حذف"
+  "delete": "حذف",
+  "no_restaurants_found": "لم يتم العثور على مطاعم",
+  "no_stores_found": "لم يتم العثور على متاجر"
 }
