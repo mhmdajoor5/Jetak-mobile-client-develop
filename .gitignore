@@ -1,0 +1,240 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# iOS related
+**/ios/Flutter/flutter_assets/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+
+# Coverage
+coverage/
+
+# Exceptions to above rules.
+!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# Web related
+/web/
+
+# Windows related
+windows/flutter/generated_plugin_registrant.cc
+windows/flutter/generated_plugin_registrant.h
+
+# macOS related
+**/macos/Flutter/ephemeral/
+**/macos/Flutter/Flutter-Generated.xcconfig
+**/macos/Flutter/flutter_export_environment.sh
+
+# Linux related
+**/linux/flutter/generated_plugin_registrant.cc
+**/linux/flutter/generated_plugin_registrant.h
+
+# Firebase related
+**/android/app/google-services.json
+**/ios/Runner/GoogleService-Info.plist
+**/web/firebase-config.js
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Local database
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+*.tmp
+*.temp
+~*
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Dependency directories
+node_modules/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Test files
+test_driver/
+integration_test/driver.dart
+
+# Generated files
+*.g.dart
+*.freezed.dart
+*.mocks.dart
+
+# Fvm
+.fvm/
+
+# Fastlane
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
+
+# Xcode
+**/ios/Pods/
+**/ios/Podfile.lock
+**/macos/Pods/
+**/macos/Podfile.lock
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/macos/Flutter/Generated.xcconfig
+**/macos/Flutter/flutter_export_environment.sh
+
+# Android
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+**/android/gradle/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/key.properties
+**/android/app/upload-keystore.jks
+**/android/app/my-upload-key.keystore
+**/android/app/release-key.keystore
+**/android/app/release-key.jks
+
+# Generated plugin files
+**/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+**/ios/Runner/GeneratedPluginRegistrant.m
+**/macos/Flutter/GeneratedPluginRegistrant.swift
+
+# Signing files
+*.keystore
+*.jks
+*.p12
+*.mobileprovision
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+
+# Backup files
+*.bak
+*.backup
+
+# IDE files
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+.vscode/c_cpp_properties.json
+.vscode/extensions.json
+
+# Flutter SDK
+flutter_sdk/
+
+# Build files
+build/
+dist/
+out/
+target/
+
+# Cache files
+.gradle/
+.m2/
+.ivy2/
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Network
+.netrc
+
+# Crashlytics
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+
+# Firebase
+firebase_options.dart
+
+# Analysis
+.dart_tool/package_config.json
+.dart_tool/package_config_subset
+.dart_tool/version 
