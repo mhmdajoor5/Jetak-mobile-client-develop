@@ -60,7 +60,7 @@ class _HelpWidgetState extends StateMVC<HelpWidget> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
-                          SearchBarWidget(),
+                          //SearchBarWidget(),
                           SizedBox(height: 15),
                           ListTile(
                             contentPadding: EdgeInsets.symmetric(vertical: 0),

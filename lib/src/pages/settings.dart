@@ -47,10 +47,10 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                 padding: EdgeInsets.symmetric(vertical: 7),
                 child: Column(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: SearchBarWidget(),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                    //   child: SearchBarWidget(),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                       child: Row(
