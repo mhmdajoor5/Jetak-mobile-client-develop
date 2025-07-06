@@ -28,17 +28,13 @@ Future<Stream<Cart>> getCart() async {
     final responseBody = await streamedRest.stream.bytesToString();
     print('🔍 getCart ▶ Response body: $responseBody');
 
-    // Convert the body back to a stream for parsing
-    final stream = Stream.value(utf8.decode(responseBody.codeUnits))
-        .transform(json.decoder)
-        .map((data) => Helper.getData(data as Map<String, dynamic>?))
-        .expand((data) => data as List)
-        .map((data) => Cart.fromJSON(data));
+    // الحل هنا: تحويل JSON مباشرة إلى List من Cart
+    final List<dynamic> decodedJson = json.decode(responseBody);
+    final stream = Stream.fromIterable(decodedJson.map((e) => Cart.fromJSON(e)));
 
     return stream;
   } else {
     print('❌ getCart ▶ Non-200 response, status: ${streamedRest.statusCode}');
-    // Return empty stream or handle error as needed
     return Stream<Cart>.empty();
   }
 }
