@@ -29,16 +29,19 @@ class _MapWidgetState extends StateMVC<MapWidget> {
   @override
   void initState() {
     super.initState();
-    _con.goCurrentLocation();
+    _con.getCurrentLocation();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _con.goCurrentLocation();
       if (widget.routeArgument?.param is Restaurant) {
+        // Single restaurant view with directions
         _con.currentRestaurant = widget.routeArgument?.param as Restaurant;
+        _con.getRestaurantLocation();
+        _con.getDirectionSteps();
       } else {
-        _con.currentRestaurant = Restaurant();
+        // Show all nearby restaurants
+        _con.currentRestaurant = Restaurant(id: 'all');
+        _con.getCurrentLocation();
+        _con.getRestaurantsOfArea();
       }
-      _con.getRestaurantLocation();
-      _con.getDirectionSteps();
     });
   }
 
@@ -81,36 +84,33 @@ class _MapWidgetState extends StateMVC<MapWidget> {
         ],
       ),
 
-      body:
-          _con.currentRestaurant.id == '-50'
-              ? SizedBox()
-              : Stack(
-                alignment: AlignmentDirectional.bottomStart,
-                children: <Widget>[
-                  _con.cameraPosition == null
-                      ? Center(child: CircularProgressIndicator())
-                      : GoogleMap(
-                        mapToolbarEnabled: false,
-                        mapType: MapType.normal,
-                        initialCameraPosition:
-                            _con.cameraPosition ??
-                            CameraPosition(target: LatLng(40, 3), zoom: 4),
-                        markers: Set.from(_con.allMarkers),
-                        onMapCreated: (GoogleMapController controller) {
-                          _con.mapController.complete(controller);
-                        },
-                        onCameraMove: _con.onCameraMove,
-                        onCameraIdle: () {},
-                        polylines: _con.polylines,
-                        minMaxZoomPreference: MinMaxZoomPreference(10, 18),
-                      ),
-                  if (_con.topRestaurants.isNotEmpty)
-                    CardsCarouselWidget(
-                      restaurantsList: _con.topRestaurants,
-                      heroTag: 'map_restaurants',
-                    ),
-                ],
+      body: Stack(
+        alignment: AlignmentDirectional.bottomStart,
+        children: <Widget>[
+          _con.cameraPosition == null
+              ? Center(child: CircularProgressIndicator())
+              : GoogleMap(
+                mapToolbarEnabled: false,
+                mapType: MapType.normal,
+                initialCameraPosition:
+                    _con.cameraPosition ??
+                    CameraPosition(target: LatLng(40, 3), zoom: 4),
+                markers: Set.from(_con.allMarkers),
+                onMapCreated: (GoogleMapController controller) {
+                  _con.mapController.complete(controller);
+                },
+                onCameraMove: _con.onCameraMove,
+                onCameraIdle: () {},
+                polylines: _con.polylines,
+                minMaxZoomPreference: MinMaxZoomPreference(10, 18),
               ),
+          if (_con.topRestaurants.isNotEmpty)
+            CardsCarouselWidget(
+              restaurantsList: _con.topRestaurants,
+              heroTag: 'map_restaurants',
+            ),
+        ],
+      ),
     );
   }
 

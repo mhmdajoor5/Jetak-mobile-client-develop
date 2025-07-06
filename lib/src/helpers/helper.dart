@@ -184,9 +184,10 @@ class Helper {
     final Uint8List? markerIcon =
     await getBytesFromAsset('assets/img/my_marker.png', 120);
     final map.Marker marker = map.Marker(
-        markerId: map.MarkerId(Random().nextInt(100).toString()),
+        markerId: map.MarkerId('my_position'), // Use consistent ID
         icon: map.BitmapDescriptor.fromBytes(markerIcon!),
         anchor: Offset(0.5, 0.5),
+        infoWindow: map.InfoWindow(title: 'موقعي'),
         position: map.LatLng(latitude, longitude));
 
     return marker;

@@ -21,7 +21,7 @@ Future<Stream<Restaurant>> getNearRestaurants(
   Filter filter =
       Filter.fromJSON(json.decode(prefs.getString('filter') ?? '{}'));
 
-  _queryParams['limit'] = '6';
+  _queryParams['limit'] = '20'; // Increase limit for better map coverage
   if (!myLocation.isUnknown() && !areaLocation.isUnknown()) {
     _queryParams['myLon'] = myLocation.longitude.toString();
     _queryParams['myLat'] = myLocation.latitude.toString();
@@ -30,6 +30,7 @@ Future<Stream<Restaurant>> getNearRestaurants(
   }
   _queryParams.addAll(filter.toQuery());
   uri = uri.replace(queryParameters: _queryParams);
+  
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
@@ -37,12 +38,39 @@ Future<Stream<Restaurant>> getNearRestaurants(
     return streamedRest.stream
         .transform(utf8.decoder)
         .transform(json.decoder)
-        .map((data) => Helper.getData(data as Map<String, dynamic>?))
-        .expand((data) => (data as List))
         .map((data) {
-      return Restaurant.fromJSON(data);
-    });
+          print('API Response structure: $data');
+          // Handle different API response structures
+          dynamic restaurants;
+          if (data is Map<String, dynamic>) {
+            // Try different possible structures
+            if (data.containsKey('data')) {
+              if (data['data'] is List) {
+                restaurants = data['data'];
+              } else if (data['data'] is Map && data['data']['data'] is List) {
+                restaurants = data['data']['data'];
+              } else {
+                restaurants = [];
+              }
+            } else if (data is List) {
+              restaurants = data;
+            } else {
+              restaurants = [];
+            }
+          } else if (data is List) {
+            restaurants = data;
+          } else {
+            restaurants = [];
+          }
+          
+          return restaurants;
+        })
+        .expand((data) => (data as List? ?? []))
+        .map((data) {
+          return Restaurant.fromJSON(data);
+        });
   } catch (e) {
+    print('Error loading nearby restaurants: $e');
     print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
     return new Stream.value(new Restaurant.fromJSON({}));
   }
@@ -55,7 +83,7 @@ Future<Stream<Restaurant>> getPopularRestaurants(Address myLocation) async {
   Filter filter =
       Filter.fromJSON(json.decode(prefs.getString('filter') ?? '{}'));
 
-  _queryParams['limit'] = '6';
+  _queryParams['limit'] = '15';
   _queryParams['popular'] = 'all';
   if (!myLocation.isUnknown()) {
     _queryParams['myLon'] = myLocation.longitude.toString();
@@ -63,6 +91,7 @@ Future<Stream<Restaurant>> getPopularRestaurants(Address myLocation) async {
   }
   _queryParams.addAll(filter.toQuery());
   uri = uri.replace(queryParameters: _queryParams);
+  
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
@@ -70,12 +99,35 @@ Future<Stream<Restaurant>> getPopularRestaurants(Address myLocation) async {
     return streamedRest.stream
         .transform(utf8.decoder)
         .transform(json.decoder)
-        .map((data) => Helper.getData(data as Map<String, dynamic>?))
-        .expand((data) => (data as List))
         .map((data) {
-      return Restaurant.fromJSON(data);
-    });
+          // Handle different API response structures
+          dynamic restaurants;
+          if (data is Map<String, dynamic>) {
+            if (data.containsKey('data')) {
+              if (data['data'] is List) {
+                restaurants = data['data'];
+              } else if (data['data'] is Map && data['data']['data'] is List) {
+                restaurants = data['data']['data'];
+              } else {
+                restaurants = [];
+              }
+            } else {
+              restaurants = [];
+            }
+          } else if (data is List) {
+            restaurants = data;
+          } else {
+            restaurants = [];
+          }
+          
+          return restaurants;
+        })
+        .expand((data) => (data as List? ?? []))
+        .map((data) {
+          return Restaurant.fromJSON(data);
+        });
   } catch (e) {
+    print('Error loading popular restaurants: $e');
     print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
     return new Stream.value(new Restaurant.fromJSON({}));
   }

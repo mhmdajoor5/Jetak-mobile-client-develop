@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../controllers/home_controller.dart';
@@ -25,8 +26,14 @@ class _SplashScreenState extends StateMVC<SplashScreen> {
       // Reset loading state to ensure fresh data load
       _con.resetDataLoading();
       
-      // Load all data
-      await _con.loadAllData();
+      // Load all data with timeout to prevent hanging
+      await _con.loadAllData().timeout(
+        const Duration(seconds: 8),
+        onTimeout: () {
+          print('Data loading timed out - navigating anyway');
+          throw TimeoutException('Data loading timed out', const Duration(seconds: 8));
+        },
+      );
       
       // Navigate to home screen only after all data is loaded
       if (mounted) {
@@ -34,6 +41,7 @@ class _SplashScreenState extends StateMVC<SplashScreen> {
       }
     } catch (e) {
       print('Error loading data: $e');
+      // Always navigate even if there's an error
       if (mounted) {
         Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
       }

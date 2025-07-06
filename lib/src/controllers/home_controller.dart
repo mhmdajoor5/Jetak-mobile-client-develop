@@ -57,45 +57,62 @@ class HomeController extends ControllerMVC {
   Future<void> loadAllData() async {
     if (_isDataLoaded) return;
     try {
-      final results = await Future.wait([
+      // Load critical data first (slides and categories)
+      final criticalResults = await Future.wait([
         getSlides(),
         getCategories(),
+      ]).timeout(const Duration(seconds: 5));
+
+      slides = criticalResults[0] as List<Slide>;
+      categories = criticalResults[1] as List<Category>;
+
+      // Update UI with critical data first
+      setState(() {});
+
+      // Load restaurant data in background
+      final restaurantResults = await Future.wait([
         getTopRestaurants(),
         fetchPopularRestaurants(),
         getTrendingFoods(),
-      ]);
+      ]).timeout(const Duration(seconds: 10));
 
-      slides = results[0] as List<Slide>;
-      categories = results[1] as List<Category>;
-      topRestaurants = results[2] as List<Restaurant>;
-      popularRestaurants = results[3] as List<Restaurant>;
-      trendingFoods = results[4] as List<Food>;
+      topRestaurants = restaurantResults[0] as List<Restaurant>;
+      popularRestaurants = restaurantResults[1] as List<Restaurant>;
+      trendingFoods = restaurantResults[2] as List<Food>;
       getPopularRestaurants = true;
 
       _isDataLoaded = true;
 
-      await getCurrentLocation();
-      print("Detected location: $currentLocationName");
-
+      // Get location in background without blocking UI
+      getCurrentLocation().catchError((e) {
+        print('Location error: $e');
+      });
 
       setState(() {});
     } catch (e) {
       print('Error loading all data: $e');
-      rethrow;
+      // Don't rethrow to avoid splash screen hanging
+      _isDataLoaded = true;
     }
   }
 
 
   Future<void> refreshHome() async {
-    _isDataLoaded = false;
-    slides = [];
-    categories = [];
-    topRestaurants = [];
-    popularRestaurants = [];
-    recentReviews = [];
-    trendingFoods = [];
+    try {
+      _isDataLoaded = false;
+      slides = [];
+      categories = [];
+      topRestaurants = [];
+      popularRestaurants = [];
+      recentReviews = [];
+      trendingFoods = [];
 
-    await loadAllData();
+      await loadAllData();
+    } catch (e) {
+      print('Error refreshing home: $e');
+      // Ensure UI doesn't hang on refresh errors
+      setState(() {});
+    }
   }
 
   void requestForCurrentLocation(BuildContext context) {

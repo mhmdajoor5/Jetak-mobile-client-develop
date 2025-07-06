@@ -30,7 +30,7 @@ Future<List<LatLng>> calculatePolyline({
 }
 
 class MapController extends ControllerMVC {
-  late Restaurant currentRestaurant = Restaurant(id: '-50');
+  late Restaurant currentRestaurant = Restaurant(id: 'all');
   List<Restaurant> topRestaurants = <Restaurant>[];
   List<Marker> allMarkers = <Marker>[];
   late Address currentAddress;
@@ -40,37 +40,54 @@ class MapController extends ControllerMVC {
   final Completer<GoogleMapController> mapController = Completer();
   Timer? cameraMoveTimer;
   bool _isLoading = false;
+  Timer? _debounceTimer;
 
   void listenForNearRestaurants(Address myLocation, Address areaLocation) async {
     if (_isLoading) return;
     _isLoading = true;
 
-    final Stream<Restaurant> stream = await getNearRestaurants(myLocation, areaLocation);
-    final List<Restaurant> batch = [];
-    final List<Marker> markerBatch = [];
+    try {
+      print('Loading restaurants for area: ${areaLocation.latitude}, ${areaLocation.longitude}');
+      final Stream<Restaurant> stream = await getNearRestaurants(myLocation, areaLocation);
+      final List<Restaurant> batch = [];
+      final List<Marker> markerBatch = [];
+      int restaurantCount = 0;
 
-    await for (Restaurant restaurant in stream) {
-      batch.add(restaurant);
-      final marker = await Helper.getMarker(restaurant.toMap());
-      markerBatch.add(marker);
+      await for (Restaurant restaurant in stream) {
+        if (restaurant.id.isNotEmpty && restaurant.name.isNotEmpty) {
+          batch.add(restaurant);
+          final marker = await Helper.getMarker(restaurant.toMap());
+          markerBatch.add(marker);
+          restaurantCount++;
 
-      if (batch.length % 5 == 0) {
+          // Update UI more frequently for better UX
+          if (batch.length % 3 == 0) {
+            setState(() {
+              topRestaurants.addAll(batch);
+              allMarkers.addAll(markerBatch);
+              batch.clear();
+              markerBatch.clear();
+            });
+          }
+        }
+      }
+
+      if (batch.isNotEmpty) {
         setState(() {
           topRestaurants.addAll(batch);
           allMarkers.addAll(markerBatch);
-          batch.clear();
-          markerBatch.clear();
         });
       }
-    }
 
-    if (batch.isNotEmpty) {
-      setState(() {
-        topRestaurants.addAll(batch);
-        allMarkers.addAll(markerBatch);
-      });
+      print('Loaded $restaurantCount restaurants on map');
+      if (restaurantCount == 0) {
+        print('No restaurants found in this area');
+      }
+    } catch (e) {
+      print('Error loading nearby restaurants: $e');
+    } finally {
+      _isLoading = false;
     }
-    _isLoading = false;
   }
 
   void getCurrentLocation() async {
@@ -89,7 +106,14 @@ class MapController extends ControllerMVC {
           currentAddress.latitude ?? 0.0,
           currentAddress.longitude ?? 0.0,
         );
-        setState(() => allMarkers.add(marker));
+        setState(() {
+          // Remove any existing user position marker first
+          allMarkers.removeWhere((m) => m.markerId.value == 'my_position');
+          allMarkers.add(marker);
+        });
+        
+        // Load nearby restaurants after setting location
+        getRestaurantsOfArea();
       }
     } on PlatformException catch (e) {
       if (e.code == 'PERMISSION_DENIED') {
@@ -143,19 +167,21 @@ class MapController extends ControllerMVC {
   }
 
   void onCameraMove(CameraPosition position) {
-    cameraMoveTimer?.cancel();
-    cameraMoveTimer = Timer(const Duration(milliseconds: 800), () {
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 1000), () {
       getRestaurantsOfArea();
     });
     cameraPosition = position;
   }
 
   void getRestaurantsOfArea() {
-    if (cameraPosition == null) return;
+    if (cameraPosition == null || _isLoading) return;
 
+    // Only clear markers that are not the user's position
     setState(() {
       topRestaurants.clear();
-      allMarkers.clear();
+      // Keep the user position marker and only clear restaurant markers
+      allMarkers.removeWhere((marker) => marker.markerId.value != 'my_position');
     });
 
     final areaAddress = Address.fromJSON({
@@ -208,6 +234,7 @@ class MapController extends ControllerMVC {
   @override
   void dispose() {
     cameraMoveTimer?.cancel();
+    _debounceTimer?.cancel();
     mapController.future.then((controller) => controller.dispose());
     super.dispose();
   }
