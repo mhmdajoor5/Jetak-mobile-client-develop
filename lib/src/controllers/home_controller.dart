@@ -1,6 +1,10 @@
+import 'dart:convert';
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show ScaffoldState;
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:geocoding/geocoding.dart';
 
@@ -31,7 +35,7 @@ class HomeController extends ControllerMVC {
   List<Restaurant> popularRestaurants = <Restaurant>[];
   List<Review> recentReviews = <Review>[];
   List<Food> trendingFoods = <Food>[];
-  
+
   // Loading states
   bool isLoadingSlides = false;
   bool isLoadingCategories = false;
@@ -57,62 +61,45 @@ class HomeController extends ControllerMVC {
   Future<void> loadAllData() async {
     if (_isDataLoaded) return;
     try {
-      // Load critical data first (slides and categories)
-      final criticalResults = await Future.wait([
+      final results = await Future.wait([
         getSlides(),
         getCategories(),
-      ]).timeout(const Duration(seconds: 5));
-
-      slides = criticalResults[0] as List<Slide>;
-      categories = criticalResults[1] as List<Category>;
-
-      // Update UI with critical data first
-      setState(() {});
-
-      // Load restaurant data in background
-      final restaurantResults = await Future.wait([
         getTopRestaurants(),
         fetchPopularRestaurants(),
         getTrendingFoods(),
-      ]).timeout(const Duration(seconds: 10));
+      ]);
 
-      topRestaurants = restaurantResults[0] as List<Restaurant>;
-      popularRestaurants = restaurantResults[1] as List<Restaurant>;
-      trendingFoods = restaurantResults[2] as List<Food>;
+      slides = results[0] as List<Slide>;
+      categories = results[1] as List<Category>;
+      topRestaurants = results[2] as List<Restaurant>;
+      popularRestaurants = results[3] as List<Restaurant>;
+      trendingFoods = results[4] as List<Food>;
       getPopularRestaurants = true;
 
       _isDataLoaded = true;
 
-      // Get location in background without blocking UI
-      getCurrentLocation().catchError((e) {
-        print('Location error: $e');
-      });
+      await getCurrentLocation();
+      print("Detected location: $currentLocationName");
+
 
       setState(() {});
     } catch (e) {
       print('Error loading all data: $e');
-      // Don't rethrow to avoid splash screen hanging
-      _isDataLoaded = true;
+      rethrow;
     }
   }
 
 
   Future<void> refreshHome() async {
-    try {
-      _isDataLoaded = false;
-      slides = [];
-      categories = [];
-      topRestaurants = [];
-      popularRestaurants = [];
-      recentReviews = [];
-      trendingFoods = [];
+    _isDataLoaded = false;
+    slides = [];
+    categories = [];
+    topRestaurants = [];
+    popularRestaurants = [];
+    recentReviews = [];
+    trendingFoods = [];
 
-      await loadAllData();
-    } catch (e) {
-      print('Error refreshing home: $e');
-      // Ensure UI doesn't hang on refresh errors
-      setState(() {});
-    }
+    await loadAllData();
   }
 
   void requestForCurrentLocation(BuildContext context) {
@@ -168,12 +155,96 @@ class HomeController extends ControllerMVC {
     print("Location permission granted");
     return true;
   }
+
+  Future<String?> getLocationNameWithLanguage(double lat, double lng) async {
+    try {
+      String languageCode = window.locale.languageCode;
+
+      final url = Uri.https(
+        'maps.googleapis.com',
+        '/maps/api/geocode/json',
+        {
+          'latlng': '$lat,$lng',
+          'language': languageCode,
+          'key': 'AIzaSyDa5865xd383IlBX694cl6zPeCtzXQ6XPs',
+        },
+      );
+
+      print('📡 Final URL: $url');
+
+      final response = await http.get(url);
+
+      print('📥 Response: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['results'] != null && data['results'].length > 0) {
+          return data['results'][0]['formatted_address'];
+        }
+      }
+    } catch (e) {
+      print('❌ Error in getLocationNameWithLanguage: $e');
+    }
+    return null;
+  }
+
+
+  // Future<String?> getCurrentLocation() async {
+  //   try {
+  //     final hasPermission = await requestLocationPermission();
+  //
+  //     if (!hasPermission) {
+  //       print('Location permission denied');
+  //       return null;
+  //     }
+  //
+  //     Position position = await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.high,
+  //     );
+  //
+  //     print("📍 Latitude: ${position.latitude}, Longitude: ${position.longitude}");
+  //
+  //     List<Placemark> placemarks = await placemarkFromCoordinates(
+  //       position.latitude,
+  //       position.longitude,
+  //     );
+  //
+  //     if (placemarks.isNotEmpty) {
+  //       Placemark place = placemarks[0];
+  //
+  //       String city = place.locality ?? place.subAdministrativeArea ?? '';
+  //       String country = place.country ?? '';
+  //
+  //       String fullAddress = '$city, $country'.trim();
+  //
+  //       if (fullAddress.isEmpty) {
+  //         print("⚠️ Placemark is empty: $place");
+  //         fullAddress = "${position.latitude}, ${position.longitude}";
+  //       }
+  //
+  //       setState(() {
+  //         currentLocationName = fullAddress;
+  //       });
+  //
+  //       print("📌 Place info: Name: $city, Country: $country");
+  //       return currentLocationName;
+  //     } else {
+  //       print("⚠️ placemarks.isEmpty");
+  //     }
+  //
+  //     return null;
+  //   } catch (e) {
+  //     print('❌ Error getting location: $e');
+  //     return null;
+  //   }
+  // }
+
   Future<String?> getCurrentLocation() async {
     try {
       final hasPermission = await requestLocationPermission();
 
       if (!hasPermission) {
-        print('Location permission denied');
+        print('❌ Location permission denied');
         return null;
       }
 
@@ -183,40 +254,25 @@ class HomeController extends ControllerMVC {
 
       print("📍 Latitude: ${position.latitude}, Longitude: ${position.longitude}");
 
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-        position.latitude,
-        position.longitude,
-      );
+      String? address = await getLocationNameWithLanguage(position.latitude, position.longitude);
 
-      if (placemarks.isNotEmpty) {
-        Placemark place = placemarks[0];
-
-        String city = place.locality ?? place.subAdministrativeArea ?? '';
-        String country = place.country ?? '';
-
-        String fullAddress = '$city, $country'.trim();
-
-        if (fullAddress.isEmpty) {
-          print("⚠️ Placemark is empty: $place");
-          fullAddress = "${position.latitude}, ${position.longitude}";
-        }
-
+      if (address != null && address.isNotEmpty) {
         setState(() {
-          currentLocationName = fullAddress;
+          currentLocationName = address;
         });
 
-        print("📌 Place info: Name: $city, Country: $country");
-        return currentLocationName;
+        print("📌 Detected Address: $address");
+        return address;
       } else {
-        print("⚠️ placemarks.isEmpty");
+        print("⚠️ No address returned from Google API");
+        return null;
       }
-
-      return null;
     } catch (e) {
       print('❌ Error getting location: $e');
       return null;
     }
   }
+
 
 
 }
