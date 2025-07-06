@@ -52,16 +52,57 @@ class _SplashScreenState extends StateMVC<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _con.scaffoldKey,
-      body: Stack(
-        children: [
-          // Background animated GIF
-          SizedBox.expand(
-            child: Image.asset(
-              'assets/img/new.gif',
-              fit: BoxFit.cover,
+      backgroundColor: Color(0xFF26386A), // نفس لون native splash للانتقال السلس
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        child: Stack(
+          children: [
+            // Background GIF متحرك ملء الشاشة
+            Positioned.fill(
+              child: Image.asset(
+                'assets/img/new.gif',
+                fit: BoxFit.cover,
+                alignment: Alignment.center,
+              ),
             ),
-          ),
-        ],
+            // شعار صغير في الأسفل (اختياري)
+            Positioned(
+              bottom: 50,
+              left: 0,
+              right: 0,
+              child: Column(
+                children: [
+                  Text(
+                    'جيتك',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Cairo',
+                      shadows: [
+                        Shadow(
+                          color: Colors.black.withOpacity(0.7),
+                          offset: Offset(0, 2),
+                          blurRadius: 8,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      strokeWidth: 2.5,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
