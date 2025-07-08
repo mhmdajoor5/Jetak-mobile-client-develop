@@ -53,7 +53,7 @@ dependencies:
   fluttertoast: ^8.2.9 # Switched to pub.dev version, Updated
   flutter_staggered_grid_view: ^0.7.0 # Updated
   intl_utils: ^2.8.7 # Updated
-  intl: ^0.20.2
+  intl: ^0.19.0
 #  font_awesome_flutter: ^10.5.0
   flutter_dash: ^1.0.0
   dotted_line: ^3.0.1
