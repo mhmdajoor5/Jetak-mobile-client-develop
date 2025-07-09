@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:global_configuration/global_configuration.dart';
@@ -10,10 +11,30 @@ import 'src/models/setting.dart';
 import 'src/repository/settings_repository.dart' as settingRepo;
 import 'src/repository/user_repository.dart' as userRepo;
 
+// Top-level function to handle background messages
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+  
+  print('Handling a background message: ${message.messageId}');
+  print('Message data: ${message.data}');
+  
+  // You can handle the background message here
+  // For example, save it to local storage, update badge count, etc.
+  
+  // Don't try to update UI here as the app is in background
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GlobalConfiguration().loadFromAsset("configurations");
   await Firebase.initializeApp();
+  
+  // Set the background messaging handler early on, as a named top-level function
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  
   runApp(MyApp());
 }
 
