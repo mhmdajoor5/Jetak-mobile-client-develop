@@ -16,6 +16,7 @@ class FoodController extends ControllerMVC {
   List<Cart> carts = [];
   Favorite favorite = Favorite();
   bool loadCart = false;
+  List<String> selectedExtras = [];
   late GlobalKey<ScaffoldState> scaffoldKey;
 
   FoodController() {

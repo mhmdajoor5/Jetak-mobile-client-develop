@@ -4,9 +4,15 @@ import '../models/extra.dart';
 
 class ExtraItemWidget extends StatefulWidget {
   final Extra extra;
-  final VoidCallback onChanged;
+  final String? selectedExtraId;
+  final void Function(String selectedId) onChanged;
 
-  const ExtraItemWidget({Key? key, required this.extra, required this.onChanged}) : super(key: key);
+  const ExtraItemWidget({
+  Key? key,
+  required this.extra,
+  required this.selectedExtraId,
+  required this.onChanged,
+  }) : super(key: key);
 
   @override
   _ExtraItemWidgetState createState() => _ExtraItemWidgetState();
@@ -60,42 +66,60 @@ class _ExtraItemWidgetState extends State<ExtraItemWidget> with SingleTickerProv
         setState(() {
           widget.extra.checked = !widget.extra.checked;
         });
-        widget.onChanged();
+        widget.onChanged(widget.extra.id);
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Checkbox(
-            value: widget.extra.checked,
-            onChanged: (bool? value) {
+          Radio<String>(
+            value: widget.extra.id,
+            groupValue: widget.selectedExtraId,
+            onChanged: (String? value) {
               if (value != null) {
-                setState(() {
-                  widget.extra.checked = value;
-                });
-                widget.onChanged();
+                widget.onChanged(value);
               }
             },
           ),
+
           const SizedBox(width: 15),
           Flexible(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                Radio<String>(
+                  value: widget.extra.id,
+                  groupValue: widget.selectedExtraId,
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      widget.onChanged(value);
+                    }
+                  },
+                ),
+                const SizedBox(width: 15),
+                Flexible(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      const SizedBox(height: 12),
-                      Text(widget.extra.name, overflow: TextOverflow.ellipsis, maxLines: 2, style: Theme.of(context).textTheme.titleMedium),
-                      Text(Helper.skipHtml(widget.extra.description), overflow: TextOverflow.ellipsis, maxLines: 2, style: Theme.of(context).textTheme.bodySmall),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            const SizedBox(height: 12),
+                            Text(widget.extra.name, overflow: TextOverflow.ellipsis, maxLines: 2, style: Theme.of(context).textTheme.titleMedium),
+                            Text(Helper.skipHtml(widget.extra.description), overflow: TextOverflow.ellipsis, maxLines: 2, style: Theme.of(context).textTheme.bodySmall),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Helper.getPrice(widget.extra.price, context, style: Theme.of(context).textTheme.headlineLarge),
                     ],
                   ),
                 ),
-                const SizedBox(width: 8),
-                Helper.getPrice(widget.extra.price, context, style: Theme.of(context).textTheme.headlineLarge),
               ],
             ),
+
           ),
         ],
       ),

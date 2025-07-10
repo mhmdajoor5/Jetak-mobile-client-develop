@@ -5,6 +5,7 @@ import '../controllers/food_controller.dart';
 import '../helpers/helper.dart';
 import '../models/food.dart';
 import '../models/route_argument.dart';
+import '../pages/food.dart';
 
 class FoodItemWidget extends StatefulWidget {
   final String heroTag;
@@ -44,11 +45,33 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
           .colorScheme
           .secondary,
       onTap: () {
-        Navigator.of(context).pushNamed(
-          '/Food',
-          arguments: RouteArgument(id: widget.food.id, heroTag: widget.heroTag),
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 400),
+            pageBuilder: (context, animation, secondaryAnimation) {
+              return FoodWidget(
+                routeArgument: RouteArgument(
+                  id: widget.food.id,
+                  heroTag: widget.heroTag,
+                ),
+              );
+            },
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              const begin = Offset(0.0, 1.0);
+              const end = Offset.zero;
+              final curve = Curves.easeInOut;
+
+              final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+              return SlideTransition(
+                position: animation.drive(tween),
+                child: child,
+              );
+            },
+          ),
         );
       },
+
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         decoration: BoxDecoration(
@@ -165,19 +188,19 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
                           //   _addToCart();
                           // },
                           onTap: _handleAdd,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Color(0xFF26386A),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: Icon(
-                                Icons.add,
-                                size: 16,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
+                          // child: Container(
+                          //   decoration: BoxDecoration(
+                          //     color: Color(0xFF26386A),
+                          //     shape: BoxShape.circle,
+                          //   ),
+                          //   child: Center(
+                          //     child: Icon(
+                          //       Icons.add,
+                          //       size: 16,
+                          //       color: Colors.white,
+                          //     ),
+                          //   ),
+                          // ),
                         ),
                       ),
                     ],

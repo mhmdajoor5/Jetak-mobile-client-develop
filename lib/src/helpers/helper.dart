@@ -119,6 +119,11 @@ class Helper {
     }
   }
 
+  static String skipHtmlTags(String htmlText) {
+    final RegExp exp = RegExp(r'<[^>]*>', multiLine: true, caseSensitive: true);
+    return htmlText.replaceAll(exp, '');
+  }
+
   /// Check if there are any saved cards
   static Future<bool> hasSavedCards() async {
     List<CardItem> cards = await getSavedCards();
