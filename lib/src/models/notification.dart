@@ -1,22 +1,62 @@
+import 'dart:convert';
 import '../helpers/custom_trace.dart';
 
 class Notification {
   String id;
   String type;
+  String notifiableType;
+  int notifiableId;
   Map<String, dynamic> data;
   bool read;
   DateTime createdAt;
+  DateTime updatedAt;
+  List<dynamic> customFields;
 
-  Notification({this.id = '', this.type = '', this.data = const {}, this.read = false, DateTime? createdAt}) : createdAt = createdAt ?? DateTime(0);
+  Notification({
+    this.id = '',
+    this.type = '',
+    this.notifiableType = '',
+    this.notifiableId = 0,
+    this.data = const {},
+    this.read = false,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    this.customFields = const [],
+  }) : createdAt = createdAt ?? DateTime(0),
+       updatedAt = updatedAt ?? DateTime(0);
 
   factory Notification.fromJSON(Map<String, dynamic>? jsonMap) {
     try {
+      // Parse data field - it might be a string or already a Map
+      Map<String, dynamic> parsedData = {};
+      if (jsonMap?['data'] != null) {
+        if (jsonMap!['data'] is String) {
+          try {
+            parsedData = json.decode(jsonMap['data']);
+          } catch (e) {
+            parsedData = {'raw': jsonMap['data']};
+          }
+        } else if (jsonMap['data'] is Map<String, dynamic>) {
+          parsedData = jsonMap['data'];
+        }
+      }
+
       return Notification(
         id: jsonMap?['id']?.toString() ?? '',
         type: jsonMap?['type']?.toString() ?? '',
-        data: jsonMap?['data'] is Map<String, dynamic> ? jsonMap!['data'] : {},
+        notifiableType: jsonMap?['notifiable_type']?.toString() ?? '',
+        notifiableId: int.tryParse(jsonMap?['notifiable_id']?.toString() ?? '0') ?? 0,
+        data: parsedData,
         read: jsonMap?['read_at'] != null,
-        createdAt: jsonMap?['created_at'] != null ? DateTime.tryParse(jsonMap!['created_at']) ?? DateTime(0) : DateTime(0),
+        createdAt: jsonMap?['created_at'] != null 
+          ? DateTime.tryParse(jsonMap!['created_at']) ?? DateTime(0) 
+          : DateTime(0),
+        updatedAt: jsonMap?['updated_at'] != null 
+          ? DateTime.tryParse(jsonMap!['updated_at']) ?? DateTime(0) 
+          : DateTime(0),
+        customFields: jsonMap?['custom_fields'] is List 
+          ? jsonMap!['custom_fields'] 
+          : [],
       );
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: e.toString()));
@@ -25,6 +65,51 @@ class Notification {
   }
 
   Map<String, dynamic> markReadMap() {
-    return {"id": id, "read_at": !read};
+    return {
+      "id": id,
+      "read_at": !read ? DateTime.now().toIso8601String() : null
+    };
   }
+
+  // Helper method to get order ID from notification data
+  String? get orderId {
+    if (data.containsKey('order_id')) {
+      return data['order_id']?.toString();
+    }
+    return null;
+  }
+
+  // Helper method to check if notification is order-related
+  bool get isOrderNotification {
+    return type.contains('Order') || orderId != null;
+  }
+
+  // Helper method to get a readable notification title
+  String getNotificationTitle() {
+    switch (type) {
+      case 'App\\Notifications\\StatusChangedOrder':
+        return 'Order Status Changed';
+      case 'App\\Notifications\\NewOrder':
+        return 'New Order';
+      default:
+        return type.split('\\').last;
+    }
+  }
+
+  // Helper method to get notification message
+  String getNotificationMessage() {
+    if (isOrderNotification && orderId != null) {
+      return 'Order #$orderId has been updated';
+    }
+    return 'You have a new notification';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Notification && other.id == id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
 }

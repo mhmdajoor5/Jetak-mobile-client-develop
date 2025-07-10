@@ -520,12 +520,22 @@ class Helper {
         return S.of(context).order_status_changed;
       case "App\\Notifications\\NewOrder":
         return S.of(context).new_order_from_client;
+      case "App\\Notifications\\NewMessage":
+        return S.of(context).newMessageFrom;
+      case "App\\Notifications\\OrderCancelled":
+        return "Order Cancelled";
+      case "App\\Notifications\\OrderCompleted":
+        return "Order Completed";
+      case "App\\Notifications\\OrderDelivered":
+        return "Order Delivered";
+      case "App\\Notifications\\PaymentReceived":
+        return "Payment Received";
       case "km":
         return S.of(context).km;
       case "mi":
         return S.of(context).mi;
       default:
-        return "";
+        return text.split('\\').last.replaceAll('_', ' ');
     }
   }
 }
