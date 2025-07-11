@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../generated/l10n.dart';
+import '../../elements/NotificationsButtonWidget.dart';
 import '../../elements/ShoppingCartButtonWidget.dart';
 
 class HomeHeaderSection extends StatelessWidget {
@@ -77,6 +78,7 @@ class HomeHeaderSection extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 25),
             child: Row(
               children: [
+                NotificationsButtonWidget(), // Remove static count
                 SizedBox(width: 15),
                 // Test button for notifications
                 GestureDetector(

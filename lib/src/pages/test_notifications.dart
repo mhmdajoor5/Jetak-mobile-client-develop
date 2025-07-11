@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-
+import '../services/notification_service.dart';
+import '../repository/notification_repository.dart' as notificationRepo;
+import '../models/notification.dart';
 
 class TestNotificationsPage extends StatefulWidget {
   @override
@@ -9,6 +11,7 @@ class TestNotificationsPage extends StatefulWidget {
 }
 
 class _TestNotificationsPageState extends State<TestNotificationsPage> {
+  final NotificationService _notificationService = NotificationService();
   int _currentCount = 0;
   bool _isLoading = false;
 
@@ -20,16 +23,25 @@ class _TestNotificationsPageState extends State<TestNotificationsPage> {
 
   void _updateCount() {
     setState(() {
-      _currentCount = 0; // No longer fetching from service
+      _currentCount = _notificationService.currentNotificationCount;
     });
   }
 
   void _refreshNotificationCount() async {
-    // No longer refreshing from service
+    await _notificationService.refreshNotificationCount();
+    _updateCount();
   }
 
   void _testLocalNotification() {
-    // No longer using notification service
+    _notificationService.showLocalNotification(
+      id: 1,
+      title: 'Test Notification',
+      body: 'This is a test notification!',
+    );
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Test notification sent!')),
+    );
   }
 
   void _testAPIConnection() async {
@@ -38,12 +50,11 @@ class _TestNotificationsPageState extends State<TestNotificationsPage> {
         SnackBar(content: Text('جاري اختبار الاتصال بالـ API...')),
       );
       
-      // No longer fetching notifications from repository
-      // var notifications = await notificationRepo.getNotificationsList();
+      var notifications = await notificationRepo.getNotificationsList();
       
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('✅ تم بنجاح! عدد الإشعارات: 0'), // Placeholder
+          content: Text('✅ تم بنجاح! عدد الإشعارات: ${notifications.length}'),
           backgroundColor: Colors.green,
           duration: Duration(seconds: 3),
         ),
@@ -64,7 +75,8 @@ class _TestNotificationsPageState extends State<TestNotificationsPage> {
       _isLoading = true;
     });
     try {
-      // No longer fetching notifications from repository
+      final notifications = await notificationRepo.getNotificationsList();
+      // _showNotificationsDialog(notifications);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
