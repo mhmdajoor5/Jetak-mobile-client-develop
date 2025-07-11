@@ -45,33 +45,48 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
           .colorScheme
           .secondary,
       onTap: () {
-        Navigator.of(context).push(
-          PageRouteBuilder(
-            transitionDuration: Duration(milliseconds: 400),
-            pageBuilder: (context, animation, secondaryAnimation) {
-              return FoodWidget(
-                routeArgument: RouteArgument(
-                  id: widget.food.id,
-                  heroTag: widget.heroTag,
+        showGeneralDialog(
+          context: context,
+          barrierDismissible: true,
+          barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierColor: Colors.grey[200]!.withOpacity(1), // ✅ لون الخلفية ورا الـ BottomSheet
+          transitionDuration: Duration(milliseconds: 300),
+          pageBuilder: (context, animation1, animation2) {
+            return Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
                 ),
-              );
-            },
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-              const begin = Offset(0.0, 1.0);
-              const end = Offset.zero;
-              final curve = Curves.easeInOut;
-
-              final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-              return SlideTransition(
-                position: animation.drive(tween),
-                child: child,
-              );
-            },
-          ),
+                child: SafeArea(
+                  top: false,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+                    child: FoodWidget(
+                      routeArgument: RouteArgument(
+                        id: widget.food.id,
+                        heroTag: widget.heroTag,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+          transitionBuilder: (context, animation, secondaryAnimation, child) {
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: Offset(0, 1),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child,
+            );
+          },
         );
       },
-
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         decoration: BoxDecoration(
