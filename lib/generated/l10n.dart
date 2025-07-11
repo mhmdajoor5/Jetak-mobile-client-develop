@@ -3049,6 +3049,126 @@ class S {
       args: [],
     );
   }
+
+  /// `Unsupported card type`
+  String get unsupported_card_type {
+    return Intl.message(
+      'Unsupported card type',
+      name: 'unsupported_card_type',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please use iCredit cards only`
+  String get icredit_card_required {
+    return Intl.message(
+      'Please use iCredit cards only',
+      name: 'icredit_card_required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `iCredit card validation failed`
+  String get icredit_card_validation_failed {
+    return Intl.message(
+      'iCredit card validation failed',
+      name: 'icredit_card_validation_failed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Only iCredit cards are accepted (starting with 4580 28)`
+  String get icredit_cards_only_accepted {
+    return Intl.message(
+      'Only iCredit cards are accepted (starting with 4580 28)',
+      name: 'icredit_cards_only_accepted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid card number`
+  String get invalid_card_number {
+    return Intl.message(
+      'Invalid card number',
+      name: 'invalid_card_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid expiry date`
+  String get invalid_expiry_date {
+    return Intl.message(
+      'Invalid expiry date',
+      name: 'invalid_expiry_date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Card has expired`
+  String get expired_card {
+    return Intl.message(
+      'Card has expired',
+      name: 'expired_card',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid CVV security code`
+  String get invalid_cvv {
+    return Intl.message(
+      'Invalid CVV security code',
+      name: 'invalid_cvv',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid card holder name`
+  String get invalid_card_holder_name {
+    return Intl.message(
+      'Invalid card holder name',
+      name: 'invalid_card_holder_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Card number must be 16 digits`
+  String get card_number_must_be_16_digits {
+    return Intl.message(
+      'Card number must be 16 digits',
+      name: 'card_number_must_be_16_digits',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `CVV must be 3 digits`
+  String get cvv_must_be_3_digits {
+    return Intl.message(
+      'CVV must be 3 digits',
+      name: 'cvv_must_be_3_digits',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Card holder name is required`
+  String get card_holder_name_required {
+    return Intl.message(
+      'Card holder name is required',
+      name: 'card_holder_name_required',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

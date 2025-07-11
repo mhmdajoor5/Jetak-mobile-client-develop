@@ -274,5 +274,19 @@
   "wrong_password": "הסיסמה שגויה",
   "login_with_facebook": "התחבר עם פייסבוק",
   "login_with_google":   "התחבר עם גוגל",
-  "login_with_apple":    "התחבר עם אפל"
+  "login_with_apple":    "התחבר עם אפל",
+  "card_added_successfully": "הכרטיס נוסף בהצלחה",
+  "card_deleted_successfully": "הכרטיס נמחק בהצלחה",
+  "unsupported_card_type": "סוג כרטיס לא נתמך",
+  "icredit_card_required": "אנא השתמש בכרטיסי iCredit בלבד",
+  "icredit_card_validation_failed": "אימות כרטיס iCredit נכשל",
+  "icredit_cards_only_accepted": "מתקבלים רק כרטיסי iCredit (מתחילים ב-4580 28)",
+  "invalid_card_number": "מספר כרטיס לא תקין",
+  "invalid_expiry_date": "תאריך תפוגה לא תקין",
+  "expired_card": "הכרטיס פג תוקף",
+  "invalid_cvv": "קוד אבטחה CVV לא תקין",
+  "invalid_card_holder_name": "שם בעל הכרטיס לא תקין",
+  "card_number_must_be_16_digits": "מספר הכרטיס חייב להיות 16 ספרות",
+  "cvv_must_be_3_digits": "CVV חייב להיות 3 ספרות",
+  "card_holder_name_required": "שם בעל הכרטיס נדרש"
 }

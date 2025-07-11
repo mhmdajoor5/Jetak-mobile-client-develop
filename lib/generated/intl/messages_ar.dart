@@ -51,6 +51,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تمت إضافة البطاقة بنجاح"),
         "card_deleted_successfully":
             MessageLookupByLibrary.simpleMessage("تم حذف البطاقة بنجاح"),
+        "card_holder_name_required":
+            MessageLookupByLibrary.simpleMessage("اسم حامل البطاقة مطلوب"),
+        "card_number_must_be_16_digits": MessageLookupByLibrary.simpleMessage(
+            "رقم البطاقة يجب أن يكون 16 رقماً"),
         "cart": MessageLookupByLibrary.simpleMessage("سلة التسوق"),
         "carts_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("تم تحديث العربة بنجاح"),
@@ -80,6 +84,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirmation": MessageLookupByLibrary.simpleMessage("التأكيد"),
         "credit_card": MessageLookupByLibrary.simpleMessage("بطاقة ائتمان"),
         "cuisines": MessageLookupByLibrary.simpleMessage("Cuisines"),
+        "cvv_must_be_3_digits": MessageLookupByLibrary.simpleMessage(
+            "رمز الأمان يجب أن يكون 3 أرقام"),
         "dark_mode": MessageLookupByLibrary.simpleMessage("الوضع الداكن"),
         "default_credit_card":
             MessageLookupByLibrary.simpleMessage("بطاقة الائتمان الافتراضية"),
@@ -111,6 +117,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "البريد الالكتروني غير مسجل لدينا"),
         "estimatedTime": MessageLookupByLibrary.simpleMessage("الوقت المتوقع:"),
         "estimated_time": MessageLookupByLibrary.simpleMessage("الوقت المتوقع"),
+        "expired_card":
+            MessageLookupByLibrary.simpleMessage("البطاقة منتهية الصلاحية"),
         "extras": MessageLookupByLibrary.simpleMessage("إضافات"),
         "faq": MessageLookupByLibrary.simpleMessage("الاسئلة الشائعة"),
         "faqsRefreshedSuccessfuly":
@@ -155,12 +163,26 @@ class MessageLookup extends MessageLookupByLibrary {
         "i_remember_my_password_return_to_login":
             MessageLookupByLibrary.simpleMessage(
                 "تذكرت كلمة المرور، ارجع لشاشة الدخول"),
+        "icredit_card_required": MessageLookupByLibrary.simpleMessage(
+            "يرجى استخدام بطاقة iCredit فقط"),
+        "icredit_card_validation_failed":
+            MessageLookupByLibrary.simpleMessage("فشل التحقق من بطاقة iCredit"),
+        "icredit_cards_only_accepted": MessageLookupByLibrary.simpleMessage(
+            "يتم قبول بطاقات iCredit فقط (تبدأ بـ 4580 28)"),
         "include_tax":
             MessageLookupByLibrary.simpleMessage("اضف الضريبة (ان وجدت)"),
         "information": MessageLookupByLibrary.simpleMessage("معلومات"),
         "ingredients": MessageLookupByLibrary.simpleMessage("المكونات"),
         "invalidCouponCode":
             MessageLookupByLibrary.simpleMessage("Invalid Coupon"),
+        "invalid_card_holder_name":
+            MessageLookupByLibrary.simpleMessage("اسم حامل البطاقة غير صحيح"),
+        "invalid_card_number":
+            MessageLookupByLibrary.simpleMessage("رقم البطاقة غير صحيح"),
+        "invalid_cvv":
+            MessageLookupByLibrary.simpleMessage("رمز الأمان CVV غير صحيح"),
+        "invalid_expiry_date": MessageLookupByLibrary.simpleMessage(
+            "تاريخ انتهاء الصلاحية غير صحيح"),
         "item_subtotal":
             MessageLookupByLibrary.simpleMessage("المجموع الفرعي للعنصر"),
         "john_doe": MessageLookupByLibrary.simpleMessage("فلان الفلاني"),
@@ -363,6 +385,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "typeToStartChat":
             MessageLookupByLibrary.simpleMessage("Type to start chat"),
         "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
+        "unsupported_card_type":
+            MessageLookupByLibrary.simpleMessage("نوع البطاقة غير مدعوم"),
         "validCouponCode": MessageLookupByLibrary.simpleMessage("Valid Coupon"),
         "verify": MessageLookupByLibrary.simpleMessage("التحقق"),
         "verify_your_internet_connection":

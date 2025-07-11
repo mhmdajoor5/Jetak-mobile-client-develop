@@ -298,5 +298,17 @@
   "card_added_successfully": "Card added successfully",
   "delete": "Delete",
   "no_restaurants_found": "No restaurants found",
-  "no_stores_found": "No stores found"
+  "no_stores_found": "No stores found",
+  "unsupported_card_type": "Unsupported card type",
+  "icredit_card_required": "Please use iCredit cards only",
+  "icredit_card_validation_failed": "iCredit card validation failed",
+  "icredit_cards_only_accepted": "Only iCredit cards are accepted (starting with 4580 28)",
+  "invalid_card_number": "Invalid card number",
+  "invalid_expiry_date": "Invalid expiry date",
+  "expired_card": "Card has expired",
+  "invalid_cvv": "Invalid CVV security code",
+  "invalid_card_holder_name": "Invalid card holder name",
+  "card_number_must_be_16_digits": "Card number must be 16 digits",
+  "cvv_must_be_3_digits": "CVV must be 3 digits",
+  "card_holder_name_required": "Card holder name is required"
 }

@@ -5,6 +5,7 @@ import '../elements/BlockButtonWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../models/credit_card.dart';
+import '../helpers/icredit_validator.dart';
 
 // ignore: must_be_immutable
 class AddNewCardWidget extends StatefulWidget {
@@ -18,6 +19,7 @@ class _AddNewCardWidgetState extends StateMVC<AddNewCardWidget> {
   late ICreditController _con;
 
   bool isLoading = false;
+  String? cardValidationError;
 
   _AddNewCardWidgetState() : super(ICreditController()) {
     _con = controller as ICreditController;
@@ -57,7 +59,7 @@ class _AddNewCardWidgetState extends StateMVC<AddNewCardWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          "Add New Card",
+          'إضافة بطاقة جديدة',
           style: Theme.of(context)
               .textTheme
               .headlineSmall
@@ -70,17 +72,13 @@ class _AddNewCardWidgetState extends StateMVC<AddNewCardWidget> {
             builder: (BuildContext context) {
               return Container(
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    colorFilter: ColorFilter.mode(
+                  gradient: LinearGradient(
+                    colors: [
                       Theme.of(context).colorScheme.secondary,
-                      BlendMode.softLight,
-                    ),
-                    image: ExactAssetImage(
-                      isLightTheme
-                          ? 'assets/img/bg-light.png'
-                          : 'assets/img/bg-dark.png',
-                    ),
-                    fit: BoxFit.fill,
+                      Theme.of(context).primaryColor,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
                   ),
                 ),
                 child: SafeArea(
@@ -128,6 +126,59 @@ class _AddNewCardWidgetState extends StateMVC<AddNewCardWidget> {
                             ],
                           ),
                         ),
+                        // عرض رسالة خطأ إذا كانت البطاقة غير مدعومة
+                        if (cardValidationError != null)
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.red.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Colors.red.withOpacity(0.3)),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(Icons.error, color: Colors.red, size: 20),
+                                SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    cardValidationError!,
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        // معلومات حول بطاقات iCredit المدعومة
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.3)),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(Icons.info, color: Theme.of(context).primaryColor, size: 20),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  'يتم قبول بطاقات iCredit فقط (تبدأ بـ 4580 28)',
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
@@ -144,19 +195,19 @@ class _AddNewCardWidgetState extends StateMVC<AddNewCardWidget> {
                               expiryDate: expiryDate,
                               inputConfiguration: const InputConfiguration(
                                 cardNumberDecoration: InputDecoration(
-                                    labelText: 'Number',
-                                    hintText: 'XXXX XXXX XXXX XXXX',
+                                    labelText: 'رقم البطاقة',
+                                    hintText: '4580 28XX XXXX XXXX',
                                     border: OutlineInputBorder()),
                                 expiryDateDecoration: InputDecoration(
-                                    labelText: 'Expired Date',
-                                    hintText: 'XX/XX',
+                                    labelText: 'تاريخ انتهاء الصلاحية',
+                                    hintText: 'MM/YY',
                                     border: OutlineInputBorder()),
                                 cvvCodeDecoration: InputDecoration(
-                                    labelText: 'CVV',
+                                    labelText: 'رمز الأمان',
                                     hintText: 'XXX',
                                     border: OutlineInputBorder()),
                                 cardHolderDecoration: InputDecoration(
-                                    labelText: 'Card Holder',
+                                    labelText: 'اسم حامل البطاقة',
                                     border: OutlineInputBorder()),
                               ),
                               onCreditCardModelChange: onCreditCardModelChange,
@@ -167,7 +218,7 @@ class _AddNewCardWidgetState extends StateMVC<AddNewCardWidget> {
                                   const EdgeInsets.symmetric(horizontal: 16),
                               child: BlockButtonWidget(
                                 text: Text(
-                                  'Add new card',
+                                  'إضافة البطاقة',
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 color: Theme.of(context).colorScheme.secondary,
@@ -201,35 +252,114 @@ class _AddNewCardWidgetState extends StateMVC<AddNewCardWidget> {
   }
 
   void _onValidate() async {
+    print('--- بدء عملية التحقق وإضافة البطاقة (add_new_card.dart) ---');
+    print('بيانات البطاقة: cardNumber=$cardNumber, holderName=$cardHolderName, expiryDate=$expiryDate, cvv=$cvvCode');
+    
+    // التحقق من صحة البطاقة باستخدام الـ validator الجديد
+    ICreditValidationResult validationResult = ICreditValidator.validateICreditCard(cardNumber);
+    
+    if (!validationResult.isValid) {
+      setState(() {
+        cardValidationError = validationResult.errorMessage;
+      });
+      print('فشل التحقق من البطاقة: ${validationResult.errorMessage}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(validationResult.errorMessage ?? 'بطاقة غير صحيحة'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+    
+    // التحقق من باقي البيانات
+    if (!ICreditValidator.isValidExpiryDate(expiryDate)) {
+      setState(() {
+        cardValidationError = 'تاريخ انتهاء الصلاحية غير صحيح أو منتهي الصلاحية';
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('تاريخ انتهاء الصلاحية غير صحيح أو منتهي الصلاحية'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+    
+    if (!ICreditValidator.isValidCVV(cvvCode)) {
+      setState(() {
+        cardValidationError = 'رمز الأمان CVV غير صحيح (يجب أن يكون 3 أرقام)';
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('رمز الأمان CVV غير صحيح (يجب أن يكون 3 أرقام)'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+    
+    if (!ICreditValidator.isValidCardHolderName(cardHolderName)) {
+      setState(() {
+        cardValidationError = 'اسم حامل البطاقة غير صحيح';
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('اسم حامل البطاقة غير صحيح'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+    
+    // مسح رسالة الخطأ إذا كانت البيانات صحيحة
+    setState(() {
+      cardValidationError = null;
+    });
+    
     if (formKey.currentState?.validate() ?? false) {
-      print('valid!');
+      print('✅ التحقق من البطاقة نجح - بطاقة iCredit صحيحة');
 
       setState(() {
         isLoading = true;
       });
 
-      CreditCard creditCard = await _con.saveCreditCard(
-        cvvCode,
-        cardHolderName,
-        cardNumber.replaceAll(" ", ""),
-        expiryDate,
-      );
+      try {
+        CreditCard creditCard = await _con.saveCreditCard(
+          cvvCode,
+          cardHolderName,
+          cardNumber.replaceAll(" ", ""),
+          expiryDate,
+        );
 
-      await _con.saveCreditCard(
-        cvvCode,
-        cardHolderName,
-        cardNumber.replaceAll(" ", ""),
-        expiryDate,
-      );
+        print('تم حفظ البطاقة بنجاح: ${ICreditValidator.maskCardNumber(creditCard.number)}');
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('تم إضافة بطاقة iCredit بنجاح ✅'),
+            backgroundColor: Colors.green,
+          ),
+        );
 
+        setState(() {
+          isLoading = false;
+        });
 
-      setState(() {
-        isLoading = false;
-      });
-
-      Navigator.pop(context, creditCard);
+        Navigator.pop(context, creditCard);
+      } catch (e) {
+        print('خطأ في حفظ البطاقة: $e');
+        setState(() {
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('حدث خطأ في حفظ البطاقة'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     } else {
-      print('invalid!');
+      print('❌ فشل التحقق من النموذج');
     }
   }
 
@@ -260,6 +390,18 @@ class _AddNewCardWidgetState extends StateMVC<AddNewCardWidget> {
       cardHolderName = creditCardModel.cardHolderName;
       cvvCode = creditCardModel.cvvCode;
       isCvvFocused = creditCardModel.isCvvFocused;
+      
+      // التحقق من البطاقة في الوقت الفعلي
+      if (cardNumber.isNotEmpty) {
+        ICreditValidationResult validationResult = ICreditValidator.validateICreditCard(cardNumber);
+        if (!validationResult.isValid && cardNumber.replaceAll(RegExp(r'[^\d]'), '').length >= 6) {
+          cardValidationError = validationResult.errorMessage;
+        } else {
+          cardValidationError = null;
+        }
+      } else {
+        cardValidationError = null;
+      }
     });
   }
 }
