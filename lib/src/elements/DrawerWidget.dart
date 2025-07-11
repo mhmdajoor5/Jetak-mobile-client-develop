@@ -7,7 +7,6 @@ import '../controllers/profile_controller.dart';
 import '../helpers/helper.dart';
 import '../repository/settings_repository.dart';
 import '../repository/user_repository.dart';
-import '../pages/notification_screen.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({Key? key}) : super(key: key);
@@ -73,15 +72,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                 ),
               ),
               _buildTile(context, '/Pages', S.of(context).home, Icons.home, 2),
-              ListTile(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => NotificationScreen()),
-                  );
-                },
-                leading: Icon(Icons.notifications, color: Theme.of(context).focusColor.withOpacity(1)),
-                title: Text('Notifications', style: Theme.of(context).textTheme.titleMedium),
-              ),
+              _buildTile(context, '/Pages', S.of(context).notifications, Icons.notifications, 0),
               _buildTile(context, '/Pages', S.of(context).my_orders, Icons.local_mall, 3),
               _buildTile(context, '/Favorites', S.of(context).favorite_foods, Icons.favorite),
               _buildTile(context, '/Pages', S.of(context).messages, Icons.chat, 4),

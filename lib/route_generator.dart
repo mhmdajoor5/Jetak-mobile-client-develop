@@ -34,6 +34,7 @@ import 'src/pages/settings.dart';
 import 'src/pages/auth/signup.dart';
 import 'src/pages/splash_screen.dart';
 import 'src/pages/test_notifications.dart';
+import 'src/pages/notifications.dart';
 import 'src/controllers/home_controller.dart';
 
 class RouteGenerator {
@@ -56,6 +57,7 @@ class RouteGenerator {
       case '/TestNotifications':
         return MaterialPageRoute(builder: (_) => TestNotificationsPage());
       case '/Notifications':
+        return MaterialPageRoute(builder: (_) => NotificationsWidget());
       case '/SignUp':
       case '/MobileVerification':
       case '/MobileVerification2':

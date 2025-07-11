@@ -9,7 +9,7 @@ import '../../generated/l10n.dart';
 import '../helpers/custom_trace.dart';
 import '../repository/settings_repository.dart' as settingRepo;
 import '../repository/user_repository.dart' as userRepo;
-import '../models/notification_refresh_notifier.dart';
+import '../repository/notification_repository.dart' as notificationRepo;
 
 class SplashScreenController extends ControllerMVC {
   ValueNotifier<Map<String, double>> progress = ValueNotifier(Map<String, double>());
@@ -111,7 +111,6 @@ class SplashScreenController extends ControllerMVC {
 
       // Trigger notification refresh
       _refreshNotifications();
-      NotificationRefreshNotifier.trigger();
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: 'Error handling foreground message: $e'));
     }
