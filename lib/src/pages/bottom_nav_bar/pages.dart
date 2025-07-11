@@ -58,8 +58,7 @@ class _PagesWidgetState extends State<PagesWidget> {
         case 0:
           widget.currentPage = HomeWidget(
             parentScaffoldKey: widget.scaffoldKey,
-          ); //
-          // NotificationsWidget(parentScaffoldKey: widget.scaffoldKey);
+          );
           break;
         case 1:
           widget.currentPage = RestaurantsWidget(
