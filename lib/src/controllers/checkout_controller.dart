@@ -167,10 +167,7 @@ class CheckoutController extends CartController {
           print('❌ خطأ في إضافة الطلب: $error');
           ScaffoldMessenger.of(
             scaffoldKey.currentContext!,
-          ).showSnackBar(SnackBar(content: Text('حدث خطأ أثناء إضافة الطلب')));
-          setState(() {
-            loading = false;
-          });
+          );
         });
   }
 

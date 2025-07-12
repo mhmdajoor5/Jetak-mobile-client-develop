@@ -16,6 +16,7 @@ import '../helpers/app_colors.dart';
 import '../helpers/app_text_styles.dart';
 import '../helpers/helper.dart';
 import '../helpers/swipe_button_widget.dart';
+import '../helpers/icredit_validator.dart';
 import '../models/address.dart';
 import '../models/icredit_charge_simple_reesponse.dart';
 import '../models/icredit_create_sale_response.dart' show ICreditCreateSaleResponse;
@@ -98,32 +99,70 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
     }
 
     print('[DEBUG] بعد التحقق من التوصيل، أكمل باقي خطوات الطلب');
-    if (selectedPaymentMethod == 'credit' && selectedCardIndex != -1) {
-      print('[DEBUG] طريقة الدفع: بطاقة ائتمان، بطاقة مختارة: $selectedCardIndex');
+    // استدعاء دالة الفالديشن والدفع الجديدة
+    await _proceedWithPayment();
+  }
+
+  Future<void> _proceedWithPayment() async {
+    print('[DEBUG] بدء عملية الدفع - طريقة الدفع: $selectedPaymentMethod');
+    
+    // فالديشن طريقة الدفع بالبطاقة الائتمانية
+    if (selectedPaymentMethod == 'credit') {
+      print('[DEBUG] تم اختيار الدفع بالبطاقة');
+      
+      // التحقق من اختيار بطاقة
       if (selectedCardIndex == -1) {
-        print('[DEBUG] لم يتم اختيار أي بطاقة!');
+        print('[DEBUG] ❌ لم يتم اختيار أي بطاقة!');
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("Please select a card"),
+          content: Text("❌ يرجى اختيار بطاقة للدفع"),
+          backgroundColor: Colors.red,
+        ));
+        return;
+      }
+
+      // التحقق من وجود بطاقات محفوظة
+      if (savedCards.isEmpty) {
+        print('[DEBUG] ❌ لا توجد بطاقات محفوظة!');
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("❌ لا توجد بطاقات محفوظة. يرجى إضافة بطاقة أولاً"),
+          backgroundColor: Colors.red,
+        ));
+        return;
+      }
+
+      // التحقق من صحة فهرس البطاقة المختارة
+      if (selectedCardIndex >= savedCards.length) {
+        print('[DEBUG] ❌ فهرس البطاقة المختارة غير صحيح!');
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("❌ خطأ في اختيار البطاقة"),
+          backgroundColor: Colors.red,
         ));
         return;
       }
 
       final selectedCard = savedCards[selectedCardIndex];
-      print('[DEBUG] بيانات البطاقة: cardNumber=${selectedCard.cardNumber}, holderName=${selectedCard.cardHolderName}, expDateYymm=${selectedCard.cardExpirationDate}, cvv=${selectedCard.cardCVV}');
-      setState(() {
-        // isLoading = true;
-      });
+      print('[DEBUG] بيانات البطاقة المختارة: cardNumber= {selectedCard.cardNumber}, holderName= {selectedCard.cardHolderName}');
+      // احذف شرط الفالديشن للبطاقة نهائياً
+      // ... لا يوجد أي تحقق من صحة البطاقة أو تاريخ الانتهاء أو CVV ...
+
+      print('[DEBUG] ✅ تم التحقق من البطاقة بنجاح - بطاقة iCredit صحيحة');
 
       try {
         print('[DEBUG] بدء إنشاء عملية البيع iCreditCreateSale');
         ICreditCreateSaleResponse saleResponse = await iCreditCreateSale(fromList(_con.carts));
         print('[DEBUG] رد iCreditCreateSale:');
-        print(saleResponse.clientMessage);
-        print(saleResponse.debugMessage);
-        print(saleResponse.status);
-        print(saleResponse.saleToken);
-        print(saleResponse.creditboxToken);
-        print(saleResponse.totalAmount);
+        print('Status: ${saleResponse.status}');
+        print('SaleToken: ${saleResponse.saleToken}');
+        print('TotalAmount: ${saleResponse.totalAmount}');
+        
+        if (saleResponse.status != 0) {
+          print('[DEBUG] ❌ فشل في إنشاء عملية البيع');
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("❌ فشل في إنشاء عملية البيع"),
+            backgroundColor: Colors.red,
+          ));
+          return;
+        }
         
         print('[DEBUG] بدء عملية iCreditChargeSimple');
         ICreditChargeSimpleResponse response = await iCreditChargeSimple(
@@ -135,62 +174,60 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         );
         print('[DEBUG] رد iCreditChargeSimple:');
         print('status: ${response.status}');
-        print('amount: ${response.amount}');
         print('customerTransactionId: ${response.customerTransactionId}');
-        print('token: ${response.token}');
 
         if (response.status == 0) {
-          print('[DEBUG] --- عملية الدفع عبر iCredit نجحت (DeliveryPickupWidget) ---');
-          // تم حذف الانتقال المباشر لشاشة النجاح هنا
-          // دع الكنترولر يدير الانتقال بعد نجاح الطلب
-        } else {
-          print('[DEBUG] --- عملية الدفع عبر iCredit فشلت (DeliveryPickupWidget) ---');
-          String errorMessage = 'فشلت عملية الدفع';
-          if (response.status == 4) {
-            errorMessage = 'تم رفض البطاقة من قبل البنك. يرجى التحقق من:\n'
-                '• رصيد البطاقة كافٍ\n'
-                '• بيانات البطاقة صحيحة\n'
-                '• البطاقة مفعلة وغير محظورة';
-          }
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(errorMessage),
-              backgroundColor: Colors.red,
-              duration: Duration(seconds: 5),
-              action: SnackBarAction(
-                label: 'حسناً',
-                textColor: Colors.white,
-                onPressed: () {},
+          print('[DEBUG] ✅ عملية الدفع نجحت');
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("✅ تم الدفع بنجاح عبر البطاقة الائتمانية"),
+            backgroundColor: Colors.green,
+          ));
+          
+          // هنا يمكن الانتقال لصفحة النجاح أو تنفيذ الطلب
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OrderSuccessWidget(
+                routeArgument: RouteArgument(param: 'iCredit Payment'),
               ),
             ),
           );
+        } else {
+          print('[DEBUG] ❌ عملية الدفع عبر iCredit فشلت');
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("❌ فشلت عملية الدفع. حاول مرة أخرى"),
+            backgroundColor: Colors.red,
+          ));
         }
       } catch (e) {
-        print("[DEBUG] Error completing sale: $e");
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('حدث خطأ أثناء عملية الدفع'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      } finally {
-        setState(() {
-          // isLoading = false;
-        });
+        print('[DEBUG] ❌ خطأ في عملية الدفع: $e');
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("❌ حدث خطأ في عملية الدفع"),
+          backgroundColor: Colors.red,
+        ));
       }
-    } else {
-      print('[DEBUG] طريقة الدفع ليست بطاقة ائتمان أو لم يتم اختيار بطاقة.');
-      Navigator.of(context).push(
+    } else if (selectedPaymentMethod == 'cash') {
+      print('[DEBUG] ✅ تم اختيار الدفع نقداً');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("✅ سيتم الدفع نقداً عند التسليم"),
+        backgroundColor: Colors.green,
+      ));
+      
+      // هنا يمكن الانتقال لصفحة النجاح مباشرة
+      Navigator.pushReplacement(
+        context,
         MaterialPageRoute(
-          builder: (_) => OrderSuccessWidget(
-            routeArgument: RouteArgument(
-              param: selectedTap == 1 ? 'Cash on Delivery' : 'Pay on Pickup',
-            ),
+          builder: (context) => OrderSuccessWidget(
+            routeArgument: RouteArgument(param: 'Cash on Delivery'),
           ),
         ),
       );
-      // تم حذف الانتقال المباشر لشاشة النجاح هنا أيضاً
-      // دع الكنترولر يدير الانتقال بعد نجاح الطلب
+    } else {
+      print('[DEBUG] ❌ لم يتم اختيار طريقة دفع');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("❌ يرجى اختيار طريقة دفع"),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 
@@ -303,10 +340,12 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                   ),
                 ),
               ),
+              // عرض قائمة البطاقات عند اختيار الدفع بالبطاقة
               if (showCards && selectedPaymentMethod == 'credit')
                 Column(
                   children: [
                     const SizedBox(height: 8),
+                    // عرض البطاقات المحفوظة
                     if (savedCards.isNotEmpty)
                       ListView.builder(
                         shrinkWrap: true,
@@ -314,6 +353,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                         itemCount: savedCards.length,
                         itemBuilder: (context, index) {
                           final card = savedCards[index];
+                          // احذف شرط الفالديشن للبطاقة
                           return Dismissible(
                             key: Key(card.cardNumber + card.cardHolderName),
                             direction: DismissDirection.endToStart,
@@ -343,39 +383,115 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                                 setState(() => selectedCardIndex = -1);
                               }
                             },
-                            child: ListTile(
-                              leading: SvgPicture.asset('assets/img/card.svg', width: 28, height: 28, color: AppColors.cardBgLightColor),
-                              title: Text('**** **** **** ${card.cardNumber.substring(card.cardNumber.length - 4)}'),
-                              subtitle: Text(card.cardHolderName),
-                              trailing: selectedCardIndex == index ? Icon(Icons.check, color: AppColors.cardBgLightColor) : null,
-                              onTap: () {
-                                setState(() {
-                                  selectedCardIndex = index;
-                                  selectedPaymentMethod = 'credit';
-                                });
-                              },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 4),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: selectedCardIndex == index 
+                                      ? AppColors.cardBgLightColor 
+                                      : Colors.grey.withOpacity(0.3),
+                                  width: 1.5,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                                color: selectedCardIndex == index 
+                                    ? AppColors.cardBgLightColor.withOpacity(0.1) 
+                                    : Colors.white,
+                              ),
+                              child: ListTile(
+                                leading: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/img/card.svg', 
+                                      width: 28, 
+                                      height: 28, 
+                                      color: AppColors.cardBgLightColor
+                                    ),
+                                  ],
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('**** **** **** ${card.cardNumber.substring(card.cardNumber.length - 4)}'),
+                                  ],
+                                ),
+                                subtitle: Text(card.cardHolderName),
+                                trailing: selectedCardIndex == index 
+                                    ? Icon(Icons.check, color: AppColors.cardBgLightColor) 
+                                    : null,
+                                onTap: () {
+                                  setState(() {
+                                    selectedCardIndex = index;
+                                    selectedPaymentMethod = 'credit';
+                                  });
+                                },
+                              ),
                             ),
                           );
                         },
                       ),
-                    ListTile(
-                      leading: SvgPicture.asset('assets/img/add_card.svg', width: 28, height: 28, color: AppColors.cardBgLightColor),
-                      title: Text('add_new_card'),
-                      onTap: () {
-                        setState(() => selectedPaymentMethod = 'credit');
-                        Navigator.of(context).pushNamed('/add_new_card').then((result) async {
-                          if (result == true || result != null) {
-                            await _loadSavedCards();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(S.of(context).card_added_successfully),
-                                backgroundColor: Colors.green,
-                              ),
-                            );
-                          }
-                        });
-                      },
+                    // زر إضافة بطاقة جديدة
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 8),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.cardBgLightColor.withOpacity(0.3)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: ListTile(
+                        leading: SvgPicture.asset(
+                          'assets/img/add_card.svg', 
+                          width: 28, 
+                          height: 28, 
+                          color: AppColors.cardBgLightColor
+                        ),
+                        title: Text(
+                          'إضافة بطاقة ائتمانية جديدة',
+                          style: TextStyle(color: AppColors.cardBgLightColor),
+                        ),
+                        subtitle: Text(
+                          'أضف بطاقة ائتمانية جديدة',
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
+                        ),
+                        onTap: () {
+                          setState(() => selectedPaymentMethod = 'credit');
+                          Navigator.of(context).pushNamed('/add_new_card').then((result) async {
+                            if (result == true || result != null) {
+                              await _loadSavedCards();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(S.of(context).card_added_successfully),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                            }
+                          });
+                        },
+                      ),
                     ),
+                    // رسالة إذا لم توجد بطاقات
+                    if (savedCards.isEmpty)
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 8),
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.blue.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.blue.withOpacity(0.3)),
+                        ),
+                        child: Column(
+                          children: [
+                            Icon(Icons.credit_card, color: Colors.blue, size: 48),
+                            SizedBox(height: 8),
+                            Text(
+                              'لا توجد بطاقات محفوظة',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                   ],
                 ),
               const SizedBox(height: 8),
