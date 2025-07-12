@@ -216,19 +216,5 @@
   "wrong_password": "كلمة المرور غير صحيحة",
   "login_with_facebook": "تسجيل الدخول عبر فيسبوك",
   "login_with_google":   "تسجيل الدخول عبر جوجل",
-  "login_with_apple":    "تسجيل الدخول عبر آبل",
-  "card_added_successfully": "تم إضافة البطاقة بنجاح",
-  "card_deleted_successfully": "تم حذف البطاقة بنجاح",
-  "unsupported_card_type": "نوع البطاقة غير مدعوم",
-  "icredit_card_required": "يرجى استخدام بطاقة iCredit فقط",
-  "icredit_card_validation_failed": "فشل التحقق من بطاقة iCredit",
-  "icredit_cards_only_accepted": "يتم قبول بطاقات iCredit فقط (تبدأ بـ 4580 28)",
-  "invalid_card_number": "رقم البطاقة غير صحيح",
-  "invalid_expiry_date": "تاريخ انتهاء الصلاحية غير صحيح",
-  "expired_card": "البطاقة منتهية الصلاحية",
-  "invalid_cvv": "رمز الأمان CVV غير صحيح",
-  "invalid_card_holder_name": "اسم حامل البطاقة غير صحيح",
-  "card_number_must_be_16_digits": "رقم البطاقة يجب أن يكون 16 رقماً",
-  "cvv_must_be_3_digits": "رمز الأمان يجب أن يكون 3 أرقام",
-  "card_holder_name_required": "اسم حامل البطاقة مطلوب"
+  "login_with_apple":    "تسجيل الدخول عبر آبل"
 }

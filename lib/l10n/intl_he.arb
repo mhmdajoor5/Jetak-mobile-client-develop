@@ -283,17 +283,5 @@
   "card_added_successfully": "הכרטיס נוסף בהצלחה",
   "delete": "מחיקה",
   "no_restaurants_found": "לא נמצאו מסעדות",
-  "no_stores_found": "לא נמצאו חנויות",
-  "unsupported_card_type": "סוג כרטיס לא נתמך",
-  "icredit_card_required": "אנא השתמש בכרטיסי iCredit בלבד",
-  "icredit_card_validation_failed": "אימות כרטיס iCredit נכשל",
-  "icredit_cards_only_accepted": "מתקבלים רק כרטיסי iCredit (מתחילים ב-4580 28)",
-  "invalid_card_number": "מספר כרטיס לא תקין",
-  "invalid_expiry_date": "תאריך תפוגה לא תקין",
-  "expired_card": "הכרטיס פג תוקף",
-  "invalid_cvv": "קוד אבטחה CVV לא תקין",
-  "invalid_card_holder_name": "שם בעל הכרטיס לא תקין",
-  "card_number_must_be_16_digits": "מספר הכרטיס חייב להיות 16 ספרות",
-  "cvv_must_be_3_digits": "CVV חייב להיות 3 ספרות",
-  "card_holder_name_required": "שם בעל הכרטיס נדרש"
+  "no_stores_found": "לא נמצאו חנויות"
 }

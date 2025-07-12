@@ -1,5 +1,4 @@
 import '../helpers/custom_trace.dart';
-import '../helpers/icredit_validator.dart';
 
 class CreditCard {
   String id;
@@ -31,73 +30,7 @@ class CreditCard {
     return {"id": id, "stripe_number": number, "stripe_exp_month": expMonth, "stripe_exp_year": expYear, "stripe_cvc": cvc};
   }
 
-  /// التحقق الأساسي من صحة البطاقة
   bool validated() {
     return number.isNotEmpty && expMonth.isNotEmpty && expYear.isNotEmpty && cvc.isNotEmpty;
-  }
-
-  /// التحقق المتقدم من صحة البطاقة مع فالديشن iCredit
-  bool validatedWithICreditCheck() {
-    // التحقق الأساسي
-    if (!validated()) return false;
-    
-    // التحقق من أن البطاقة من نوع iCredit
-    if (!ICreditValidator.isICreditCard(number)) {
-      return false;
-    }
-    
-    // التحقق من صحة رقم البطاقة باستخدام Luhn algorithm
-    if (!ICreditValidator.isValidLuhn(number)) {
-      return false;
-    }
-    
-    // التحقق من صحة تاريخ انتهاء الصلاحية
-    if (!ICreditValidator.isValidExpiryDate(expiryDate)) {
-      return false;
-    }
-    
-    // التحقق من صحة CVV
-    if (!ICreditValidator.isValidCVV(cvc)) {
-      return false;
-    }
-    
-    // التحقق من صحة اسم حامل البطاقة
-    if (!ICreditValidator.isValidCardHolderName(holderName)) {
-      return false;
-    }
-    
-    return true;
-  }
-
-  /// التحقق الشامل مع إرجاع تفاصيل الخطأ
-  ICreditValidationResult validateWithDetails() {
-    return ICreditValidator.validateICreditCard(number);
-  }
-
-  /// التحقق من نوع البطاقة
-  bool isICreditCard() {
-    return ICreditValidator.isICreditCard(number);
-  }
-
-  /// إخفاء رقم البطاقة للأمان
-  String get maskedNumber {
-    return ICreditValidator.maskCardNumber(number);
-  }
-
-  /// تنسيق رقم البطاقة
-  String get formattedNumber {
-    return ICreditValidator.formatCardNumber(number);
-  }
-
-  /// رسالة خطأ إذا كانت البطاقة غير صحيحة
-  String? get validationError {
-    ICreditValidationResult result = validateWithDetails();
-    return result.isValid ? null : result.errorMessage;
-  }
-
-  /// رسالة خطأ باللغة الإنجليزية
-  String? get validationErrorEn {
-    ICreditValidationResult result = validateWithDetails();
-    return result.isValid ? null : result.errorMessageEn;
   }
 }

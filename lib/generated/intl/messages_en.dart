@@ -61,11 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Card added successfully"),
         "card_deleted_successfully":
             MessageLookupByLibrary.simpleMessage("Card deleted successfully"),
-        "card_holder_name_required": MessageLookupByLibrary.simpleMessage(
-            "Card holder name is required"),
         "card_number": MessageLookupByLibrary.simpleMessage("CARD NUMBER"),
-        "card_number_must_be_16_digits": MessageLookupByLibrary.simpleMessage(
-            "Card number must be 16 digits"),
         "cart": MessageLookupByLibrary.simpleMessage("Cart"),
         "carts_refreshed_successfuly": MessageLookupByLibrary.simpleMessage(
             "Carts refreshed successfully"),
@@ -124,8 +120,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Current location"),
         "cvc": MessageLookupByLibrary.simpleMessage("CVC"),
         "cvv": MessageLookupByLibrary.simpleMessage("CVV"),
-        "cvv_must_be_3_digits":
-            MessageLookupByLibrary.simpleMessage("CVV must be 3 digits"),
         "dark_mode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
         "default_credit_card":
             MessageLookupByLibrary.simpleMessage("Default Credit Card"),
@@ -175,8 +169,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "estimated_time":
             MessageLookupByLibrary.simpleMessage("Estimated time"),
         "exp_date": MessageLookupByLibrary.simpleMessage("Exp Date"),
-        "expired_card":
-            MessageLookupByLibrary.simpleMessage("Card has expired"),
         "expiry_date": MessageLookupByLibrary.simpleMessage("EXPIRY DATE"),
         "extras": MessageLookupByLibrary.simpleMessage("Extras"),
         "faq": MessageLookupByLibrary.simpleMessage("Faq"),
@@ -230,26 +222,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "i_remember_my_password_return_to_login":
             MessageLookupByLibrary.simpleMessage(
                 "I remember my password return to login"),
-        "icredit_card_required": MessageLookupByLibrary.simpleMessage(
-            "Please use iCredit cards only"),
-        "icredit_card_validation_failed": MessageLookupByLibrary.simpleMessage(
-            "iCredit card validation failed"),
-        "icredit_cards_only_accepted": MessageLookupByLibrary.simpleMessage(
-            "Only iCredit cards are accepted (starting with 4580 28)"),
         "include_tax": MessageLookupByLibrary.simpleMessage(
             "Include tax ( if applicable )"),
         "information": MessageLookupByLibrary.simpleMessage("Information"),
         "ingredients": MessageLookupByLibrary.simpleMessage("Ingredients"),
         "invalidCouponCode":
             MessageLookupByLibrary.simpleMessage("Invalid Coupon"),
-        "invalid_card_holder_name":
-            MessageLookupByLibrary.simpleMessage("Invalid card holder name"),
-        "invalid_card_number":
-            MessageLookupByLibrary.simpleMessage("Invalid card number"),
-        "invalid_cvv":
-            MessageLookupByLibrary.simpleMessage("Invalid CVV security code"),
-        "invalid_expiry_date":
-            MessageLookupByLibrary.simpleMessage("Invalid expiry date"),
         "item_subtotal": MessageLookupByLibrary.simpleMessage("Item subtotal"),
         "items": MessageLookupByLibrary.simpleMessage("Items"),
         "john_doe": MessageLookupByLibrary.simpleMessage("John Doe"),
@@ -516,8 +494,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "typeToStartChat":
             MessageLookupByLibrary.simpleMessage("Type to start chat"),
         "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
-        "unsupported_card_type":
-            MessageLookupByLibrary.simpleMessage("Unsupported card type"),
         "validCouponCode": MessageLookupByLibrary.simpleMessage("Valid Coupon"),
         "verify": MessageLookupByLibrary.simpleMessage("Verify"),
         "verifyPhoneNumber":

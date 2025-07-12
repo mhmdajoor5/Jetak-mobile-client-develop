@@ -57,11 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("הכרטיס נוסף בהצלחה"),
         "card_deleted_successfully":
             MessageLookupByLibrary.simpleMessage("הכרטיס נמחק בהצלחה"),
-        "card_holder_name_required":
-            MessageLookupByLibrary.simpleMessage("שם בעל הכרטיס נדרש"),
         "card_number": MessageLookupByLibrary.simpleMessage("מספר כרטיס"),
-        "card_number_must_be_16_digits": MessageLookupByLibrary.simpleMessage(
-            "מספר הכרטיס חייב להיות 16 ספרות"),
         "cart": MessageLookupByLibrary.simpleMessage("עגלה"),
         "carts_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("עגלות רעננו בהצלחה"),
@@ -115,8 +111,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "current_location": MessageLookupByLibrary.simpleMessage("מיקום נוכחי"),
         "cvc": MessageLookupByLibrary.simpleMessage("CVC"),
         "cvv": MessageLookupByLibrary.simpleMessage("קוד CVV"),
-        "cvv_must_be_3_digits":
-            MessageLookupByLibrary.simpleMessage("CVV חייב להיות 3 ספרות"),
         "dark_mode": MessageLookupByLibrary.simpleMessage("מצב חשוך"),
         "default_credit_card":
             MessageLookupByLibrary.simpleMessage("כרטיס אשראי ברירת מחדל"),
@@ -161,7 +155,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "estimatedTime": MessageLookupByLibrary.simpleMessage("זמן משוער:"),
         "estimated_time": MessageLookupByLibrary.simpleMessage("זמן משוער"),
         "exp_date": MessageLookupByLibrary.simpleMessage("תאריך תפוגה"),
-        "expired_card": MessageLookupByLibrary.simpleMessage("הכרטיס פג תוקף"),
         "expiry_date": MessageLookupByLibrary.simpleMessage("תאריך תפוגה"),
         "extras": MessageLookupByLibrary.simpleMessage("תוספות"),
         "faq": MessageLookupByLibrary.simpleMessage("שאלות נפוצות"),
@@ -214,24 +207,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "i_remember_my_password_return_to_login":
             MessageLookupByLibrary.simpleMessage(
                 "אני זוכר את הסיסמה שלי, חזרה להתחברות"),
-        "icredit_card_required": MessageLookupByLibrary.simpleMessage(
-            "אנא השתמש בכרטיסי iCredit בלבד"),
-        "icredit_card_validation_failed":
-            MessageLookupByLibrary.simpleMessage("אימות כרטיס iCredit נכשל"),
-        "icredit_cards_only_accepted": MessageLookupByLibrary.simpleMessage(
-            "מתקבלים רק כרטיסי iCredit (מתחילים ב-4580 28)"),
         "information": MessageLookupByLibrary.simpleMessage("מידע"),
         "ingredients": MessageLookupByLibrary.simpleMessage("מרכיבים"),
         "invalidCouponCode":
             MessageLookupByLibrary.simpleMessage("קוד קופון לא תקין"),
-        "invalid_card_holder_name":
-            MessageLookupByLibrary.simpleMessage("שם בעל הכרטיס לא תקין"),
-        "invalid_card_number":
-            MessageLookupByLibrary.simpleMessage("מספר כרטיס לא תקין"),
-        "invalid_cvv":
-            MessageLookupByLibrary.simpleMessage("קוד אבטחה CVV לא תקין"),
-        "invalid_expiry_date":
-            MessageLookupByLibrary.simpleMessage("תאריך תפוגה לא תקין"),
         "items": MessageLookupByLibrary.simpleMessage("פריטים"),
         "john_doe": MessageLookupByLibrary.simpleMessage("יהון דו"),
         "keep_your_old_meals_of_this_restaurant":
@@ -475,8 +454,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "typeToStartChat":
             MessageLookupByLibrary.simpleMessage("הקלד כדי להתחיל בשיחה"),
         "unknown": MessageLookupByLibrary.simpleMessage("לא ידוע"),
-        "unsupported_card_type":
-            MessageLookupByLibrary.simpleMessage("סוג כרטיס לא נתמך"),
         "validCouponCode":
             MessageLookupByLibrary.simpleMessage("קוד קופון תקף"),
         "verify": MessageLookupByLibrary.simpleMessage("אמת"),

@@ -225,17 +225,5 @@
   "card_added_successfully": "تمت إضافة البطاقة بنجاح",
   "delete": "حذف",
   "no_restaurants_found": "لم يتم العثور على مطاعم",
-  "no_stores_found": "لم يتم العثور على متاجر",
-  "unsupported_card_type": "نوع البطاقة غير مدعوم",
-  "icredit_card_required": "يرجى استخدام بطاقة iCredit فقط",
-  "icredit_card_validation_failed": "فشل التحقق من بطاقة iCredit",
-  "icredit_cards_only_accepted": "يتم قبول بطاقات iCredit فقط (تبدأ بـ 4580 28)",
-  "invalid_card_number": "رقم البطاقة غير صحيح",
-  "invalid_expiry_date": "تاريخ انتهاء الصلاحية غير صحيح",
-  "expired_card": "البطاقة منتهية الصلاحية",
-  "invalid_cvv": "رمز الأمان CVV غير صحيح",
-  "invalid_card_holder_name": "اسم حامل البطاقة غير صحيح",
-  "card_number_must_be_16_digits": "رقم البطاقة يجب أن يكون 16 رقماً",
-  "cvv_must_be_3_digits": "رمز الأمان يجب أن يكون 3 أرقام",
-  "card_holder_name_required": "اسم حامل البطاقة مطلوب"
+  "no_stores_found": "لم يتم العثور على متاجر"
 }
