@@ -37,7 +37,7 @@ class NotificationService {
     try {
       final int count = await   getUnreadNotificationsCount();
       _currentNotificationCount = count;
-      _notificationCounءذtController.add(count);
+      // _notificationCounءذtController.add(count);
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: 'Error updating notification count: $e'));
     }

@@ -63,6 +63,17 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  List<String> _getFontFamilyFallback(String languageCode) {
+    switch (languageCode) {
+      case 'ar':
+        return ['Titr', 'Cairo', 'Nunito'];
+      case 'he':
+        return ['VarelaRound', 'Nunito'];
+      default:
+        return ['Nunito', 'Poppins'];
+    }
+  }
+
   TextDirection _getTextDirection(String languageCode) {
     return (languageCode == 'ar' || languageCode == 'he')
         ? TextDirection.rtl
@@ -100,6 +111,7 @@ class _MyAppState extends State<MyApp> {
           builder: (context, child) {
             final langCode = Localizations.localeOf(context).languageCode;
             final fontFamily = _getFontFamily(langCode);
+            final fontFamilyFallback = _getFontFamilyFallback(langCode);
             final textDirection = _getTextDirection(langCode);
             final isLight = _setting.brightness.value == Brightness.light;
 
@@ -108,6 +120,7 @@ class _MyAppState extends State<MyApp> {
                     ? ThemeData(
                       useMaterial3: true,
                       fontFamily: fontFamily,
+                      fontFamilyFallback: fontFamilyFallback,
                       colorScheme: ColorScheme.fromSeed(
                         seedColor: config.Colors().mainColor(1),
                         brightness: Brightness.light,
@@ -137,35 +150,22 @@ class _MyAppState extends State<MyApp> {
                       ),
                       focusColor: config.Colors().accentColor(1),
                       hintColor: config.Colors().secondColor(1),
-                      textTheme: const TextTheme(
-                        headlineSmall: TextStyle(
-                          fontSize: 20.0,
-                          height: 1.35,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        headlineMedium: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w600,
-                          height: 1.35,
-                        ),
-                        headlineLarge: TextStyle(
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.w700,
-                          height: 1.35,
-                        ),
-                        titleLarge: TextStyle(
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.w300,
-                          height: 1.5,
-                        ),
-                        titleMedium: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w500,
-                          height: 1.35,
-                        ),
-                        bodySmall: TextStyle(fontSize: 12.0, height: 1.35),
-                        bodyLarge: TextStyle(fontSize: 14.0, height: 1.35),
-                        labelSmall: TextStyle(fontSize: 12.0, height: 1.35),
+                      textTheme: TextTheme(
+                        displayLarge: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        displayMedium: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        displaySmall: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        headlineLarge: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        headlineMedium: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback, fontSize: 18.0, fontWeight: FontWeight.w600, height: 1.35),
+                        headlineSmall: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback, fontSize: 20.0, height: 1.35, fontWeight: FontWeight.w600),
+                        titleLarge: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        titleMedium: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        titleSmall: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        bodyLarge: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback, fontSize: 14.0, fontWeight: FontWeight.w400, height: 1.5),
+                        bodyMedium: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback, fontSize: 14.0, fontWeight: FontWeight.w400, height: 1.5),
+                        bodySmall: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback, fontSize: 12.0, fontWeight: FontWeight.w400, height: 1.5),
+                        labelLarge: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        labelMedium: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        labelSmall: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
                       ).apply(
                         bodyColor: config.Colors().secondColor(1),
                         displayColor: config.Colors().secondColor(1),
@@ -174,6 +174,7 @@ class _MyAppState extends State<MyApp> {
                     : ThemeData(
                       useMaterial3: true,
                       fontFamily: fontFamily,
+                      fontFamilyFallback: fontFamilyFallback,
                       brightness: Brightness.dark,
                       scaffoldBackgroundColor: const Color(0xFF2C2C2C),
                       colorScheme: ColorScheme.fromSeed(
@@ -196,40 +197,22 @@ class _MyAppState extends State<MyApp> {
                       dividerTheme: DividerThemeData(
                         color: config.Colors().accentColor(0.1),
                       ),
-                      textTheme: const TextTheme(
-                        headlineSmall: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w600,
-                          height: 1.35,
-                        ),
-                        headlineMedium: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w600,
-                          height: 1.35,
-                        ),
-                        headlineLarge: TextStyle(
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.w700,
-                          height: 1.35,
-                        ),
-                        titleLarge: TextStyle(
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.w300,
-                          height: 1.5,
-                        ),
-                        titleMedium: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w500,
-                          height: 1.35,
-                        ),
-                        titleSmall: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w600,
-                          height: 1.35,
-                        ),
-                        bodySmall: TextStyle(fontSize: 12.0, height: 1.35),
-                        bodyLarge: TextStyle(fontSize: 14.0, height: 1.35),
-                        labelSmall: TextStyle(fontSize: 12.0, height: 1.35),
+                      textTheme: TextTheme(
+                        displayLarge: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        displayMedium: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        displaySmall: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        headlineLarge: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        headlineMedium: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback, fontSize: 18.0, fontWeight: FontWeight.w600, height: 1.35),
+                        headlineSmall: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback, fontSize: 20.0, height: 1.35, fontWeight: FontWeight.w600),
+                        titleLarge: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        titleMedium: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        titleSmall: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        bodyLarge: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback, fontSize: 14.0, fontWeight: FontWeight.w400, height: 1.5),
+                        bodyMedium: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback, fontSize: 14.0, fontWeight: FontWeight.w400, height: 1.5),
+                        bodySmall: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback, fontSize: 12.0, fontWeight: FontWeight.w400, height: 1.5),
+                        labelLarge: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        labelMedium: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
+                        labelSmall: TextStyle(fontFamily: fontFamily, fontFamilyFallback: fontFamilyFallback),
                       ).apply(
                         bodyColor: config.Colors().secondDarkColor(1),
                         displayColor: config.Colors().secondDarkColor(1),
@@ -240,7 +223,13 @@ class _MyAppState extends State<MyApp> {
 
             return Directionality(
               textDirection: textDirection,
-              child: Theme(data: baseTheme, child: child!),
+              child: Theme(
+                data: baseTheme,
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: child!,
+                ),
+              ),
             );
           },
         );

@@ -79,22 +79,7 @@ class HomeHeaderSection extends StatelessWidget {
             child: Row(
               children: [
                 NotificationsButtonWidget(), // Remove static count
-                SizedBox(width: 15),
-                // Test button for notifications
-                GestureDetector(
-                  onTap: () => Navigator.of(context).pushNamed('/TestNotifications'),
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.blue, width: 1),
-                    ),
-                    child: Icon(Icons.bug_report, color: Colors.blue),
-                  ),
-                ),
-                SizedBox(width: 15),
+                SizedBox(width: 7),
                 ShoppingCartButtonWidget(
                   iconColor: Color(0xFF292D32),
                   labelColor: Colors.red,

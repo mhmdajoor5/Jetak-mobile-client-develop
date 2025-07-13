@@ -41,6 +41,10 @@ import 'src/pages/splash_screen.dart';
 import 'src/pages/test_notifications.dart';
 import 'src/pages/notifications.dart';
 import 'src/controllers/home_controller.dart';
+// Import the new address pages
+import 'src/pages/new_address/AddressDetailsPage.dart';
+import 'src/pages/new_address/DeliveryAddressFormPage.dart';
+import 'src/models/address.dart';
 
 class RouteGenerator {
   static final HomeController homeController = HomeController();
@@ -152,10 +156,68 @@ class RouteGenerator {
           ),
         );
       case '/Food':
-        return MaterialPageRoute(
-          builder: (_) => FoodWidget(
-            routeArgument: args is RouteArgument ? args : RouteArgument(),
-          ),
+        return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => Container(),
+          transitionDuration: Duration(milliseconds: 400),
+          reverseTransitionDuration: Duration(milliseconds: 300),
+          opaque: false,
+          barrierDismissible: true,
+          barrierColor: Colors.black54,
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            // إنشاء animation للخلفية (fade)
+            final fadeAnimation = Tween<double>(
+              begin: 0.0,
+              end: 1.0,
+            ).animate(CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOut,
+            ));
+            
+            // إنشاء animation للـ bottom sheet (slide from bottom)
+            final slideAnimation = Tween<Offset>(
+              begin: const Offset(0.0, 1.0),
+              end: Offset.zero,
+            ).animate(CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOutCubic,
+            ));
+            
+            return SlideTransition(
+              position: slideAnimation,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: GestureDetector(
+                  onVerticalDragUpdate: (details) {
+                    // إذا كان السحب لأسفل أكبر من 5 بكسل، قم بإغلاق الـ bottom sheet
+                    if (details.delta.dy > 5) {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height * 0.9,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 10,
+                          offset: Offset(0, -5),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+                      child: FoodWidget(
+                        routeArgument: args is RouteArgument ? args : RouteArgument(),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
         );
       case '/Category':
         return MaterialPageRoute(
@@ -199,6 +261,19 @@ class RouteGenerator {
             shouldChooseDeliveryHere: arguments[0] as bool,
             conDeliverPickupController: arguments[1] as DeliveryPickupController,
           ),
+        );
+      case '/DeliveryAddressForm':
+        final Map<String, dynamic> arguments = args as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => DeliveryAddressFormPage(
+            address: arguments['address'] as Address,
+            onChanged: arguments['onChanged'] as Function(Address),
+          ),
+        );
+      case '/AddressDetails':
+        final String address = args as String;
+        return MaterialPageRoute(
+          builder: (_) => AddressDetailsPage(address: address),
         );
       case '/DeliveryPickup':
         return MaterialPageRoute(

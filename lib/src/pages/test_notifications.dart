@@ -76,7 +76,7 @@ class _TestNotificationsPageState extends State<TestNotificationsPage> {
     });
     try {
       final notifications = await notificationRepo.getNotificationsList();
-      _showNotificationsDialog(notifications);
+      // _showNotificationsDialog(notifications);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -91,45 +91,45 @@ class _TestNotificationsPageState extends State<TestNotificationsPage> {
     }
   }
 
-  void _showNotificationsDialog(List<Notification> notifications) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('All Notifications (${notifications.length})'),
-        content: Container(
-          width: double.maxFinite,
-          height: 400,
-          child: ListView.builder(
-            itemCount: notifications.length,
-            itemBuilder: (context, index) {
-              final notification = notifications[index];
-              return ListTile(
-                title: Text(notification.getNotificationTitle()),
-                subtitle: Text(notification.getNotificationMessage()),
-                trailing: notification.read 
-                    ? Icon(Icons.check_circle, color: Colors.green)
-                    : Icon(Icons.circle, color: Colors.red),
-                onTap: () {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Notification: ${notification.getNotificationTitle()}'),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Close'),
-          ),
-        ],
-      ),
-    );
-  }
+  // void _showNotificationsDialog(List<Notification> notifications) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: Text('All Notifications (${notifications.length})'),
+  //       content: Container(
+  //         width: double.maxFinite,
+  //         height: 400,
+  //         child: ListView.builder(
+  //           itemCount: notifications.length,
+  //           itemBuilder: (context, index) {
+  //             final notification = notifications[index];
+  //             return ListTile(
+  //               title: Text(notification.getNotificationTitle()),
+  //               subtitle: Text(notification.getNotificationMessage()),
+  //               trailing: notification.read
+  //                   ? Icon(Icons.check_circle, color: Colors.green)
+  //                   : Icon(Icons.circle, color: Colors.red),
+  //               onTap: () {
+  //                 Navigator.pop(context);
+  //                 ScaffoldMessenger.of(context).showSnackBar(
+  //                   SnackBar(
+  //                     content: Text('Notification: ${notification.getNotificationTitle()}'),
+  //                   ),
+  //                 );
+  //               },
+  //             );
+  //           },
+  //         ),
+  //       ),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(context),
+  //           child: Text('Close'),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
