@@ -225,5 +225,13 @@
   "card_added_successfully": "تمت إضافة البطاقة بنجاح",
   "delete": "حذف",
   "no_restaurants_found": "لم يتم العثور على مطاعم",
-  "no_stores_found": "لم يتم العثور على متاجر"
+  "no_stores_found": "لم يتم العثور على متاجر",
+  "verifyCode": "تحقق من الرمز",
+  "enterThe4DigitCodeSentTo": "أدخل الرمز المكون من 4 أرقام المُرسل إلى {phone}",
+  "@enterThe4DigitCodeSentTo": {
+    "placeholders": {
+      "phone": {}
+    }
+  },
+  "didntReceiveTheCodeResendit": "لم يصلك الرمز؟ أعد الإرسال"
 }

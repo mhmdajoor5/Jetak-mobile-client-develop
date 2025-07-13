@@ -20,9 +20,12 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ar';
 
-  static String m0(time) => "مفتوح حتى ${time}";
+  static String m0(phone) =>
+      "أدخل الرمز المكون من 4 أرقام المُرسل إلى ${phone}";
 
-  static String m1(foodname) => "تمت إزالة ${foodname} من سلة التسوق";
+  static String m1(time) => "مفتوح حتى ${time}";
+
+  static String m2(foodname) => "تمت إزالة ${foodname} من سلة التسوق";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -91,6 +94,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("عناوين التوصيل"),
         "delivery_fee": MessageLookupByLibrary.simpleMessage("Delivery Fee"),
         "description": MessageLookupByLibrary.simpleMessage("الوصف"),
+        "didntReceiveTheCodeResendit":
+            MessageLookupByLibrary.simpleMessage("لم يصلك الرمز؟ أعد الإرسال"),
         "discover__explorer": MessageLookupByLibrary.simpleMessage("استكشاف"),
         "dont_have_any_item_in_the_notification_list":
             MessageLookupByLibrary.simpleMessage("قائمة الاشعارات فارغة"),
@@ -106,6 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "email_to_reset_password": MessageLookupByLibrary.simpleMessage(
             "استعادة كلمة المرور بالبريد الالكتروني"),
         "english": MessageLookupByLibrary.simpleMessage("الإنجليزية"),
+        "enterThe4DigitCodeSentTo": m0,
         "enter_here": MessageLookupByLibrary.simpleMessage("ادخل هنا"),
         "error_verify_email_settings": MessageLookupByLibrary.simpleMessage(
             "البريد الالكتروني غير مسجل لدينا"),
@@ -236,7 +242,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notifications_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("تم تحديث الإشعارات بنجاح"),
         "nutrition": MessageLookupByLibrary.simpleMessage("العناصر الغذائية"),
-        "open_until": m0,
+        "open_until": m1,
         "or_checkout_with": MessageLookupByLibrary.simpleMessage("او ادفع مع"),
         "order_id": MessageLookupByLibrary.simpleMessage("رمز الطلب"),
         "order_refreshed_successfuly":
@@ -340,7 +346,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "the_food_has_been_rated_successfully":
             MessageLookupByLibrary.simpleMessage(
                 "The food has been rated successfully"),
-        "the_food_was_removed_from_your_cart": m1,
+        "the_food_was_removed_from_your_cart": m2,
         "the_restaurant_has_been_rated_successfully":
             MessageLookupByLibrary.simpleMessage(
                 "The restaurant has been rated successfully"),
@@ -365,6 +371,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
         "validCouponCode": MessageLookupByLibrary.simpleMessage("Valid Coupon"),
         "verify": MessageLookupByLibrary.simpleMessage("التحقق"),
+        "verifyCode": MessageLookupByLibrary.simpleMessage("تحقق من الرمز"),
         "verify_your_internet_connection":
             MessageLookupByLibrary.simpleMessage("تحقق من asdf"),
         "verify_your_quantity_and_click_checkout":

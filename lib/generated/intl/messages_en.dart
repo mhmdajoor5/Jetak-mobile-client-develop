@@ -20,11 +20,13 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(time) => "Open until ${time}";
+  static String m0(phone) => "Enter the 4-digit code sent to ${phone}";
 
-  static String m2(id) => "Order: #${id} has been canceled";
+  static String m1(time) => "Open until ${time}";
 
-  static String m1(foodname) => "The ${foodname} was removed from your cart";
+  static String m3(id) => "Order: #${id} has been canceled";
+
+  static String m2(foodname) => "The ${foodname} was removed from your cart";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -145,6 +147,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Delivery or Pickup"),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
         "details": MessageLookupByLibrary.simpleMessage("Details"),
+        "didntReceiveTheCodeResendit": MessageLookupByLibrary.simpleMessage(
+            "Didn\'t receive the code? Resend it"),
         "discover__explorer":
             MessageLookupByLibrary.simpleMessage("Discover & Explorer"),
         "dont_have_any_item_in_the_notification_list":
@@ -161,6 +165,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "email_to_reset_password":
             MessageLookupByLibrary.simpleMessage("Email to reset password"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
+        "enterThe4DigitCodeSentTo": m0,
         "enter_here": MessageLookupByLibrary.simpleMessage("Enter here"),
         "error_verify_email_settings": MessageLookupByLibrary.simpleMessage(
             "Error! Verify email settings"),
@@ -319,14 +324,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "One or more foods in your cart not deliverable."),
         "open": MessageLookupByLibrary.simpleMessage("Open"),
-        "open_until": m0,
+        "open_until": m1,
         "opened_restaurants":
             MessageLookupByLibrary.simpleMessage("Opened Restaurants"),
         "or_checkout_with":
             MessageLookupByLibrary.simpleMessage("Or Checkout With"),
         "order": MessageLookupByLibrary.simpleMessage("Order"),
         "orderDetails": MessageLookupByLibrary.simpleMessage("Order Details"),
-        "orderThisorderidHasBeenCanceled": m2,
+        "orderThisorderidHasBeenCanceled": m3,
         "order_id": MessageLookupByLibrary.simpleMessage("Order Id"),
         "order_refreshed_successfuly": MessageLookupByLibrary.simpleMessage(
             "Order refreshed successfully"),
@@ -458,7 +463,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "the_food_has_been_rated_successfully":
             MessageLookupByLibrary.simpleMessage(
                 "The food has been rated successfully"),
-        "the_food_was_removed_from_your_cart": m1,
+        "the_food_was_removed_from_your_cart": m2,
         "the_restaurant_has_been_rated_successfully":
             MessageLookupByLibrary.simpleMessage(
                 "The restaurant has been rated successfully"),
@@ -496,6 +501,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
         "validCouponCode": MessageLookupByLibrary.simpleMessage("Valid Coupon"),
         "verify": MessageLookupByLibrary.simpleMessage("Verify"),
+        "verifyCode": MessageLookupByLibrary.simpleMessage("Verify Code"),
         "verifyPhoneNumber":
             MessageLookupByLibrary.simpleMessage("Verify Phone Number"),
         "verify_your_internet_connection": MessageLookupByLibrary.simpleMessage(
