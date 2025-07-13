@@ -56,25 +56,57 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                       toolbarHeight: 70,
                       expandedHeight: 300,
                       pinned: true,
-                      backgroundColor: Theme.of(context)
-                          .colorScheme
-                          .secondary
-                          .withValues(alpha: 0.9),
+                      floating: false,
+                      snap: false,
+                      backgroundColor: Colors.white,
                       automaticallyImplyLeading: false, // إزالة زر الباك
                       flexibleSpace: FlexibleSpaceBar(
                         collapseMode: CollapseMode.parallax,
-                        background: Hero(
-                          tag: widget.routeArgument.heroTag ??
-                              'food_${_con.food.id}',
-                          child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: _con.food.image?.url ?? '',
-                            placeholder: (context, url) => Image.asset(
-                                'assets/img/loading.gif',
-                                fit: BoxFit.cover),
-                            errorWidget: (context, url, error) =>
-                                Image.asset('assets/img/logo.png',
-                                    fit: BoxFit.fill),
+                        background: Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              CachedNetworkImage(
+                                fit: BoxFit.cover,
+                                imageUrl: _con.food.image?.url ?? '',
+                                placeholder: (context, url) => Container(
+                                  color: Colors.grey[200],
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) => Container(
+                                  color: Colors.grey[200],
+                                  child: Center(
+                                    child: Image.asset(
+                                      'assets/img/logo.png',
+                                      width: 80,
+                                      height: 80,
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              // تأثير التظليل
+                              Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Colors.black.withValues(alpha: 0.1),
+                                      Colors.transparent,
+                                      Colors.black.withValues(alpha: 0.15),
+                                    ],
+                                    stops: [0.0, 0.7, 1.0],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
