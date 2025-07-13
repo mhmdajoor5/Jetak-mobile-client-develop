@@ -158,14 +158,6 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  TextFormField(
-                    controller: fullAddressController,
-                    decoration: InputDecoration(
-                      label: Text('Full Address'),
-                      hintText: 'Street, City, Country',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
@@ -175,18 +167,13 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                         );
                         return;
                       }
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddressDetailsPage(address: fullAddressController.text.trim()),
-                        ),
-                      );
+                      Navigator.of(context).pushNamed('/AddressDetails', arguments: fullAddressController.text.trim());
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
                       minimumSize: Size(double.infinity, 45),
                     ),
-                    child: Text('Continue', style: TextStyle(fontSize: 16)),
+                    child: Text('Continue', style: TextStyle(fontSize: 16, color: Colors.white)),
                   ),
                   SizedBox(height: 30),
                   Row(
@@ -201,23 +188,23 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                     ],
                   ),
                   Spacer(),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     TextButton(
-                  //       onPressed: _cancel,
-                  //       child: Text('Cancel', style: TextStyle(color: Colors.blue, fontSize: 16)),
-                  //     ),
-                  //     ElevatedButton(
-                  //       onPressed: _saveAddress,
-                  //       style: ElevatedButton.styleFrom(
-                  //         backgroundColor: Colors.blue,
-                  //         minimumSize: Size(100, 45),
-                  //       ),
-                  //       child: Text('Save', style: TextStyle(color: Colors.white, fontSize: 16)),
-                  //     ),
-                  //   ],
-                  // )
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: _cancel,
+                        child: Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 16)),
+                      ),
+                      ElevatedButton(
+                        onPressed: _saveAddress,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).colorScheme.secondary,
+                          minimumSize: Size(100, 45),
+                        ),
+                        child: Text('Save', style: TextStyle(color: Colors.white, fontSize: 16)),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
@@ -255,15 +242,15 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                         ElevatedButton(
                           onPressed: _useCurrentAddress,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
+                            backgroundColor: Theme.of(context).colorScheme.secondary,
                             minimumSize: Size(double.infinity, 45),
                           ),
-                          child: Text("Use this address"),
+                          child: Text("Use this address", style: TextStyle(color: Colors.white)),
                         ),
                       if (locationLoaded)
                         TextButton(
                           onPressed: _dismissOverlay,
-                          child: Text("Enter another address", style: TextStyle(color: Colors.grey[700])),
+                          child: Text("Enter another address", style: TextStyle(color: Theme.of(context).hintColor)),
                         ),
                     ],
                   ),

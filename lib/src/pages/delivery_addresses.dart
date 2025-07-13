@@ -6,7 +6,7 @@ import '../../generated/l10n.dart';
 import '../controllers/delivery_addresses_controller.dart';
 import '../controllers/delivery_pickup_controller.dart';
 import '../elements/CircularLoadingWidget.dart';
-import '../elements/DeliveryAddressDialog.dart';
+
 import '../elements/DeliveryAddressesItemWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
 import '../models/address.dart';
@@ -75,14 +75,12 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
               ),
               GestureDetector(
                 onTap: () {
-                  DeliveryAddressDialog(
-                    context: context,
-                    address: Address(),
-                    onChanged: (Address _address) {
-
+                  Navigator.of(context).pushNamed('/DeliveryAddressForm', arguments: {
+                    'address': Address(),
+                    'onChanged': (Address _address) {
                       _con.addAddress(_address);
                     },
-                  );
+                  });
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -133,23 +131,21 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
                           // Update selected address
                         });
                       } else {
-                        DeliveryAddressDialog(
-                          context: context,
-                          address: _address,
-                          onChanged: (Address _address) {
+                        Navigator.of(context).pushNamed('/DeliveryAddressForm', arguments: {
+                          'address': _address,
+                          'onChanged': (Address _address) {
                             _con.updateAddress(_address);
                           },
-                        );
+                        });
                       }
                     },
                     onLongPress: (Address _address) {
-                      DeliveryAddressDialog(
-                        context: context,
-                        address: _address,
-                        onChanged: (Address _address) {
+                      Navigator.of(context).pushNamed('/DeliveryAddressForm', arguments: {
+                        'address': _address,
+                        'onChanged': (Address _address) {
                           _con.updateAddress(_address);
                         },
-                      );
+                      });
                     },
                     onDismissed: (Address _address) {
                       _con.removeDeliveryAddress(_address);

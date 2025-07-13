@@ -45,47 +45,10 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
           .colorScheme
           .secondary,
       onTap: () {
-        showGeneralDialog(
-          context: context,
-          barrierDismissible: true,
-          barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-          barrierColor: Colors.grey[200]!.withOpacity(1), // ✅ لون الخلفية ورا الـ BottomSheet
-          transitionDuration: Duration(milliseconds: 300),
-          pageBuilder: (context, animation1, animation2) {
-            return Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
-                ),
-                child: SafeArea(
-                  top: false,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
-                    child: FoodWidget(
-                      routeArgument: RouteArgument(
-                        id: widget.food.id,
-                        heroTag: widget.heroTag,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-          transitionBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: Tween<Offset>(
-                begin: Offset(0, 1),
-                end: Offset.zero,
-              ).animate(animation),
-              child: child,
-            );
-          },
-        );
+        Navigator.of(context).pushNamed('/Food', arguments: RouteArgument(
+          id: widget.food.id,
+          heroTag: widget.heroTag,
+        ));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
