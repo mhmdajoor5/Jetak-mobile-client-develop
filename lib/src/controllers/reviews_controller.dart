@@ -32,10 +32,10 @@ class ReviewsController extends ControllerMVC {
           foodsReviews = List.generate(order.foodOrders.length, (_) => new Review.init("0"));
         });
       },
-      onError: (a) {
-        print(a);
-        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text(S.of(state!.context).verify_your_internet_connection)));
-      },
+      // onError: (a) {
+      //   print(a);
+      //   ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text(S.of(state!.context).verify_your_internet_connection)));
+      // },
       onDone: () {
         getFoodsOfOrder();
         if (message != null) {

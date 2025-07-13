@@ -47,10 +47,12 @@ class NotificationController extends ControllerMVC {
             notifications.add(notification);
           }
         });
-      }, onError: (error) {
-        print('Error listening for notifications: $error');
-        _showSnackBar(S.of(state!.context).verify_your_internet_connection);
-      }, onDone: () {
+      },
+      //     onError: (error) {
+      //   print('Error listening for notifications: $error');
+      //   _showSnackBar(S.of(state!.context).verify_your_internet_connection);
+      // },
+          onDone: () {
         setState(() {
           isLoading = false;
         });
@@ -59,11 +61,12 @@ class NotificationController extends ControllerMVC {
           _showSnackBar(message);
         }
       });
-    } catch (e) {
+    }
+    catch (e) {
       setState(() {
         isLoading = false;
       });
-      _showSnackBar(S.of(state!.context).verify_your_internet_connection);
+      //_showSnackBar(S.of(state!.context).verify_your_internet_connection);
     }
   }
 
@@ -85,7 +88,7 @@ class NotificationController extends ControllerMVC {
       setState(() {
         isLoading = false;
       });
-      _showSnackBar(S.of(state!.context).verify_your_internet_connection);
+      //_showSnackBar(S.of(state!.context).verify_your_internet_connection);
       }
   }
 

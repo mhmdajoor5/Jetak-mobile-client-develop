@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:restaurantcustomer/src/pages/auth/signup/SignUpEmailPasswordScreen.dart';
+import 'package:restaurantcustomer/src/pages/auth/signup/SignUpPhoneNumberScreen.dart';
+import 'package:restaurantcustomer/src/pages/auth/signup/SignUpVerificationScreen.dart';
+import 'package:restaurantcustomer/src/pages/auth/WelcomePage.dart';
+import 'package:restaurantcustomer/src/pages/auth/signup/sign_up_name_screen.dart';
 import 'src/controllers/delivery_pickup_controller.dart';
 import 'src/models/credit_card.dart';
 import 'src/pages/Home/OffersNearYouPage.dart' show OffersNearYouPage;
@@ -60,10 +65,44 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => NotificationsWidget());
       case '/SignUp':
       case '/MobileVerification':
+      // case '/MobileVerification2':
+      //   return MaterialPageRoute(builder: (_) => SignUpWidget());
       case '/MobileVerification2':
-        return MaterialPageRoute(builder: (_) => SignUpWidget());
+         return MaterialPageRoute(builder: (_) => SignUpNameScreen());
+      case '/SignUpEmailPassword':
+        final args = settings.arguments as Map<String, String>;
+        return MaterialPageRoute(
+          builder: (_) => SignUpEmailPasswordScreen(
+            firstName: args['firstName'] ?? '',
+            lastName: args['lastName'] ?? '',
+          ),
+        );
+
+      case '/SignUpPhoneNumber':
+        final args = settings.arguments as Map<String, String>? ?? {};
+        return MaterialPageRoute(
+          builder: (_) => SignUpPhoneNumberScreen(
+            firstName: args['firstName'] ?? '',
+            lastName: args['lastName'] ?? '',
+            email: args['email'] ?? '',
+            password: args['password'] ?? '',
+          ),
+        );
+
+      case '/SignUpVerificationScreen':
+        final args = settings.arguments as Map<String, String>;
+        return MaterialPageRoute(
+          builder: (_) => SignUpVerificationScreen(
+            verificationId: args['verificationId'] ?? '',
+            phoneNumber: args['phoneNumber'] ?? '',
+          ),
+        );
+
       case '/Login':
         return MaterialPageRoute(builder: (_) => LoginWidget());
+
+      // case '/Login':
+      //    return MaterialPageRoute(builder: (_) => WelcomePage());
       case '/Profile':
         return MaterialPageRoute(builder: (_) => ProfileWidget());
       case '/ForgetPassword':

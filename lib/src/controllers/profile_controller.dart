@@ -20,12 +20,14 @@ class ProfileController extends ControllerMVC {
       setState(() {
         recentOrders.add(_order);
       });
-    }, onError: (a) {
-      print(a);
-      ScaffoldMessenger.of(scaffoldKey.currentState!.context).showSnackBar(SnackBar(
-        content: Text(S.of(state!.context).verify_your_internet_connection),
-      ));
-    }, onDone: () {
+    },
+    //     onError: (a) {
+    //   print(a);
+    //   ScaffoldMessenger.of(scaffoldKey.currentState!.context).showSnackBar(SnackBar(
+    //     content: Text(S.of(state!.context).verify_your_internet_connection),
+    //   ));
+    // },
+        onDone: () {
       if (message != null) {
         ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
           content: Text(message),
