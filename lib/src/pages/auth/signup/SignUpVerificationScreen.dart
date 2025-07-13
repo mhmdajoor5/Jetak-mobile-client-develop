@@ -156,10 +156,7 @@ class _SignUpVerificationScreenState extends StateMVC<SignUpVerificationScreen> 
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                S.of(context).enterThe4DigitCodeSentTo.replaceFirst(
-                  '{phone}',
-                  widget.phoneNumber,
-                ),
+              S.of(context).enterThe4DigitCodeSentTo(widget.phoneNumber),
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
               ),

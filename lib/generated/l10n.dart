@@ -3049,6 +3049,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Verify Code`
+  String get verifyCode {
+    return Intl.message(
+      'Verify Code',
+      name: 'verifyCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the 4-digit code sent to {phone}`
+  String enterThe4DigitCodeSentTo(Object phone) {
+    return Intl.message(
+      'Enter the 4-digit code sent to $phone',
+      name: 'enterThe4DigitCodeSentTo',
+      desc: '',
+      args: [phone],
+    );
+  }
+
+  /// `Didn't receive the code? Resend it`
+  String get didntReceiveTheCodeResendit {
+    return Intl.message(
+      'Didn\'t receive the code? Resend it',
+      name: 'didntReceiveTheCodeResendit',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

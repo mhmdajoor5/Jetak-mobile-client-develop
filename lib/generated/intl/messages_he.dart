@@ -20,11 +20,13 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'he';
 
-  static String m0(time) => "פתוח עד ${time}";
+  static String m0(phone) => "הזן את הקוד בן 4 הספרות שנשלח ל-${phone}";
 
-  static String m2(id) => "הזמנה: #${id} בוטלה";
+  static String m1(time) => "פתוח עד ${time}";
 
-  static String m1(foodname) => "ה${foodname} הוסר מהעגלה שלך";
+  static String m3(id) => "הזמנה: #${id} בוטלה";
+
+  static String m2(foodname) => "ה${foodname} הוסר מהעגלה שלך";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -135,6 +137,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("משלוח או איסוף"),
         "description": MessageLookupByLibrary.simpleMessage("תיאור"),
         "details": MessageLookupByLibrary.simpleMessage("פרטים"),
+        "didntReceiveTheCodeResendit":
+            MessageLookupByLibrary.simpleMessage("לא קיבלת את הקוד? שלח שוב"),
         "discover__explorer":
             MessageLookupByLibrary.simpleMessage("גליה וחוקר"),
         "dont_have_any_item_in_the_notification_list":
@@ -150,6 +154,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "email_to_reset_password":
             MessageLookupByLibrary.simpleMessage("דואר אלקטרוני לאיפוס סיסמה"),
         "english": MessageLookupByLibrary.simpleMessage("אנגלית"),
+        "enterThe4DigitCodeSentTo": m0,
         "error_verify_email_settings":
             MessageLookupByLibrary.simpleMessage("שגיאה! אמת הגדרות דוא\"ל"),
         "estimatedTime": MessageLookupByLibrary.simpleMessage("זמן משוער:"),
@@ -297,14 +302,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "פריט או יותר בעגלתך אינם ניתנים למשלוח."),
         "open": MessageLookupByLibrary.simpleMessage("פתוח"),
-        "open_until": m0,
+        "open_until": m1,
         "opened_restaurants":
             MessageLookupByLibrary.simpleMessage("מסעדות פתוחות"),
         "or_checkout_with":
             MessageLookupByLibrary.simpleMessage("או בצע הזמנה עם"),
         "order": MessageLookupByLibrary.simpleMessage("הזמנה"),
         "orderDetails": MessageLookupByLibrary.simpleMessage("פרטי הזמנה"),
-        "orderThisorderidHasBeenCanceled": m2,
+        "orderThisorderidHasBeenCanceled": m3,
         "order_id": MessageLookupByLibrary.simpleMessage("מספר הזמנה"),
         "order_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("הזמנה רעננה בהצלחה"),
@@ -420,7 +425,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("הכתובת עודכנה בהצלחה"),
         "the_food_has_been_rated_successfully":
             MessageLookupByLibrary.simpleMessage("האוכל דורג בהצלחה"),
-        "the_food_was_removed_from_your_cart": m1,
+        "the_food_was_removed_from_your_cart": m2,
         "the_restaurant_has_been_rated_successfully":
             MessageLookupByLibrary.simpleMessage("המסעדה דורגה בהצלחה"),
         "thisFoodWasAddedToFavorite":
@@ -457,6 +462,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "validCouponCode":
             MessageLookupByLibrary.simpleMessage("קוד קופון תקף"),
         "verify": MessageLookupByLibrary.simpleMessage("אמת"),
+        "verifyCode": MessageLookupByLibrary.simpleMessage("אמת קוד"),
         "verifyPhoneNumber":
             MessageLookupByLibrary.simpleMessage("אמת מספר טלפון"),
         "verify_your_internet_connection":

@@ -283,5 +283,12 @@
   "card_added_successfully": "הכרטיס נוסף בהצלחה",
   "delete": "מחיקה",
   "no_restaurants_found": "לא נמצאו מסעדות",
-  "no_stores_found": "לא נמצאו חנויות"
+  "no_stores_found": "לא נמצאו חנויות",
+  "verifyCode": "אמת קוד",
+  "enterThe4DigitCodeSentTo": "הזן את הקוד בן 4 הספרות שנשלח ל-{phone}",
+  "@enterThe4DigitCodeSentTo": {
+    "placeholders": {
+      "phone": {}
+    }
+  },  "didntReceiveTheCodeResendit": "לא קיבלת את הקוד? שלח שוב"
 }

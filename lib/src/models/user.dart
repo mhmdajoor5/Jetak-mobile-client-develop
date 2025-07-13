@@ -6,6 +6,8 @@ enum UserState { available, away, busy }
 class User {
   String? id;
   String? name;
+  String? firstName;
+  String? lastName;
   String? email;
   String? password;
   String? apiToken;
@@ -28,6 +30,8 @@ class User {
       user.id = jsonMap?['id']?.toString();
       user.name = jsonMap?['name']?.toString() ?? '';
       user.email = jsonMap?['email']?.toString() ?? '';
+      user.firstName = jsonMap?['name']?.toString() ?? '';
+      user.lastName = jsonMap?['name']?.toString() ?? '';
       user.apiToken = jsonMap?['api_token']?.toString();
       user.deviceToken = jsonMap?['device_token']?.toString();
 
@@ -63,6 +67,8 @@ class User {
       "id": id,
       "email": email,
       "name": name,
+      "firstName": firstName,
+      "lastName": lastName,
       "password": password,
       "api_token": apiToken,
       if (deviceToken != null) "device_token": deviceToken,

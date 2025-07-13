@@ -298,5 +298,12 @@
   "card_added_successfully": "Card added successfully",
   "delete": "Delete",
   "no_restaurants_found": "No restaurants found",
-  "no_stores_found": "No stores found"
+  "no_stores_found": "No stores found",
+  "verifyCode": "Verify Code",
+  "enterThe4DigitCodeSentTo": "Enter the 4-digit code sent to {phone}",
+  "@enterThe4DigitCodeSentTo": {
+    "placeholders": {
+      "phone": {}
+    }
+  },  "didntReceiveTheCodeResendit": "Didn't receive the code? Resend it"
 }
