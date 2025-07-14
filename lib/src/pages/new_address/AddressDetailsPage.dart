@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../controllers/delivery_pickup_controller.dart';
+import '../../models/address.dart';
+import '../checkout.dart';
+import '../delivery_addresses.dart';
+import '../delivery_pickup.dart';
+
 class AddressDetailsPage extends StatefulWidget {
   final String address;
 
@@ -374,23 +380,23 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                                 Text('Optional', style: TextStyle(fontSize: 14, color: Colors.grey[700])),
 
                                 SizedBox(height: 30),
-                                Text(
-                                  "Where's the entrance?", 
-                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(height: 12),
-                                Container(
-                                  height: 160,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.shade300,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Center(
-                                    child: Icon(Icons.map, size: 40, color: Colors.grey[600]),
-                                  ),
-                                ),
+                                // Text(
+                                //   "Where's the entrance?",
+                                //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                //   overflow: TextOverflow.ellipsis,
+                                // ),
+                                // SizedBox(height: 12),
+                                // Container(
+                                //   height: 160,
+                                //   width: double.infinity,
+                                //   decoration: BoxDecoration(
+                                //     color: Colors.grey.shade300,
+                                //     borderRadius: BorderRadius.circular(12),
+                                //   ),
+                                //   child: Center(
+                                //     child: Icon(Icons.map, size: 40, color: Colors.grey[600]),
+                                //   ),
+                                // ),
 
                                 SizedBox(height: 30),
                                 Text('Address type and label', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -436,21 +442,29 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                   SizedBox(width: 16),
                   Flexible(
                     child: ElevatedButton(
-                      onPressed: () {
-                        // You can add save logic here if needed
-                        Navigator.of(context).pop();
-                      },
-                      style: ElevatedButton.styleFrom(
+    onPressed: () {
+    Navigator.of(context).pushReplacement(
+    MaterialPageRoute(
+    builder: (context) => DeliveryAddressesWidget(
+    shouldChooseDeliveryHere: true,
+    conDeliverPickupController: DeliveryPickupController(),
+    newAddress: Address(address: widget.address),
+    ),
+    ),
+    );
+    },
+    style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.secondary,
                         minimumSize: Size(100, 45),
                       ),
                       child: Text(
-                        'Save', 
+                        'Save',
                         style: TextStyle(color: Colors.white, fontSize: 16),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ),
+
                 ],
               ),
             ],

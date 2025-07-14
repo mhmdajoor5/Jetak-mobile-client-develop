@@ -280,6 +280,12 @@ class RouteGenerator {
             routeArgument: args is RouteArgument ? args : RouteArgument(),
           ),
         );
+      case '/cart':
+        return MaterialPageRoute(
+          builder: (_) => CartWidget(
+            routeArgument: args is RouteArgument ? args : RouteArgument(),
+          ),
+        );
       case '/Checkout':
         return MaterialPageRoute(builder: (_) => CheckoutWidget());
       case '/CashOnDelivery':

@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../generated/l10n.dart';
+import '../models/address.dart';
 import '../models/address.dart' as model;
 import '../models/cart.dart';
 import '../repository/cart_repository.dart';
@@ -14,6 +18,8 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
   List<model.Address> addresses = <model.Address>[];
   late GlobalKey<ScaffoldState> scaffoldKey;
   Cart? cart;
+  //List<model.Address> addresses = [];
+  Address? selectedAddress;
 
   DeliveryAddressesController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -32,12 +38,37 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
       ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
         content: Text(S.of(state!.context).verify_your_internet_connection),
       ));
-    }, onDone: () {
-      if (message != null)
-      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
-        content: Text(message),
-      ));
-        });
+    }, onDone: () async {
+      if (message != null) {
+        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
+          content: Text(message),
+        ));
+      }
+      await loadSavedAddress();
+    });
+  }
+
+  Future<void> loadSavedAddress() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? savedAddress = prefs.getString('saved_address');
+
+    if (savedAddress != null) {
+      Address address = Address.fromJson(jsonDecode(savedAddress));
+
+      final existing = addresses.firstWhere(
+            (a) => a.id == address.id,
+        orElse: () => address,
+      );
+
+      setState(() {
+        selectedAddress = existing;
+        settingRepo.deliveryAddress.value = existing;
+      });
+
+      print('✅ عنوان محفوظ تم تحميله: ${existing.description}');
+    } else {
+      print('❌ لا يوجد عنوان محفوظ');
+    }
   }
 
   void listenForCart() async {
@@ -109,11 +140,24 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
     });
   }
 
+  Future<void> saveAddress(Address address) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('saved_address', jsonEncode(address.toJson()));
+  }
+
+  Future<void> saveSelectedAddress(Address address) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('selected_address', jsonEncode(address.toJson()));
+  }
+
   void chooseDeliveryAddress(model.Address address) {
     setState(() {
       settingRepo.deliveryAddress.value = address;
+      selectedAddress = address;
     });
     settingRepo.deliveryAddress.notifyListeners();
+    saveSelectedAddress(address);
+    saveAddress(address);
   }
 
   void updateAddress(model.Address address) {
@@ -136,4 +180,23 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
       ));
     });
   }
+  Future<void> loadSelectedAddress() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? addressJson = prefs.getString('selected_address');
+
+    if (addressJson != null) {
+      Address address = Address.fromJson(jsonDecode(addressJson));
+
+      final existing = addresses.firstWhere(
+            (a) => a.id == address.id,
+        orElse: () => address,
+      );
+
+      setState(() {
+        selectedAddress = existing;
+        settingRepo.deliveryAddress.value = existing;
+      });
+    }
+  }
 }
+

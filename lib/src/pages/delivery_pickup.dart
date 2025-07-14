@@ -46,6 +46,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
 
   List<CardItem> savedCards = [];
   int selectedCardIndex = -1;
+  late TextEditingController addressController;
 
   _DeliveryPickupWidgetState() : super(DeliveryPickupController()) {
     _con = controller as DeliveryPickupController;
@@ -54,8 +55,24 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   @override
   void initState() {
     super.initState();
+    addressController = TextEditingController(text: '');
+
+    if (widget.routeArgument?.param != null && widget.routeArgument!.param is Address) {
+      Address selectedAddress = widget.routeArgument!.param as Address;
+      _con.deliveryAddress = selectedAddress;
+      _con.userDeliverAddress = selectedAddress.address ?? '';
+      addressController.text = _con.userDeliverAddress; // تحديث نص الحقل
+    }
+
     _loadSavedCards();
   }
+
+  @override
+  void dispose() {
+    addressController.dispose();
+    super.dispose();
+  }
+
 
   Future<void> _loadSavedCards() async {
     savedCards = await Helper.getSavedCards();
@@ -105,11 +122,11 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
 
   Future<void> _proceedWithPayment() async {
     print('[DEBUG] بدء عملية الدفع - طريقة الدفع: $selectedPaymentMethod');
-    
+
     // فالديشن طريقة الدفع بالبطاقة الائتمانية
     if (selectedPaymentMethod == 'credit') {
       print('[DEBUG] تم اختيار الدفع بالبطاقة');
-      
+
       // التحقق من اختيار بطاقة
       if (selectedCardIndex == -1) {
         print('[DEBUG] ❌ لم يتم اختيار أي بطاقة!');
@@ -154,7 +171,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         print('Status: ${saleResponse.status}');
         print('SaleToken: ${saleResponse.saleToken}');
         print('TotalAmount: ${saleResponse.totalAmount}');
-        
+
         if (saleResponse.status != 0) {
           print('[DEBUG] ❌ فشل في إنشاء عملية البيع');
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -163,7 +180,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
           ));
           return;
         }
-        
+
         print('[DEBUG] بدء عملية iCreditChargeSimple');
         ICreditChargeSimpleResponse response = await iCreditChargeSimple(
           selectedCard.cardCVV,
@@ -182,7 +199,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
             content: Text("✅ تم الدفع بنجاح عبر البطاقة الائتمانية"),
             backgroundColor: Colors.green,
           ));
-          
+
           // هنا يمكن الانتقال لصفحة النجاح أو تنفيذ الطلب
           Navigator.pushReplacement(
             context,
@@ -212,7 +229,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         content: Text("✅ سيتم الدفع نقداً عند التسليم"),
         backgroundColor: Colors.green,
       ));
-      
+
       // هنا يمكن الانتقال لصفحة النجاح مباشرة
       Navigator.pushReplacement(
         context,
@@ -253,7 +270,9 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         centerTitle: true,
         leading: Padding(
           padding: EdgeInsetsDirectional.only(start: 16),
-          child: CustomBackButton(onTap: () => Navigator.pop(context)),
+          child: CustomBackButton(
+            onTap: () => Navigator.of(context).pushNamedAndRemoveUntil('/cart', (route) => false),
+          ),
         ),
         title: Text(
           S.of(context).delivery_or_pickup,
@@ -285,13 +304,16 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
               const SizedBox(height: 24),
               if (selectedTap == 1) ...[
                 _buildAddressField(TextEditingController(), () async {
-                  var address = await Navigator.of(context).pushNamed('/DeliveryAddresses', arguments: [true,_con]);
-                  if (address != null) {
+                  final selectedAddress = await Navigator.of(context).pushNamed('/DeliveryAddresses', arguments: [true, _con]);
+
+                  if (selectedAddress != null && selectedAddress is Address) {
                     setState(() {
-                      _con.deliveryAddress = address as Address;
+                      _con.deliveryAddress = selectedAddress;
+                      _con.userDeliverAddress = selectedAddress.address ?? '';
                     });
                   }
                 }),
+
               ] else ...[
                 PaymentMethodCard(
                   title: S.of(context).pickup,
@@ -387,14 +409,14 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                               margin: EdgeInsets.symmetric(vertical: 4),
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: selectedCardIndex == index 
-                                      ? AppColors.cardBgLightColor 
+                                  color: selectedCardIndex == index
+                                      ? AppColors.cardBgLightColor
                                       : Colors.grey.withOpacity(0.3),
                                   width: 1.5,
                                 ),
                                 borderRadius: BorderRadius.circular(8),
-                                color: selectedCardIndex == index 
-                                    ? AppColors.cardBgLightColor.withOpacity(0.1) 
+                                color: selectedCardIndex == index
+                                    ? AppColors.cardBgLightColor.withOpacity(0.1)
                                     : Colors.white,
                               ),
                               child: ListTile(
@@ -402,9 +424,9 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     SvgPicture.asset(
-                                      'assets/img/card.svg', 
-                                      width: 28, 
-                                      height: 28, 
+                                      'assets/img/card.svg',
+                                      width: 28,
+                                      height: 28,
                                       color: AppColors.cardBgLightColor
                                     ),
                                   ],
@@ -416,8 +438,8 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                                   ],
                                 ),
                                 subtitle: Text(card.cardHolderName),
-                                trailing: selectedCardIndex == index 
-                                    ? Icon(Icons.check, color: AppColors.cardBgLightColor) 
+                                trailing: selectedCardIndex == index
+                                    ? Icon(Icons.check, color: AppColors.cardBgLightColor)
                                     : null,
                                 onTap: () {
                                   setState(() {
@@ -439,9 +461,9 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                       ),
                       child: ListTile(
                         leading: SvgPicture.asset(
-                          'assets/img/add_card.svg', 
-                          width: 28, 
-                          height: 28, 
+                          'assets/img/add_card.svg',
+                          width: 28,
+                          height: 28,
                           color: AppColors.cardBgLightColor
                         ),
                         title: Text(

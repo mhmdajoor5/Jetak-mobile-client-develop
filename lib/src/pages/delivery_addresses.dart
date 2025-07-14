@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 // import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/delivery_addresses_controller.dart';
@@ -12,14 +15,20 @@ import '../elements/ShoppingCartButtonWidget.dart';
 import '../models/address.dart';
 import '../models/payment_method.dart';
 import '../models/route_argument.dart';
+import 'delivery_pickup.dart';
 
 class DeliveryAddressesWidget extends StatefulWidget {
   final RouteArgument? routeArgument;
   final bool shouldChooseDeliveryHere ;
   late DeliveryPickupController conDeliverPickupController ;
+  final Address? newAddress;
 
 
-  DeliveryAddressesWidget({Key? key, this.routeArgument, required this.shouldChooseDeliveryHere , required this.conDeliverPickupController}) : super(key: key);
+  DeliveryAddressesWidget({
+    Key? key, this.routeArgument,
+    required this.shouldChooseDeliveryHere ,
+    required this.conDeliverPickupController,
+    this.newAddress, }) : super(key: key);
 
   @override
   _DeliveryAddressesWidgetState createState() => _DeliveryAddressesWidgetState();
@@ -28,15 +37,52 @@ class DeliveryAddressesWidget extends StatefulWidget {
 class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
   late DeliveryAddressesController _con;
   PaymentMethodList? list;
-  Address? selectedAddress; // Track the selected address
 
   _DeliveryAddressesWidgetState() : super(DeliveryAddressesController()) {
     _con = controller as DeliveryAddressesController;
   }
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.newAddress != null) {
+      _con.addresses.add(widget.newAddress!);
+      _con.selectedAddress = widget.newAddress!;
+      widget.conDeliverPickupController.userDeliverAddress =
+          widget.newAddress!.address ?? '';
+    }
+    loadAddress();
+  }
+
+  void saveAddress(Address address) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('saved_address', jsonEncode(address.toJson()));
+  }
+
+  void loadAddress() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? savedAddress = prefs.getString('saved_address');
+
+    if (savedAddress != null) {
+      Address address = Address.fromJson(jsonDecode(savedAddress));
+      setState(() {
+        _con.addresses.insert(0, address);
+      });
+    }
+  }
+
+  void onNewAddressAdded(Address newAddress) {
+    saveAddress(newAddress);
+
+    setState(() {
+      _con.addresses.insert(0, newAddress);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     list = PaymentMethodList(context);
+
     return Scaffold(
       key: _con.scaffoldKey,
       appBar: AppBar(
@@ -45,7 +91,10 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
         centerTitle: true,
         title: Text(
           S.of(context).delivery_addresses,
-          style: Theme.of(context).textTheme.headlineSmall?.merge(TextStyle(letterSpacing: 1.3)),
+          style: Theme.of(context)
+              .textTheme
+              .headlineSmall
+              ?.merge(TextStyle(letterSpacing: 1.3)),
         ),
         actions: <Widget>[
           ShoppingCartButtonWidget(
@@ -62,20 +111,24 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
               Padding(
                 padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
                 child: ListTile(
-                  leading: Icon(Icons.map, color: Theme.of(context).hintColor),
+                  leading:
+                  Icon(Icons.map, color: Theme.of(context).hintColor),
                   title: Text(
-                      S.of(context).delivery_addresses,
-                      style: Theme.of(context).textTheme.headlineLarge
+                    S.of(context).delivery_addresses,
+                    style: Theme.of(context).textTheme.headlineLarge,
                   ),
                   subtitle: Text(
-                    S.of(context).long_press_to_edit_item_swipe_item_to_delete_it,
+                    S
+                        .of(context)
+                        .long_press_to_edit_item_swipe_item_to_delete_it,
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamed('/DeliveryAddressForm', arguments: {
+                  Navigator.of(context)
+                      .pushNamed('/DeliveryAddressForm', arguments: {
                     'address': Address(),
                     'onChanged': (Address _address) {
                       _con.addAddress(_address);
@@ -83,14 +136,16 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
                   });
                 },
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  padding: EdgeInsets.all(15),
+                  margin:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context).focusColor.withOpacity(0.2),
+                        color:
+                        Theme.of(context).focusColor.withOpacity(0.2),
                         blurRadius: 5,
                       ),
                     ],
@@ -98,12 +153,16 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.add, color: Theme.of(context).colorScheme.secondary),
-                      SizedBox(width: 10),
+                      Icon(Icons.add,
+                          color: Theme.of(context).colorScheme.secondary),
+                      const SizedBox(width: 10),
                       Text(
                         S.of(context).add_new_delivery_address,
                         style: Theme.of(context).textTheme.titleMedium?.merge(
-                          TextStyle(color: Theme.of(context).colorScheme.secondary),
+                          TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondary),
                         ),
                       ),
                     ],
@@ -113,44 +172,48 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
               _con.addresses.isEmpty
                   ? CircularLoadingWidget(height: 250)
                   : ListView.separated(
-                padding: EdgeInsets.symmetric(vertical: 15),
+                padding: const EdgeInsets.symmetric(vertical: 15),
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 primary: false,
                 itemCount: _con.addresses.length,
-                separatorBuilder: (context, index) => SizedBox(height: 15),
+                separatorBuilder: (context, index) =>
+                const SizedBox(height: 15),
                 itemBuilder: (context, index) {
+                  Address address = _con.addresses.elementAt(index);
                   return DeliveryAddressesItemWidget(
-                    address: _con.addresses.elementAt(index),
+                    address: address,
                     isSelected: widget.shouldChooseDeliveryHere &&
-                        selectedAddress == _con.addresses.elementAt(index),
+                        _con.selectedAddress == address,
                     onPressed: (Address _address) {
                       if (widget.shouldChooseDeliveryHere) {
                         setState(() {
-                          selectedAddress = _address;
-                          // Update selected address
+                          _con.selectedAddress = _address;
                         });
                       } else {
-                        Navigator.of(context).pushNamed('/DeliveryAddressForm', arguments: {
-                          'address': _address,
-                          'onChanged': (Address _address) {
-                            _con.updateAddress(_address);
-                          },
-                        });
+                        Navigator.of(context).pushNamed(
+                            '/DeliveryAddressForm',
+                            arguments: {
+                              'address': _address,
+                              'onChanged': (Address updated) {
+                                _con.updateAddress(updated);
+                              },
+                            });
                       }
                     },
                     onLongPress: (Address _address) {
-                      Navigator.of(context).pushNamed('/DeliveryAddressForm', arguments: {
-                        'address': _address,
-                        'onChanged': (Address _address) {
-                          _con.updateAddress(_address);
-                        },
-                      });
+                      Navigator.of(context).pushNamed(
+                          '/DeliveryAddressForm',
+                          arguments: {
+                            'address': _address,
+                            'onChanged': (Address updated) {
+                              _con.updateAddress(updated);
+                            },
+                          });
                     },
                     onDismissed: (Address _address) {
                       _con.removeDeliveryAddress(_address);
                     },
-
                   );
                 },
               ),
@@ -158,33 +221,38 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
           ),
         ),
       ),
-      bottomNavigationBar: widget.shouldChooseDeliveryHere && selectedAddress != null
+      bottomNavigationBar:
+      widget.shouldChooseDeliveryHere && _con.selectedAddress != null
           ? BottomAppBar(
         elevation: 10,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 80.0,vertical: 10),
+          padding: const EdgeInsets.symmetric(
+              horizontal: 80.0, vertical: 10),
           child: ElevatedButton(
             onPressed: () {
-              setState((){
-                print("mElkerm : address before update -> ${widget.conDeliverPickupController.userDeliverAddress}");
-                widget.conDeliverPickupController.userDeliverAddress = selectedAddress!.address.toString();
-                print("mElkerm : address after update -> ${widget.conDeliverPickupController.userDeliverAddress}");
-                // _conDeliverPickupController.deliveryAddress = selectedAddress;
-                // _conDeliverPickupController.userDeliverAddress = selectedAddress!.address.toString();
+              setState(() {
+                widget.conDeliverPickupController.userDeliverAddress = _con.selectedAddress!.address.toString();
               });
-              Navigator.of(context).pop(selectedAddress); // Pass back the selected address
+              Navigator.of(context).pushReplacementNamed(
+                '/DeliveryPickup',
+                arguments: RouteArgument(param: _con.selectedAddress),
+              );
+
             },
+
             style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.white, backgroundColor: Theme.of(context).colorScheme.secondary, // Text color
+              foregroundColor: Colors.white,
+              backgroundColor:
+              Theme.of(context).colorScheme.secondary,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6.0), // Border radius
+                borderRadius: BorderRadius.circular(6.0),
               ),
             ),
-            child: Text(
+            child: const Text(
               "Select",
               style: TextStyle(
-                fontSize: 16, // Adjust font size
-                fontWeight: FontWeight.normal, // Make text bold
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
               ),
             ),
           ),
