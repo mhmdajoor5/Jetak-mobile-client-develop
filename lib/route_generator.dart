@@ -93,10 +93,10 @@ class RouteGenerator {
         );
 
       case '/SignUpVerificationScreen':
-        final args = settings.arguments as Map<String, String>;
+        final args = settings.arguments as Map<String, String>? ?? {};
         return MaterialPageRoute(
           builder: (_) => SignUpVerificationScreen(
-            verificationId: args['verificationId'] ?? '',
+            //verificationId: args['verificationId'] ?? '',
             phoneNumber: args['phoneNumber'] ?? '',
           ),
         );

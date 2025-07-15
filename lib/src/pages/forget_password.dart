@@ -3,9 +3,6 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/user_controller.dart';
-import '../elements/BlockButtonWidget.dart';
-import '../helpers/app_config.dart' as config;
-import '../helpers/helper.dart';
 
 class ForgetPasswordWidget extends StatefulWidget {
   @override
@@ -20,169 +17,111 @@ class _ForgetPasswordWidgetState extends StateMVC<ForgetPasswordWidget> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: Helper.of(context).onWillPop,
-      child: Scaffold(
-        key: _con.scaffoldKey,
-        //resizeToAvoidBottomPadding: false,
-        resizeToAvoidBottomInset: true,
-        body: Stack(
-          alignment: AlignmentDirectional.topCenter,
-          children: <Widget>[
-            Positioned(
-              top: 0,
-              child: Container(
-                width: config.App(context).appWidth(100),
-                height: config.App(context).appHeight(37),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-            ),
-            Positioned(
-              top: config.App(context).appHeight(37) - 120,
-              child: Container(
-                width: config.App(context).appWidth(84),
-                height: config.App(context).appHeight(37),
-                child: Text(
-                  S.of(context).email_to_reset_password,
-                  style: Theme.of(context).textTheme.displayMedium?.merge(
-                    TextStyle(color: Theme.of(context).primaryColor),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: config.App(context).appHeight(37) - 50,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 50,
-                      color: Theme.of(context).hintColor.withOpacity(0.2),
-                    ),
-                  ],
-                ),
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                padding: EdgeInsets.symmetric(vertical: 50, horizontal: 27),
-                width: config.App(context).appWidth(88),
-                //              height: config.App(context).appHeight(55),
-                child: Form(
-                  key: _con.loginFormKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      TextFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        onSaved: (input) {
-                          if (input != null) {
-                            _con.user.email = input;
-                          }
-                        },
-                        validator: (input) {
-                          if (input != null) {
-                            return !input.contains('@')
-                                ? S.of(context).should_be_a_valid_email
-                                : null;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          labelText: S.of(context).email,
-                          labelStyle: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          contentPadding: EdgeInsets.all(12),
-                          hintText: 'johndoe@gmail.com',
-                          hintStyle: TextStyle(
-                            color: Theme.of(
-                              context,
-                            ).focusColor.withOpacity(0.7),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.alternate_email,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Theme.of(
-                                context,
-                              ).focusColor.withOpacity(0.2),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Theme.of(
-                                context,
-                              ).focusColor.withOpacity(0.5),
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Theme.of(
-                                context,
-                              ).focusColor.withOpacity(0.2),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 30),
-                      BlockButtonWidget(
-                        text: Text(
-                          S.of(context).send_password_reset_link,
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                        color: Theme.of(context).colorScheme.secondary,
-                        onPressed: () {
-                          _con.resetPassword();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 10,
+    return Scaffold(
+      key: _con.scaffoldKey,
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(20),
+            child: Form(
+              key: _con.loginFormKey,
               child: Column(
-                children: <Widget>[
-                  MaterialButton(
-                    elevation: 0,
-                    focusElevation: 0,
-                    highlightElevation: 0,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // ✅ الشعار
+                  Image.asset('assets/img/logo.png', height: 120),
+
+                  SizedBox(height: 40),
+
+                  // ✅ حقل الإيميل
+                  TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    onSaved: (input) {
+                      if (input != null) {
+                        _con.user.email = input;
+                      }
+                    },
+                    validator: (input) {
+                      if (input != null) {
+                        return !input.contains('@')
+                            ? S.of(context).should_be_a_valid_email
+                            : null;
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      labelText: S.of(context).email,
+                      labelStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      contentPadding: EdgeInsets.all(12),
+                      hintText: 'johndoe@gmail.com',
+                      hintStyle: TextStyle(
+                        color: Theme.of(context).focusColor.withOpacity(0.7),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.alternate_email,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Theme.of(context).focusColor.withOpacity(0.2),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Theme.of(context).focusColor.withOpacity(0.5),
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Theme.of(context).focusColor.withOpacity(0.2),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 40),
+                  SizedBox(
+                    width: 200,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _con.resetPassword();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      child: Text(
+                        S.of(context).send_password_reset_link,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 150),
+                  TextButton(
                     onPressed: () {
                       Navigator.of(context).pushReplacementNamed('/Login');
                     },
-                    textColor: Theme.of(context).hintColor,
                     child: Text(
                       S.of(context).i_remember_my_password_return_to_login,
+                      style: TextStyle(color: Colors.black87),
                     ),
                   ),
-                  MaterialButton(
-                    elevation: 0,
-                    focusElevation: 0,
-                    highlightElevation: 0,
+                  TextButton(
                     onPressed: () {
                       Navigator.of(context).pushReplacementNamed('/SignUp');
                     },
-                    textColor: Theme.of(context).hintColor,
-                    child: Text(S.of(context).i_dont_have_an_account),
+                    child: Text(S.of(context).i_dont_have_an_account,
+                      style: TextStyle(color: Colors.black87),
+                    ),
                   ),
                 ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

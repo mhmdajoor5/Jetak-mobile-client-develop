@@ -8,6 +8,7 @@ import '../elements/PaymentSettingsDialog.dart';
 import '../elements/ProfileSettingsDialog.dart';
 import '../helpers/helper.dart';
 import '../repository/user_repository.dart';
+import 'RecentOrdersWidget.dart';
 
 class SettingsWidget extends StatefulWidget {
   @override
@@ -15,16 +16,54 @@ class SettingsWidget extends StatefulWidget {
 }
 
 class _SettingsWidgetState extends StateMVC<SettingsWidget> {
+  final GlobalKey<FormState> _addressFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _nameFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _emailFormKey = GlobalKey<FormState>();
   late SettingsController _con;
+  bool isEditingName = false;
+  bool isEditingEmail = false;
+  bool isEditingAddress = false;
+  late TextEditingController fullNameController;
+  late TextEditingController emailController;
+  late TextEditingController addressController;
+
+  bool _controllersInitialized = false;
   _SettingsWidgetState() : super(SettingsController()) {
     _con = controller as SettingsController;
   }
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_controllersInitialized && currentUser.value.id != null) {
+      fullNameController = TextEditingController(text: currentUser.value.name ?? '');
+      emailController = TextEditingController(text: currentUser.value.email ?? '');
+      addressController = TextEditingController(text: currentUser.value.address ?? '');
+      _controllersInitialized = true;
+    }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    if (currentUser.value.id != null) {
+      fullNameController = TextEditingController(text: currentUser.value.name ?? '');
+      emailController = TextEditingController(text: currentUser.value.email ?? '');
+      addressController = TextEditingController(text: currentUser.value.address ?? '');
+    } else {
+      fullNameController = TextEditingController();
+      emailController = TextEditingController();
+      addressController = TextEditingController();
+    }
+  }
+
+  @override
+  void dispose() {
+    fullNameController.dispose();
+    emailController.dispose();
+    addressController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,57 +135,166 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
               S.of(context).profile_settings,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
-            trailing: ProfileSettingsDialog(
-              user: currentUser.value,
-              onChanged: () async {
-                await _con.update(currentUser.value);
-                if (!currentUser.value.verifiedPhone!) {
-                  var bs = _con.scaffoldKey.currentState?.showBottomSheet(
-                        (ctx) => MobileVerificationBottomSheetWidget(
-                        scaffoldKey: _con.scaffoldKey,
-                        user: currentUser.value),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
-                  );
-                  bs?.closed.then((_) => _con.update(currentUser.value));
-                }
+            // trailing: ProfileSettingsDialog(
+            //   user: currentUser.value,
+            //   onChanged: () async {
+            //     await _con.update(currentUser.value);
+            //     if (!currentUser.value.verifiedPhone!) {
+            //       // var bs = _con.scaffoldKey.currentState?.showBottomSheet(
+            //       //       (ctx) => MobileVerificationBottomSheetWidget(
+            //       //       scaffoldKey: _con.scaffoldKey,
+            //       //       user: currentUser.value),
+            //       //   shape: RoundedRectangleBorder(
+            //       //       borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
+            //       // );
+            //       // bs?.closed.then((_) => _con.update(currentUser.value));
+            //     }
+            //   },
+            // ),
+          ),
+          Divider(height: 1),
+          ListTile(
+            dense: true,
+            title: Text(
+              S.of(context).full_name,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
+            ),
+            trailing: isEditingName
+                ? SizedBox(
+              width: 200,
+              child: Form(
+                key: _nameFormKey,
+                child: TextFormField(
+                  controller: fullNameController,
+                  autofocus: true,
+                  style: TextStyle(color: Theme.of(context).hintColor),
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    hintText: S.of(context).john_doe,
+                    labelText: S.of(context).full_name,
+                    isDense: true,
+                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: Colors.grey.shade400),
+                    ),
+                  ),
+                  validator: (input) {
+                    if (input == null || input.trim().length < 3) {
+                      return S.of(context).not_a_valid_full_name;
+                    }
+                    return null;
+                  },
+                  onFieldSubmitted: (value) {
+                    if (_nameFormKey.currentState!.validate()) {
+                      setState(() {
+                        isEditingName = false;
+                        currentUser.value.name = value.trim();
+                        _con.update(currentUser.value);
+                      });
+                    }
+                  },
+                  onEditingComplete: () {
+                    if (_nameFormKey.currentState!.validate()) {
+                      setState(() {
+                        isEditingName = false;
+                        currentUser.value.name = fullNameController.text.trim();
+                        _con.update(currentUser.value);
+                      });
+                    }
+                  },
+                ),
+              ),
+            )
+                : InkWell(
+              onTap: () {
+                setState(() {
+                  isEditingName = true;
+                });
               },
-            ),
-          ),
-          Divider(height: 1),
-
-          ListTile(
-            dense: true,
-            title: Text(S.of(context).full_name,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            trailing: Text(
-              Helper.limitString(currentUser.value.bio!),
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.black87,
-                fontWeight: FontWeight.bold,
+              child: Text(
+                fullNameController.text,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
-          Divider(height: 1),
 
+          Divider(height: 1),
           ListTile(
             dense: true,
-            title: Text(S.of(context).email,
+            title: Text(
+              S.of(context).email,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
-            trailing: Text(
-              Helper.limitString(currentUser.value.bio!),
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.black87,
-                fontWeight: FontWeight.bold,
+            trailing: isEditingEmail
+                ? SizedBox(
+              width: 250,
+              child: Form(
+                key: _emailFormKey,
+                child: TextFormField(
+                  controller: emailController,
+                  autofocus: true,
+                  keyboardType: TextInputType.emailAddress,
+                  style: TextStyle(color: Theme.of(context).hintColor),
+                  decoration: InputDecoration(
+                    hintText: 'johndo@gmail.com',
+                    labelText: S.of(context).email_address,
+                    isDense: true,
+                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: Colors.grey.shade400),
+                    ),
+                  ),
+                  validator: (input) {
+                    if (input == null || !input.contains('@') || input.trim().isEmpty) {
+                      return S.of(context).not_a_valid_email;
+                    }
+                    return null;
+                  },
+                  onFieldSubmitted: (value) {
+                    if (_emailFormKey.currentState!.validate()) {
+                      setState(() {
+                        isEditingEmail = false;
+                        currentUser.value.email = value.trim();
+                        _con.update(currentUser.value);
+                      });
+                    }
+                  },
+                  onEditingComplete: () {
+                    if (_emailFormKey.currentState!.validate()) {
+                      setState(() {
+                        isEditingEmail = false;
+                        currentUser.value.email = emailController.text.trim();
+                        _con.update(currentUser.value);
+                      });
+                    }
+                  },
+                ),
+              ),
+            )
+                : InkWell(
+              onTap: () {
+                setState(() {
+                  isEditingEmail = true;
+                });
+              },
+              child: Text(
+                Helper.limitString(currentUser.value.email ?? ''),
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
-          Divider(height: 1),
 
+          Divider(height: 1),
           ListTile(
             dense: true,
             title: Wrap(
@@ -176,37 +324,72 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
               ),
             ),
           ),
-
           Divider(height: 1),
 
-          ListTile(
-            dense: true,
-            title: Text(S.of(context).address,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            trailing: Text(
-              Helper.limitString(currentUser.value.bio!),
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.black87,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
           Divider(height: 1),
 
           ListTile(
             dense: true,
             title: Text(
-              S.of(context).about,
+              S.of(context).address,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
-            trailing: Text(
-              Helper.limitString(currentUser.value.bio!),
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.black87,
-                fontWeight: FontWeight.bold,
+            trailing: isEditingAddress
+                ? SizedBox(
+              width: 200,
+              child: Form(
+                key: _addressFormKey,
+                child: TextFormField(
+                  controller: addressController,
+                  style: TextStyle(color: Theme.of(context).hintColor),
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    hintText: S.of(context).your_address,
+                    labelText: S.of(context).address,
+                    isDense: true,
+                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: Colors.grey.shade400),
+                    ),
+                  ),
+                  validator: (input) =>
+                  input == null || input.trim().length < 3 ? S.of(context).not_a_valid_address : null,
+                  autofocus: true,
+                  onFieldSubmitted: (value) {
+                    if (_addressFormKey.currentState?.validate() ?? false) {
+                      setState(() {
+                        isEditingAddress = false;
+                        currentUser.value.address = addressController.text.trim();
+                      });
+                      _con.update(currentUser.value);
+                    }
+                  },
+                  onEditingComplete: () {
+                    if (_addressFormKey.currentState?.validate() ?? false) {
+                      setState(() {
+                        isEditingAddress = false;
+                        currentUser.value.address = addressController.text.trim();
+                      });
+                      _con.update(currentUser.value);
+                    }
+                  },
+                ),
+              ),
+            )
+                : InkWell(
+              onTap: () {
+                setState(() {
+                  isEditingAddress = true;
+                });
+              },
+              child: Text(
+                Helper.limitString(currentUser.value.address ?? ''),
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
@@ -254,6 +437,32 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
+          Divider(height: 1),
+
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => RecentOrdersWidget()));
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.history,
+                    size: 24,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
+                  ),
+                  SizedBox(width: 12),
+                  Text(
+                    S.of(context).recent_orders,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+
           Divider(height: 1),
 
           ListTile(

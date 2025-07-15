@@ -382,4 +382,40 @@ class UserController extends ControllerMVC {
       );
     }
   }
+
+  Future<void> verifyOtpCode(String code) async {
+    if (context == null) return;
+
+    _showLoader();
+
+    try {
+      final response = await http.post(
+        Uri.parse('https://carrytechnologies.co/api/submit-otp'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          "api_token": "fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv",
+          "code": code,
+        }),
+      );
+
+      _hideLoader();
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['success'] == true || data['status'] == 'success') {
+          _showSnackBar("✅ تم التحقق بنجاح");
+          Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
+        } else {
+          _showSnackBar("❌ كود خاطئ أو منتهي الصلاحية");
+        }
+      } else {
+        _showSnackBar("❌ فشل التحقق: ${response.statusCode}");
+      }
+    } catch (e) {
+      _hideLoader();
+      _showSnackBar("حدث خطأ أثناء التحقق");
+      print('OTP Verify Error: $e');
+    }
+  }
+
 }

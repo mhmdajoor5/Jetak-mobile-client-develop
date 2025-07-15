@@ -13,6 +13,7 @@ import '../bottom_nav_bar_modules/orders.dart';
 import '../bottom_nav_bar_modules/profile.dart';
 import '../bottom_nav_bar_modules/map.dart';
 import '../bottom_nav_bar_modules/restaurants.dart';
+import '../settings.dart';
 
 // ignore: must_be_immutable
 class PagesWidget extends StatefulWidget {
@@ -78,12 +79,16 @@ class _PagesWidgetState extends State<PagesWidget> {
             parentScaffoldKey: widget.scaffoldKey,
             routeArgument: widget.routeArgument,
           );
+          break;
 
         /// mElkerm : add profile Screen to the bottom nav bar
         case 4:
-          widget.currentPage = ProfileWidget(
-            parentScaffoldKey: widget.scaffoldKey,
-          );
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => SettingsWidget()),
+            );
+          });
+          break;
         default:
           widget.currentPage = StoresWidget(
             parentScaffoldKey: widget.scaffoldKey,
@@ -109,13 +114,13 @@ class _PagesWidgetState extends State<PagesWidget> {
       child: Scaffold(
         key: widget.scaffoldKey,
         drawer: DrawerWidget(),
-        endDrawer: FilterWidget(
-          onFilter: (filter) {
-            Navigator.of(
-              context,
-            ).pushReplacementNamed('/Pages', arguments: widget.currentTab);
-          },
-        ),
+        // endDrawer: FilterWidget(
+        //   onFilter: (filter) {
+        //     Navigator.of(
+        //       context,
+        //     ).pushReplacementNamed('/Pages', arguments: widget.currentTab);
+        //   },
+        // ),
         body: widget.currentPage,
         bottomNavigationBar: ClipRRect(
           borderRadius: const BorderRadius.only(

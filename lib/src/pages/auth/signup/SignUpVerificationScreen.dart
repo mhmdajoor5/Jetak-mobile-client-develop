@@ -1,19 +1,13 @@
 import 'dart:async';
-
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
-
-import '../../../../generated/l10n.dart';
-import '../../../controllers/user_controller.dart';
+import 'package:http/http.dart' as http;
 
 class SignUpVerificationScreen extends StatefulWidget {
-  final String verificationId;
   final String phoneNumber;
 
   const SignUpVerificationScreen({
     Key? key,
-    required this.verificationId,
     required this.phoneNumber,
   }) : super(key: key);
 
@@ -21,7 +15,7 @@ class SignUpVerificationScreen extends StatefulWidget {
   _SignUpVerificationScreenState createState() => _SignUpVerificationScreenState();
 }
 
-class _SignUpVerificationScreenState extends StateMVC<SignUpVerificationScreen> {
+class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
   final int codeLength = 4;
   late List<TextEditingController> controllers;
   late List<FocusNode> focusNodes;
@@ -31,6 +25,46 @@ class _SignUpVerificationScreenState extends StateMVC<SignUpVerificationScreen> 
 
   bool isVerifying = false;
   String errorMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    controllers = List.generate(codeLength, (_) => TextEditingController());
+    focusNodes = List.generate(codeLength, (_) => FocusNode());
+    sendOtp();
+    startResendCooldown();
+  }
+
+  Future<void> sendOtp() async {
+    try {
+      final response = await http.post(
+        Uri.parse('https://carrytechnologies.co/api/send-otp'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          "api_token": "fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv",
+          "phone": widget.phoneNumber,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['success'] == true || data['status'] == 'success') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('📩 OTP code has been sent')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('❌ Failed to send OTP code')),
+          );
+        }
+      }
+    } catch (e) {
+      print('Send OTP Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An error occurred while sending the OTP')),
+      );
+    }
+  }
 
   void startResendCooldown() {
     setState(() {
@@ -50,58 +84,9 @@ class _SignUpVerificationScreenState extends StateMVC<SignUpVerificationScreen> 
     });
   }
 
-  void resendCode() async {
-    setState(() {
-      isVerifying = true;
-      errorMessage = '';
-    });
-
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: widget.phoneNumber,
-      timeout: const Duration(seconds: 60),
-      verificationCompleted: (PhoneAuthCredential credential) {
-      },
-      verificationFailed: (FirebaseAuthException e) {
-        setState(() {
-          errorMessage = e.message ?? 'فشل إرسال الكود';
-          isVerifying = false;
-        });
-      },
-      codeSent: (String newVerificationId, int? resendToken) {
-        setState(() {
-          isVerifying = false;
-        });
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => SignUpVerificationScreen(
-              verificationId: newVerificationId,
-              phoneNumber: widget.phoneNumber,
-            ),
-          ),
-        );
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {
-        startResendCooldown();
-      },
-    );
-  }
-
-
-  @override
-  void initState() {
-    super.initState();
-    controllers = List.generate(codeLength, (_) => TextEditingController());
-    focusNodes = List.generate(codeLength, (_) => FocusNode());
+  void resendCode() {
+    sendOtp();
     startResendCooldown();
-  }
-
-  @override
-  void dispose() {
-    for (var c in controllers) c.dispose();
-    for (var f in focusNodes) f.dispose();
-    super.dispose();
   }
 
   void verifyOTP() async {
@@ -114,142 +99,190 @@ class _SignUpVerificationScreenState extends StateMVC<SignUpVerificationScreen> 
     });
 
     try {
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: widget.verificationId,
-        smsCode: smsCode,
+      final response = await http.post(
+        Uri.parse('https://carrytechnologies.co/api/submit-otp'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          "api_token": "fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv",
+          "code": smsCode,
+        }),
       );
 
-      await FirebaseAuth.instance.signInWithCredential(credential);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('تم التحقق بنجاح 🎉'),
-          backgroundColor: Colors.green,
-        ),
-      );
-
-      await Future.delayed(Duration(seconds: 2));
-      Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
-
-    } catch (e) {
       setState(() {
-        //errorMessage = S.of(context).invalidCodeTryAgain;
         isVerifying = false;
       });
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['success'] == true || data['status'] == 'success') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("✅ Verification successful")),
+          );
+          Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
+        } else {
+          setState(() {
+            errorMessage = "❌ Invalid or expired code";
+          });
+        }
+      } else {
+        setState(() {
+          errorMessage = "❌ Verification failed: ${response.statusCode}";
+        });
+      }
+    } catch (e) {
+      setState(() {
+        isVerifying = false;
+        errorMessage = "An error occurred during verification";
+      });
+      print('OTP Verify Error: $e');
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    final locale = Localizations.localeOf(context);
-    bool isRTL = ['ar', 'he'].contains(locale.languageCode);
+  void dispose() {
+    for (var c in controllers) c.dispose();
+    for (var f in focusNodes) f.dispose();
+    _resendTimer?.cancel();
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).verifyCode),
+        title: Text('Verification Code'),
         centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Directionality(
-          textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-              S.of(context).enterThe4DigitCodeSentTo(widget.phoneNumber),
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-              ),
-              SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(codeLength, (index) {
-                  return SizedBox(
-                    width: 55,
-                    child: TextField(
-                      controller: controllers[index],
-                      focusNode: focusNodes[index],
-                      maxLength: 1,
-                      keyboardType: TextInputType.number,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      decoration: InputDecoration(
-                        counterText: '',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(color: Colors.blue.shade300, width: 2),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(color: Colors.blue.shade700, width: 3),
-                        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Enter the 4-digit verification code sent to ${widget.phoneNumber}',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+            ),
+            SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: List.generate(codeLength, (index) {
+                return SizedBox(
+                  width: 55,
+                  child: TextField(
+                    controller: controllers[index],
+                    focusNode: focusNodes[index],
+                    maxLength: 1,
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    decoration: InputDecoration(
+                      counterText: '',
+                      hintText: '0',
+                      hintStyle: TextStyle(
+                        color: Colors.grey.shade400,
+                        fontSize: 20,
                       ),
-                      onChanged: (value) {
-                        if (value.isNotEmpty && index < codeLength - 1) {
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: Colors.blue.shade300, width: 2),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: Colors.blue.shade700, width: 3),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      if (value.length > 1) {
+                        controllers[index].text = value.substring(0, 1);
+                      }
+                      if (value.isNotEmpty) {
+                        if (index < codeLength - 1) {
                           FocusScope.of(context).requestFocus(focusNodes[index + 1]);
-                        } else if (value.isEmpty && index > 0) {
-                          FocusScope.of(context).requestFocus(focusNodes[index - 1]);
+                        } else {
+                          FocusScope.of(context).unfocus();
                         }
-                      },
-                    ),
-                  );
-                }),
+                      } else {
+                        if (index > 0) {
+                          FocusScope.of(context).requestFocus(focusNodes[index - 1]);
+                          controllers[index - 1].selection = TextSelection.collapsed(offset: controllers[index - 1].text.length);
+                        }
+                      }
+
+                      if (controllers.every((c) => c.text.isNotEmpty)) {
+                        verifyOTP();
+                      }
+                    },
+                  ),
+                );
+              }),
+            ),
+            if (errorMessage.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Text(
+                  errorMessage,
+                  style: TextStyle(color: Colors.red.shade700, fontWeight: FontWeight.bold),
+                ),
               ),
-              if (errorMessage.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
+            SizedBox(height: 30),
+            SizedBox(
+              width: 200,
+              child: ElevatedButton(
+                onPressed: isVerifying ? null : verifyOTP,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+                child: isVerifying
+                    ? SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3),
+                )
+                    : Text(
+                  'Verify',
+                  style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Column(
+              children: [
+                isVerifying
+                    ? CircularProgressIndicator()
+                    : TextButton(
+                  onPressed: canResend ? resendCode : null,
                   child: Text(
-                    errorMessage,
-                    style: TextStyle(color: Colors.red.shade700, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              SizedBox(height: 30),
-              SizedBox(
-                width: 200,
-                child: ElevatedButton(
-                  onPressed: isVerifying ? null : verifyOTP,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  ),
-                  child: isVerifying
-                      ? SizedBox(
-                    height: 24,
-                    width: 24,
-                    child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3),
-                  )
-                      : Text(
-                    S.of(context).verifyCode,
-                    style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              Column(
-                children: [
-                  TextButton(
-                    onPressed: canResend ? resendCode : null,
-                    child: Text(
-                      S.of(context).didntReceiveTheCodeResendit,
-                      style: TextStyle(
-                        color: canResend ? Colors.blue.shade700 : Colors.grey,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    'Didn\'t receive the code? Resend',
+                    style: TextStyle(
+                      color: canResend ? Colors.blue.shade700 : Colors.grey,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  if (!canResend)
-                    Text(
-                      'إعادة الإرسال خلال $resendCooldown ثانية',
-                      style: TextStyle(
-                        color: Colors.grey.shade600,
-                        fontSize: 13,
-                      ),
+                ),
+                if (!canResend)
+                  Text(
+                    'Resend available in $resendCooldown seconds',
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
+                      fontSize: 13,
                     ),
-                ],
+                  ),
+              ],
+            ),
+            SizedBox(height: 10),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Back to edit number',
+                style: TextStyle(color: Colors.blue),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

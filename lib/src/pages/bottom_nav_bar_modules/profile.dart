@@ -12,7 +12,6 @@ import '../../elements/ShoppingCartButtonWidget.dart';
 import '../../repository/user_repository.dart';
 
 
-
 class ProfileWidget extends StatefulWidget {
   final GlobalKey<ScaffoldState>? parentScaffoldKey;
 

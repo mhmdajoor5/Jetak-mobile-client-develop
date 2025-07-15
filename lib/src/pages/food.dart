@@ -33,6 +33,25 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
     super.initState();
   }
 
+  Widget _buildCircleButton({
+    required IconData icon,
+    required Color color,
+    required VoidCallback onPressed,
+  }) {
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.9),
+        shape: BoxShape.circle,
+      ),
+      child: IconButton(
+        icon: Icon(icon, color: color, size: 20),
+        onPressed: onPressed,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return _con.food.image == null
@@ -62,10 +81,12 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                       automaticallyImplyLeading: false, // إزالة زر الباك
                       flexibleSpace: FlexibleSpaceBar(
                         collapseMode: CollapseMode.parallax,
-                        background: Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          child: Stack(
+                        background:
+                        // Container(
+                        //   width: double.infinity,
+                        //   height: double.infinity,
+                        //   child:
+                          Stack(
                             fit: StackFit.expand,
                             children: [
                               CachedNetworkImage(
@@ -106,53 +127,34 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                   ),
                                 ),
                               ),
+                              Positioned(
+                                top: 30,
+                                right: 16,
+                                child: Row(
+                                  children: [
+                                    _buildCircleButton(
+                                      icon: _con.favorite.id.isNotEmpty
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
+                                      color: _con.favorite.id.isNotEmpty
+                                          ? Colors.red
+                                          : Colors.grey,
+                                      onPressed: () {
+                                        _con.addToFavorite(_con.food);
+                                      },
+                                    ),
+                                    SizedBox(width: 10),
+                                    _buildCircleButton(
+                                      icon: Icons.share,
+                                      color: Colors.black,
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
-                        ),
                       ),
-                      actions: [
-                        // زر المفضلة
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.9),
-                              shape: BoxShape.circle,
-                            ),
-                            child: IconButton(
-                              icon: Icon(
-                                _con.favorite.id.isNotEmpty ? Icons.favorite : Icons.favorite_border,
-                                color: _con.favorite.id.isNotEmpty ? Colors.red : Colors.grey,
-                                size: 20,
-                              ),
-                              onPressed: () {
-                                _con.addToFavorite(_con.food);
-                              },
-                            ),
-                          ),
-                        ),
-                        // زر الشير
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.9),
-                              shape: BoxShape.circle,
-                            ),
-                            child: IconButton(
-                              icon: Icon(Icons.share, color: Colors.black, size: 20),
-                              onPressed: () {
-                                // وظيفة الشير - يمكن إضافة المزيد لاحقاً
-                                // TODO: إضافة وظيفة المشاركة
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
@@ -538,6 +540,9 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                               behavior: SnackBarBehavior.floating,
                             ),
                           );
+                          Future.delayed(Duration(seconds: 2), () {
+                            Navigator.of(context).pop();
+                          });
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue[600],

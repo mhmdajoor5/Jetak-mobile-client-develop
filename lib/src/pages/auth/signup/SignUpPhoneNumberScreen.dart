@@ -1,5 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../../../generated/l10n.dart';
@@ -36,7 +37,6 @@ class _SignUpPhoneNumberScreenState extends StateMVC<SignUpPhoneNumberScreen> {
   @override
   void initState() {
     super.initState();
-    // خزّن البيانات الممررة في الـ controller
     _con.user.firstName = widget.firstName;
     _con.user.lastName = widget.lastName;
     _con.user.name = '${widget.firstName} ${widget.lastName}';
@@ -100,36 +100,35 @@ class _SignUpPhoneNumberScreenState extends StateMVC<SignUpPhoneNumberScreen> {
                   //       );
                   //       return;
                   //     }
-                  //     await FirebaseAuth.instance.verifyPhoneNumber(
-                  //       phoneNumber: _con.user.phone!,
-                  //       timeout: const Duration(seconds: 60),
                   //
-                  //       verificationCompleted: (PhoneAuthCredential credential) async {
-                  //         await FirebaseAuth.instance.signInWithCredential(credential);
-                  //       },
+                  //     await _con.register();
                   //
-                  //       verificationFailed: (FirebaseAuthException e) {
-                  //         ScaffoldMessenger.of(context).showSnackBar(
-                  //           SnackBar(content: Text('فشل التحقق: ${e.message}')),
-                  //         );
-                  //       },
-                  //
-                  //       codeSent: (String verificationId, int? resendToken) {
-                  //         Navigator.of(context).pushReplacement(
-                  //           MaterialPageRoute(
-                  //             builder: (context) => SignUpVerificationScreen(
-                  //               verificationId: verificationId,
-                  //               phoneNumber: _con.user.phone!,
-                  //             ),
-                  //           ),
-                  //         );
-                  //       },
-                  //
-                  //       codeAutoRetrievalTimeout: (String verificationId) {
-                  //       },
+                  //     final response = await http.post(
+                  //       Uri.parse('https://carrytechnologies.co/api/send-otp'),
+                  //       headers: {'Content-Type': 'application/json'},
+                  //       body: jsonEncode({
+                  //         "api_token": "fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv",
+                  //         "phone": _con.user.phone,
+                  //       }),
                   //     );
+                  //
+                  //     final data = jsonDecode(response.body);
+                  //     if (response.statusCode == 200 && (data['success'] == true || data['status'] == 'success')) {
+                  //       Navigator.of(context).push(
+                  //         MaterialPageRoute(
+                  //           builder: (context) => SignUpVerificationScreen(
+                  //             phoneNumber: _con.user.phone!,
+                  //           ),
+                  //         ),
+                  //       );
+                  //     } else {
+                  //       ScaffoldMessenger.of(context).showSnackBar(
+                  //         SnackBar(content: Text('فشل إرسال كود التحقق')),
+                  //       );
+                  //     }
                   //   }
                   // },
+
                   onPressed: () async {
                     if (_con.loginFormKey.currentState!.validate()) {
                       _con.loginFormKey.currentState?.save();
@@ -143,10 +142,9 @@ class _SignUpPhoneNumberScreenState extends StateMVC<SignUpPhoneNumberScreen> {
 
                       await _con.register();
 
-                      Navigator.of(context).pushReplacement(
+                      Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => SignUpVerificationScreen(
-                            verificationId: 'dummy-verification-id',
                             phoneNumber: _con.user.phone!,
                           ),
                         ),
