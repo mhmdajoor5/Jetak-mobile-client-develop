@@ -223,23 +223,26 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
           backgroundColor: Colors.red,
         ));
       }
-    } else if (selectedPaymentMethod == 'cash') {
-      print('[DEBUG] ✅ تم اختيار الدفع نقداً');
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("✅ سيتم الدفع نقداً عند التسليم"),
-        backgroundColor: Colors.green,
-      ));
+    } 
+    // Cash payment option disabled
+    // else if (selectedPaymentMethod == 'cash') {
+    //   print('[DEBUG] ✅ تم اختيار الدفع نقداً');
+    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //     content: Text("✅ سيتم الدفع نقداً عند التسليم"),
+    //     backgroundColor: Colors.green,
+    //   ));
 
-      // هنا يمكن الانتقال لصفحة النجاح مباشرة
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => OrderSuccessWidget(
-            routeArgument: RouteArgument(param: 'Cash on Delivery'),
-          ),
-        ),
-      );
-    } else {
+    //   // هنا يمكن الانتقال لصفحة النجاح مباشرة
+    //   Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => OrderSuccessWidget(
+    //         routeArgument: RouteArgument(param: 'Cash on Delivery'),
+    //       ),
+    //     ),
+    //   );
+    // } 
+    else {
       print('[DEBUG] ❌ لم يتم اختيار طريقة دفع');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("❌ يرجى اختيار طريقة دفع"),
@@ -517,16 +520,17 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                   ],
                 ),
               const SizedBox(height: 8),
-              PaymentMethodCard(
-                title: S.of(context).cash,
-                image: 'assets/img/empty-wallet.svg',
-                isSelected: selectedPaymentMethod.contains('cash'),
-                onTap: () => setState(() {
-                  selectedPaymentMethod = 'cash';
-                  selectedCardIndex = -1;
-                  showCards = false;
-                }),
-              ),
+              // Cash payment option disabled
+              // PaymentMethodCard(
+              //   title: S.of(context).cash,
+              //   image: 'assets/img/empty-wallet.svg',
+              //   isSelected: selectedPaymentMethod.contains('cash'),
+              //   onTap: () => setState(() {
+              //     selectedPaymentMethod = 'cash';
+              //     selectedCardIndex = -1;
+              //     showCards = false;
+              //   }),
+              // ),
               const SizedBox(height: 16),
               _buildPromoCodeField(TextEditingController()),
               const SizedBox(height: 24),
