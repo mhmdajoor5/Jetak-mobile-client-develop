@@ -35,12 +35,13 @@ class PaymentMethodList {
       // new PaymentMethod("paypal", S.of(_context).paypal, S.of(_context).click_to_pay_with_your_paypal_account, "/PayPal", "assets/img/paypal.png"),
     ];
     this._cashList = [
-      new PaymentMethod(
-          "cod",
-          S.of(_context).cash_on_delivery,
-          S.of(_context).click_to_pay_cash_on_delivery,
-          "/CashOnDelivery",
-          "assets/img/cash.png"),
+      // Cash payment option disabled
+      // new PaymentMethod(
+      //     "cod",
+      //     S.of(_context).cash_on_delivery,
+      //     S.of(_context).click_to_pay_cash_on_delivery,
+      //     "/CashOnDelivery",
+      //     "assets/img/cash.png"),
     ];
     this._pickupList = [
       new PaymentMethod(
