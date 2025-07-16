@@ -29,12 +29,9 @@ class _ForgetPasswordWidgetState extends StateMVC<ForgetPasswordWidget> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // ✅ الشعار
-                  Image.asset('assets/img/logo.png', height: 120),
-
+                  Image.asset('assets/img/login.jpg', height: 180),
                   SizedBox(height: 40),
 
-                  // ✅ حقل الإيميل
                   TextFormField(
                     keyboardType: TextInputType.emailAddress,
                     onSaved: (input) {

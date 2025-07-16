@@ -34,7 +34,7 @@ class _SignUpNameScreenState extends StateMVC<SignUpNameScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('assets/img/logo.png', height: 120),
+                Image.asset('assets/img/login.jpg', height: 180),
                 SizedBox(height: 40),
                 TextFormField(
                   keyboardType: TextInputType.text,

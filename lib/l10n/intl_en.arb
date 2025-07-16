@@ -305,5 +305,15 @@
     "placeholders": {
       "phone": {}
     }
-  },  "didntReceiveTheCodeResendit": "Didn't receive the code? Resend it"
+  },
+  "didntReceiveTheCodeResendit": "Didn't receive the code? Resend it",
+  "should_be_a_valid_email": "Should be a valid email",
+  "Enter_your_email": "Enter your email",
+  "should_be_more_than_3_characters": "Should be more than 3 characters",
+  "Enter_password": "Enter password",
+  "login": "Login",
+  "skip": "Skip",
+  "forgot_password": "Forgot password?",
+  "Sign": "Sign",
+  "do_not_have_account": "Don’t have an account?"
 }

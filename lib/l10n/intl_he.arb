@@ -290,5 +290,15 @@
     "placeholders": {
       "phone": {}
     }
-  },  "didntReceiveTheCodeResendit": "לא קיבלת את הקוד? שלח שוב"
+  },
+  "didntReceiveTheCodeResendit": "לא קיבלת את הקוד? שלח שוב",
+  "should_be_a_valid_email": "כתובת אימייל לא תקינה",
+  "Enter_your_email": "הזן את כתובת האימייל שלך",
+  "should_be_more_than_3_characters": "חייב להכיל יותר מ-3 תווים",
+  "Enter_password": "הזן סיסמה",
+  "login": "התחברות",
+  "skip": "דלג",
+  "forgot_password": "שכחת סיסמה?",
+  "Sign": "הרשמה",
+  "do_not_have_account": "אין לך חשבון?"
 }

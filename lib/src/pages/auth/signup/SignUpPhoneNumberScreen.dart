@@ -55,7 +55,7 @@ class _SignUpPhoneNumberScreenState extends StateMVC<SignUpPhoneNumberScreen> {
             key: _con.loginFormKey,
             child: Column(
               children: [
-                Image.asset('assets/img/logo.png', height: 120),
+                Image.asset('assets/img/login.jpg', height: 180),
                 SizedBox(height: 40),
                 TextFormField(
                   keyboardType: TextInputType.phone,

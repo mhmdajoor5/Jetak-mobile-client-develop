@@ -233,5 +233,14 @@
       "phone": {}
     }
   },
-  "didntReceiveTheCodeResendit": "لم يصلك الرمز؟ أعد الإرسال"
+  "didntReceiveTheCodeResendit": "لم يصلك الرمز؟ أعد الإرسال",
+  "should_be_a_valid_email": "يجب أن يكون بريدًا إلكترونيًا صالحًا",
+  "Enter_your_email": "أدخل بريدك الإلكتروني",
+  "should_be_more_than_3_characters": "يجب أن يكون أكثر من 3 أحرف",
+  "Enter_password": "أدخل كلمة المرور",
+  "login": "تسجيل الدخول",
+  "skip": "تخطي",
+  "forgot_password": "هل نسيت كلمة المرور؟",
+  "Sign": "إنشاء حساب",
+  "do_not_have_account": "ليس لديك حساب؟"
 }
