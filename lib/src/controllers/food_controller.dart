@@ -50,40 +50,65 @@ class FoodController extends ControllerMVC {
     }, onError: print);
   }
 
-  void listenForCart() async {
+  Future<void> listenForCart() async {
+    carts.clear();
     final Stream<Cart> stream = await getCart();
     stream.listen((Cart _cart) {
-      carts.add(_cart);
+      setState(() {
+        carts.add(_cart);
+      });
     });
   }
+
 
   bool isSameRestaurants(Food food) {
     return carts.isEmpty || carts[0].food?.restaurant.id == food.restaurant.id;
   }
 
-  void addToCart(Food food,  BuildContext context ,{bool reset = false} ) async {
+  // void addToCart(Food food,  BuildContext context ,{bool reset = false} ) async {
+  //   setState(() => loadCart = true);
+  //
+  //   final Cart newCart = Cart(food: food, extras: food.extras.where((e) => e.checked).toList(), quantity: quantity);
+  //   // final Cart newCart = Cart()
+  //   //   ..food = food
+  //   //   ..extras = food.extras.where((e) => e.checked).toList()
+  //   //   ..quantity = quantity;
+  //
+  //   final Cart? oldCart = isExistInCart(newCart);
+  //
+  //   if (oldCart != null) {
+  //     oldCart.quantity += quantity;
+  //     await updateCart(oldCart);
+  //     setState(() => loadCart = false);
+  //     ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text(S.of(state!.context).this_food_was_added_to_cart)));
+  //   } else {
+  //     await addCart(newCart, reset);
+  //     setState(() => loadCart = false);
+  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).this_food_was_added_to_cart)));
+  //     // Navigator.pop(context);
+  //   }
+  // }
+
+  void addToCart(Food food, BuildContext context, {bool reset = false}) async {
     setState(() => loadCart = true);
 
     final Cart newCart = Cart(food: food, extras: food.extras.where((e) => e.checked).toList(), quantity: quantity);
-    // final Cart newCart = Cart()
-    //   ..food = food
-    //   ..extras = food.extras.where((e) => e.checked).toList()
-    //   ..quantity = quantity;
-
     final Cart? oldCart = isExistInCart(newCart);
 
     if (oldCart != null) {
       oldCart.quantity += quantity;
       await updateCart(oldCart);
+      await listenForCart();
       setState(() => loadCart = false);
       ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text(S.of(state!.context).this_food_was_added_to_cart)));
     } else {
       await addCart(newCart, reset);
+      await listenForCart();
       setState(() => loadCart = false);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).this_food_was_added_to_cart)));
-      // Navigator.pop(context);
     }
   }
+
 
   Cart? isExistInCart(Cart cart) {
     return carts.firstWhereOrNull((oldCart) => cart.isSame(oldCart));

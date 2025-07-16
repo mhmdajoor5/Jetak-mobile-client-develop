@@ -39,6 +39,25 @@ Future<Stream<Cart>> getCart() async {
   }
 }
 
+// Future<Stream<int>> getCartCount() async {
+//   print("mElkerm start to fetch the cart data");
+//   final User user = userRepo.currentUser.value;
+//   final String token = 'api_token=${user.apiToken}&';
+//   final String url =
+//       '${GlobalConfiguration().getValue('api_base_url')}carts/count?${token}search=user_id:${user.id}&searchFields=user_id:=';
+//
+//   final client = http.Client();
+//   final streamedRest = await client
+//       .send(http.Request('GET', Uri.parse(url)))
+//       .then((value) {
+//         print("mElkerm Fetch the data success ${value.stream}");
+//       });
+//   return streamedRest.stream
+//       .transform(utf8.decoder)
+//       .transform(json.decoder)
+//       .map((data) => Helper.getIntData(data as Map<String, dynamic>?));
+// }
+
 Future<Stream<int>> getCartCount() async {
   print("mElkerm start to fetch the cart data");
   final User user = userRepo.currentUser.value;
@@ -47,16 +66,21 @@ Future<Stream<int>> getCartCount() async {
       '${GlobalConfiguration().getValue('api_base_url')}carts/count?${token}search=user_id:${user.id}&searchFields=user_id:=';
 
   final client = http.Client();
-  final streamedRest = await client
-      .send(http.Request('GET', Uri.parse(url)))
-      .then((value) {
-        print("mElkerm Fetch the data success ${value.stream}");
-      });
-  return streamedRest.stream
-      .transform(utf8.decoder)
-      .transform(json.decoder)
-      .map((data) => Helper.getIntData(data as Map<String, dynamic>?));
+  final streamedRest = await client.send(http.Request('GET', Uri.parse(url)));
+
+  print("mElkerm Fetch the data success with status ${streamedRest.statusCode}");
+
+  if (streamedRest.statusCode == 200) {
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        .map((data) => Helper.getIntData(data as Map<String, dynamic>?));
+  } else {
+    print('❌ getCartCount ▶ Non-200 response, status: ${streamedRest.statusCode}');
+    return Stream<int>.empty();
+  }
 }
+
 
 Future<Cart> addCart(Cart cart, bool reset) async {
   final User user = userRepo.currentUser.value;

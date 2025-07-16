@@ -79,19 +79,38 @@ class CartController extends ControllerMVC {
     listenForCarts(message: S.of(state!.context).carts_refreshed_successfuly);
   }
 
+  // void removeFromCart(Cart cart) async {
+  //   setState(() => carts.remove(cart));
+  //   await removeCart(cart);
+  //   calculateSubtotal();
+  //   ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+  //     SnackBar(
+  //       content: Text(
+  //         S
+  //             .of(state!.context)
+  //             .the_food_was_removed_from_your_cart(cart.food!.name),
+  //       ),
+  //     ),
+  //   );
+  // }
   void removeFromCart(Cart cart) async {
-    setState(() => carts.remove(cart));
-    await removeCart(cart);
-    calculateSubtotal();
-    ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
-      SnackBar(
-        content: Text(
-          S
-              .of(state!.context)
-              .the_food_was_removed_from_your_cart(cart.food!.name),
+    bool success = await removeCart(cart);
+    if(success) {
+      setState(() {
+        carts.remove(cart);
+      });
+      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+        SnackBar(
+          content: Text('تم حذف المنتج من السلة'),
         ),
-      ),
-    );
+      );
+    } else {
+      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+        SnackBar(
+          content: Text('حدث خطأ أثناء حذف المنتج'),
+        ),
+      );
+    }
   }
 
   void calculateSubtotal() {

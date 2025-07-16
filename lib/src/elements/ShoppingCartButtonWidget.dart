@@ -37,6 +37,7 @@ class _ShoppingCartButtonWidgetState
 
   @override
   Widget build(BuildContext context) {
+    print('Cart count: ${_con.cartCount}');
     return GestureDetector(
       onTap: () {
         if (currentUser.value.apiToken != null) {
@@ -70,18 +71,22 @@ class _ShoppingCartButtonWidgetState
             ),
             if (_con.cartCount > 0)
               Positioned(
-                top: -6,
-                right: -6,
+                top: 4,
+                right: 4,
                 child: Container(
-                  width: 22,
-                  height: 22,
-                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(2),
+                  constraints: BoxConstraints(
+                    minWidth: 20,
+                    minHeight: 20,
+                  ),
                   decoration: BoxDecoration(
                     color: widget.labelColor ?? Colors.red,
                     shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 1.5),
                   ),
                   child: Text(
                     _con.cartCount.toString(),
+                    textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 12,
                       color: Colors.white,
@@ -90,6 +95,7 @@ class _ShoppingCartButtonWidgetState
                   ),
                 ),
               ),
+
           ],
         ),
       ),

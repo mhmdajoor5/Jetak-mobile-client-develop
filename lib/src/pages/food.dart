@@ -531,7 +531,6 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                       child: ElevatedButton(
                         onPressed: () {
                           _con.addToCart(_con.food, context);
-                          // إظهار رسالة تأكيد
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('تم إضافة ${_con.food.name} للسلة'),

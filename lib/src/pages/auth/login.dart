@@ -112,7 +112,6 @@ class _LoginWidgetState extends StateMVC<LoginWidget> with SingleTickerProviderS
 
                 SizedBox(height: 40),
 
-                /// 👇 زر تسجيل الدخول مع Animation
                 SizedBox(
                   width: 200,
                   child: GestureDetector(
@@ -129,9 +128,10 @@ class _LoginWidgetState extends StateMVC<LoginWidget> with SingleTickerProviderS
                       scale: _scale,
                       duration: Duration(milliseconds: 100),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
+                          disabledBackgroundColor: Colors.blue,
                           padding: EdgeInsets.symmetric(vertical: 14),
                         ),
                         child: Text(
@@ -146,7 +146,6 @@ class _LoginWidgetState extends StateMVC<LoginWidget> with SingleTickerProviderS
                     ),
                   ),
                 ),
-
                 SizedBox(height: 20),
 
                 TextButton(
