@@ -535,13 +535,11 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                             SnackBar(
                               content: Text('تم إضافة ${_con.food.name} للسلة'),
                               backgroundColor: Colors.green,
-                              duration: Duration(seconds: 2),
+                              //duration: Duration(seconds: 2),
                               behavior: SnackBarBehavior.floating,
                             ),
                           );
-                          Future.delayed(Duration(seconds: 2), () {
-                            Navigator.of(context).pop();
-                          });
+                          Navigator.of(context).pop();
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue[600],

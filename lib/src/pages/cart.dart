@@ -48,7 +48,11 @@ class _CartWidgetState extends StateMVC<CartWidget> {
           automaticallyImplyLeading: false,
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              if (Navigator.of(context).canPop()) {
+                Navigator.of(context).pop();
+              } else {
+                Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
+              }
             },
             icon: Icon(Icons.arrow_back),
             color: Theme.of(context).hintColor,

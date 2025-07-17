@@ -8,6 +8,7 @@ import '../../elements/DrawerWidget.dart';
 import '../../elements/FilterWidget.dart';
 import '../../helpers/helper.dart';
 import '../../models/route_argument.dart';
+import '../../repository/user_repository.dart' as userRepo;
 import '../bottom_nav_bar_modules/home.dart';
 import '../bottom_nav_bar_modules/orders.dart';
 import '../bottom_nav_bar_modules/profile.dart';
@@ -84,9 +85,13 @@ class _PagesWidgetState extends State<PagesWidget> {
         /// mElkerm : add profile Screen to the bottom nav bar
         case 4:
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => SettingsWidget()),
-            );
+            if (userRepo.currentUser.value.id == null) {
+              Navigator.of(context).pushReplacementNamed('/Login');
+            } else {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => SettingsWidget()),
+              );
+            }
           });
           break;
         default:
