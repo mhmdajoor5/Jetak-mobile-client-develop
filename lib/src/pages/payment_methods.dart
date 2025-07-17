@@ -111,7 +111,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
                               color: Theme.of(context).hintColor,
                             ),
                             title: Text(
-                              "Payments",
+                                S.of(context).payments,
                               style: Theme.of(context).textTheme.headlineLarge
                             ),
                           ),
@@ -155,7 +155,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
                                       cardExpirationDate: newCard.expiryDate));
                                 }else{
                                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    content: Text("the card is Already Exist "),
+                                    content: Text(S.of(context).card_already_exist ),
                                   ));
                                 }
                               }
@@ -167,7 +167,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
                                   width: 30,
                                 ),
                                 Text(
-                                  "Add New Card",
+                                  S.of(context).add_new_card,
                                   style: Theme.of(context).textTheme.titleMedium,
                                 )
                               ],
@@ -264,7 +264,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
                             : () {
                                 completeSale();
                               },
-                        child: Text("Complete Order"),
+                        child: Text(S.of(context).complete_order),
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
@@ -358,27 +358,27 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
               Icon(Icons.credit_card_off, size: 50, color: Colors.red),
               SizedBox(height: 20),
               Text(
-                "Transaction has been declined",
+                S.of(context).transaction_declined,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               SizedBox(height: 10),
               Text(
-                "Tips to complete your order",
+                S.of(context).tips_complete_order,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               SizedBox(height: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("• Double-check your card information."),
-                  Text("• Use a different card or alternative method."),
-                  Text("• Contact your card issuer to verify your account."),
+                  Text(S.of(context).tip_check_card_info),
+                  Text(S.of(context).tip_use_different_card),
+                  Text(S.of(context).tip_contact_issuer),
                 ],
               ),
               SizedBox(height: 20),
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text("Go back to checkout"),
+                child: Text(S.of(context).go_back_checkout),
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(

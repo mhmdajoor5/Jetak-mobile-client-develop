@@ -242,5 +242,97 @@
   "skip": "تخطي",
   "forgot_password": "هل نسيت كلمة المرور؟",
   "Sign": "إنشاء حساب",
-  "do_not_have_account": "ليس لديك حساب؟"
+  "do_not_have_account": "ليس لديك حساب؟",
+  "add_new_card": "أضف بطاقة جديدة",
+  "debug": "تصحيح الأخطاء",
+  "select": "اختر",
+  "add_new_credit_card": "إضافة بطاقة ائتمانية جديدة",
+  "add_credit_card": "أضف بطاقة ائتمانية جديدة",
+  "no_saved_cards": "لا توجد بطاقات محفوظة",
+  "select_extras": "اختر الإضافات لإضافتها على الطعام",
+  "added_to_cart": "تم إضافة {foodName} إلى السلة",
+  "complete_payment": "إكمال الدفع",
+  "payments": "المدفوعات",
+  "card_already_exist": "البطاقة موجودة بالفعل",
+  "complete_order": "إكمال الطلب",
+  "transaction_declined": "تم رفض المعاملة",
+  "tips_complete_order": "نصائح لإكمال طلبك",
+  "tip_check_card_info": "• تحقق من معلومات البطاقة جيدًا.",
+  "tip_use_different_card": "• استخدم بطاقة أخرى أو طريقة بديلة.",
+  "tip_contact_issuer": "• تواصل مع الجهة المصدرة للبطاقة لتأكيد الحساب.",
+  "go_back_checkout": "الرجوع إلى صفحة الدفع",
+  "recent_orders": "الطلبات الأخيرة",
+  "checkout": "إتمام الشراء",
+  "total": "المجموع",
+  "most_ordered": "الأكثر طلبًا",
+  "delivery_20_30_mnt": "التوصيل خلال 20–30 دقيقة",
+  "testNotifications": "اختبار الإشعارات",
+  "testNotification": "إشعار تجريبي",
+  "testNotificationBody": "هذا إشعار تجريبي!",
+  "testNotificationSent": "تم إرسال الإشعار التجريبي!",
+  "unreadNotifications": "إشعارات غير مقروءة",
+  "notifications": "إشعارات",
+  "notificationsTestTitle": "🧪 اختبار الإشعارات",
+  "refreshNotificationCount": "تحديث عدد الإشعارات",
+  "testLocalNotification": "اختبار إشعار محلي",
+  "fetchAllNotifications": "جلب جميع الإشعارات",
+  "goToNotificationsPage": "الذهاب لصفحة الإشعارات",
+  "testApiConnection": "اختبار الاتصال بالـ API",
+  "testingApiConnection": "جاري اختبار الاتصال بالـ API...",
+  "apiConnectionSuccess": "✅ تم بنجاح! عدد الإشعارات: {count}",
+  "apiConnectionFailed": "❌ فشل في الاتصال: {error}",
+  "errorFetchingNotifications": "خطأ في جلب الإشعارات: {error}",
+  "apiInfoTitle": "معلومات الـ API",
+  "apiEndpoint": "النقطة الطرفية: https://carrytechnologies.co/api/notifications",
+  "apiToken": "التوكن: fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv",
+  "tracking": "تتبع",
+  "loadingRoute": "جاري تحميل المسار...",
+  "notAvailableNow": "غير متوفر الآن",
+  "twentyToThirtyMin": "20–30 دقيقة",
+  "discount": "خصم",
+  "payNow": "ادفع الآن",
+  "HHmm": "HH:mm",
+  "ddMMyyyy": "dd-MM-yyyy",
+  "MMMddyyyyHHmm": "MMM dd, yyyy • HH:mm",
+  "ddMMyyyyHHmm": "dd-MM-yyyy | HH:mm",
+  "change": "تغيير",
+  "addressDetails": "تفاصيل العنوان",
+  "addingExactAddressDetailsHelpsUsFindYouFaster": "إضافة تفاصيل دقيقة للعنوان تساعدنا في العثور عليك بشكل أسرع",
+  "buildingName": "اسم المبنى",
+  "optional": "اختياري",
+  "entranceStaircase": "المدخل / السلم",
+  "floor": "الطابق",
+  "apartment": "شقة",
+  "howDoWeGetIn": "كيف ندخل؟",
+  "doorbellIntercom": "جرس الباب / الاتصال الداخلي",
+  "doorCode": "رمز الباب",
+  "doorIsOpen": "الباب مفتوح",
+  "otherTellUsHow": "آخر (أخبرنا كيف)",
+  "otherInstructionsForTheCourier": "تعليمات أخرى للساعي",
+  "addressTypeAndLabel": "نوع العنوان والوسم",
+  "addOrCreateAddressLabelsToEasilyChooseBetweenDeliveryAddresses": "أضف أو أنشئ وسمًا للعناوين لتسهيل اختيار عنوان التوصيل.",
+  "home": "المنزل",
+  "work": "العمل",
+  "other": "أخرى",
+  "addNewAddress": "إضافة عنوان جديد",
+  "description": "الوصف",
+  "homeAddress": "عنوان المنزل",
+  "fullAddress": "العنوان الكامل",
+  "streetCityCountry": "شارع، مدينة، دولة",
+  "pleaseEnterOrSelectAddress": "يرجى إدخال أو اختيار عنوان",
+  "continueBtn": "متابعة",
+  "makeItDefault": "اجعله الافتراضي",
+  "locationServiceDisabled": "خدمة الموقع معطلة",
+  "locationPermissionDeniedForever": "تم رفض صلاحيات الموقع نهائياً",
+  "locationFetchError": "تعذر تحديد الموقع",
+  "locationBasedMessage": "بناءً على موقع هاتفك، يبدو أنك هنا:",
+  "pleaseWait": "يرجى الانتظار...",
+  "useThisAddress": "استخدم هذا العنوان",
+  "enterAnotherAddress": "أدخل عنوانًا آخر",
+  "locationType": "نوع الموقع",
+  "locationTypeHint": "اختر نوع الموقع",
+  "home": "منزل",
+  "work": "العمل",
+  "other": "آخر",
+  "selectLocationType": "اختر نوع الموقع"
 }

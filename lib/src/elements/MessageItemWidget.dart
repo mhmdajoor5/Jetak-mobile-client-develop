@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
+import '../../generated/l10n.dart';
 import '../models/conversation.dart' as model;
 import '../models/route_argument.dart';
 import '../repository/user_repository.dart';
@@ -91,7 +92,7 @@ class _MessageItemWidgetState extends State<MessageItemWidget> {
                           ),
                         ),
                         Text(
-                          DateFormat('HH:mm').format(DateTime.fromMillisecondsSinceEpoch(widget.message.lastMessageTime, isUtc: true)),
+                          DateFormat(S.of(context).HHmm).format(DateTime.fromMillisecondsSinceEpoch(widget.message.lastMessageTime, isUtc: true)),
                           overflow: TextOverflow.fade,
                           softWrap: false,
                           style: Theme.of(context).textTheme.bodyMedium,
@@ -110,7 +111,7 @@ class _MessageItemWidgetState extends State<MessageItemWidget> {
                           ),
                         ),
                         Text(
-                          DateFormat('dd-MM-yyyy').format(DateTime.fromMillisecondsSinceEpoch(widget.message.lastMessageTime, isUtc: true)),
+                          DateFormat(S.of(context).ddMMyyyy).format(DateTime.fromMillisecondsSinceEpoch(widget.message.lastMessageTime, isUtc: true)),
                           overflow: TextOverflow.fade,
                           softWrap: false,
                           style: Theme.of(context).textTheme.bodyMedium,

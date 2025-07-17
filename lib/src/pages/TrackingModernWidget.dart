@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../generated/l10n.dart';
 import '../controllers/tracking_controller.dart';
 import '../models/route_argument.dart';
 
@@ -177,7 +178,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
           elevation: 0,
           centerTitle: true,
           title: Text(
-            "Tracking",
+            S.of(context).tracking,
             style: TextStyle(
               //fontFamily: "Nunito",
               fontWeight: FontWeight.w600,
@@ -264,7 +265,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          "Tracking",
+          S.of(context).tracking,
           style: TextStyle(
             //fontFamily: "Nunito",
             fontWeight: FontWeight.w600,

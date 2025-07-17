@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
 import '../models/restaurant.dart';
 import '../models/route_argument.dart';
@@ -88,7 +89,7 @@ class CardWidget extends StatelessWidget {
                               } else if (restaurant.coupon!.discountType == 'fixed') {
                                 discountText = '\$${restaurant.coupon!.discount?.toStringAsFixed(2) ?? '0'} off';
                               } else {
-                                discountText = 'خصم';
+                                discountText = S.of(context).discount;
                               }
                               return discountText;
                             }(),
@@ -262,7 +263,7 @@ class CardWidget extends StatelessWidget {
                       Icon(Icons.access_time, size: 16),
                       SizedBox(width: 4),
                       Text(
-                        "20-30 min",
+                        S.of(context).twentyToThirtyMin,
                         style: TextStyle(
                           //fontFamily: 'Nunito',
                           fontSize: 12,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../generated/l10n.dart';
 import '../helpers/app_colors.dart';
 import '../helpers/app_text_styles.dart';
 
@@ -18,7 +19,7 @@ class CustomMaterialButton extends StatelessWidget {
       width: double.infinity,
       child: MaterialButton(
         onPressed: onPressed,
-        child: Text("Pay now", style: AppTextStyles.font14W600White),
+        child: Text(S.of(context).payNow, style: AppTextStyles.font14W600White),
       ),
     );
   }

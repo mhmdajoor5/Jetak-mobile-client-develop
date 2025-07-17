@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import '../../generated/l10n.dart';
 import '../controllers/cart_controller.dart';
 
 class RestaurantBottomCart extends StatefulWidget {
@@ -82,8 +83,8 @@ class _RestaurantBottomCartState extends StateMVC<RestaurantBottomCart> {
                 ),
               ),
               const SizedBox(width: 12),
-              const Text(
-                'Total',
+               Text(
+                S.of(context).total,
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -113,7 +114,7 @@ class _RestaurantBottomCartState extends StateMVC<RestaurantBottomCart> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                    'Checkout',
+                    S.of(context).checkout,
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

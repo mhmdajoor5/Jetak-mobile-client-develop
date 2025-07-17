@@ -43,7 +43,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                     title: Column(
                       children: <Widget>[
                         Text('${S.of(context).order_id}: #${widget.order.id}'),
-                        Text(DateFormat('dd-MM-yyyy | HH:mm').format(widget.order.dateTime), style: Theme.of(context).textTheme.bodySmall),
+                        Text(DateFormat(S.of(context).ddMMyyyyHHmm).format(widget.order.dateTime), style: Theme.of(context).textTheme.bodySmall),
                       ],
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
+import '../../generated/l10n.dart';
 import '../controllers/icredit_controller.dart';
 import '../elements/BlockButtonWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -57,7 +58,7 @@ class _AddNewCardWidgetState extends StateMVC<AddNewCardWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          "Add New Card",
+          S.of(context).add_new_card,
           style: Theme.of(context)
               .textTheme
               .headlineSmall
@@ -167,7 +168,7 @@ class _AddNewCardWidgetState extends StateMVC<AddNewCardWidget> {
                                   const EdgeInsets.symmetric(horizontal: 16),
                               child: BlockButtonWidget(
                                 text: Text(
-                                  'Add new card',
+                                  S.of(context).add_new_card,
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 color: Theme.of(context).colorScheme.secondary,

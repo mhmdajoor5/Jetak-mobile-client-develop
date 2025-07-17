@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../generated/l10n.dart';
 import '../controllers/profile_controller.dart';
 import '../controllers/settings_controller.dart';
 import '../elements/EmptyOrdersWidget.dart';
@@ -29,7 +30,7 @@ class _RecentOrdersWidgetState extends State<RecentOrdersWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recent Orders'),
+        title: Text(S.of(context).recent_orders),
       ),
       body: _con.recentOrders.isEmpty
           ? EmptyOrdersWidget()

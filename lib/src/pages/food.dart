@@ -58,7 +58,6 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
         ? CircularLoadingWidget(height: 500)
         : Column(
             children: [
-              // Handle للسحب
               Container(
                 width: 40,
                 height: 5,
@@ -78,7 +77,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                       floating: false,
                       snap: false,
                       backgroundColor: Colors.white,
-                      automaticallyImplyLeading: false, // إزالة زر الباك
+                      automaticallyImplyLeading: false,
                       flexibleSpace: FlexibleSpaceBar(
                         collapseMode: CollapseMode.parallax,
                         background:
@@ -338,7 +337,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                   ),
                                   SizedBox(height: 5),
                                   Text(
-                                    'Select extras to add them on the food',
+                                    S.of(context).select_extras,
                                     style: TextStyle(
                                       fontSize: 12, // reduced from 14
                                       color: Colors.grey[600],

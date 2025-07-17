@@ -248,8 +248,8 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
                 borderRadius: BorderRadius.circular(6.0),
               ),
             ),
-            child: const Text(
-              "Select",
+            child: Text(
+              S.of(context).select,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.normal,

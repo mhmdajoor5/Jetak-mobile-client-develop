@@ -61,7 +61,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       Address selectedAddress = widget.routeArgument!.param as Address;
       _con.deliveryAddress = selectedAddress;
       _con.userDeliverAddress = selectedAddress.address ?? '';
-      addressController.text = _con.userDeliverAddress; // تحديث نص الحقل
+      addressController.text = _con.userDeliverAddress;
     }
 
     _loadSavedCards();
@@ -365,12 +365,10 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                   ),
                 ),
               ),
-              // عرض قائمة البطاقات عند اختيار الدفع بالبطاقة
               if (showCards && selectedPaymentMethod == 'credit')
                 Column(
                   children: [
                     const SizedBox(height: 8),
-                    // عرض البطاقات المحفوظة
                     if (savedCards.isNotEmpty)
                       ListView.builder(
                         shrinkWrap: true,
@@ -378,7 +376,6 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                         itemCount: savedCards.length,
                         itemBuilder: (context, index) {
                           final card = savedCards[index];
-                          // احذف شرط الفالديشن للبطاقة
                           return Dismissible(
                             key: Key(card.cardNumber + card.cardHolderName),
                             direction: DismissDirection.endToStart,
@@ -455,7 +452,6 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                           );
                         },
                       ),
-                    // زر إضافة بطاقة جديدة
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 8),
                       decoration: BoxDecoration(
@@ -470,11 +466,11 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                           color: AppColors.cardBgLightColor
                         ),
                         title: Text(
-                          'إضافة بطاقة ائتمانية جديدة',
+                          S.of(context).add_credit_card,
                           style: TextStyle(color: AppColors.cardBgLightColor),
                         ),
                         subtitle: Text(
-                          'أضف بطاقة ائتمانية جديدة',
+                          S.of(context).add_new_credit_card,
                           style: TextStyle(fontSize: 12, color: Colors.grey),
                         ),
                         onTap: () {
@@ -493,7 +489,6 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                         },
                       ),
                     ),
-                    // رسالة إذا لم توجد بطاقات
                     if (savedCards.isEmpty)
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 8),
@@ -508,7 +503,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                             Icon(Icons.credit_card, color: Colors.blue, size: 48),
                             SizedBox(height: 8),
                             Text(
-                              'لا توجد بطاقات محفوظة',
+                              S.of(context).no_saved_cards,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.blue,

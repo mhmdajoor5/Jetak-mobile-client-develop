@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../generated/l10n.dart';
 import '../models/icredit_create_sale_response.dart';
 
 import '../helpers/custom_trace.dart';
@@ -83,7 +84,7 @@ class PaymentMethodListItemWidget extends StatelessWidget {
                                   Navigator.of(context).pushNamed(paymentMethod!.route, arguments: routeArgument);
                                 }
                               },
-                              child: Row(children: [Text("Change", style: TextStyle(fontSize: 12)), SizedBox(width: 6), Icon(Icons.edit, size: 12)]),
+                              child: Row(children: [Text(S.of(context).change, style: TextStyle(fontSize: 12)), SizedBox(width: 6), Icon(Icons.edit, size: 12)]),
                             ),
                           ),
                         ),

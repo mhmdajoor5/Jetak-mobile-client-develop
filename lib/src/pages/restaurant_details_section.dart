@@ -13,6 +13,7 @@ import '../models/restaurant.dart';
 import '../models/resturant/most_order_model.dart';
 import '../models/route_argument.dart';
 import '../repository/settings_repository.dart';
+import 'food.dart';
 import 'menu_list.dart';
 import '../controllers/restaurant_controller.dart';
 
@@ -150,7 +151,7 @@ class RestaurantDetailsSection extends StatelessWidget {
                         children: [
                           //SizedBox(width: 5),
                           Text(
-                            'Delivery 20–30 mnt',
+                            S.of(context).delivery_20_30_mnt,
                             style: TextStyle(
                               color: Colors.black87,
                               fontSize: 14,
@@ -330,8 +331,7 @@ class MostPopularOrderSection extends StatelessWidget {
             child: Padding(
               padding: EdgeInsetsDirectional.symmetric(horizontal: 15.0),
               child: Text(
-                "Most ordered",
-
+                S.of(context).most_ordered,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
@@ -372,76 +372,86 @@ class DessertCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 160,
-      height: MediaQuery.of(context).size.height * 0.26,
-      // margin: const EdgeInsets.only(right: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: Colors.white,
-        border: Border.all(color: Colors.grey.shade300),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(2.0),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(16),
-              ),
-              child: Image.asset(
-                'assets/img/carry-eats-hub-logo.png',
-                height: MediaQuery.of(context).size.height * 0.15,
-                width: double.infinity,
-                fit: BoxFit.fill,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushNamed(
+          '/Food',
+          arguments: RouteArgument(
+            id: mostOrderModel.id.toString(),
+            heroTag: 'DessertCard_${mostOrderModel.id}',
+          ),
+        );
+      },
+      child: Container(
+        width: 160,
+        height: MediaQuery.of(context).size.height * 0.26,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: Colors.white,
+          border: Border.all(color: Colors.grey.shade300),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(2.0),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(16),
+                ),
+                child: Image.asset(
+                  'assets/img/carry-eats-hub-logo.png',
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  width: double.infinity,
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  mostOrderModel.name.toString(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    mostOrderModel.name.toString(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "${mostOrderModel.price.toString()}${setting.value.defaultCurrency}",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: AppColors.color26386A,
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "${mostOrderModel.price.toString()}${setting.value.defaultCurrency}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: AppColors.color26386A,
+                        ),
                       ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.color26386A,
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.color26386A,
+                        ),
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 16,
+                        ),
                       ),
-                      child: const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                        size: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

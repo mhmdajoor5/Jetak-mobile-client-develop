@@ -172,7 +172,7 @@ class _ICreditPaymentWidgetState extends StateMVC<ICreditPaymentWidget> {
                                   const EdgeInsets.symmetric(horizontal: 16),
                               child: BlockButtonWidget(
                                 text: Text(
-                                  'Complete Payment',
+                                  S.of(context).complete_payment,
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 color: Theme.of(context).colorScheme.secondary,
