@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../elements/MobileVerificationBottomSheetWidget.dart';
 import '../models/icredit_create_sale_body.dart';
 import '../models/icredit_create_sale_response.dart';
+import '../pages/delivery_pickup.dart';
 import '../repository/icredit_repository.dart';
 import '../repository/user_repository.dart';
 import 'package:geolocator/geolocator.dart';
@@ -276,12 +277,14 @@ class DeliveryPickupController extends CartController {
       ),
     );
 
-    final ICreditCreateSaleResponse response = await iCreditCreateSale(items);
+    String orderType = selectedTap == 1 ? 'delivery' : 'pickup';
+
+    final ICreditCreateSaleResponse response = await iCreditCreateSale(items, orderType);
 
     setState(() => isLoading = false);
 
-    Navigator.of(
-      context,
-    ).pushNamed(getSelectedMethod().route, arguments: response);
+    Navigator.of(context).pushNamed(getSelectedMethod().route, arguments: response);
   }
+
+
 }

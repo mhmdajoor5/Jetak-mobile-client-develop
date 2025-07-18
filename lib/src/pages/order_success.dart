@@ -232,19 +232,27 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                               ).textTheme.bodyLarge,
                                         ),
                                       ),
+                                      // Helper.getPrice(
+                                      //   _con
+                                      //           .carts[0]
+                                      //           .food
+                                      //           ?.restaurant
+                                      //           .deliveryFee ??
+                                      //       0,
+                                      //   context,
+                                      //   style:
+                                      //       Theme.of(
+                                      //         context,
+                                      //       ).textTheme.titleMedium,
+                                      // ),
                                       Helper.getPrice(
-                                        _con
-                                                .carts[0]
-                                                .food
-                                                ?.restaurant
-                                                .deliveryFee ??
-                                            0,
+                                        _con.payment?.method == 'Pay on Pickup'
+                                            ? 0
+                                            : _con.carts[0].food?.restaurant.deliveryFee ?? 0,
                                         context,
-                                        style:
-                                            Theme.of(
-                                              context,
-                                            ).textTheme.titleMedium,
+                                        style: Theme.of(context).textTheme.titleMedium,
                                       ),
+
                                     ],
                                   ),
                               SizedBox(height: 3),

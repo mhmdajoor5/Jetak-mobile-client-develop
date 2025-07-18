@@ -73,6 +73,28 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
     super.dispose();
   }
 
+  // Future<void> _sendOrder() async {
+  //   String orderType = selectedTap == 1 ? 'delivery' : 'pickup';
+  //
+  //   Map<String, dynamic> orderData = {
+  //     "items": _con.carts.map((item) => item.toJson()).toList(),
+  //     "total": _con.total,
+  //     "orderType": orderType,
+  //     "address": selectedTap == 1 ? _con.deliveryAddress?.toJson() : null,
+  //     "paymentMethod": selectedPaymentMethod,
+  //   };
+  //
+  //   try {
+  //     await FirebaseFirestore.instance.collection('orders').add(orderData);
+  //     print('[DEBUG] تم إرسال الطلب إلى Firestore بنجاح');
+  //   } catch (e) {
+  //     print('[DEBUG] خطأ في إرسال الطلب: $e');
+  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //       content: Text("❌ فشل في إرسال الطلب. حاول مرة أخرى."),
+  //       backgroundColor: Colors.red,
+  //     ));
+  //   }
+  // }
 
   Future<void> _loadSavedCards() async {
     savedCards = await Helper.getSavedCards();
@@ -125,6 +147,13 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
 
     // فالديشن طريقة الدفع بالبطاقة الائتمانية
     if (selectedPaymentMethod == 'credit') {
+      String orderType = selectedTap == 1 ? 'delivery' : 'pickup';
+      print('Order type is: $orderType');
+
+      ICreditCreateSaleResponse saleResponse = await iCreditCreateSale(
+        fromList(_con.carts),
+        orderType,
+      );
       print('[DEBUG] تم اختيار الدفع بالبطاقة');
 
       // التحقق من اختيار بطاقة
@@ -166,7 +195,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
 
       try {
         print('[DEBUG] بدء إنشاء عملية البيع iCreditCreateSale');
-        ICreditCreateSaleResponse saleResponse = await iCreditCreateSale(fromList(_con.carts));
+        ICreditCreateSaleResponse saleResponse = await iCreditCreateSale(fromList(_con.carts),orderType);
         print('[DEBUG] رد iCreditCreateSale:');
         print('Status: ${saleResponse.status}');
         print('SaleToken: ${saleResponse.saleToken}');

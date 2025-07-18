@@ -14,6 +14,7 @@ class _ApartmentDetailsWidgetState extends State<ApartmentDetailsWidget> {
   String? selectedEntryMethod;
   String? selectedLabel;
 
+
   Widget _buildLabelBox({required IconData icon, required String label}) {
     final isSelected = selectedLabel == label;
 
@@ -40,17 +41,14 @@ class _ApartmentDetailsWidgetState extends State<ApartmentDetailsWidget> {
             children: [
               Icon(icon, color: Colors.blueGrey, size: 28),
               SizedBox(height: 8),
-              Text(
-                label,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                overflow: TextOverflow.ellipsis,
-              ),
+              Text(label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
             ],
           ),
         ),
       ),
     );
   }
+
 
   Widget buildInputBox(String hint) {
     return Expanded(
@@ -82,13 +80,10 @@ class _ApartmentDetailsWidgetState extends State<ApartmentDetailsWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            S.of(context).addressDetails,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
+          Text('Address details', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           SizedBox(height: 6),
           Text(
-            S.of(context).addingExactAddressDetailsHelpsUsFindYouFaster,
+            'Adding exact address details helps us find you faster',
             style: TextStyle(fontSize: 14, color: Colors.grey[700]),
           ),
           SizedBox(height: 12),
@@ -104,13 +99,13 @@ class _ApartmentDetailsWidgetState extends State<ApartmentDetailsWidget> {
             child: TextField(
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: S.of(context).buildingName,
+                hintText: 'Building name',
                 hintStyle: TextStyle(color: Colors.grey[500]),
               ),
             ),
           ),
           SizedBox(height: 20),
-          Text(S.of(context).optional, style: TextStyle(fontSize: 14, color: Colors.grey[700])),
+          Text('Optional', style: TextStyle(fontSize: 14, color: Colors.grey[700])),
           SizedBox(height: 8),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
@@ -122,18 +117,18 @@ class _ApartmentDetailsWidgetState extends State<ApartmentDetailsWidget> {
             child: TextField(
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: S.of(context).entranceStaircase,
+                hintText: 'Entrance / Staircase',
                 hintStyle: TextStyle(color: Colors.grey[500]),
               ),
             ),
           ),
           SizedBox(height: 20),
 
-          Text(S.of(context).optional, style: TextStyle(fontSize: 14, color: Colors.grey[700])),
+          Text('Optional', style: TextStyle(fontSize: 14, color: Colors.grey[700])),
           SizedBox(height: 8),
           Row(
             children: [
-              buildInputBox(S.of(context).floor),
+              buildInputBox('Floor'),
               Expanded(
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 16),
@@ -145,7 +140,7 @@ class _ApartmentDetailsWidgetState extends State<ApartmentDetailsWidget> {
                   child: TextField(
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: S.of(context).apartment,
+                      hintText: 'Apartment',
                       hintStyle: TextStyle(color: Colors.grey[500]),
                     ),
                   ),
@@ -155,7 +150,7 @@ class _ApartmentDetailsWidgetState extends State<ApartmentDetailsWidget> {
           ),
 
           SizedBox(height: 30),
-          Text(S.of(context).howDoWeGetIn, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Text('How do we get in?', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           SizedBox(height: 12),
           Theme(
             data: Theme.of(context).copyWith(
@@ -171,7 +166,7 @@ class _ApartmentDetailsWidgetState extends State<ApartmentDetailsWidget> {
                 RadioListTile<String>(
                   title: Transform.translate(
                     offset: Offset(-10, 0),
-                    child: Text(S.of(context).doorbellIntercom),
+                    child: Text('Doorbell / Intercom'),
                   ),
                   value: 'doorbell',
                   groupValue: selectedEntryMethod,
@@ -184,7 +179,7 @@ class _ApartmentDetailsWidgetState extends State<ApartmentDetailsWidget> {
                 RadioListTile<String>(
                   title: Transform.translate(
                     offset: Offset(-10, 0),
-                    child: Text(S.of(context).doorCode),
+                    child: Text('Door code'),
                   ),
                   value: 'code',
                   groupValue: selectedEntryMethod,
@@ -197,7 +192,7 @@ class _ApartmentDetailsWidgetState extends State<ApartmentDetailsWidget> {
                 RadioListTile<String>(
                   title: Transform.translate(
                     offset: Offset(-10, 0),
-                    child: Text(S.of(context).doorIsOpen),
+                    child: Text('Door is open'),
                   ),
                   value: 'open',
                   groupValue: selectedEntryMethod,
@@ -210,7 +205,7 @@ class _ApartmentDetailsWidgetState extends State<ApartmentDetailsWidget> {
                 RadioListTile<String>(
                   title: Transform.translate(
                     offset: Offset(-10, 0),
-                    child: Text(S.of(context).otherTellUsHow),
+                    child: Text('Other (tell us how)'),
                   ),
                   value: 'other',
                   groupValue: selectedEntryMethod,
@@ -238,27 +233,42 @@ class _ApartmentDetailsWidgetState extends State<ApartmentDetailsWidget> {
               textAlignVertical: TextAlignVertical.top,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: S.of(context).otherInstructionsForTheCourier,
+                hintText: 'Other instructions for the courier',
                 hintStyle: TextStyle(color: Colors.grey[500]),
               ),
             ),
           ),
           SizedBox(height: 8),
-          Text(S.of(context).optional, style: TextStyle(fontSize: 14, color: Colors.grey[700])),
+          Text('Optional', style: TextStyle(fontSize: 14, color: Colors.grey[700])),
 
           SizedBox(height: 30),
-          Text(S.of(context).addressTypeAndLabel, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          // Text("Where's the entrance?", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          // SizedBox(height: 12),
+          // Container(
+          //   height: 160,
+          //   width: double.infinity,
+          //   decoration: BoxDecoration(
+          //     color: Colors.grey.shade300,
+          //     borderRadius: BorderRadius.circular(12),
+          //   ),
+          //   child: Center(
+          //     child: Icon(Icons.map, size: 40, color: Colors.grey[600]),
+          //   ),
+          // ),
+
+          SizedBox(height: 30),
+          Text('Address type and label', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           SizedBox(height: 6),
           Text(
-            S.of(context).addOrCreateAddressLabelsToEasilyChooseBetweenDeliveryAddresses,
+            'Add or create address labels to easily choose between delivery addresses.',
             style: TextStyle(fontSize: 14, color: Colors.grey[700]),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildLabelBox(icon: Icons.home, label: S.of(context).home),
-              _buildLabelBox(icon: Icons.work, label: S.of(context).work),
-              _buildLabelBox(icon: Icons.location_on, label: S.of(context).other),
+              _buildLabelBox(icon: Icons.home, label: 'Home'),
+              _buildLabelBox(icon: Icons.work, label: 'Work'),
+              _buildLabelBox(icon: Icons.location_on, label: 'Other'),
             ],
           ),
         ],

@@ -11,22 +11,50 @@ import '../models/icredit_charge_simple_body.dart';
 import '../repository/user_repository.dart' as userRepo;
 import 'package:http/http.dart' as http;
 
-Future<ICreditCreateSaleResponse> iCreditCreateSale(List<Item> items) async {
-  User user = userRepo.currentUser.value;
-  String firstName = user.name?.split(' ').first ?? '';
-  String lastName = (user.name?.split(' ').length ?? 0) > 1 ? user.name!.split(' ')[1] : '';
+// Future<ICreditCreateSaleResponse> iCreditCreateSale(List<Item> items) async {
+//   User user = userRepo.currentUser.value;
+//   String firstName = user.name?.split(' ').first ?? '';
+//   String lastName = (user.name?.split(' ').length ?? 0) > 1 ? user.name!.split(' ')[1] : '';
+//   String url = "https://icredit.rivhit.co.il/API/PaymentPageRequest.svc/CreateSale";
+//   String privateGroupToken = "30502c15-5895-4e9a-bea1-e0d366a69572"; // prod
+//
+//   final client = http.Client();
+//   final response = await client.post(
+//     Uri.parse(url),
+//     headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.acceptHeader: 'application/json'},
+//     body: json.encode(
+//       ICreditSaleBody(groupPrivateToken: privateGroupToken, saleType: 1, items: items).toMap(),),
+//   );
+//
+//   return ICreditCreateSaleResponse.fromMap(jsonDecode(response.body) as Map<String, dynamic>);
+// }
+
+Future<ICreditCreateSaleResponse> iCreditCreateSale(List<Item> items, String orderType) async {
   String url = "https://icredit.rivhit.co.il/API/PaymentPageRequest.svc/CreateSale";
-  String privateGroupToken = "30502c15-5895-4e9a-bea1-e0d366a69572"; // prod
+  String privateGroupToken = "30502c15-5895-4e9a-bea1-e0d366a69572";
+
+  final body = ICreditSaleBody(
+    groupPrivateToken: privateGroupToken,
+    items: items,
+    saleType: 1,
+    orderType: orderType,
+  );
+
+  print('Request body to create sale: ${jsonEncode(body.toMap())}');
 
   final client = http.Client();
   final response = await client.post(
     Uri.parse(url),
-    headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.acceptHeader: 'application/json'},
-    body: json.encode(ICreditSaleBody(groupPrivateToken: privateGroupToken, saleType: 1, items: items).toMap()),
+    headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.acceptHeader: 'application/json'
+    },
+    body: json.encode(body.toMap()),
   );
 
   return ICreditCreateSaleResponse.fromMap(jsonDecode(response.body) as Map<String, dynamic>);
 }
+
 
 Future<ICreditChargeSimpleResponse> iCreditChargeSimple(String cvv, String holderName, String cardNumber, String expDateYymm, ICreditCreateSaleResponse saleResponse) async {
   String url = "https://pci.rivhit.co.il/api/iCreditRestApiService.svc/ChargeSimple";

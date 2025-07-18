@@ -17,6 +17,7 @@ class Order {
   User user;
   Payment payment;
   Address deliveryAddress;
+  String orderType;
 
   Order({
     this.id = '',
@@ -26,6 +27,7 @@ class Order {
     this.deliveryFee = 0.0,
     this.hint = '',
     this.active = false,
+    this.orderType = 'delivery',
     DateTime? dateTime,
     User? user,
     Payment? payment,
@@ -67,6 +69,7 @@ class Order {
       "delivery_fee": deliveryFee,
       "foods": foodOrders.map((e) => e.toMap()).toList(),
       "payment": payment.toMap(),
+      "order_type": orderType,
     };
 
     if (!deliveryAddress.isUnknown()) {

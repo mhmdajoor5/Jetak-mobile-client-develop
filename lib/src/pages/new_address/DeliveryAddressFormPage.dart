@@ -30,7 +30,7 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
   bool isDefault = false;
   bool showOverlay = true;
 
-  String currentAddress = '';
+  String currentAddress = 'جاري تحديد موقعك...';
   bool locationLoaded = false;
 
   @override
@@ -49,7 +49,7 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         setState(() {
-          currentAddress = S.of(context).locationServiceDisabled;
+          currentAddress = 'خدمة الموقع معطلة';
           locationLoaded = true;
           showOverlay = true;
         });
@@ -61,7 +61,7 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.deniedForever) {
           setState(() {
-            currentAddress = S.of(context).locationPermissionDeniedForever;
+            currentAddress = 'تم رفض صلاحيات الموقع نهائياً';
             locationLoaded = true;
             showOverlay = true;
           });
@@ -81,7 +81,7 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
     } catch (e) {
       print('Error fetching location: $e');
       setState(() {
-        currentAddress = S.of(context).locationFetchError;
+        currentAddress = 'تعذر تحديد الموقع';
         locationLoaded = true;
         showOverlay = true;
       });
@@ -129,6 +129,7 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
       ),
       body: Stack(
         children: [
+          // Main Form
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Form(
@@ -137,15 +138,15 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    S.of(context).addNewAddress,
+                    "Add new address",
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 30),
                   TextFormField(
                     controller: descriptionController,
                     decoration: InputDecoration(
-                      label: Text(S.of(context).description),
-                      hintText: S.of(context).homeAddress,
+                      label: Text('Description'),
+                      hintText: 'Home Address',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -153,8 +154,8 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                   TextFormField(
                     controller: fullAddressController,
                     decoration: InputDecoration(
-                      label: Text(S.of(context).fullAddress),
-                      hintText: S.of(context).streetCityCountry,
+                      label: Text('Full Address'),
+                      hintText: 'Street, City, Country',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -163,7 +164,7 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                     onPressed: () {
                       if (fullAddressController.text.trim().isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(S.of(context).pleaseEnterOrSelectAddress)),
+                          SnackBar(content: Text('Please enter or select an address')),
                         );
                         return;
                       }
@@ -173,7 +174,7 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                       backgroundColor: Theme.of(context).colorScheme.secondary,
                       minimumSize: Size(double.infinity, 45),
                     ),
-                    child: Text(S.of(context).continueBtn, style: TextStyle(fontSize: 16, color: Colors.white)),
+                    child: Text('Continue', style: TextStyle(fontSize: 16, color: Colors.white)),
                   ),
                   SizedBox(height: 30),
                   Row(
@@ -184,10 +185,27 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                           setState(() => isDefault = val ?? false);
                         },
                       ),
-                      Text(S.of(context).makeItDefault),
+                      Text("Make it default"),
                     ],
                   ),
                   Spacer(),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     TextButton(
+                  //       onPressed: _cancel,
+                  //       child: Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 16)),
+                  //     ),
+                  //     ElevatedButton(
+                  //       onPressed: _saveAddress,
+                  //       style: ElevatedButton.styleFrom(
+                  //         backgroundColor: Theme.of(context).colorScheme.secondary,
+                  //         minimumSize: Size(100, 45),
+                  //       ),
+                  //       child: Text('Save', style: TextStyle(color: Colors.white, fontSize: 16)),
+                  //     ),
+                  //   ],
+                  // )
                 ],
               ),
             ),
@@ -209,8 +227,8 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                     children: [
                       Text(
                         locationLoaded
-                            ? S.of(context).locationBasedMessage
-                            : S.of(context).pleaseWait,
+                            ? "Based on your phone's location,\nit looks like you're here:"
+                            : "يرجى الانتظار...",
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 16, color: Colors.black87),
                       ),
@@ -228,12 +246,12 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                             backgroundColor: Theme.of(context).colorScheme.secondary,
                             minimumSize: Size(double.infinity, 45),
                           ),
-                          child: Text(S.of(context).useThisAddress, style: TextStyle(color: Colors.white)),
+                          child: Text("Use this address", style: TextStyle(color: Colors.white)),
                         ),
                       if (locationLoaded)
                         TextButton(
                           onPressed: _dismissOverlay,
-                          child: Text(S.of(context).enterAnotherAddress, style: TextStyle(color: Theme.of(context).hintColor)),
+                          child: Text("Enter another address", style: TextStyle(color: Theme.of(context).hintColor)),
                         ),
                     ],
                   ),

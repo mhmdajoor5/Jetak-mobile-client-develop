@@ -4,11 +4,17 @@ class ICreditSaleBody {
   final String groupPrivateToken;
   final List<Item> items;
   final int saleType;
+  final String? orderType;
 
-  ICreditSaleBody({required this.groupPrivateToken, required this.items, required this.saleType});
+  ICreditSaleBody({required this.groupPrivateToken, required this.items, required this.saleType,this.orderType,});
 
   Map<String, dynamic> toMap() {
-    return {"GroupPrivateToken": groupPrivateToken, "Items": items.map((e) => e.toMap()).toList(), "SaleType": saleType};
+    return {
+      "GroupPrivateToken": groupPrivateToken,
+      "Items": items.map((e) => e.toMap()).toList(),
+      "SaleType": saleType,
+      'OrderType': orderType,
+    };
   }
 }
 

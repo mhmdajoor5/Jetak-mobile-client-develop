@@ -16,6 +16,7 @@ class CheckoutWidget extends StatefulWidget {
 
 class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
   late CheckoutController _con;
+  String selectedOrderType = 'delivery';
 
   _CheckoutWidgetState() : super(CheckoutController()) {
     _con = controller as CheckoutController;
@@ -70,6 +71,43 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                   CreditCardsWidget(
                     creditCard: _con.creditCard,
                     onChanged: (card) => _con.updateCreditCard(card),
+                  ),
+                  SizedBox(height: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          "اختيار نوع الطلب",
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ),
+                      ListTile(
+                        title: const Text('توصيل'),
+                        leading: Radio<String>(
+                          value: 'delivery',
+                          groupValue: selectedOrderType,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedOrderType = value!;
+                            });
+                          },
+                        ),
+                      ),
+                      ListTile(
+                        title: const Text('استلام من المتجر'),
+                        leading: Radio<String>(
+                          value: 'pickup',
+                          groupValue: selectedOrderType,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedOrderType = value!;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 40),
                   if (setting.value.payPalEnabled) ...[
