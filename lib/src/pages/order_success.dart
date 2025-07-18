@@ -31,6 +31,25 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
     super.initState();
   }
 
+  // دالة للتحقق من أن الطلب للاستلام (pickup)
+  bool _isPickupOrder() {
+    // التحقق من طريقة الدفع
+    if (_con.payment?.method == 'Pay on Pickup' || 
+        _con.payment?.method == 'Cash on Pickup') {
+      return true;
+    }
+    
+    // التحقق من نوع الطلب من routeArgument
+    String? orderType = widget.routeArgument?.param;
+    if (orderType == 'Pay on Pickup' || 
+        orderType == 'Cash on Pickup' ||
+        orderType == 'iCredit Pickup') {
+      return true;
+    }
+    
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -219,7 +238,8 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                 ],
                               ),
                               SizedBox(height: 3),
-                              _con.payment?.method == 'Pay on Pickup'
+                              // إظهار رسوم التوصيل فقط إذا لم تكن طريقة الدفع للاستلام
+                              _isPickupOrder()
                                   ? SizedBox(height: 0)
                                   : Row(
                                     children: <Widget>[
@@ -232,27 +252,11 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                               ).textTheme.bodyLarge,
                                         ),
                                       ),
-                                      // Helper.getPrice(
-                                      //   _con
-                                      //           .carts[0]
-                                      //           .food
-                                      //           ?.restaurant
-                                      //           .deliveryFee ??
-                                      //       0,
-                                      //   context,
-                                      //   style:
-                                      //       Theme.of(
-                                      //         context,
-                                      //       ).textTheme.titleMedium,
-                                      // ),
                                       Helper.getPrice(
-                                        _con.payment?.method == 'Pay on Pickup'
-                                            ? 0
-                                            : _con.carts[0].food?.restaurant.deliveryFee ?? 0,
+                                        _con.carts[0].food?.restaurant.deliveryFee ?? 0,
                                         context,
                                         style: Theme.of(context).textTheme.titleMedium,
                                       ),
-
                                     ],
                                   ),
                               SizedBox(height: 3),
@@ -286,7 +290,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                     ),
                                   ),
                                   Helper.getPrice(
-                                    _con.payment?.method == 'Pay on Pickup'
+                                    _isPickupOrder()
                                         ? _con.total - _con.deliveryFee
                                         : _con.total,
                                     context,

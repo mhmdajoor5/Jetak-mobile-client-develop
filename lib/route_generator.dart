@@ -288,13 +288,12 @@ class RouteGenerator {
         );
       case '/Checkout':
         return MaterialPageRoute(builder: (_) => CheckoutWidget());
-      // Cash payment option disabled
-      // case '/CashOnDelivery':
-      //   return MaterialPageRoute(
-      //     builder: (_) => OrderSuccessWidget(
-      //       routeArgument: RouteArgument(param: 'Cash on Delivery'),
-      //     ),
-      //   );
+      case '/CashOnDelivery':
+        return MaterialPageRoute(
+          builder: (_) => OrderSuccessWidget(
+            routeArgument: RouteArgument(param: 'Cash on Delivery'),
+          ),
+        );
       case '/PayOnPickup':
         return MaterialPageRoute(
           builder: (_) => OrderSuccessWidget(
