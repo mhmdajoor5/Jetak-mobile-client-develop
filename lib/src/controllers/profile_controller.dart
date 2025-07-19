@@ -11,7 +11,7 @@ class ProfileController extends ControllerMVC {
 
   ProfileController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
-    listenForRecentOrders();
+    //listenForRecentOrders();
   }
 
   void listenForRecentOrders({String? message}) async {

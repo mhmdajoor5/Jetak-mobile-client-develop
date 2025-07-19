@@ -92,6 +92,14 @@ class RouteGenerator {
           ),
         );
 
+      case '/VerifyCode':
+        final args = settings.arguments as Map<String, String>? ?? {};
+        return MaterialPageRoute(
+          builder: (_) => SignUpVerificationScreen(
+            phoneNumber: args['phone'] ?? '',
+          ),
+        );
+
       case '/SignUpVerificationScreen':
         final args = settings.arguments as Map<String, String>? ?? {};
         return MaterialPageRoute(
