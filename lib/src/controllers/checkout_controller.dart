@@ -126,8 +126,19 @@ class CheckoutController extends CartController {
     Order _order = Order();
     _order.foodOrders = <FoodOrder>[];
     _order.tax = carts[0].food?.restaurant.defaultTax ?? 0.0;
+    
+    // تحديد نوع الطلب بناءً على طريقة الدفع
+    String orderType = 'delivery'; // القيمة الافتراضية
+    if (payment?.method == 'Pay on Pickup' || 
+        payment?.method == 'Cash on Pickup') {
+      orderType = 'pickup';
+    }
+    
+    _order.orderType = orderType;
+    print('📦 نوع الطلب: $orderType');
+    
     _order.deliveryFee =
-        (payment?.method == 'Pay on Pickup')
+        (orderType == 'pickup')
             ? 0
             : carts[0].food?.restaurant.deliveryFee ?? 0;
     OrderStatus _orderStatus = OrderStatus()..id = '1';

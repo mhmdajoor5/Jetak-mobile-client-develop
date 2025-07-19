@@ -26,6 +26,10 @@ import 'order_success.dart';
 import '../models/card_item.dart';
 import '../models/icredit_create_sale_body.dart';
 import '../repository/icredit_repository.dart';
+import '../models/order.dart';
+import '../models/food_order.dart';
+import '../models/order_status.dart';
+import '../models/payment.dart';
 
 class DeliveryPickupWidget extends StatefulWidget {
   final RouteArgument? routeArgument;
@@ -106,6 +110,59 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       return _con.total - _con.deliveryFee;
     }
     return _con.total;
+  }
+
+  // دالة لإنشاء الطلب في النظام
+  Future<void> _createOrderInSystem(String orderType) async {
+    try {
+      print('[DEBUG] إنشاء الطلب في النظام مع orderType: $orderType');
+      
+      // إنشاء كائن Order
+      Order order = Order();
+      order.foodOrders = <FoodOrder>[];
+      order.tax = _con.carts[0].food?.restaurant.defaultTax ?? 0.0;
+      order.orderType = orderType; // تحديد نوع الطلب
+      order.deliveryFee = orderType == 'pickup' ? 0 : (_con.carts[0].food?.restaurant.deliveryFee ?? 0);
+      
+      // إنشاء OrderStatus
+      OrderStatus orderStatus = OrderStatus()..id = '1';
+      order.orderStatus = orderStatus;
+      
+      // إضافة عنوان التوصيل إذا كان للتوصيل
+      if (selectedTap == 1 && _con.deliveryAddress != null) {
+        order.deliveryAddress = _con.deliveryAddress!;
+      }
+      
+      // إضافة الأطعمة
+      for (var cart in _con.carts) {
+        FoodOrder foodOrder = FoodOrder()
+          ..quantity = cart.quantity
+          ..price = cart.food?.price ?? 0.0
+          ..food = cart.food
+          ..extras = cart.extras;
+        order.foodOrders.add(foodOrder);
+      }
+      
+      // إنشاء Payment
+      Payment payment = Payment();
+      if (selectedPaymentMethod == 'credit') {
+        payment.method = selectedTap == 1 ? 'iCredit Delivery' : 'iCredit Pickup';
+      } else if (selectedPaymentMethod == 'cash') {
+        payment.method = selectedTap == 1 ? 'Cash on Delivery' : 'Cash on Pickup';
+      }
+      order.payment = payment;
+      
+      print('[DEBUG] بيانات الطلب:');
+      print('- orderType: ${order.orderType}');
+      print('- deliveryFee: ${order.deliveryFee}');
+      print('- payment.method: ${order.payment.method}');
+      
+      // إرسال الطلب إلى النظام
+      // هنا يمكنك إضافة الكود لإرسال الطلب إلى API الخاص بك
+      
+    } catch (e) {
+      print('[DEBUG] ❌ خطأ في إنشاء الطلب في النظام: $e');
+    }
   }
 
   Future<void> completeSale() async {
@@ -224,6 +281,10 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
 
         if (response.status == 0) {
           print('[DEBUG] ✅ عملية الدفع نجحت');
+          
+          // إنشاء الطلب في النظام
+          await _createOrderInSystem(orderType);
+          
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text("✅ تم الدفع بنجاح عبر البطاقة الائتمانية"),
             backgroundColor: Colors.green,
@@ -234,7 +295,9 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
             context,
             MaterialPageRoute(
               builder: (context) => OrderSuccessWidget(
-                routeArgument: RouteArgument(param: 'iCredit Payment'),
+                routeArgument: RouteArgument(
+                  param: selectedTap == 1 ? 'iCredit Delivery' : 'iCredit Pickup'
+                ),
               ),
             ),
           );
@@ -253,24 +316,58 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         ));
       }
     } 
-    // Cash payment option disabled
-    // else if (selectedPaymentMethod == 'cash') {
-    //   print('[DEBUG] ✅ تم اختيار الدفع نقداً');
-    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //     content: Text("✅ سيتم الدفع نقداً عند التسليم"),
-    //     backgroundColor: Colors.green,
-    //   ));
+    else if (selectedPaymentMethod == 'cash') {
+      print('[DEBUG] ✅ تم اختيار الدفع نقداً');
+      
+      // تحديد نوع الطلب للدفع النقدي
+      String orderType = selectedTap == 1 ? 'delivery' : 'pickup';
+      print('[DEBUG] Order type for cash payment: $orderType');
+      
+      // إرسال الطلب إلى API مع orderType الصحيح
+      try {
+        print('[DEBUG] بدء إنشاء عملية البيع للدفع النقدي');
+        ICreditCreateSaleResponse saleResponse = await iCreditCreateSale(
+          fromList(_con.carts),
+          orderType,
+        );
+        print('[DEBUG] رد iCreditCreateSale للدفع النقدي:');
+        print('Status: ${saleResponse.status}');
+        print('SaleToken: ${saleResponse.saleToken}');
+        print('TotalAmount: ${saleResponse.totalAmount}');
 
-    //   // هنا يمكن الانتقال لصفحة النجاح مباشرة
-    //   Navigator.pushReplacement(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (context) => OrderSuccessWidget(
-    //         routeArgument: RouteArgument(param: 'Cash on Delivery'),
-    //       ),
-    //     ),
-    //   );
-    // } 
+        if (saleResponse.status == 0) {
+          print('[DEBUG] ✅ تم إنشاء الطلب بنجاح للدفع النقدي');
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("✅ سيتم الدفع نقداً عند التسليم"),
+            backgroundColor: Colors.green,
+          ));
+
+          // الانتقال لصفحة النجاح مع نوع الطلب الصحيح
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OrderSuccessWidget(
+                routeArgument: RouteArgument(
+                  param: selectedTap == 1 ? 'Cash on Delivery' : 'Cash on Pickup'
+                ),
+              ),
+            ),
+          );
+        } else {
+          print('[DEBUG] ❌ فشل في إنشاء الطلب للدفع النقدي');
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("❌ فشل في إنشاء الطلب. حاول مرة أخرى"),
+            backgroundColor: Colors.red,
+          ));
+        }
+      } catch (e) {
+        print('[DEBUG] ❌ خطأ في إنشاء الطلب للدفع النقدي: $e');
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("❌ حدث خطأ في إنشاء الطلب"),
+          backgroundColor: Colors.red,
+        ));
+      }
+    } 
     else {
       print('[DEBUG] ❌ لم يتم اختيار طريقة دفع');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -544,17 +641,16 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                   ],
                 ),
               const SizedBox(height: 8),
-              // Cash payment option disabled
-              // PaymentMethodCard(
-              //   title: S.of(context).cash,
-              //   image: 'assets/img/empty-wallet.svg',
-              //   isSelected: selectedPaymentMethod.contains('cash'),
-              //   onTap: () => setState(() {
-              //     selectedPaymentMethod = 'cash';
-              //     selectedCardIndex = -1;
-              //     showCards = false;
-              //   }),
-              // ),
+              PaymentMethodCard(
+                title: S.of(context).cash,
+                image: 'assets/img/empty-wallet.svg',
+                isSelected: selectedPaymentMethod.contains('cash'),
+                onTap: () => setState(() {
+                      selectedPaymentMethod = 'cash';
+                      selectedCardIndex = -1;
+                      showCards = false;
+                    }),
+              ),
               const SizedBox(height: 16),
               _buildPromoCodeField(TextEditingController()),
               const SizedBox(height: 24),

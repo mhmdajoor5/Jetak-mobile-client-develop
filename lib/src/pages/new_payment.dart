@@ -101,17 +101,16 @@ class _PaymentState extends State<Payment> {
                     },
                   ),
                   SizedBox(height: 8),
-                  // Cash payment option disabled
-                  // PaymentMethodCard(
-                  //   title: S.of(context).cash,
-                  //   image: 'assets/img/empty-wallet.svg',
-                  //   isSelected: selectedPaymentMethod.contains('cash'),
-                  //   onTap: () {
-                  //     setState(() {
-                  //       selectedPaymentMethod = "cash";
-                  //     });
-                  //   },
-                  // ),
+                  PaymentMethodCard(
+                    title: S.of(context).cash,
+                    image: 'assets/img/empty-wallet.svg',
+                    isSelected: selectedPaymentMethod.contains('cash'),
+                    onTap: () {
+                          setState(() {
+                            selectedPaymentMethod = "cash";
+                          });
+                        },
+                  ),
                   SizedBox(height: 16),
                   // Promo code field
                   _buildPromoCodeField(TextEditingController()),
