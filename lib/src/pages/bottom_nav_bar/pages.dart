@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../generated/l10n.dart';
+import '../../controllers/user_controller.dart';
 import '../../elements/DrawerWidget.dart';
 import '../../elements/FilterWidget.dart';
 import '../../helpers/helper.dart';
@@ -41,11 +44,48 @@ class PagesWidget extends StatefulWidget {
 }
 
 class _PagesWidgetState extends State<PagesWidget> {
-  initState() {
+  final UserController _userController = UserController();
+  bool _isVerifying = true;
+  bool _phoneCheckDone = false;
+
+  @override
+  void initState() {
     super.initState();
-    // _selectTab(widget.currentTab);
-    _selectTab(0);
+
+    // نبدأ التحقق بدون انتظار الواجهة
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkPhoneVerification();
+    });
+
+    // مباشرة نعرض الصفحة الافتراضية (HomeWidget)
+    widget.currentPage = HomeWidget(parentScaffoldKey: widget.scaffoldKey);
   }
+
+  Future<void> _checkPhoneVerification() async {
+    if (_phoneCheckDone) return;
+    _phoneCheckDone = true;
+
+    await userRepo.getCurrentUser();
+
+    final user = userRepo.currentUser.value;
+    final token = user.apiToken ?? '';
+    final phone = user.phone ?? '';
+
+    if (token.isNotEmpty && phone.isNotEmpty && !user.verifiedPhone) {
+      await Future.delayed(const Duration(seconds: 2));
+
+      if (!mounted) return;
+      Navigator.of(context).pushReplacementNamed(
+        '/VerifyCode',
+        arguments: {'phone': phone},
+      );
+      return;
+    }
+    if (mounted) {
+      _selectTab(widget.currentTab as int);
+    }
+  }
+
 
   @override
   void didUpdateWidget(PagesWidget oldWidget) {

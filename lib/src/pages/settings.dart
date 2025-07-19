@@ -462,7 +462,6 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
             ),
           ),
 
-
           Divider(height: 1),
 
           ListTile(

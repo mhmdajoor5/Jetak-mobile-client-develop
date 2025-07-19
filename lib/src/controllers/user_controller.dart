@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as userModel show User;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -17,6 +18,8 @@ import '../helpers/helper.dart';
 import '../models/user.dart' as model;
 import '../pages/mobile_verification_2.dart';
 import '../repository/user_repository.dart' as repository;
+import '../repository/user_repository.dart';
+import '../repository/user_repository.dart' as userRepo;
 
 class UserController extends ControllerMVC {
   model.User user = model.User();
@@ -65,6 +68,14 @@ class UserController extends ControllerMVC {
     }
   }
 
+  void someFunctionThatNeedsToken() {
+    if (repository.currentUser.value.apiToken == null) {
+      print('No API token found, cannot proceed.');
+      return;
+    }
+  }
+
+
   void login() async {
     if (context == null) return;
     FocusScope.of(context!).unfocus();
@@ -76,23 +87,35 @@ class UserController extends ControllerMVC {
     loginFormKey.currentState!.save();
     _showLoader();
     try {
-      final value = await repository.login(user);
+      final user = await repository.login(this.user);
       _hideLoader();
-      if (value.apiToken != null) {
+
+      if (user.apiToken != null) {
         ScaffoldMessenger.of(context!).showSnackBar(
           SnackBar(
             content: Text(S.of(context!).login_successful),
             duration: const Duration(seconds: 1),
           ),
         );
-        Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
+
+        if (!user.verifiedPhone) {
+          Navigator.of(context!).pushReplacementNamed(
+            '/VerifyCode',
+            arguments: {'phone': user.phone},
+          );
+        } else {
+          Navigator.of(context!).pushReplacementNamed(
+            '/Pages',
+            arguments: 2,
+          );
+        }
       } else {
         _showSnackBar(S.of(context!).wrong_email_or_password);
       }
     } on FirebaseAuthException catch (e) {
       _hideLoader();
       if (e.code == 'wrong-password') {
-        _showSnackBar(S.of(context!).wrong_password); // أضف هذه الترجمة في ملف l10n
+        _showSnackBar(S.of(context!).wrong_password);
       } else if (e.code == 'user-not-found') {
         _showSnackBar(S.of(context!).this_account_not_exist);
       } else {
@@ -103,6 +126,7 @@ class UserController extends ControllerMVC {
       _showSnackBar(S.of(context!).this_account_not_exist);
     }
   }
+
 
   Future<void> register() async {
     if (context == null) return;
@@ -393,7 +417,7 @@ class UserController extends ControllerMVC {
         Uri.parse('https://carrytechnologies.co/api/submit-otp'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          "api_token": "fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv",
+          "api_token": "…",
           "code": code,
         }),
       );
@@ -403,18 +427,63 @@ class UserController extends ControllerMVC {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['success'] == true || data['status'] == 'success') {
+          final updatedUser = model.User.fromJSON(data['data']);
+          repository.currentUser.value = updatedUser;
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString(
+            'current_user',
+            jsonEncode(data['data']),
+          );
           _showSnackBar("✅ تم التحقق بنجاح");
-          Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
-        } else {
-          _showSnackBar("❌ كود خاطئ أو منتهي الصلاحية");
+
+          Navigator.of(context!).pushNamedAndRemoveUntil(
+            '/Pages',
+                (route) => false,
+            arguments: 0,
+          );
+          return;
         }
-      } else {
-        _showSnackBar("❌ فشل التحقق: ${response.statusCode}");
       }
+      _showSnackBar("❌ كود خاطئ أو منتهي الصلاحية");
     } catch (e) {
       _hideLoader();
       _showSnackBar("حدث خطأ أثناء التحقق");
       print('OTP Verify Error: $e');
+    }
+  }
+
+
+  Future<bool> checkPhoneVerification(
+      String apiToken,
+      String phoneNumber,
+      BuildContext context,
+      ) async {
+    if (apiToken.isEmpty) {
+      print('No API token found, skipping verification.');
+      return false;
+    }
+
+    final uri = Uri.parse('https://carrytechnologies.co/api/verifyPhone?api_token=$apiToken');
+    try {
+      final response = await http.get(uri).timeout(Duration(seconds: 10));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['success'] == true) {
+          final updatedUser = model.User.fromJSON(data['data']);
+          repository.currentUser.value = updatedUser;
+           repository.setCurrentUser(jsonEncode(data['data']));
+          print('Phone verified successfully.');
+          return true;  // تم التحقق
+        } else {
+          print('Phone not verified yet.');
+          return false; // لم يتم التحقق بعد
+        }
+      }
+      print('Failed to verify phone. Status code: ${response.statusCode}');
+      return false;
+    } catch (e) {
+      print('Error during phone verification: $e');
+      return false;
     }
   }
 

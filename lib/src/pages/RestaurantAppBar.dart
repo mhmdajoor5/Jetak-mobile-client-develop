@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../models/restaurant.dart';
 import '../models/route_argument.dart';
 
@@ -16,6 +16,8 @@ class RestaurantAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isRTL = Directionality.of(context) == TextDirection.rtl;
+
     return SliverAppBar(
       toolbarHeight: 70,
       automaticallyImplyLeading: false,
@@ -70,9 +72,11 @@ class RestaurantAppBar extends StatelessWidget {
                   errorWidget: (context, url, error) => Image.asset('assets/img/logo.png'),
                 ),
               ),
+              // زر الرجوع يتغير مكانه حسب اتجاه اللغة
               Positioned(
                 top: MediaQuery.of(context).padding.top + 6,
-                left: 10,
+                left: isRTL ? null : 10,
+                right: isRTL ? 10 : null,
                 width: 66,
                 height: 66,
                 child: CircleAvatar(
@@ -85,7 +89,8 @@ class RestaurantAppBar extends StatelessWidget {
               ),
               Positioned(
                 top: MediaQuery.of(context).padding.top + 10,
-                right: 10,
+                right: isRTL ? null : 10,
+                left: isRTL ? 10 : null,
                 width: 60,
                 height: 60,
                 child: CircleAvatar(

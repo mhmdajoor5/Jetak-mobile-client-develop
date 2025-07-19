@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart' as userModel;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import '../../../repository/user_repository.dart' as userRepo;
 
 class SignUpVerificationScreen extends StatefulWidget {
   final String phoneNumber;
@@ -108,18 +111,23 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
         }),
       );
 
-      setState(() {
-        isVerifying = false;
-      });
+      setState(() => isVerifying = false);
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['success'] == true || data['status'] == 'success') {
+          print('OTP verified successfully');
+          userRepo.currentUser.value.updatePhoneVerification(true);
+
+          await userRepo.saveCurrentUser(json.encode(userRepo.currentUser.value.toMap()));
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("✅ Verification successful")),
           );
-          Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
-        } else {
+
+          Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
+
+      } else {
           setState(() {
             errorMessage = "❌ Invalid or expired code";
           });
@@ -137,6 +145,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
       print('OTP Verify Error: $e');
     }
   }
+
 
   @override
   void dispose() {
@@ -217,14 +226,14 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
                 );
               }),
             ),
-            if (errorMessage.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Text(
-                  errorMessage,
-                  style: TextStyle(color: Colors.red.shade700, fontWeight: FontWeight.bold),
-                ),
-              ),
+            // if (errorMessage.isNotEmpty)
+            //   Padding(
+            //     padding: const EdgeInsets.only(top: 20),
+            //     child: Text(
+            //       errorMessage,
+            //       style: TextStyle(color: Colors.red.shade700, fontWeight: FontWeight.bold),
+            //     ),
+            //   ),
             SizedBox(height: 30),
             SizedBox(
               width: 200,

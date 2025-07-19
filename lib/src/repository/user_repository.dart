@@ -128,6 +128,13 @@ void setCurrentUser(String jsonString) async {
   }
 }
 
+Future<void> saveCurrentUser(String jsonString) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('current_user', jsonString);
+  currentUser.value = userModel.User.fromJSON(json.decode(jsonString)['data']);
+  currentUser.notifyListeners();
+}
+
 Future<void> setCreditCard(CreditCard creditCard) async {
   // يمكنك تفعيل التخزين عند الحاجة
   // SharedPreferences prefs = await SharedPreferences.getInstance();

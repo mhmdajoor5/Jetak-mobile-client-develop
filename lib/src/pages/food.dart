@@ -54,9 +54,11 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return _con.food.image == null
-        ? CircularLoadingWidget(height: 500)
-        : Column(
+    return
+      // _con.food.image == null
+      //   ? SizedBox.shrink()
+       // :
+    Column(
             children: [
               Container(
                 width: 40,
@@ -91,14 +93,15 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                               CachedNetworkImage(
                                 fit: BoxFit.cover,
                                 imageUrl: _con.food.image?.url ?? '',
-                                placeholder: (context, url) => Container(
-                                  color: Colors.grey[200],
-                                  child: Center(
-                                    child: CircularProgressIndicator(
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                ),
+                                placeholder: (context, url) => Container(),
+                                // placeholder: (context, url) => Container(
+                                //   color: Colors.grey[200],
+                                //   child: Center(
+                                //     child: CircularProgressIndicator(
+                                //       color: Colors.blue,
+                                //     ),
+                                //   ),
+                                // ),
                                 errorWidget: (context, url, error) => Container(
                                   color: Colors.grey[200],
                                   child: Center(
