@@ -99,11 +99,11 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        currentUser.value.name!,
+                        currentUser.value.name ?? '',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        currentUser.value.email!,
+                        currentUser.value.email ?? '',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
 
@@ -118,7 +118,9 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                     onTap: () => Navigator.of(context).pushNamed('/Profile'),
                     child: CircleAvatar(
                       backgroundImage:
-                      NetworkImage(currentUser.value.image!.thumb),
+                        (currentUser.value.image != null && (currentUser.value.image!.thumb.isNotEmpty))
+                          ? NetworkImage(currentUser.value.image!.thumb)
+                          : AssetImage('assets/img/default_avatar.png') as ImageProvider, // Ensure this file exists in assets/img
                     ),
                   ),
                 ),

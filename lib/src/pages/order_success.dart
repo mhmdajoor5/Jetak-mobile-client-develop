@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:restaurantcustomer/src/pages/RecentOrdersWidget.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/checkout_controller.dart';
@@ -54,10 +55,9 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          '/Pages',
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => RecentOrdersWidget()),
           (Route<dynamic> route) => false,
-          arguments: 2,
         );
         return Future.value(true);
       },
@@ -67,10 +67,9 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
           automaticallyImplyLeading: false,
           leading: IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                '/Pages',
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => RecentOrdersWidget()),
                 (Route<dynamic> route) => false,
-                arguments: 2,
               );
             },
             icon: Icon(Icons.arrow_back),
@@ -311,7 +310,10 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                   onPressed: () {
                                     Navigator.of(
                                       context,
-                                    ).pushNamed('/Pages', arguments: 3);
+                                    ).pushAndRemoveUntil(
+                                      MaterialPageRoute(builder: (_) => RecentOrdersWidget()),
+                                      (Route<dynamic> route) => false,
+                                    );
                                   },
                                   padding: EdgeInsets.symmetric(vertical: 14),
                                   color:

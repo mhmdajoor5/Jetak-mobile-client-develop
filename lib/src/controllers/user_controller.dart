@@ -106,7 +106,7 @@ class UserController extends ControllerMVC {
         } else {
           Navigator.of(context!).pushReplacementNamed(
             '/Pages',
-            arguments: 2,
+            arguments: 0,
           );
         }
       } else {
@@ -145,7 +145,7 @@ class UserController extends ControllerMVC {
           ),
         );
         await Future.delayed(const Duration(milliseconds: 500));
-        Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
+        Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 0);
       } else {
         _showSnackBar(S.of(context!).wrong_email_or_password);
       }
@@ -192,7 +192,7 @@ class UserController extends ControllerMVC {
       if (response.statusCode == 200) {
         _hideLoader();
         _showSnackBar(S.of(context!).register_successful);
-        Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
+        Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 0);
       } else {
         throw 'فشل التسجيل: ${response.body}';
       }
@@ -225,7 +225,7 @@ class UserController extends ControllerMVC {
         MaterialPageRoute(
           builder: (ctx) => MobileVerification2(
             onVerified: (v) {
-              Navigator.of(ctx).pushReplacementNamed('/Pages', arguments: 2);
+              Navigator.of(ctx).pushReplacementNamed('/Pages', arguments: 0);
             },
           ),
         ),
@@ -296,7 +296,7 @@ class UserController extends ControllerMVC {
 
         _hideLoader();
         _showSnackBar(S.of(context!).login_successful);
-        Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
+        Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 0);
       } else {
         print('Server error: ${response.body}');
         throw 'Server error: ${response.body}';
@@ -334,7 +334,7 @@ class UserController extends ControllerMVC {
       if (response.statusCode == 200) {
         _hideLoader();
         _showSnackBar(S.of(context!).login_successful);
-        Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 2);
+        Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 0);
       } else {
         throw 'API error';
       }

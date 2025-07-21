@@ -37,13 +37,13 @@ class _SplashScreenState extends StateMVC<SplashScreen> {
       
       // Navigate to home screen only after all data is loaded
       if (mounted) {
-        Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
+        Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
       }
     } catch (e) {
       print('Error loading data: $e');
       // Always navigate even if there's an error
       if (mounted) {
-        Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
+        Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
       }
     }
   }

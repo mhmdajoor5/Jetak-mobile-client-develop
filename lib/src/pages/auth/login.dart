@@ -28,7 +28,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> with SingleTickerProviderS
     getDeviceToken();
 
     if (userRepo.currentUser.value?.apiToken != null) {
-      Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
+      Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
     }
   }
 
@@ -150,7 +150,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> with SingleTickerProviderS
 
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
+                    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
                   },
                   child: Text(S.of(context).skip),
                 ),
