@@ -255,7 +255,11 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                     numOfItems: _con.carts.length,
                     onSwipe:
                         _con.isLoading ? null : () => _con.goCheckout(context),
-                    totalPrice: _con.total,
+                    totalPrice: (() {
+                      final subTotal = _con.subTotal;
+                      final taxAmount = subTotal * (_con.carts.isNotEmpty ? _con.carts[0].food!.restaurant.defaultTax : 0) / 100;
+                      return subTotal + taxAmount;
+                    })(),
                   ),
                 ),
       ),

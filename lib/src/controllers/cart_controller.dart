@@ -125,12 +125,14 @@ class CartController extends ControllerMVC {
         subTotal += cartPrice;
       });
 
-      // Remove delivery fee
-      deliveryFee = 0;
+      // Restore delivery fee calculation
+      deliveryFee =
+          Helper.canDelivery(carts[0].food!.restaurant, carts: carts)
+              ? carts[0].food!.restaurant.deliveryFee
+              : 0;
 
-      // Exclude deliveryFee from tax calculation
-      taxAmount = subTotal * carts[0].food!.restaurant.defaultTax / 100;
-      total = subTotal + taxAmount; // Exclude deliveryFee
+      taxAmount = (subTotal + deliveryFee) * carts[0].food!.restaurant.defaultTax / 100;
+      total = subTotal + taxAmount + deliveryFee;
       setState(() {});
     }
   }
