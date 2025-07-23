@@ -16,6 +16,7 @@ import '../repository/user_repository.dart';
 Future<Stream<Restaurant>> getNearRestaurants(
     Address myLocation, Address areaLocation) async {
   Uri uri = Helper.getUri('api/restaurants');
+  print('Full API URI: $uri');
   Map<String, dynamic> _queryParams = {};
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Filter filter =
@@ -78,6 +79,7 @@ Future<Stream<Restaurant>> getNearRestaurants(
 
 Future<Stream<Restaurant>> getPopularRestaurants(Address myLocation) async {
   Uri uri = Helper.getUri('api/restaurants');
+  print('Full API URI: $uri');
   Map<String, dynamic> _queryParams = {};
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Filter filter =
@@ -136,6 +138,7 @@ Future<Stream<Restaurant>> getPopularRestaurants(Address myLocation) async {
 Future<Stream<Restaurant>> searchRestaurants(
     String search, Address address) async {
   Uri uri = Helper.getUri('api/restaurants');
+  print('Full API URI: $uri');
   Map<String, dynamic> _queryParams = {};
   _queryParams['search'] = 'name:$search;description:$search';
   _queryParams['searchFields'] = 'name:like;description:like';
@@ -167,6 +170,7 @@ Future<Stream<Restaurant>> searchRestaurants(
 
 Future<Stream<Restaurant>> getRestaurant(String id, Address address) async {
   Uri uri = Helper.getUri('api/restaurants/$id');
+  print('Full API URI: $uri');
   Map<String, dynamic> _queryParams = {};
   if (!address.isUnknown()) {
     _queryParams['myLon'] = address.longitude.toString();

@@ -33,7 +33,7 @@ class PagesWidget extends StatefulWidget {
         currentTab = int.parse(currentTab.id);
       }
     } else {
-      currentTab = 0;
+      currentTab = 1;
     }
   }
 
@@ -51,13 +51,10 @@ class _PagesWidgetState extends State<PagesWidget> {
   @override
   void initState() {
     super.initState();
-
-    // نبدأ التحقق بدون انتظار الواجهة
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkPhoneVerification();
     });
 
-    // مباشرة نعرض الصفحة الافتراضية (HomeWidget)
     widget.currentPage = HomeWidget(parentScaffoldKey: widget.scaffoldKey);
   }
 

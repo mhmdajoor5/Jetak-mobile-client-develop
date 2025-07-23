@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -21,16 +23,34 @@ class RestaurantDetailsSection extends StatelessWidget {
   final RestaurantController con;
   final List<Cart> cart;
   final void Function(Food) addToCart;
+  final double userLat;
+  final double userLon;
 
-  const RestaurantDetailsSection({
+   RestaurantDetailsSection({
     Key? key,
     required this.con,
     required this.cart,
     required this.addToCart,
+    required this.userLat,
+    required this.userLon,
   }) : super(key: key);
+
+  double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    const p = 0.017453292519943295;
+    final a = 0.5 -
+        cos((lat2 - lat1) * p)/2 +
+        cos(lat1 * p) * cos(lat2 * p) *
+            (1 - cos((lon2 - lon1) * p))/2;
+    return 12742 * asin(sqrt(a));
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    final restLat = double.tryParse(con.restaurant?.latitude ?? '0') ?? 0.0;
+    final restLon = double.tryParse(con.restaurant?.longitude ?? '0') ?? 0.0;
+    final distance = calculateDistance(userLat, userLon, restLat, restLon);
+
     return Container(
       color: Colors.white,
       child: Column(
@@ -76,8 +96,12 @@ class RestaurantDetailsSection extends StatelessWidget {
                     SvgPicture.asset('assets/img/routing.svg'),
                     SizedBox(width: 4),
                     Text(
+                      // Helper.getDistance(
+                      //   con.restaurant!.distance,
+                      //   Helper.of(context).trans(setting.value.distanceUnit),
+                      // ),
                       Helper.getDistance(
-                        con.restaurant!.distance,
+                        distance,
                         Helper.of(context).trans(setting.value.distanceUnit),
                       ),
                       style: TextStyle(
@@ -97,11 +121,9 @@ class RestaurantDetailsSection extends StatelessWidget {
                     Text(
                       con.restaurant!.closed!
                           ? S.of(context).closed
-                          : S
-                              .of(context)
-                              .open_until(
-                                con.restaurant?.closingTime ?? '22:00',
-                              ),
+                          : con.restaurant!.closingTime != null && con.restaurant!.closingTime!.isNotEmpty
+                          ? S.of(context).open_until(con.restaurant!.closingTime!)
+                          : '',
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,

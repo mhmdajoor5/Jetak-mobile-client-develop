@@ -70,18 +70,21 @@ class RestaurantController extends ControllerMVC {
     required String id,
     String? message,
   }) async {
+    print("DEBUG >> Starting listenForRestaurant with id: $id");
+
     final whenDone = new Completer();
     final Stream<Restaurant> stream = await getRestaurant(
       id,
       deliveryAddress.value,
     );
     stream.listen(
-      (Restaurant _restaurant) {
+          (Restaurant _restaurant) {
+        print("DEBUG >> Restaurant data received: ${_restaurant.name}, ID: ${_restaurant.id}");
         setState(() => restaurant = _restaurant);
         return whenDone.complete(_restaurant);
       },
       onError: (a) {
-        print(a);
+        print("ERROR >> listenForRestaurant failed: $a");
         ScaffoldMessenger.of(scaffoldKey.currentState!.context).showSnackBar(
           SnackBar(
             content: Text(S.of(state!.context).verify_your_internet_connection),
@@ -90,6 +93,7 @@ class RestaurantController extends ControllerMVC {
         return whenDone.complete(Restaurant.fromJSON({}));
       },
       onDone: () {
+        print("DEBUG >> listenForRestaurant done");
         if (message != null) {
           ScaffoldMessenger.of(
             scaffoldKey.currentState!.context,
@@ -100,6 +104,7 @@ class RestaurantController extends ControllerMVC {
     );
     return whenDone.future;
   }
+
 
   // void listenForGalleries(String idRestaurant) async {
   //   final Stream<Gallery> stream = await getGalleries(idRestaurant);
@@ -116,7 +121,10 @@ class RestaurantController extends ControllerMVC {
   // }
 
   Future<List<Food>> getFoodsByCategoryId(String categoryId) async {
+    print("DEBUG >> getFoodsByCategoryId for categoryId: $categoryId");
+
     if (foodsByCategory.containsKey(categoryId)) {
+      print("DEBUG >> Foods for this category already cached.");
       return foodsByCategory[categoryId]!;
     }
 
@@ -133,14 +141,17 @@ class RestaurantController extends ControllerMVC {
       await for (var food in stream) {
         categoryFoods.add(food);
       }
+
+      print("DEBUG >> getFoodsByCategoryId: ${categoryFoods.length} foods fetched for category $categoryId");
       completer.complete(categoryFoods);
       return categoryFoods;
     } catch (e) {
-      print('Error fetching foods for category $categoryId: $e');
+      print('ERROR >> getFoodsByCategoryId failed for $categoryId: $e');
       completer.completeError(e);
       return [];
     }
   }
+
 
   Future<void> listenForFoods(
     String idRestaurant,
@@ -213,6 +224,8 @@ class RestaurantController extends ControllerMVC {
   bool getAllFoodsDone = false;
 
   Future<void> listenForCategories(String restaurantId) async {
+    print("DEBUG >> Starting listenForCategories with restaurantId: $restaurantId");
+
     setState(() {
       getCategoriesDone = false;
       getAllFoodsDone = false;
@@ -220,31 +233,36 @@ class RestaurantController extends ControllerMVC {
       categoryFoods.clear();
     });
 
-    print("mElkerm get categories of restaurant: $restaurantId");
-
     final fetchedCategories = await getCategoriesOfRestaurant(restaurantId);
 
+    print("DEBUG >> Total categories fetched: ${fetchedCategories.length}");
+
     final filtered = fetchedCategories.where((c) => c.id != '0').toList();
+    print("DEBUG >> Filtered categories (excluding id == 0): ${filtered.length}");
 
-    print("mElkerm categories of restaurant: ${filtered.length}");
+    if (filtered.isEmpty) {
+      print("WARNING >> No valid categories found for this restaurant");
+    }
 
-    // Update state with categories
     setState(() {
       categories = filtered;
-      print("mElkerm categories set: ${categories[0].name}");
       getCategoriesDone = true;
     });
 
-    // Fetch foods per category
     for (var category in filtered) {
+      print("DEBUG >> Fetching foods for category: ${category.name} (${category.id})");
       final foods = await getFoodsByCategoryId(category.id!);
+      print("DEBUG >> Foods fetched for category ${category.id}: ${foods.length}");
       categoryFoods[category.id!] = foods;
     }
 
     setState(() {
       getAllFoodsDone = true;
     });
+
+    print("DEBUG >> Finished fetching all foods for all categories");
   }
+
 
   // Future<void> selectCategory(List<String> categoriesId) async {
   //   foodPagingController.value.itemList?.clear();
@@ -253,6 +271,8 @@ class RestaurantController extends ControllerMVC {
   // }
 
   Future<void> refreshRestaurant() async {
+    print("DEBUG >> refreshRestaurant called");
+
     var _id = restaurant!.id;
     restaurant = new Restaurant();
     galleries.clear();
@@ -263,9 +283,8 @@ class RestaurantController extends ControllerMVC {
       id: _id,
       message: S.of(state!.context).restaurant_refreshed_successfuly,
     );
-    // listenForRestaurantReviews(id: _id);
-    // listenForGalleries(_id);
     listenForFeaturedFoods(_id);
     listenForCategories(_id);
   }
+
 }

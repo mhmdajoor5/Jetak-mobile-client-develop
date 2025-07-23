@@ -27,6 +27,8 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
   _RestaurantWidgetState() : super(RestaurantController()) {
     _con = controller as RestaurantController;
   }
+  double userLat = 0.0;
+  double userLon = 0.0;
 
   final List<Cart> _cart = [];
 
@@ -80,6 +82,8 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
                             con: _con,
                             cart: _cart,
                             addToCart: _addToCart,
+                            userLat: userLat,
+                            userLon: userLon,
                           ),
                         ),
                       ],

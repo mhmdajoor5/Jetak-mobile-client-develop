@@ -443,20 +443,19 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
 
           InkWell(
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => RecentOrdersWidget()));
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => RecentOrdersWidget(fromProfile: true),
+                ),
+              );
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.history,
-                    size: 24,
-                    color: Theme.of(context).textTheme.bodyLarge?.color,
-                  ),
+                  Icon(Icons.history),
                   SizedBox(width: 12),
-                  Text(
-                    S.of(context).recent_orders,
+                  Text(S.of(context).recent_orders,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ],

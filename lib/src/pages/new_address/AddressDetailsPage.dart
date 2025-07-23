@@ -465,7 +465,6 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                       ),
                     ),
                   ),
-
                 ],
               ),
             ],

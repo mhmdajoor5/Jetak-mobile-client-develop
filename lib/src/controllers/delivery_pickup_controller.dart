@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../elements/MobileVerificationBottomSheetWidget.dart';
+import '../models/address.dart';
 import '../models/icredit_create_sale_body.dart';
 import '../models/icredit_create_sale_response.dart';
 import '../pages/delivery_pickup.dart';
@@ -74,7 +75,8 @@ class DeliveryPickupController extends CartController {
         // return data['is_delivery'] ?? data['can_deliver'] ?? false;
         ///TODO : mElkerm Make sure the response contains a 'success' key make it dynamic
 
-        return true;
+        //return true;
+        return data['is_delivery'] == true || data['can_deliver'] == true;
       }
       return false;
     } catch (e) {
@@ -262,6 +264,27 @@ class DeliveryPickupController extends CartController {
 
       if (!currentUser.value.verifiedPhone) return;
     }
+    // if (selectedTap == 1) {
+    //
+    //   if (deliveryAddress == null ||
+    //       deliveryAddress?.address == null ||
+    //       deliveryAddress!.address!.isEmpty ||
+    //       deliveryAddress?.latitude == null ||
+    //       deliveryAddress?.longitude == null) {
+    //     ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+    //       SnackBar(content: Text("يرجى اختيار عنوان توصيل")),
+    //     );
+    //     return;
+    //   }
+    //
+    //   final canDeliver = await checkDeliveryArea();
+    //   if (!canDeliver) {
+    //     ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+    //       SnackBar(content: Text("هذا العنوان خارج نطاق التوصيل.")),
+    //     );
+    //     return;
+    //   }
+    // }
 
     await _createSale(context);
   }

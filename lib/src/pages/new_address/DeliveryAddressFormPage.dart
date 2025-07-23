@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 
 import '../../../generated/l10n.dart';
 import '../../models/address.dart';
+import '../../repository/user_repository.dart' as deliveryAddressesController;
 import 'AddressDetailsPage.dart';
 
 class DeliveryAddressFormPage extends StatefulWidget {
@@ -105,6 +106,9 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
     _address.description = descriptionController.text;
     _address.address = fullAddressController.text;
     _address.isDefault = isDefault;
+
+    deliveryAddressesController.addAddress(_address);
+
     widget.onChanged(_address);
     Navigator.of(context).pop();
   }
@@ -161,13 +165,20 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                   ),
                   SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (fullAddressController.text.trim().isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Please enter or select an address')),
                         );
                         return;
                       }
+
+                      _address.description = descriptionController.text;
+                      _address.address = fullAddressController.text.trim();
+                      _address.isDefault = isDefault;
+
+                      await deliveryAddressesController.addAddress(_address);
+
                       Navigator.of(context).pushNamed('/AddressDetails', arguments: fullAddressController.text.trim());
                     },
                     style: ElevatedButton.styleFrom(

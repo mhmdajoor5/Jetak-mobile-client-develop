@@ -16,6 +16,7 @@ import '../models/address.dart';
 import '../models/payment_method.dart';
 import '../models/route_argument.dart';
 import 'delivery_pickup.dart';
+import 'new_address/DeliveryAddressFormPage.dart';
 
 class DeliveryAddressesWidget extends StatefulWidget {
   final RouteArgument? routeArgument;
@@ -127,13 +128,18 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context)
-                      .pushNamed('/DeliveryAddressForm', arguments: {
-                    'address': Address(),
-                    'onChanged': (Address _address) {
-                      _con.addAddress(_address);
-                    },
-                  });
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => DeliveryAddressFormPage(
+                        address: Address(),
+                        onChanged: (address) {
+                          _con.addAddress(address);
+                          saveAddress(address);
+                        },
+                      ),
+                    ),
+                  );
                 },
                 child: Container(
                   margin:

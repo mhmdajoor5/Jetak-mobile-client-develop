@@ -22,6 +22,7 @@ import '../models/icredit_charge_simple_reesponse.dart';
 import '../models/icredit_create_sale_response.dart' show ICreditCreateSaleResponse;
 import '../models/payment_method.dart';
 import '../models/route_argument.dart';
+import '../repository/settings_repository.dart';
 import 'order_success.dart';
 import '../models/card_item.dart';
 import '../models/icredit_create_sale_body.dart';
@@ -59,6 +60,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   @override
   void initState() {
     super.initState();
+
     addressController = TextEditingController(text: '');
 
     if (widget.routeArgument?.param != null && widget.routeArgument!.param is Address) {
@@ -116,23 +118,23 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   Future<void> _createOrderInSystem(String orderType) async {
     try {
       print('[DEBUG] إنشاء الطلب في النظام مع orderType: $orderType');
-      
+
       // إنشاء كائن Order
       Order order = Order();
       order.foodOrders = <FoodOrder>[];
       order.tax = _con.carts[0].food?.restaurant.defaultTax ?? 0.0;
       order.orderType = orderType; // تحديد نوع الطلب
       order.deliveryFee = orderType == 'pickup' ? 0 : (_con.carts[0].food?.restaurant.deliveryFee ?? 0);
-      
+
       // إنشاء OrderStatus
       OrderStatus orderStatus = OrderStatus()..id = '1';
       order.orderStatus = orderStatus;
-      
+
       // إضافة عنوان التوصيل إذا كان للتوصيل
       if (selectedTap == 1 && _con.deliveryAddress != null) {
         order.deliveryAddress = _con.deliveryAddress!;
       }
-      
+
       // إضافة الأطعمة
       for (var cart in _con.carts) {
         FoodOrder foodOrder = FoodOrder()
@@ -142,7 +144,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
           ..extras = cart.extras;
         order.foodOrders.add(foodOrder);
       }
-      
+
       // إنشاء Payment
       Payment payment = Payment();
       if (selectedPaymentMethod == 'credit') {
@@ -151,15 +153,15 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         payment.method = selectedTap == 1 ? 'Cash on Delivery' : 'Cash on Pickup';
       }
       order.payment = payment;
-      
+
       print('[DEBUG] بيانات الطلب:');
       print('- orderType: ${order.orderType}');
       print('- deliveryFee: ${order.deliveryFee}');
       print('- payment.method: ${order.payment.method}');
-      
+
       // إرسال الطلب إلى النظام
       // هنا يمكنك إضافة الكود لإرسال الطلب إلى API الخاص بك
-      
+
     } catch (e) {
       print('[DEBUG] ❌ خطأ في إنشاء الطلب في النظام: $e');
     }
@@ -281,10 +283,10 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
 
         if (response.status == 0) {
           print('[DEBUG] ✅ عملية الدفع نجحت');
-          
+
           // إنشاء الطلب في النظام
           await _createOrderInSystem(orderType);
-          
+
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text("✅ تم الدفع بنجاح عبر البطاقة الائتمانية"),
             backgroundColor: Colors.green,
@@ -315,14 +317,14 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
           backgroundColor: Colors.red,
         ));
       }
-    } 
+    }
     else if (selectedPaymentMethod == 'cash') {
       print('[DEBUG] ✅ تم اختيار الدفع نقداً');
-      
+
       // تحديد نوع الطلب للدفع النقدي
       String orderType = selectedTap == 1 ? 'delivery' : 'pickup';
       print('[DEBUG] Order type for cash payment: $orderType');
-      
+
       // إرسال الطلب إلى API مع orderType الصحيح
       try {
         print('[DEBUG] بدء إنشاء عملية البيع للدفع النقدي');
@@ -367,7 +369,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
           backgroundColor: Colors.red,
         ));
       }
-    } 
+    }
     else {
       print('[DEBUG] ❌ لم يتم اختيار طريقة دفع');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -432,17 +434,17 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
               ),
               const SizedBox(height: 24),
               if (selectedTap == 1) ...[
-                _buildAddressField(TextEditingController(), () async {
-                  final selectedAddress = await Navigator.of(context).pushNamed('/DeliveryAddresses', arguments: [true, _con]);
-
-                  if (selectedAddress != null && selectedAddress is Address) {
+                _buildAddressField(addressController, () async {
+                  final result = await Navigator.of(context)
+                      .pushNamed('/DeliveryAddresses', arguments: [true, _con]);
+                  if (result != null && result is Address) {
                     setState(() {
-                      _con.deliveryAddress = selectedAddress;
-                      _con.userDeliverAddress = selectedAddress.address ?? '';
+                      _con.deliveryAddress       = result;
+                      _con.userDeliverAddress    = result.address ?? '';
+                      addressController.text     = _con.userDeliverAddress;  // مهم!
                     });
                   }
                 }),
-
               ] else ...[
                 PaymentMethodCard(
                   title: S.of(context).pickup,
@@ -687,13 +689,15 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
     );
   }
 
-  Widget _buildAddressField(TextEditingController controller, VoidCallback? onChangePressed) {
+  Widget _buildAddressField(
+      TextEditingController controller,
+      VoidCallback? onChangePressed,
+      ) {
     return CustomTextField(
       controller: controller,
-      lableText:
-      _con.userDeliverAddress == ''
+      lableText: controller.text.isEmpty
           ? S.of(context).address
-          : _con.userDeliverAddress.toString(),
+          : controller.text,
       prefix: SvgPicture.asset(
         'assets/img/location.svg',
         width: 18,
@@ -704,7 +708,8 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         padding: const EdgeInsets.only(top: 17.5),
         child: Text(
           S.of(context).change,
-          style: AppTextStyles.font12W400Grey.copyWith(color: AppColors.color26386A),
+          style: AppTextStyles.font12W400Grey
+              .copyWith(color: AppColors.color26386A),
         ),
       ),
       onSuffixTapped: onChangePressed,

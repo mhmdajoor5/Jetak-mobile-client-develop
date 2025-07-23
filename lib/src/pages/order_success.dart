@@ -8,6 +8,7 @@ import '../elements/CircularLoadingWidget.dart';
 import '../helpers/helper.dart';
 import '../models/payment.dart';
 import '../models/route_argument.dart';
+import 'delivery_pickup.dart';
 
 class OrderSuccessWidget extends StatefulWidget {
   final RouteArgument? routeArgument;
@@ -53,28 +54,30 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => RecentOrdersWidget()),
-          (Route<dynamic> route) => false,
-        );
-        return Future.value(true);
-      },
-      child: Scaffold(
+    // return WillPopScope(
+    //   onWillPop: () {
+    //     Navigator.of(context).pushReplacement(
+    //       MaterialPageRoute(builder: (_) => RecentOrdersWidget(fromProfile: false)), // 👈 مهم
+    //     );
+    //     return Future.value(true);
+    //   },
+     // child:
+     return Scaffold(
         key: _con.scaffoldKey,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           leading: IconButton(
             onPressed: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => RecentOrdersWidget()),
-                (Route<dynamic> route) => false,
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                '/Pages',
+                    (route) => false,
+                arguments: 0,
               );
             },
             icon: Icon(Icons.arrow_back),
             color: Theme.of(context).hintColor,
           ),
+
           backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: true,
@@ -237,7 +240,6 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                 ],
                               ),
                               SizedBox(height: 3),
-                              // إظهار رسوم التوصيل فقط إذا لم تكن طريقة الدفع للاستلام
                               _isPickupOrder()
                                   ? SizedBox(height: 0)
                                   : Row(
@@ -308,11 +310,8 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                   focusElevation: 0,
                                   highlightElevation: 0,
                                   onPressed: () {
-                                    Navigator.of(
-                                      context,
-                                    ).pushAndRemoveUntil(
+                                    Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(builder: (_) => RecentOrdersWidget()),
-                                      (Route<dynamic> route) => false,
                                     );
                                   },
                                   padding: EdgeInsets.symmetric(vertical: 14),
@@ -336,7 +335,6 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                     ),
                   ],
                 ),
-      ),
-    );
+      );
   }
 }
