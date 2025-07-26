@@ -7,6 +7,7 @@ import 'package:global_configuration/global_configuration.dart';
 import 'generated/l10n.dart';
 import 'route_generator.dart';
 import 'src/helpers/app_config.dart' as config;
+import 'src/helpers/address_helper.dart';
 import 'src/models/setting.dart';
 import 'src/repository/settings_repository.dart' as settingRepo;
 import 'src/repository/user_repository.dart' as userRepo;
@@ -49,6 +50,10 @@ class _MyAppState extends State<MyApp> {
     settingRepo.initSettings();
     settingRepo.getCurrentLocation();
     userRepo.getCurrentUser();
+    
+    // تنظيف العناوين المعطوبة عند بدء التطبيق
+    AddressHelper.cleanupSavedAddresses();
+    
     super.initState();
   }
 

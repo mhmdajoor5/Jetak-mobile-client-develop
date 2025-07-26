@@ -54,40 +54,67 @@ class DeliveryPickupController extends CartController {
 
   Future<bool> checkDeliveryArea() async {
     try {
+      // التحقق من وجود العنوان والإحداثيات
+      if (deliveryAddress == null) {
+        print('❌ لا يوجد عنوان توصيل محدد');
+        return false;
+      }
+
+      if (deliveryAddress?.latitude == null || deliveryAddress?.longitude == null) {
+        print('❌ العنوان لا يحتوي على إحداثيات صحيحة: lat=${deliveryAddress?.latitude}, lng=${deliveryAddress?.longitude}');
+        return false;
+      }
+
+      if (carts.isEmpty || carts.first.food?.restaurant.id == null) {
+        print('❌ لا يوجد طعام أو مطعم محدد');
+        return false;
+      }
+
       print(
-        'checkDeliveryArea: restaurant_id=${carts.first.food?.restaurant.id}, lat=${deliveryAddress?.latitude}, lng=${deliveryAddress?.longitude}',
+        '📍 التحقق من نطاق التوصيل: المطعم ${carts.first.food?.restaurant.id}, الإحداثيات (${deliveryAddress?.latitude}, ${deliveryAddress?.longitude})',
       );
+      
       final response = await http.post(
         Uri.parse('https://carrytechnologies.co/api/check-delivery'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'restaurant_id': carts.first.food?.restaurant.id,
-          'latitude': deliveryAddress?.latitude ?? 0,
-          'longitude': deliveryAddress?.longitude ?? 0,
+          'latitude': deliveryAddress?.latitude,
+          'longitude': deliveryAddress?.longitude,
         }),
       );
+      
       print(
-        'checkDeliveryArea response: status=${response.statusCode}, body=${response.body}',
+        '📡 استجابة التحقق من نطاق التوصيل: status=${response.statusCode}, body=${response.body}',
       );
+      
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        print('checkDeliveryArea parsed data: $data');
-        // return data['is_delivery'] ?? data['can_deliver'] ?? false;
-        ///TODO : mElkerm Make sure the response contains a 'success' key make it dynamic
-
-        //return true;
-        return data['is_delivery'] == true || data['can_deliver'] == true;
+        print('✅ بيانات التحقق من نطاق التوصيل: $data');
+        
+        bool isDelivery = data['is_delivery'] == true || data['can_deliver'] == true;
+        print('✅ هل يسمح بالتوصيل؟ $isDelivery');
+        
+        return isDelivery;
       }
+      
+      print('❌ خطأ في استجابة التحقق من نطاق التوصيل: ${response.statusCode}');
       return false;
     } catch (e) {
-      print('Error checking delivery area: $e');
+      print('❌ خطأ في التحقق من نطاق التوصيل: $e');
       return false;
     }
   }
 
   void listenForDeliveryAddress() {
     deliveryAddress = settingRepo.deliveryAddress.value;
-    print(deliveryAddress?.id);
+    print('📍 العنوان المحمل: ${deliveryAddress?.description}');
+    print('📍 إحداثيات العنوان: lat=${deliveryAddress?.latitude}, lng=${deliveryAddress?.longitude}');
+    
+    // التحقق من وجود الإحداثيات
+    if (deliveryAddress != null && (deliveryAddress?.latitude == null || deliveryAddress?.longitude == null)) {
+      print('⚠️ تحذير: العنوان المحمل لا يحتوي على إحداثيات صحيحة');
+    }
   }
 
   Future<void> _setClosestAddressAsDefault() async {
@@ -98,41 +125,63 @@ class DeliveryPickupController extends CartController {
         desiredAccuracy: LocationAccuracy.high,
       );
 
-      addresses.sort((a, b) {
+      print('📍 الموقع الحالي: lat=${position.latitude}, lng=${position.longitude}');
+
+      // تصفية العناوين التي تحتوي على إحداثيات صحيحة
+      final validAddresses = addresses.where((address) => 
+        address.latitude != null && address.longitude != null
+      ).toList();
+
+      if (validAddresses.isEmpty) {
+        print('⚠️ لا توجد عناوين صحيحة مع إحداثيات');
+        return;
+      }
+
+      validAddresses.sort((a, b) {
         final double distA = Helper.calculateDistance(
           position.latitude,
           position.longitude,
-          a.latitude ?? 0.0,
-          a.longitude ?? 0.0,
+          a.latitude!,
+          a.longitude!,
         );
         final double distB = Helper.calculateDistance(
           position.latitude,
           position.longitude,
-          b.latitude ?? 0.0,
-          b.longitude ?? 0.0,
+          b.latitude!,
+          b.longitude!,
         );
         return distA.compareTo(distB);
       });
 
-      if (addresses.isNotEmpty) {
+      if (validAddresses.isNotEmpty) {
+        final closestAddress = validAddresses.first;
+        print('📍 أقرب عنوان: ${closestAddress.description} (مسافة: ${Helper.calculateDistance(position.latitude, position.longitude, closestAddress.latitude!, closestAddress.longitude!).toStringAsFixed(2)} كم)');
+        
         setState(() {
-          deliveryAddress = addresses.first;
-          settingRepo.deliveryAddress.value = addresses.first;
+          deliveryAddress = closestAddress;
+          settingRepo.deliveryAddress.value = closestAddress;
         });
+        
         ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
-          SnackBar(content: Text("Closest address set as default")),
+          SnackBar(content: Text("تم تعيين أقرب عنوان كافتراضي")),
         );
       }
     } catch (e) {
       if (addresses.isNotEmpty) {
-        settingRepo.deliveryAddress.value = addresses.first;
-        deliveryAddress = addresses.first;
+        // البحث عن عنوان يحتوي على إحداثيات صحيحة
+        final validAddress = addresses.firstWhere(
+          (address) => address.latitude != null && address.longitude != null,
+          orElse: () => addresses.first,
+        );
+        
+        settingRepo.deliveryAddress.value = validAddress;
+        deliveryAddress = validAddress;
         notifyListeners();
       }
-      print("Error determining closest address: $e");
+      print("❌ خطأ في تحديد أقرب عنوان: $e");
       if (scaffoldKey.currentContext != null)
         ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
-          SnackBar(content: Text("Error determining closest address")),
+          SnackBar(content: Text("خطأ في تحديد أقرب عنوان")),
         );
     }
   }

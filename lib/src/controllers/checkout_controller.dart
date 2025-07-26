@@ -52,12 +52,30 @@ class CheckoutController extends CartController {
       restaurantId = int.tryParse(carts[0].food!.restaurant.id.toString());
     }
 
-    if (latitude == null || longitude == null || restaurantId == null) {
+    // التحقق من وجود العنوان والإحداثيات
+    if (settingRepo.deliveryAddress.value == null) {
       ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
-        SnackBar(content: Text('فشل في تحديد موقع التوصيل أو المطعم')),
+        SnackBar(content: Text('يرجى اختيار عنوان التوصيل أولاً')),
       );
       return;
     }
+
+    if (latitude == null || longitude == null) {
+      print('❌ العنوان لا يحتوي على إحداثيات صحيحة: lat=$latitude, lng=$longitude');
+      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+        SnackBar(content: Text('العنوان المحدد لا يحتوي على إحداثيات صحيحة. يرجى إعادة تحديد العنوان')),
+      );
+      return;
+    }
+
+    if (restaurantId == null) {
+      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+        SnackBar(content: Text('فشل في تحديد المطعم')),
+      );
+      return;
+    }
+
+    print('📍 التحقق من نطاق التوصيل: المطعم $restaurantId، الإحداثيات ($latitude, $longitude)');
 
     bool allowed = await checkDeliveryZone(
       restaurantId: restaurantId,
@@ -65,9 +83,8 @@ class CheckoutController extends CartController {
       longitude: longitude,
     );
 
-    print('Allowed to deliver? $allowed');
+    print('✅ هل يسمح بالتوصيل؟ $allowed');
 
-    /// TODO : make it allowed only
     if (allowed) {
       addOrder(carts);
     } else {
