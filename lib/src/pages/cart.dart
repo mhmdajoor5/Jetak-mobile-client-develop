@@ -76,7 +76,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                   onRefresh: _con.refreshCarts,
                   child:
                       _con.carts.isEmpty
-                          ? Center(child: Text('Cart is empty'))
+                          ? Center(child: Text(S.of(context).cartIsEmpty))
                           : ListView.separated(
                             padding: EdgeInsets.only(
                               top: 10,

@@ -376,6 +376,8 @@
   "entranceStaircase": "Entrance / Staircase",
   "floor": "Floor",
   "apartment": "Apartment",
+  "house": "House",
+  "office": "Office",
   "howDoWeGetIn": "How do we get in?",
   "doorbellIntercom": "Doorbell / Intercom",
   "doorCode": "Door Code",
@@ -404,8 +406,49 @@
   "enterAnotherAddress": "Enter another address",
   "locationType": "Location Type",
   "locationTypeHint": "Select location type",
-  "home": "Home",
-  "work": "Work",
-  "other": "Other",
-  "selectLocationType": "Select location type"
+  "selectLocationType": "Select location type",
+  "login_welcome": "Welcome to Jetak",
+  "login_subtitle": "Order from top restaurants and get fast delivery",
+  "login_icon_restaurants": "Restaurants",
+  "login_icon_delivery": "Delivery",
+  "login_icon_quality": "Quality",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "continue_button": "Continue",
+  "please_enter_phone_number": "Please enter your phone number",
+  "verification_title": "Verification Code",
+  "verification_instruction": "Enter the 4-digit verification code sent to {phone}",
+  "@verification_instruction": {
+    "description": "Instruction shown on the OTP screen",
+    "placeholders": {
+      "phone": {}
+    }
+  },
+  "resend_code": "Didn't receive the code? Resend",
+  "resend_available_in": "Resend available in {seconds} seconds",
+  "@resend_timer": {
+    "description": "Message showing seconds until resend available",
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "back_to_edit_number": "Back to edit number",
+  "otp_sent_success": "📩 OTP code has been sent",
+  "otp_sent_error": "❌ Failed to send OTP code",
+  "otp_verification_success": "✅ Verification successful",
+  "otp_verification_invalid": "❌ Invalid or expired code",
+  "verification_failed": "Verification failed",
+  "@otp_verification_failed": {
+    "placeholders": {
+      "status": {}
+    }
+  },
+  "otp_verification_error": "An error occurred during verification",
+  "otp_send_error": "An error occurred while sending the OTP",
+  "your_location": "Your location",
+  "offers_near_you": "Offers near you",
+  "see_all": "See all",
+  "location_type_hint": "The location type helps us to find you better, house, office",
+  "cartIsEmpty": "Cart is empty",
+  "chooseOrderType": "Choose order type"
 }

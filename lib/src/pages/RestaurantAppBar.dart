@@ -72,7 +72,6 @@ class RestaurantAppBar extends StatelessWidget {
                   errorWidget: (context, url, error) => Image.asset('assets/img/logo.png'),
                 ),
               ),
-              // زر الرجوع يتغير مكانه حسب اتجاه اللغة
               Positioned(
                 top: MediaQuery.of(context).padding.top + 6,
                 left: isRTL ? null : 10,

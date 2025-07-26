@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart' as userModel;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../../generated/l10n.dart';
 import '../../../repository/user_repository.dart' as userRepo;
 
 class SignUpVerificationScreen extends StatefulWidget {
@@ -53,18 +54,18 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
         final data = jsonDecode(response.body);
         if (data['success'] == true || data['status'] == 'success') {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('📩 OTP code has been sent')),
+            SnackBar(content: Text(S.of(context).otp_sent_success)),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('❌ Failed to send OTP code')),
+            SnackBar(content: Text(S.of(context).otp_sent_error)),
           );
         }
       }
     } catch (e) {
       print('Send OTP Error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An error occurred while sending the OTP')),
+        SnackBar(content: Text(S.of(context).otp_send_error)),
       );
     }
   }
@@ -122,25 +123,25 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
           await userRepo.saveCurrentUser(json.encode(userRepo.currentUser.value.toMap()));
 
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("✅ Verification successful")),
+            SnackBar(content: Text(S.of(context).otp_verification_success)),
           );
 
           Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
 
       } else {
           setState(() {
-            errorMessage = "❌ Invalid or expired code";
+            errorMessage = S.of(context).otp_verification_invalid;
           });
         }
       } else {
         setState(() {
-          errorMessage = "❌ Verification failed: ${response.statusCode}";
+          errorMessage = "❌ ${S.of(context).verification_failed}: ${response.statusCode}";
         });
       }
     } catch (e) {
       setState(() {
         isVerifying = false;
-        errorMessage = "An error occurred during verification";
+        errorMessage = S.of(context).otp_verification_error;
       });
       print('OTP Verify Error: $e');
     }
@@ -159,7 +160,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Verification Code'),
+        title: Text(S.of(context).verification_title),
         centerTitle: true,
       ),
       body: Padding(
@@ -168,7 +169,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Enter the 4-digit verification code sent to ${widget.phoneNumber}',
+              S.of(context).verification_instruction(widget.phoneNumber),
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
             ),
@@ -251,7 +252,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
                   child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3),
                 )
                     : Text(
-                  'Verify',
+                    S.of(context).verify,
                   style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -264,7 +265,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
                     : TextButton(
                   onPressed: canResend ? resendCode : null,
                   child: Text(
-                    'Didn\'t receive the code? Resend',
+                    S.of(context).resend_code,
                     style: TextStyle(
                       color: canResend ? Colors.blue.shade700 : Colors.grey,
                       fontWeight: FontWeight.bold,
@@ -273,7 +274,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
                 ),
                 if (!canResend)
                   Text(
-                    'Resend available in $resendCooldown seconds',
+                  S.of(context).resend_available_in(resendCooldown),
                     style: TextStyle(
                       color: Colors.grey.shade600,
                       fontSize: 13,
@@ -287,7 +288,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
                 Navigator.pop(context);
               },
               child: Text(
-                'Back to edit number',
+                S.of(context).back_to_edit_number,
                 style: TextStyle(color: Colors.blue),
               ),
             ),

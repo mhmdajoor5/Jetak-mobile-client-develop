@@ -62,7 +62,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Address', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(S.of(context).address, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               SizedBox(height: 10),
               Text(
                 widget.address,
@@ -72,10 +72,10 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
               ),
               SizedBox(height: 30),
 
-              Text('Location Type', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(S.of(context).locationType, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               SizedBox(height: 8),
               Text(
-               'The location type helps us to find your better',
+                S.of(context).location_type_hint,
                 style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
@@ -89,7 +89,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Column(
-                  children: ['Apartment', 'House', 'Office', 'Other'].map((type) {
+                  children: [S.of(context).apartment,S.of(context).house,S.of(context).office,S.of(context).other].map((type) {
                     final isLast = type == 'Other';
                     IconData iconData;
                     switch (type) {
@@ -171,10 +171,10 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text('Address details', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                            Text(S.of(context).addressDetails, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                                             SizedBox(height: 6),
                                             Text(
-                                              'Adding exact address details helps us find you faster',
+                                              S.of(context).addingExactAddressDetailsHelpsUsFindYouFaster,
                                               style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 2,
@@ -211,7 +211,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                                   ),
                                   SizedBox(height: 20),
 
-                                  Text('Optional', style: TextStyle(fontSize: 14, color: Colors.grey[700])),
+                                  Text(S.of(context).optional, style: TextStyle(fontSize: 14, color: Colors.grey[700])),
                                   SizedBox(height: 8),
                                   Container(
                                     padding: EdgeInsets.symmetric(horizontal: 16),
@@ -230,7 +230,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                                   ),
                                   SizedBox(height: 20),
 
-                                  Text('Optional', style: TextStyle(fontSize: 14, color: Colors.grey[700])),
+                                  Text(S.of(context).optional, style: TextStyle(fontSize: 14, color: Colors.grey[700])),
                                   SizedBox(height: 8),
                                   Row(
                                     children: [
@@ -274,7 +274,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
 
                                   SizedBox(height: 30),
                                   Text(
-                                    'How do we get in?',
+                                    S.of(context).howDoWeGetIn,
                                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -294,7 +294,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                                           title: Transform.translate(
                                             offset: Offset(-10, 0),
                                             child: Text(
-                                              'Doorbell / Intercom',
+                                              S.of(context).doorbellIntercom,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
@@ -310,7 +310,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                                           title: Transform.translate(
                                             offset: Offset(-10, 0),
                                             child: Text(
-                                              'Door code',
+                                              S.of(context).doorCode,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
@@ -326,7 +326,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                                           title: Transform.translate(
                                             offset: Offset(-10, 0),
                                             child: Text(
-                                              'Door is open',
+                                              S.of(context).doorIsOpen,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
@@ -342,7 +342,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                                           title: Transform.translate(
                                             offset: Offset(-10, 0),
                                             child: Text(
-                                              'Other (tell us how)',
+                                              S.of(context).otherTellUsHow,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
@@ -378,7 +378,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                                     ),
                                   ),
                                   SizedBox(height: 8),
-                                  Text('Optional', style: TextStyle(fontSize: 14, color: Colors.grey[700])),
+                                  Text(S.of(context).optional, style: TextStyle(fontSize: 14, color: Colors.grey[700])),
 
                                   SizedBox(height: 30),
                                   // Text(
@@ -400,10 +400,10 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                                   // ),
 
                                   SizedBox(height: 30),
-                                  Text('Address type and label', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                  Text(S.of(context).addressTypeAndLabel, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                                   SizedBox(height: 6),
                                   Text(
-                                    'Add or create address labels to easily choose between delivery addresses.',
+                                    S.of(context).addOrCreateAddressLabelsToEasilyChooseBetweenDeliveryAddresses,
                                     style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
@@ -412,9 +412,9 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      _buildLabelBox(icon: Icons.home, label: 'Home'),
-                                      _buildLabelBox(icon: Icons.work, label: 'Work'),
-                                      _buildLabelBox(icon: Icons.location_on, label: 'Other'),
+                                      _buildLabelBox(icon: Icons.home, label:S.of(context).home),
+                                      _buildLabelBox(icon: Icons.work, label: S.of(context).work),
+                                      _buildLabelBox(icon: Icons.location_on, label: S.of(context).other),
                                     ],
                                   ),
                                 ],
@@ -434,7 +434,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                     child: TextButton(
                       onPressed: () => Navigator.of(context).pop(),
                       child: Text(
-                        'Cancel',
+                        S.of(context).cancel,
                         style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 16),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -459,7 +459,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                         minimumSize: Size(100, 45),
                       ),
                       child: Text(
-                        'Save',
+                        S.of(context).save,
                         style: TextStyle(color: Colors.white, fontSize: 16),
                         overflow: TextOverflow.ellipsis,
                       ),

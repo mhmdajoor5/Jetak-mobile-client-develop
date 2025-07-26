@@ -99,7 +99,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> with SingleTickerProviderS
 
                       // Business Welcome Text
                       Text(
-                        'مرحباً بك في Jetak',
+                        S.of(context).login_welcome,
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
@@ -115,7 +115,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> with SingleTickerProviderS
                       SizedBox(height: 8),
 
                       Text(
-                        'اطلب من أفضل المطاعم واحصل على توصيل سريع',
+                        S.of(context).login_subtitle,
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.black45,
@@ -130,9 +130,9 @@ class _LoginWidgetState extends StateMVC<LoginWidget> with SingleTickerProviderS
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          _buildBusinessIcon(Icons.restaurant, 'مطاعم'),
-                          _buildBusinessIcon(Icons.delivery_dining, 'توصيل'),
-                          _buildBusinessIcon(Icons.star, 'جودة'),
+                          _buildBusinessIcon(Icons.restaurant, S.of(context).login_icon_restaurants),
+                          _buildBusinessIcon(Icons.delivery_dining, S.of(context).login_icon_delivery),
+                          _buildBusinessIcon(Icons.star, S.of(context).login_icon_quality),
                         ],
                       ),
                     ],

@@ -369,17 +369,14 @@
   "otherInstructionsForTheCourier": "הוראות נוספות לשליח",
   "addressTypeAndLabel": "סוג הכתובת ותווית",
   "addOrCreateAddressLabelsToEasilyChooseBetweenDeliveryAddresses": "הוסף או צור תוויות כתובת כדי לבחור בקלות בין כתובות המשלוח.",
-  "home": "בית",
   "work": "עבודה",
   "other": "אחר",
   "addNewAddress": "הוסף כתובת חדשה",
-  "description": "תיאור",
   "homeAddress": "כתובת הבית",
   "fullAddress": "כתובת מלאה",
   "streetCityCountry": "רחוב, עיר, מדינה",
   "pleaseEnterOrSelectAddress": "אנא הזן או בחר כתובת",
   "continueBtn": "המשך",
-  "makeItDefault": "הגדר כברירת מחדל",
   "locationServiceDisabled": "שירות המיקום מושבת",
   "locationPermissionDeniedForever": "ההרשאה למיקום נדחתה לצמיתות",
   "locationFetchError": "לא ניתן לקבוע מיקום",
@@ -389,8 +386,53 @@
   "enterAnotherAddress": "הזן כתובת אחרת",
   "locationType": "סוג מיקום",
   "locationTypeHint": "בחר סוג מיקום",
-  "home": "בית",
-  "work": "עבודה",
-  "other": "אחר",
-  "selectLocationType": "בחר סוג מיקום"
+  "selectLocationType": "בחר סוג מיקום",
+  "login_welcome": "ברוך הבא ל־Jetak",
+  "login_subtitle": "הזמן מהמסעדות המובילות וקבל משלוח מהיר",
+  "login_icon_restaurants": "מסעדות",
+  "login_icon_delivery": "משלוח",
+  "login_icon_quality": "איכות",
+  "first_name": "שם פרטי",
+  "last_name": "שם משפחה",
+  "continue_button": "המשך",
+  "location_type_hint": "סוג המיקום עוזר לנו למצוא אותך טוב יותר, בית, משרד",
+  "house": "בית",
+  "office": "משרד",
+  "your_location": "המיקום שלך",
+  "offers_near_you": "מבצעים לידך",
+  "see_all": "הצג הכל",
+  "verification_failed": "האימות נכשל",
+  "otp_send_error": "אירעה שגיאה בעת שליחת קוד האימות",
+  "please_enter_phone_number": "אנא הזן את מספר הטלפון שלך",
+  "resend_available_in": "שליחה מחדש תהיה זמינה בעוד {seconds} שניות",
+  "verification_title": "קוד אימות",
+  "verification_instruction": "הזן את קוד האימות בן 4 הספרות שנשלח ל־{phone}",
+  "@verification_instruction": {
+    "description": "הוראות המוצגות במסך קוד אימות (OTP)",
+    "placeholders": {
+      "phone": {}
+    }
+  },
+  "resend_code": "לא קיבלת את הקוד? שלח שוב",
+  "resend_timer": "ניתן לשלוח שוב בעוד {seconds} שניות",
+  "@resend_timer": {
+    "description": "הודעה שמציינת בעוד כמה שניות אפשר לשלוח שוב",
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "back_to_edit_number": "חזור לעריכת המספר",
+  "otp_sent_success": "📩 קוד אימות נשלח בהצלחה",
+  "otp_sent_error": "❌ שליחת קוד האימות נכשלה",
+  "otp_verification_success": "✅ אימות הצליח",
+  "otp_verification_invalid": "❌ קוד לא תקף או פג תוקף",
+  "otp_verification_failed": "❌ אימות נכשל: {status}",
+  "@otp_verification_failed": {
+    "placeholders": {
+      "status": {}
+    }
+  },
+  "otp_verification_error": "אירעה שגיאה במהלך האימות",
+  "cartIsEmpty": "הסל ריק",
+  "chooseOrderType": "בחר סוג הזמנה"
 }

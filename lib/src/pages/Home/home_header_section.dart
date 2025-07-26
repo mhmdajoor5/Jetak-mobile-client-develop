@@ -27,7 +27,7 @@ class HomeHeaderSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Your location",
+                  S.of(context).your_location,
                   style: TextStyle(
                     //fontFamily: 'Nunito',
                     fontSize: 12,

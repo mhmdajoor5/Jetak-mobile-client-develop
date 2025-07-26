@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../generated/l10n.dart';
 import '../../elements/CardsCarouselWidget.dart';
 import '../../models/restaurant.dart';
 
@@ -21,7 +22,7 @@ class HomeTopRestaurantsSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Offers near you',
+                S.of(context).offers_near_you,
                 style: TextStyle(
                   //fontFamily: 'Nunito',
                   fontWeight: FontWeight.w500,
@@ -35,7 +36,7 @@ class HomeTopRestaurantsSection extends StatelessWidget {
                   Navigator.pushNamed(context, '/OffersNearYou');
                 },
                 child: Text(
-                  'See all',
+                  S.of(context).see_all,
                   style: TextStyle(
                     //fontFamily: 'Nunito',
                     fontWeight: FontWeight.w400,

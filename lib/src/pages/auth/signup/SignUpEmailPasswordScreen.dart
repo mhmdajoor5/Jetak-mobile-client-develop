@@ -140,7 +140,7 @@ class _SignUpEmailPasswordScreenState extends StateMVC<SignUpEmailPasswordScreen
                         );
                       }
                     },
-                    child: Text('Continue', style: TextStyle(color: Colors.white)),
+                    child: Text(S.of(context).continue_button, style: TextStyle(color: Colors.white)),
                   ),
                 ),
               ],

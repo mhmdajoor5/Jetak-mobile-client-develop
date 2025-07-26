@@ -142,14 +142,14 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Add new address",
+                    S.of(context).addNewAddress,
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 30),
                   TextFormField(
                     controller: descriptionController,
                     decoration: InputDecoration(
-                      label: Text('Description'),
+                      label: Text(S.of(context).description),
                       hintText: 'Home Address',
                       border: OutlineInputBorder(),
                     ),
@@ -158,7 +158,7 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                   TextFormField(
                     controller: fullAddressController,
                     decoration: InputDecoration(
-                      label: Text('Full Address'),
+                      label: Text(S.of(context).fullAddress),
                       hintText: 'Street, City, Country',
                       border: OutlineInputBorder(),
                     ),
@@ -168,7 +168,7 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                     onPressed: () async {
                       if (fullAddressController.text.trim().isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Please enter or select an address')),
+                          SnackBar(content: Text(S.of(context).pleaseEnterOrSelectAddress)),
                         );
                         return;
                       }
@@ -185,7 +185,7 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                       backgroundColor: Theme.of(context).colorScheme.secondary,
                       minimumSize: Size(double.infinity, 45),
                     ),
-                    child: Text('Continue', style: TextStyle(fontSize: 16, color: Colors.white)),
+                    child: Text(S.of(context).continueBtn, style: TextStyle(fontSize: 16, color: Colors.white)),
                   ),
                   SizedBox(height: 30),
                   Row(
@@ -196,7 +196,7 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                           setState(() => isDefault = val ?? false);
                         },
                       ),
-                      Text("Make it default"),
+                      Text(S.of(context).makeItDefault),
                     ],
                   ),
                   Spacer(),
@@ -238,8 +238,8 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                     children: [
                       Text(
                         locationLoaded
-                            ? "Based on your phone's location,\nit looks like you're here:"
-                            : "يرجى الانتظار...",
+                            ?S.of(context). locationBasedMessage
+                            :S.of(context). pleaseWait,
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 16, color: Colors.black87),
                       ),
@@ -257,12 +257,12 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                             backgroundColor: Theme.of(context).colorScheme.secondary,
                             minimumSize: Size(double.infinity, 45),
                           ),
-                          child: Text("Use this address", style: TextStyle(color: Colors.white)),
+                          child: Text(S.of(context).useThisAddress, style: TextStyle(color: Colors.white)),
                         ),
                       if (locationLoaded)
                         TextButton(
                           onPressed: _dismissOverlay,
-                          child: Text("Enter another address", style: TextStyle(color: Theme.of(context).hintColor)),
+                          child: Text(S.of(context).enterAnotherAddress, style: TextStyle(color: Theme.of(context).hintColor)),
                         ),
                     ],
                   ),

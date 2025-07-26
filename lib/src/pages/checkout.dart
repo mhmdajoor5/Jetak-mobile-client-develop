@@ -79,12 +79,12 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
-                          "اختيار نوع الطلب",
+                          S.of(context).chooseOrderType,
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ),
                       ListTile(
-                        title: const Text('توصيل'),
+                        title:  Text(S.of(context).delivery),
                         leading: Radio<String>(
                           value: 'delivery',
                           groupValue: selectedOrderType,
@@ -96,7 +96,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                         ),
                       ),
                       ListTile(
-                        title: const Text('استلام من المتجر'),
+                        title:  Text(S.of(context).pickup),
                         leading: Radio<String>(
                           value: 'pickup',
                           groupValue: selectedOrderType,

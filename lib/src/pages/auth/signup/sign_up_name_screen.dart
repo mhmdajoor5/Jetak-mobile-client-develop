@@ -48,7 +48,7 @@ class _SignUpNameScreenState extends StateMVC<SignUpNameScreen> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    labelText: 'First Name',
+                    labelText: S.of(context).first_name,
                     labelStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
                     contentPadding: EdgeInsets.all(12),
                     hintText: S.of(context).john_doe,
@@ -72,7 +72,7 @@ class _SignUpNameScreenState extends StateMVC<SignUpNameScreen> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    labelText: 'Last Name',
+                    labelText: S.of(context).last_name,
                     labelStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
                     contentPadding: EdgeInsets.all(12),
                     hintStyle: TextStyle(color: Theme.of(context).focusColor.withOpacity(0.7)),
@@ -104,7 +104,7 @@ class _SignUpNameScreenState extends StateMVC<SignUpNameScreen> {
 
                       }
                     },
-                    child: Text('Continue', style: TextStyle(color: Colors.white)),
+                    child: Text(S.of(context).continue_button, style: TextStyle(color: Colors.white)),
                   ),
                 ),
               ],

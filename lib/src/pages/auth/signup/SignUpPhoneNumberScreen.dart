@@ -135,7 +135,7 @@ class _SignUpPhoneNumberScreenState extends StateMVC<SignUpPhoneNumberScreen> {
 
                       if (_con.user.phone == null || _con.user.phone!.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('يرجى إدخال رقم الهاتف')),
+                          SnackBar(content: Text(S.of(context).please_enter_phone_number)),
                         );
                         return;
                       }

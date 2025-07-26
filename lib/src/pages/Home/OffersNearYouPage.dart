@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import '../../../generated/l10n.dart';
 import '../../controllers/home_controller.dart';
 import '../../elements/GridWidget.dart';
 import '../../models/restaurant.dart';
@@ -22,7 +23,7 @@ class _OffersNearYouPageState extends StateMVC<OffersNearYouPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Offers Near You'),
+        title:  Text(S.of(context).offers_near_you,),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,

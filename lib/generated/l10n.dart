@@ -3680,6 +3680,26 @@ class S {
     );
   }
 
+  /// `House`
+  String get house {
+    return Intl.message(
+      'House',
+      name: 'house',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Office`
+  String get office {
+    return Intl.message(
+      'Office',
+      name: 'office',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `How do we get in?`
   String get howDoWeGetIn {
     return Intl.message(
@@ -3935,6 +3955,276 @@ class S {
     return Intl.message(
       'Select location type',
       name: 'selectLocationType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Welcome to Jetak`
+  String get login_welcome {
+    return Intl.message(
+      'Welcome to Jetak',
+      name: 'login_welcome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order from top restaurants and get fast delivery`
+  String get login_subtitle {
+    return Intl.message(
+      'Order from top restaurants and get fast delivery',
+      name: 'login_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restaurants`
+  String get login_icon_restaurants {
+    return Intl.message(
+      'Restaurants',
+      name: 'login_icon_restaurants',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivery`
+  String get login_icon_delivery {
+    return Intl.message(
+      'Delivery',
+      name: 'login_icon_delivery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quality`
+  String get login_icon_quality {
+    return Intl.message(
+      'Quality',
+      name: 'login_icon_quality',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First Name`
+  String get first_name {
+    return Intl.message(
+      'First Name',
+      name: 'first_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last Name`
+  String get last_name {
+    return Intl.message(
+      'Last Name',
+      name: 'last_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue`
+  String get continue_button {
+    return Intl.message(
+      'Continue',
+      name: 'continue_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter your phone number`
+  String get please_enter_phone_number {
+    return Intl.message(
+      'Please enter your phone number',
+      name: 'please_enter_phone_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verification Code`
+  String get verification_title {
+    return Intl.message(
+      'Verification Code',
+      name: 'verification_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the 4-digit verification code sent to {phone}`
+  String verification_instruction(Object phone) {
+    return Intl.message(
+      'Enter the 4-digit verification code sent to $phone',
+      name: 'verification_instruction',
+      desc: 'Instruction shown on the OTP screen',
+      args: [phone],
+    );
+  }
+
+  /// `Didn't receive the code? Resend`
+  String get resend_code {
+    return Intl.message(
+      'Didn\'t receive the code? Resend',
+      name: 'resend_code',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resend available in {seconds} seconds`
+  String resend_available_in(Object seconds) {
+    return Intl.message(
+      'Resend available in $seconds seconds',
+      name: 'resend_available_in',
+      desc: '',
+      args: [seconds],
+    );
+  }
+
+  /// `Back to edit number`
+  String get back_to_edit_number {
+    return Intl.message(
+      'Back to edit number',
+      name: 'back_to_edit_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `📩 OTP code has been sent`
+  String get otp_sent_success {
+    return Intl.message(
+      '📩 OTP code has been sent',
+      name: 'otp_sent_success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `❌ Failed to send OTP code`
+  String get otp_sent_error {
+    return Intl.message(
+      '❌ Failed to send OTP code',
+      name: 'otp_sent_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `✅ Verification successful`
+  String get otp_verification_success {
+    return Intl.message(
+      '✅ Verification successful',
+      name: 'otp_verification_success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `❌ Invalid or expired code`
+  String get otp_verification_invalid {
+    return Intl.message(
+      '❌ Invalid or expired code',
+      name: 'otp_verification_invalid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verification failed`
+  String get verification_failed {
+    return Intl.message(
+      'Verification failed',
+      name: 'verification_failed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An error occurred during verification`
+  String get otp_verification_error {
+    return Intl.message(
+      'An error occurred during verification',
+      name: 'otp_verification_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An error occurred while sending the OTP`
+  String get otp_send_error {
+    return Intl.message(
+      'An error occurred while sending the OTP',
+      name: 'otp_send_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your location`
+  String get your_location {
+    return Intl.message(
+      'Your location',
+      name: 'your_location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Offers near you`
+  String get offers_near_you {
+    return Intl.message(
+      'Offers near you',
+      name: 'offers_near_you',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `See all`
+  String get see_all {
+    return Intl.message(
+      'See all',
+      name: 'see_all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The location type helps us to find you better, house, office`
+  String get location_type_hint {
+    return Intl.message(
+      'The location type helps us to find you better, house, office',
+      name: 'location_type_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cart is empty`
+  String get cartIsEmpty {
+    return Intl.message(
+      'Cart is empty',
+      name: 'cartIsEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose order type`
+  String get chooseOrderType {
+    return Intl.message(
+      'Choose order type',
+      name: 'chooseOrderType',
       desc: '',
       args: [],
     );

@@ -33,7 +33,12 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(time) => "مفتوح حتى ${time}";
 
-  static String m6(foodname) => "تمت إزالة ${foodname} من سلة التسوق";
+  static String m6(seconds) => "إعادة الإرسال متاحة خلال ${seconds} ثانية";
+
+  static String m7(foodname) => "تمت إزالة ${foodname} من سلة التسوق";
+
+  static String m8(phone) =>
+      "أدخل رمز التحقق المكون من 4 أرقام المرسل إلى ${phone}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -91,6 +96,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_settings": MessageLookupByLibrary.simpleMessage("إعدادات التطبيق"),
         "application_preferences":
             MessageLookupByLibrary.simpleMessage("تفضيلات التطبيق"),
+        "back_to_edit_number":
+            MessageLookupByLibrary.simpleMessage("تعديل الرقم"),
         "buildingName": MessageLookupByLibrary.simpleMessage("اسم المبنى"),
         "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
         "card_added_successfully":
@@ -100,6 +107,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "card_deleted_successfully":
             MessageLookupByLibrary.simpleMessage("تم حذف البطاقة بنجاح"),
         "cart": MessageLookupByLibrary.simpleMessage("سلة التسوق"),
+        "cartIsEmpty": MessageLookupByLibrary.simpleMessage("السلة فارغة"),
         "carts_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("تم تحديث العربة بنجاح"),
         "cash": MessageLookupByLibrary.simpleMessage("نقداً"),
@@ -113,24 +121,27 @@ class MessageLookup extends MessageLookupByLibrary {
         "check_on_waze":
             MessageLookupByLibrary.simpleMessage("افحص الموقع على تطبيق Waze:"),
         "checkout": MessageLookupByLibrary.simpleMessage("إتمام الشراء"),
+        "chooseOrderType":
+            MessageLookupByLibrary.simpleMessage("اختيار نوع الطلب"),
         "choose_your_location":
             MessageLookupByLibrary.simpleMessage("برجاء تحديد موقعك"),
         "clickToPayWithRazorpayMethod": MessageLookupByLibrary.simpleMessage(
-            "Click to pay with RazorPay method"),
+            "انقر للدفع باستخدام طريقة RazorPay"),
         "click_on_the_stars_below_to_leave_comments":
             MessageLookupByLibrary.simpleMessage(
-                "Click on the stars below to leave comments"),
+                "انقر على النجوم أدناه لترك تعليق"),
         "close": MessageLookupByLibrary.simpleMessage("اغلاق"),
         "completeYourProfileDetailsToContinue":
             MessageLookupByLibrary.simpleMessage(
-                "Complete your profile details to continue"),
+                "أكمل تفاصيل ملفك الشخصي للمتابعة"),
         "complete_order": MessageLookupByLibrary.simpleMessage("إكمال الطلب"),
         "complete_payment": MessageLookupByLibrary.simpleMessage("إكمال الدفع"),
         "confirm_payment": MessageLookupByLibrary.simpleMessage("تأكيد الدفع"),
         "confirmation": MessageLookupByLibrary.simpleMessage("التأكيد"),
         "continueBtn": MessageLookupByLibrary.simpleMessage("متابعة"),
+        "continue_button": MessageLookupByLibrary.simpleMessage("استمرار"),
         "credit_card": MessageLookupByLibrary.simpleMessage("بطاقة ائتمان"),
-        "cuisines": MessageLookupByLibrary.simpleMessage("Cuisines"),
+        "cuisines": MessageLookupByLibrary.simpleMessage("المطابخ"),
         "dark_mode": MessageLookupByLibrary.simpleMessage("الوضع الداكن"),
         "ddMMyyyy": MessageLookupByLibrary.simpleMessage("dd-MM-yyyy"),
         "ddMMyyyyHHmm":
@@ -146,7 +157,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("التوصيل خلال 20–30 دقيقة"),
         "delivery_addresses":
             MessageLookupByLibrary.simpleMessage("عناوين التوصيل"),
-        "delivery_fee": MessageLookupByLibrary.simpleMessage("Delivery Fee"),
+        "delivery_fee": MessageLookupByLibrary.simpleMessage("رسوم التوصيل"),
         "description": MessageLookupByLibrary.simpleMessage("الوصف"),
         "didntReceiveTheCodeResendit":
             MessageLookupByLibrary.simpleMessage("لم يصلك الرمز؟ أعد الإرسال"),
@@ -185,25 +196,26 @@ class MessageLookup extends MessageLookupByLibrary {
         "estimated_time": MessageLookupByLibrary.simpleMessage("الوقت المتوقع"),
         "extras": MessageLookupByLibrary.simpleMessage("إضافات"),
         "faq": MessageLookupByLibrary.simpleMessage("الاسئلة الشائعة"),
-        "faqsRefreshedSuccessfuly":
-            MessageLookupByLibrary.simpleMessage("Faqs refreshed successfuly"),
+        "faqsRefreshedSuccessfuly": MessageLookupByLibrary.simpleMessage(
+            "تم تحديث الأسئلة الشائعة بنجاح"),
         "favorite_foods":
             MessageLookupByLibrary.simpleMessage("المنتجات المفضلة"),
         "favorites": MessageLookupByLibrary.simpleMessage("المفضلة"),
-        "favorites_refreshed_successfuly": MessageLookupByLibrary.simpleMessage(
-            "Favorites refreshed successfuly"),
+        "favorites_refreshed_successfuly":
+            MessageLookupByLibrary.simpleMessage("تم تحديث المفضلة بنجاح"),
         "featured_foods":
             MessageLookupByLibrary.simpleMessage("المنتجات المميزة"),
         "fetchAllNotifications":
             MessageLookupByLibrary.simpleMessage("جلب جميع الإشعارات"),
-        "filter": MessageLookupByLibrary.simpleMessage("Filter"),
+        "filter": MessageLookupByLibrary.simpleMessage("تصفية"),
+        "first_name": MessageLookupByLibrary.simpleMessage("الاسم الأول"),
         "floor": MessageLookupByLibrary.simpleMessage("الطابق"),
         "foodRefreshedSuccessfuly":
-            MessageLookupByLibrary.simpleMessage("Food refreshed successfuly"),
+            MessageLookupByLibrary.simpleMessage("تم تحديث الطعام بنجاح"),
         "food_categories": MessageLookupByLibrary.simpleMessage("الفئات"),
         "forMoreDetailsPleaseChatWithOurManagers":
             MessageLookupByLibrary.simpleMessage(
-                "For more details, please chat with our managers"),
+                "لمزيد من التفاصيل، يرجى الدردشة مع مديرينا"),
         "forgot_password":
             MessageLookupByLibrary.simpleMessage("هل نسيت كلمة المرور؟"),
         "fullAddress": MessageLookupByLibrary.simpleMessage("العنوان الكامل"),
@@ -216,19 +228,19 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("الرجوع إلى صفحة الدفع"),
         "guest": MessageLookupByLibrary.simpleMessage("زائر"),
         "haveCouponCode":
-            MessageLookupByLibrary.simpleMessage("Have Coupon Code?"),
+            MessageLookupByLibrary.simpleMessage("هل لديك رمز قسيمة؟"),
         "help__support": MessageLookupByLibrary.simpleMessage("المساعدة"),
         "help_support": MessageLookupByLibrary.simpleMessage("المساعدة"),
         "help_supports": MessageLookupByLibrary.simpleMessage("المساعدة"),
         "hint_full_address": MessageLookupByLibrary.simpleMessage(
             "المدينة المنورة ، حي الازهري ، الشارع العام ، خلف مكتبة الحرمين"),
-        "home": MessageLookupByLibrary.simpleMessage("منزل"),
+        "home": MessageLookupByLibrary.simpleMessage("المنزل"),
         "homeAddress": MessageLookupByLibrary.simpleMessage("عنوان المنزل"),
         "home_address": MessageLookupByLibrary.simpleMessage("المنزل"),
+        "house": MessageLookupByLibrary.simpleMessage("منزل"),
         "howDoWeGetIn": MessageLookupByLibrary.simpleMessage("كيف ندخل؟"),
         "how_would_you_rate_this_restaurant_":
-            MessageLookupByLibrary.simpleMessage(
-                "How would you rate this restaurant ?"),
+            MessageLookupByLibrary.simpleMessage("كيف تقيّم هذا المطعم؟"),
         "iCredit": MessageLookupByLibrary.simpleMessage("ادفع الآن"),
         "i_dont_have_an_account":
             MessageLookupByLibrary.simpleMessage("ليس لدي حساب"),
@@ -244,7 +256,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "information": MessageLookupByLibrary.simpleMessage("معلومات"),
         "ingredients": MessageLookupByLibrary.simpleMessage("المكونات"),
         "invalidCouponCode":
-            MessageLookupByLibrary.simpleMessage("Invalid Coupon"),
+            MessageLookupByLibrary.simpleMessage("رمز القسيمة غير صالح"),
         "item_subtotal":
             MessageLookupByLibrary.simpleMessage("المجموع الفرعي للعنصر"),
         "john_doe": MessageLookupByLibrary.simpleMessage("فلان الفلاني"),
@@ -252,6 +264,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "لا تفرغ السلة واحتفظ باختياراتي السابقة"),
         "languages": MessageLookupByLibrary.simpleMessage("اللغات"),
+        "last_name": MessageLookupByLibrary.simpleMessage("اسم العائلة"),
         "lets_start_with_login":
             MessageLookupByLibrary.simpleMessage("لنبدأ بتسجيل الدخول!"),
         "lets_start_with_register":
@@ -270,12 +283,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "locationType": MessageLookupByLibrary.simpleMessage("نوع الموقع"),
         "locationTypeHint":
             MessageLookupByLibrary.simpleMessage("اختر نوع الموقع"),
+        "location_type_hint": MessageLookupByLibrary.simpleMessage(
+            "نوع الموقع يساعدنا في الوصول إليك بشكل أفضل، مثل: المنزل، المكتب"),
         "log_out": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
         "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
+        "login_icon_delivery": MessageLookupByLibrary.simpleMessage("توصيل"),
+        "login_icon_quality": MessageLookupByLibrary.simpleMessage("جودة"),
+        "login_icon_restaurants": MessageLookupByLibrary.simpleMessage("مطاعم"),
+        "login_subtitle": MessageLookupByLibrary.simpleMessage(
+            "اطلب من أفضل المطاعم واحصل على توصيل سريع"),
         "login_success":
             MessageLookupByLibrary.simpleMessage("تم تسجيل الدخول بنجاح!"),
         "login_successful":
             MessageLookupByLibrary.simpleMessage("تم تسجيل الدخول بنجاح"),
+        "login_welcome":
+            MessageLookupByLibrary.simpleMessage("مرحباً بك في Jetak"),
         "login_with_apple":
             MessageLookupByLibrary.simpleMessage("تسجيل الدخول عبر آبل"),
         "login_with_facebook":
@@ -292,18 +314,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "maps": MessageLookupByLibrary.simpleMessage("الخرائط"),
         "maps_explorer": MessageLookupByLibrary.simpleMessage("مستكشف الخرائط"),
         "menu": MessageLookupByLibrary.simpleMessage("المينيو"),
-        "messages": MessageLookupByLibrary.simpleMessage("Messages"),
+        "messages": MessageLookupByLibrary.simpleMessage("الرسائل"),
         "more": MessageLookupByLibrary.simpleMessage("المزيد"),
         "most_ordered": MessageLookupByLibrary.simpleMessage("الأكثر طلبًا"),
         "most_popular": MessageLookupByLibrary.simpleMessage("الأكثر شعبية"),
         "multirestaurants": MessageLookupByLibrary.simpleMessage("عدة مطابخ"),
         "my_orders": MessageLookupByLibrary.simpleMessage("طلباتي"),
         "newMessageFrom":
-            MessageLookupByLibrary.simpleMessage("New message from"),
+            MessageLookupByLibrary.simpleMessage("رسالة جديدة من"),
         "new_address_added_successfully": MessageLookupByLibrary.simpleMessage(
             "تمت اضافة العنوان الجديد بنجاح"),
         "new_order_from_client":
-            MessageLookupByLibrary.simpleMessage("New order from client"),
+            MessageLookupByLibrary.simpleMessage("طلب جديد من عميل"),
         "no_items_in_this_category":
             MessageLookupByLibrary.simpleMessage("لا توجد عناصر في هذه الفئة"),
         "no_restaurants_found":
@@ -315,7 +337,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notAvailableNow":
             MessageLookupByLibrary.simpleMessage("غير متوفر الآن"),
         "notValidAddress":
-            MessageLookupByLibrary.simpleMessage("Not valid address"),
+            MessageLookupByLibrary.simpleMessage("العنوان غير صالح"),
         "not_a_valid_address":
             MessageLookupByLibrary.simpleMessage("العنوان غير صالح"),
         "not_a_valid_biography":
@@ -333,13 +355,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "not_a_valid_phone":
             MessageLookupByLibrary.simpleMessage("رقم الجوال غير صالح"),
         "notificationWasRemoved":
-            MessageLookupByLibrary.simpleMessage("Notification was removed"),
+            MessageLookupByLibrary.simpleMessage("تم حذف الإشعار"),
         "notifications": MessageLookupByLibrary.simpleMessage("إشعارات"),
         "notificationsTestTitle":
             MessageLookupByLibrary.simpleMessage("🧪 اختبار الإشعارات"),
         "notifications_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("تم تحديث الإشعارات بنجاح"),
         "nutrition": MessageLookupByLibrary.simpleMessage("العناصر الغذائية"),
+        "offers_near_you":
+            MessageLookupByLibrary.simpleMessage("عروض قريبة منك"),
+        "office": MessageLookupByLibrary.simpleMessage("مكتب"),
         "open_until": m5,
         "optional": MessageLookupByLibrary.simpleMessage("اختياري"),
         "or_checkout_with": MessageLookupByLibrary.simpleMessage("او ادفع مع"),
@@ -347,17 +372,29 @@ class MessageLookup extends MessageLookupByLibrary {
         "order_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("تم تحديث الطلب بنجاح"),
         "order_status_changed":
-            MessageLookupByLibrary.simpleMessage("Order status changed"),
+            MessageLookupByLibrary.simpleMessage("تم تغيير حالة الطلب"),
         "order_summary": MessageLookupByLibrary.simpleMessage("ملخص الطلب"),
         "ordered_by_nearby_first":
             MessageLookupByLibrary.simpleMessage("مرتبة حسب الاقرب"),
         "orders_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("تم تحديث الطلبات بنجاح"),
-        "other": MessageLookupByLibrary.simpleMessage("آخر"),
+        "other": MessageLookupByLibrary.simpleMessage("أخرى"),
         "otherInstructionsForTheCourier":
             MessageLookupByLibrary.simpleMessage("تعليمات أخرى للساعي"),
         "otherTellUsHow":
             MessageLookupByLibrary.simpleMessage("آخر (أخبرنا كيف)"),
+        "otp_send_error": MessageLookupByLibrary.simpleMessage(
+            "حدث خطأ أثناء إرسال رمز التحقق"),
+        "otp_sent_error":
+            MessageLookupByLibrary.simpleMessage("❌ فشل في إرسال رمز التحقق"),
+        "otp_sent_success":
+            MessageLookupByLibrary.simpleMessage("📩 تم إرسال رمز التحقق"),
+        "otp_verification_error":
+            MessageLookupByLibrary.simpleMessage("حدث خطأ أثناء التحقق"),
+        "otp_verification_invalid":
+            MessageLookupByLibrary.simpleMessage("❌ رمز غير صالح أو منتهي"),
+        "otp_verification_success":
+            MessageLookupByLibrary.simpleMessage("✅ تم التحقق بنجاح"),
         "password": MessageLookupByLibrary.simpleMessage("كلمه المرور"),
         "payNow": MessageLookupByLibrary.simpleMessage("ادفع الآن"),
         "pay_now": MessageLookupByLibrary.simpleMessage("ادفع الان"),
@@ -376,10 +413,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "paypal_payment":
             MessageLookupByLibrary.simpleMessage("الدفع بواسطة Paypal"),
         "phone": MessageLookupByLibrary.simpleMessage("رقم الجوال"),
+        "phoneNumber": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
         "pickup": MessageLookupByLibrary.simpleMessage("استلام"),
         "pleaseEnterOrSelectAddress":
             MessageLookupByLibrary.simpleMessage("يرجى إدخال أو اختيار عنوان"),
         "pleaseWait": MessageLookupByLibrary.simpleMessage("يرجى الانتظار..."),
+        "please_enter_phone_number":
+            MessageLookupByLibrary.simpleMessage("يرجى إدخال رقم الهاتف"),
         "please_fill_all_fields": MessageLookupByLibrary.simpleMessage(
             "الرجاء تعبئة جميع الحقول بشكل صحيح"),
         "profile": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
@@ -391,8 +431,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "promo": MessageLookupByLibrary.simpleMessage("الخصم"),
         "quantity": MessageLookupByLibrary.simpleMessage("الكمية"),
         "razorpay": MessageLookupByLibrary.simpleMessage("RazorPay"),
-        "razorpayPayment":
-            MessageLookupByLibrary.simpleMessage("RazorPay Payment"),
+        "razorpayPayment": MessageLookupByLibrary.simpleMessage("دفع RazorPay"),
         "recent_orders":
             MessageLookupByLibrary.simpleMessage("الطلبات الأخيرة"),
         "recent_reviews":
@@ -404,6 +443,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "register": MessageLookupByLibrary.simpleMessage("تسجيل"),
         "register_successful":
             MessageLookupByLibrary.simpleMessage("تم التسجيل بنجاح"),
+        "resend_available_in": m6,
+        "resend_code": MessageLookupByLibrary.simpleMessage(
+            "لم يصلك الرمز؟ إعادة الإرسال"),
         "reset": MessageLookupByLibrary.simpleMessage("إعادة تعيين"),
         "reset_cart":
             MessageLookupByLibrary.simpleMessage("إعادة تعيين سلة التسوق"),
@@ -414,12 +456,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تم تحديث المطبخ بنجاح"),
         "restaurants": MessageLookupByLibrary.simpleMessage("المطاعم"),
         "reviews": MessageLookupByLibrary.simpleMessage("التعليقات"),
-        "reviews_refreshed_successfully": MessageLookupByLibrary.simpleMessage(
-            "Reviews refreshed successfully!"),
+        "reviews_refreshed_successfully":
+            MessageLookupByLibrary.simpleMessage("تم تحديث المراجعات بنجاح!"),
         "save": MessageLookupByLibrary.simpleMessage("حفظ"),
         "search": MessageLookupByLibrary.simpleMessage("بحث"),
         "search_for_restaurants_or_foods":
             MessageLookupByLibrary.simpleMessage("البحث في المطابخ والمنتجات"),
+        "see_all": MessageLookupByLibrary.simpleMessage("عرض الكل"),
         "select": MessageLookupByLibrary.simpleMessage("اختر"),
         "selectLocationType":
             MessageLookupByLibrary.simpleMessage("اختر نوع الموقع"),
@@ -445,7 +488,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "should_be_more_than_6_letters":
             MessageLookupByLibrary.simpleMessage("يجب أن يكون أكثر من 6 أحرف"),
         "signinToChatWithOurManagers": MessageLookupByLibrary.simpleMessage(
-            "Sign-In to chat with our managers"),
+            "قم بتسجيل الدخول للدردشة مع مديرينا"),
         "skip": MessageLookupByLibrary.simpleMessage("تخطي"),
         "start_exploring": MessageLookupByLibrary.simpleMessage("استكشف الآن"),
         "stores": MessageLookupByLibrary.simpleMessage("المتاجر"),
@@ -455,10 +498,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "subtotal": MessageLookupByLibrary.simpleMessage("مجموع الطلب"),
         "swipeLeftTheNotificationToDeleteOrReadUnreadIt":
             MessageLookupByLibrary.simpleMessage(
-                "Swipe left the notification to delete or read / unread it"),
+                "اسحب الإشعار إلى اليسار لحذفه أو تمييزه كمقروء/غير مقروء"),
         "tax": MessageLookupByLibrary.simpleMessage("ضريبة"),
         "tell_us_about_this_food":
-            MessageLookupByLibrary.simpleMessage("Tell us about this food"),
+            MessageLookupByLibrary.simpleMessage("أخبرنا عن هذا الطعام"),
         "testApiConnection":
             MessageLookupByLibrary.simpleMessage("اختبار الاتصال بالـ API"),
         "testLocalNotification":
@@ -476,21 +519,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "the_address_updated_successfully":
             MessageLookupByLibrary.simpleMessage("تم تحديث العنوان بنجاح"),
         "the_food_has_been_rated_successfully":
-            MessageLookupByLibrary.simpleMessage(
-                "The food has been rated successfully"),
-        "the_food_was_removed_from_your_cart": m6,
+            MessageLookupByLibrary.simpleMessage("تم تقييم الطعام بنجاح"),
+        "the_food_was_removed_from_your_cart": m7,
         "the_restaurant_has_been_rated_successfully":
-            MessageLookupByLibrary.simpleMessage(
-                "The restaurant has been rated successfully"),
+            MessageLookupByLibrary.simpleMessage("تم تقييم المطعم بنجاح"),
         "thisFoodWasAddedToFavorite": MessageLookupByLibrary.simpleMessage(
-            "This food was added to favorite"),
+            "تمت إضافة هذا الطعام إلى المفضلة"),
         "thisFoodWasRemovedFromFavorites": MessageLookupByLibrary.simpleMessage(
-            "This food was removed from favorites"),
-        "thisNotificationHasMarkedAsRead": MessageLookupByLibrary.simpleMessage(
-            "This notification has marked as read"),
+            "تمت إزالة هذا الطعام من المفضلة"),
+        "thisNotificationHasMarkedAsRead":
+            MessageLookupByLibrary.simpleMessage("تم تمييز هذا الإشعار كمقروء"),
         "thisNotificationHasMarkedAsUnread":
             MessageLookupByLibrary.simpleMessage(
-                "This notification has marked as unread"),
+                "تم تمييز هذا الإشعار كغير مقروء"),
         "tip_check_card_info": MessageLookupByLibrary.simpleMessage(
             "• تحقق من معلومات البطاقة جيدًا."),
         "tip_contact_issuer": MessageLookupByLibrary.simpleMessage(
@@ -512,13 +553,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "twentyToThirtyMin":
             MessageLookupByLibrary.simpleMessage("20–30 دقيقة"),
         "typeToStartChat":
-            MessageLookupByLibrary.simpleMessage("Type to start chat"),
-        "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
+            MessageLookupByLibrary.simpleMessage("اكتب لبدء المحادثة"),
+        "unknown": MessageLookupByLibrary.simpleMessage("غير معروف"),
         "unreadNotifications":
             MessageLookupByLibrary.simpleMessage("إشعارات غير مقروءة"),
         "useThisAddress":
             MessageLookupByLibrary.simpleMessage("استخدم هذا العنوان"),
-        "validCouponCode": MessageLookupByLibrary.simpleMessage("Valid Coupon"),
+        "validCouponCode":
+            MessageLookupByLibrary.simpleMessage("رمز القسيمة صالح"),
+        "verification_failed":
+            MessageLookupByLibrary.simpleMessage("فشل التحقق"),
+        "verification_instruction": m8,
+        "verification_title":
+            MessageLookupByLibrary.simpleMessage("رمز التحقق"),
         "verify": MessageLookupByLibrary.simpleMessage("التحقق"),
         "verifyCode": MessageLookupByLibrary.simpleMessage("تحقق من الرمز"),
         "verify_your_internet_connection":
@@ -535,8 +582,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "بريد إلكتروني أو كلمة مرور خاطئة"),
         "wrong_password":
             MessageLookupByLibrary.simpleMessage("كلمة المرور غير صحيحة"),
-        "youDontHaveAnyConversations": MessageLookupByLibrary.simpleMessage(
-            "You don\'t have any conversations"),
+        "youDontHaveAnyConversations":
+            MessageLookupByLibrary.simpleMessage("لا توجد أي محادثات لديك"),
         "you_can_discover_restaurants": MessageLookupByLibrary.simpleMessage(
             "يمكنك استكتشاف المطابخ المحيطة بك واختيار أفضل وجبة لك"),
         "you_must_add_foods_of_the_same_restaurants_choose_one":
@@ -547,6 +594,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "يجب تسجيل الدخول لمشاهدة هذه الصفحة"),
         "your_address": MessageLookupByLibrary.simpleMessage("عنوانك"),
         "your_biography": MessageLookupByLibrary.simpleMessage("نبذة عنك"),
+        "your_location": MessageLookupByLibrary.simpleMessage("موقعك"),
         "your_order_has_been_successfully_submitted":
             MessageLookupByLibrary.simpleMessage("تم تقديم طلبك بنجاح!"),
         "your_reset_link_has_been_sent_to_your_email":
