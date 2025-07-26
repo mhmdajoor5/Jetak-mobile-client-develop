@@ -55,20 +55,47 @@ Future<dynamic> setCurrentLocation() async {
   MapsUtil mapsUtil = new MapsUtil();
   final whenDone = new Completer();
   Address _address = new Address();
-  location.requestService().then((value) async {
-    location.getLocation().then((_locationData) async {
-      String? _addressName = await mapsUtil.getAddressName((_locationData.latitude != null && _locationData.longitude != null) ? LatLng(_locationData.latitude!, _locationData.longitude!) : null, setting.value.googleMapsKey);
-      _address = Address.fromJSON({'address': _addressName, 'latitude': _locationData.latitude, 'longitude': _locationData.longitude});
-      await changeCurrentLocation(_address);
-      whenDone.complete(_address);
-    }).timeout(Duration(seconds: 10), onTimeout: () async {
-      await changeCurrentLocation(_address);
-      whenDone.complete(_address);
-      return null;
-    }).catchError((e) {
-      whenDone.complete(_address);
+  
+  try {
+    location.requestService().then((value) async {
+      location.getLocation().then((_locationData) async {
+        // التحقق من وجود الإحداثيات
+        if (_locationData.latitude == null || _locationData.longitude == null) {
+          print('❌ فشل في الحصول على إحداثيات الموقع');
+          whenDone.complete(_address);
+          return;
+        }
+        
+        String? _addressName = await mapsUtil.getAddressName(
+          LatLng(_locationData.latitude!, _locationData.longitude!), 
+          setting.value.googleMapsKey
+        );
+        
+        _address = Address.fromJSON({
+          'address': _addressName, 
+          'latitude': _locationData.latitude, 
+          'longitude': _locationData.longitude
+        });
+        
+        print('📍 تم الحصول على الموقع الحالي: ${_address.address} (lat: ${_address.latitude}, lng: ${_address.longitude})');
+        
+        await changeCurrentLocation(_address);
+        whenDone.complete(_address);
+      }).timeout(Duration(seconds: 10), onTimeout: () async {
+        print('⏰ انتهت مهلة الحصول على الموقع');
+        await changeCurrentLocation(_address);
+        whenDone.complete(_address);
+        return null;
+      }).catchError((e) {
+        print('❌ خطأ في الحصول على الموقع: $e');
+        whenDone.complete(_address);
+      });
     });
-  });
+  } catch (e) {
+    print('❌ خطأ في طلب خدمة الموقع: $e');
+    whenDone.complete(_address);
+  }
+  
   return whenDone.future;
 }
 
@@ -76,6 +103,9 @@ Future<Address> changeCurrentLocation(Address _address) async {
   if (!_address.isUnknown()) {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('delivery_address', json.encode(_address.toMap()));
+    print('✅ تم حفظ العنوان في الإعدادات: ${_address.address} (lat: ${_address.latitude}, lng: ${_address.longitude})');
+  } else {
+    print('⚠️ تحذير: محاولة حفظ عنوان بدون إحداثيات في الإعدادات');
   }
   return _address;
 }
@@ -86,10 +116,21 @@ Future<Address> getCurrentLocation() async {
   if (prefs.containsKey('delivery_address')) {
     String storedDeliveryAddress = await prefs.getString('delivery_address')!;
     deliveryAddress.value = Address.fromJSON(json.decode(storedDeliveryAddress));
+    
+    // التحقق من وجود الإحداثيات
+    if (deliveryAddress.value.latitude == null || deliveryAddress.value.longitude == null) {
+      print('⚠️ العنوان المحفوظ في الإعدادات لا يحتوي على إحداثيات صحيحة');
+      // إعادة تعيين عنوان فارغ
+      deliveryAddress.value = Address.fromJSON({});
+      return deliveryAddress.value;
+    }
+    
+    print('✅ تم تحميل العنوان من الإعدادات: ${deliveryAddress.value.address} (lat: ${deliveryAddress.value.latitude}, lng: ${deliveryAddress.value.longitude})');
     return deliveryAddress.value;
   } else {
     deliveryAddress.value = Address.fromJSON({});
-    return Address.fromJSON({});
+    print('❌ لا يوجد عنوان محفوظ في الإعدادات');
+    return deliveryAddress.value;
   }
 }
 

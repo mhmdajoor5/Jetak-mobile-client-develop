@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../generated/l10n.dart';
+import '../helpers/address_helper.dart';
 import '../models/address.dart';
 import '../models/address.dart' as model;
 import '../models/cart.dart';
@@ -54,6 +55,25 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
 
     if (savedAddress != null) {
       Address address = Address.fromJson(jsonDecode(savedAddress));
+      
+      // التحقق من وجود الإحداثيات باستخدام AddressHelper
+      if (!AddressHelper.isAddressValid(address)) {
+        print('⚠️ العنوان المحفوظ لا يحتوي على إحداثيات صحيحة، محاولة إصلاح...');
+        
+        // محاولة إصلاح العنوان
+        Address? fixedAddress = await AddressHelper.fixAddressCoordinates(address);
+        if (fixedAddress != null) {
+          address = fixedAddress;
+          // حفظ العنوان المحدث
+          await saveAddress(address);
+          print('✅ تم إصلاح العنوان المحفوظ بالإحداثيات الجديدة');
+        } else {
+          print('❌ فشل في إصلاح العنوان المحفوظ');
+          // حذف العنوان المعطوب
+          await prefs.remove('saved_address');
+          return;
+        }
+      }
 
       final existing = addresses.firstWhere(
             (a) => a.id == address.id,
@@ -65,7 +85,7 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
         settingRepo.deliveryAddress.value = existing;
       });
 
-      print('✅ عنوان محفوظ تم تحميله: ${existing.description}');
+      AddressHelper.printAddressInfo(existing, 'العنوان المحفوظ المحمل');
     } else {
       print('❌ لا يوجد عنوان محفوظ');
     }
@@ -85,19 +105,49 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
   }
 
   Future<void> changeDeliveryAddress(model.Address address) async {
+    // التحقق من وجود الإحداثيات باستخدام AddressHelper
+    if (!AddressHelper.isAddressValid(address)) {
+      print('⚠️ تحذير: محاولة تغيير عنوان بدون إحداثيات');
+      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
+        content: Text('العنوان المحدد لا يحتوي على إحداثيات صحيحة'),
+      ));
+      return;
+    }
+
     await settingRepo.changeCurrentLocation(address);
     setState(() {
       settingRepo.deliveryAddress.value = address;
     });
     settingRepo.deliveryAddress.notifyListeners();
+    
+    AddressHelper.printAddressInfo(address, 'العنوان المحدث');
   }
 
   Future<void> changeDeliveryAddressToCurrentLocation() async {
-    model.Address _address = await settingRepo.setCurrentLocation();
-    setState(() {
-      settingRepo.deliveryAddress.value = _address;
-    });
-    settingRepo.deliveryAddress.notifyListeners();
+    try {
+      model.Address _address = await settingRepo.setCurrentLocation();
+      
+      // التحقق من وجود الإحداثيات
+      if (_address.latitude == null || _address.longitude == null) {
+        print('⚠️ فشل في الحصول على إحداثيات الموقع الحالي');
+        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
+          content: Text('فشل في تحديد الموقع الحالي'),
+        ));
+        return;
+      }
+      
+      setState(() {
+        settingRepo.deliveryAddress.value = _address;
+      });
+      settingRepo.deliveryAddress.notifyListeners();
+      
+      print('✅ تم تغيير العنوان إلى الموقع الحالي: ${_address.address} (lat: ${_address.latitude}, lng: ${_address.longitude})');
+    } catch (e) {
+      print('❌ خطأ في تغيير العنوان إلى الموقع الحالي: $e');
+      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
+        content: Text('فشل في تحديد الموقع الحالي'),
+      ));
+    }
   }
 
   Future<bool> _handleLocationPermission() async {
@@ -124,38 +174,78 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
     if (!await _handleLocationPermission()) {
       return;
     }
-    Position currentPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    
+    try {
+      Position currentPosition = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
 
-    address.longitude = currentPosition.longitude;
-    address.latitude = currentPosition.latitude;
+      address.longitude = currentPosition.longitude;
+      address.latitude = currentPosition.latitude;
 
-    userRepo.addAddress(address).then((value) {
-      setState(() {
-        this.addresses.insert(0, value);
+      print('📍 تم الحصول على الإحداثيات: lat=${address.latitude}, lng=${address.longitude}');
+
+      userRepo.addAddress(address).then((value) {
+        setState(() {
+          this.addresses.insert(0, value);
+        });
+        
+        // حفظ العنوان مع الإحداثيات
+        saveAddress(value);
+        
+        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
+          content: Text(S.of(state!.context).new_address_added_successfully),
+        ));
       });
+    } catch (e) {
+      print('❌ خطأ في الحصول على الموقع: $e');
       ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
-        content: Text(S.of(state!.context).new_address_added_successfully),
+        content: Text('فشل في تحديد الموقع. يرجى المحاولة مرة أخرى.'),
       ));
-    });
+    }
   }
 
   Future<void> saveAddress(Address address) async {
+    // التحقق من وجود الإحداثيات باستخدام AddressHelper
+    if (!AddressHelper.isAddressValid(address)) {
+      print('⚠️ تحذير: محاولة حفظ عنوان بدون إحداثيات');
+      return;
+    }
+    
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('saved_address', jsonEncode(address.toJson()));
+    AddressHelper.printAddressInfo(address, 'العنوان المحفوظ');
   }
 
   Future<void> saveSelectedAddress(Address address) async {
+    // التحقق من وجود الإحداثيات باستخدام AddressHelper
+    if (!AddressHelper.isAddressValid(address)) {
+      print('⚠️ تحذير: محاولة حفظ عنوان محدد بدون إحداثيات');
+      return;
+    }
+    
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('selected_address', jsonEncode(address.toJson()));
+    AddressHelper.printAddressInfo(address, 'العنوان المحدد المحفوظ');
   }
 
   void chooseDeliveryAddress(model.Address address) {
+    // التحقق من وجود الإحداثيات باستخدام AddressHelper
+    if (!AddressHelper.isAddressValid(address)) {
+      print('⚠️ تحذير: محاولة اختيار عنوان بدون إحداثيات');
+      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
+        content: Text('العنوان المحدد لا يحتوي على إحداثيات صحيحة'),
+      ));
+      return;
+    }
+
     setState(() {
       settingRepo.deliveryAddress.value = address;
       selectedAddress = address;
     });
     settingRepo.deliveryAddress.notifyListeners();
+    
+    AddressHelper.printAddressInfo(address, 'العنوان المختار');
+    
     saveSelectedAddress(address);
     saveAddress(address);
   }
@@ -186,6 +276,14 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
 
     if (addressJson != null) {
       Address address = Address.fromJson(jsonDecode(addressJson));
+      
+      // التحقق من وجود الإحداثيات باستخدام AddressHelper
+      if (!AddressHelper.isAddressValid(address)) {
+        print('⚠️ العنوان المحفوظ لا يحتوي على إحداثيات صحيحة');
+        // حذف العنوان المعطوب
+        await prefs.remove('selected_address');
+        return;
+      }
 
       final existing = addresses.firstWhere(
             (a) => a.id == address.id,
@@ -196,6 +294,8 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
         selectedAddress = existing;
         settingRepo.deliveryAddress.value = existing;
       });
+      
+      AddressHelper.printAddressInfo(existing, 'العنوان المحدد المحمل');
     }
   }
 }

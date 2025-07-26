@@ -18,6 +18,30 @@ class _SignUpNameScreenState extends StateMVC<SignUpNameScreen> {
     _con = controller as UserController;
   }
 
+  Widget _buildBusinessIcon(IconData icon, String label) {
+    return Column(
+      children: [
+        Icon(
+          icon,
+          size: 30,
+          color: Colors.blue[700],
+        ),
+        SizedBox(height: 8),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.black54,
+            fontFamily: 'Cairo',
+            fontWeight: FontWeight.w500,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     print('First name: $firstName');
@@ -34,7 +58,71 @@ class _SignUpNameScreenState extends StateMVC<SignUpNameScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('assets/img/login.jpg', height: 180),
+                Container(
+                  padding: EdgeInsets.all(30),
+                  child: Column(
+                    children: [
+                      // App Logo with Business Theme
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: Theme.of(context).primaryColor.withOpacity(0.3),
+                            width: 2,
+                          ),
+                        ),
+                        child: Image.asset(
+                          'assets/img/carry-eats-hub-logo.png',
+                          height: 80,
+                          width: 80,
+                        ),
+                      ),
+
+                      SizedBox(height: 25),
+
+                      // Business Welcome Text
+                      Text(
+                        'مرحباً بك في Jetak',
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                          fontFamily: 'Cairo',
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+
+                      SizedBox(height: 10),
+
+
+                      SizedBox(height: 8),
+
+                      Text(
+                        'اطلب من أفضل المطاعم واحصل على توصيل سريع',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black45,
+                          fontFamily: 'Cairo',
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+
+                      SizedBox(height: 20),
+
+                      // Business Icons Row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildBusinessIcon(Icons.restaurant, 'مطاعم'),
+                          _buildBusinessIcon(Icons.delivery_dining, 'توصيل'),
+                          _buildBusinessIcon(Icons.star, 'جودة'),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
                 SizedBox(height: 40),
                 TextFormField(
                   keyboardType: TextInputType.text,
