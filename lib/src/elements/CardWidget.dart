@@ -41,7 +41,7 @@ class CardWidget extends StatelessWidget {
               alignment: AlignmentDirectional.bottomStart,
               children: <Widget>[
                 Hero(
-                  tag: this.heroTag + restaurant.id,
+                  tag: heroTag + restaurant.id,
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),

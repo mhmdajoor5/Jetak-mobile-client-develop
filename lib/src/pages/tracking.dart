@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/tracking_controller.dart';
@@ -24,6 +25,8 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
   late TrackingController _con;
   late TabController _tabController;
   int _tabIndex = 0;
+  bool _showMap = false;
+  String? _mapError;
 
   _TrackingWidgetState() : super(TrackingController()) {
     _con = controller as TrackingController;
@@ -33,7 +36,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
   void initState() {
     _con.listenForOrder(orderId: widget.routeArgument!.id!);
     _con.getOrderDetailsTracking(orderId: widget.routeArgument!.id!);
-    _tabController = TabController(length: 2, initialIndex: _tabIndex, vsync: this);
+    _tabController = TabController(length: 3, initialIndex: _tabIndex, vsync: this); // Changed to 3 tabs
     _tabController.addListener(_handleTabSelection);
     super.initState();
   }
@@ -47,13 +50,266 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
     if (_tabController.indexIsChanging) {
       setState(() {
         _tabIndex = _tabController.index;
+        if (_tabIndex == 2) { // Map tab
+          _loadDeliveryMap();
+        }
       });
+    }
+  }
+
+  Future<void> _loadDeliveryMap() async {
+    if (_con.order.deliveryAddress.latitude == null || 
+        _con.order.deliveryAddress.longitude == null) {
+      setState(() {
+        _mapError = "Delivery address coordinates not available";
+      });
+      return;
+    }
+
+    try {
+      setState(() {
+        _showMap = true;
+        _mapError = null;
+      });
+    } catch (e) {
+      setState(() {
+        _mapError = "Failed to load map: $e";
+        _showMap = false;
+      });
+    }
+  }
+
+  Widget _buildLiveTrackingTab() {
+    if (_mapError != null) {
+      return _buildMapError();
+    }
+
+    if (!_showMap) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 20),
+            Text("Loading delivery map...", style: Theme.of(context).textTheme.bodyLarge),
+          ],
+        ),
+      );
+    }
+
+    return _buildDeliveryMap();
+  }
+
+  Widget _buildMapError() {
+    return Container(
+      padding: EdgeInsets.all(20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.error_outline,
+            size: 64,
+            color: Colors.orange,
+          ),
+          SizedBox(height: 20),
+          Text(
+            "Map Unavailable",
+            style: Theme.of(context).textTheme.headlineSmall,
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 10),
+          Text(
+            _mapError ?? "Unable to load delivery map",
+            style: Theme.of(context).textTheme.bodyMedium,
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 20),
+          ElevatedButton.icon(
+            onPressed: () {
+              setState(() {
+                _mapError = null;
+                _showMap = false;
+              });
+              _loadDeliveryMap();
+            },
+            icon: Icon(Icons.refresh),
+            label: Text("Retry"),
+          ),
+          SizedBox(height: 10),
+          TextButton(
+            onPressed: () {
+              // Open external map app
+              _openInExternalMap();
+            },
+            child: Text("Open in Maps App"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDeliveryMap() {
+    final deliveryLat = _con.order.deliveryAddress.latitude ?? 0.0;
+    final deliveryLng = _con.order.deliveryAddress.longitude ?? 0.0;
+    final restaurantLat = double.tryParse(_con.order.foodOrders.first.food?.restaurant.latitude ?? '0') ?? 0.0;
+    final restaurantLng = double.tryParse(_con.order.foodOrders.first.food?.restaurant.longitude ?? '0') ?? 0.0;
+
+    Set<Marker> markers = {
+      Marker(
+        markerId: MarkerId('delivery'),
+        position: LatLng(deliveryLat, deliveryLng),
+        infoWindow: InfoWindow(
+          title: 'Delivery Address',
+          snippet: _con.order.deliveryAddress.address ?? 'Your location',
+        ),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+      ),
+      if (restaurantLat != 0.0 && restaurantLng != 0.0)
+        Marker(
+          markerId: MarkerId('restaurant'),
+          position: LatLng(restaurantLat, restaurantLng),
+          infoWindow: InfoWindow(
+            title: _con.order.foodOrders.first.food?.restaurant.name ?? 'Restaurant',
+            snippet: 'Pickup location',
+          ),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        ),
+    };
+
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.6,
+      child: Column(
+        children: [
+          // Status info
+          Container(
+            padding: EdgeInsets.all(16),
+            color: Theme.of(context).primaryColor,
+            child: Row(
+              children: [
+                Icon(Icons.delivery_dining, size: 32, color: Theme.of(context).colorScheme.secondary),
+                SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Order #${_con.order.id}",
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        _con.order.orderStatus.status,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (_con.order.active)
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      "Active",
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          // Map
+          Expanded(
+            child: GoogleMap(
+              initialCameraPosition: CameraPosition(
+                target: LatLng(deliveryLat, deliveryLng),
+                zoom: 14,
+              ),
+              markers: markers,
+              myLocationEnabled: true,
+              myLocationButtonEnabled: true,
+              mapType: MapType.normal,
+              onMapCreated: (GoogleMapController controller) {
+                // Fit bounds to show both markers if restaurant exists
+                if (restaurantLat != 0.0 && restaurantLng != 0.0) {
+                  controller.animateCamera(
+                    CameraUpdate.newLatLngBounds(
+                      LatLngBounds(
+                        southwest: LatLng(
+                          [deliveryLat, restaurantLat].reduce((a, b) => a < b ? a : b),
+                          [deliveryLng, restaurantLng].reduce((a, b) => a < b ? a : b),
+                        ),
+                        northeast: LatLng(
+                          [deliveryLat, restaurantLat].reduce((a, b) => a > b ? a : b),
+                          [deliveryLng, restaurantLng].reduce((a, b) => a > b ? a : b),
+                        ),
+                      ),
+                      100.0, // padding
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+          // Address info
+          if (_con.order.deliveryAddress.address != null)
+            Container(
+              padding: EdgeInsets.all(16),
+              color: Theme.of(context).primaryColor,
+              child: Row(
+                children: [
+                  Icon(Icons.location_on, color: Colors.green),
+                  SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Delivery Address",
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          _con.order.deliveryAddress.address!,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: _openInExternalMap,
+                    icon: Icon(Icons.open_in_new),
+                    tooltip: "Open in Maps",
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  void _openInExternalMap() async {
+    final lat = _con.order.deliveryAddress.latitude;
+    final lng = _con.order.deliveryAddress.longitude;
+    
+    if (lat != null && lng != null) {
+      // This would open external maps - you'd need to add url_launcher dependency
+      // final url = "https://www.google.com/maps/search/?api=1&query=$lat,$lng";
+      // You can implement external map opening here
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("External map opening not implemented yet")),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    //final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent, accentColor: Theme.of(context).colorScheme.secondary);
     final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent);
     return Scaffold(
       key: _con.scaffoldKey,
@@ -66,239 +322,245 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
           borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
           boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), offset: Offset(0, -2), blurRadius: 5.0)],
         ),
-        child:
-            _con.orderStatus.isEmpty
-                ? CircularLoadingWidget(height: 120)
-                : Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    Text(S.of(context).how_would_you_rate_this_restaurant, style: Theme.of(context).textTheme.titleMedium),
-                    Text(S.of(context).click_on_the_stars_below_to_leave_comments, style: Theme.of(context).textTheme.bodySmall),
-                    SizedBox(height: 5),
-                    MaterialButton(
-                      elevation: 0,
-                      focusElevation: 0,
-                      highlightElevation: 0,
-                      onPressed: () {
-                        Navigator.of(context).pushNamed('/Reviews', arguments: RouteArgument(id: _con.order.id, heroTag: "restaurant_reviews"));
-                      },
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      shape: StadiumBorder(),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: Helper.getStarsList(double.parse(_con.order.foodOrders[0].food?.restaurant.rate ?? '0'), size: 35)),
-                    ),
-                  ],
-                ),
-      ),
-      body:
-          _con.orderStatus.isEmpty
-              ? CircularLoadingWidget(height: 400)
-              : CustomScrollView(
-                slivers: <Widget>[
-                  SliverAppBar(
-                    snap: true,
-                    floating: true,
-                    centerTitle: true,
-                    title: Text(S.of(context).orderDetails, style: Theme.of(context).textTheme.headlineSmall?.merge(TextStyle(letterSpacing: 1.3))),
-                    actions: <Widget>[new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).colorScheme.secondary)],
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        child: _con.orderStatus.isEmpty
+            ? CircularLoadingWidget(height: 120)
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Text(S.of(context).how_would_you_rate_this_restaurant, style: Theme.of(context).textTheme.titleMedium),
+                  Text(S.of(context).click_on_the_stars_below_to_leave_comments, style: Theme.of(context).textTheme.bodySmall),
+                  SizedBox(height: 5),
+                  MaterialButton(
                     elevation: 0,
-                    bottom: TabBar(
-                      controller: _tabController,
-                      indicatorSize: TabBarIndicatorSize.label,
-                      labelPadding: EdgeInsets.symmetric(horizontal: 15),
-                      unselectedLabelColor: Theme.of(context).colorScheme.secondary,
-                      labelColor: Theme.of(context).primaryColor,
-                      indicator: BoxDecoration(borderRadius: BorderRadius.circular(50), color: Theme.of(context).colorScheme.secondary),
-                      tabs: [
-                        Tab(
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), border: Border.all(color: Theme.of(context).colorScheme.secondary.withOpacity(0.2), width: 1)),
-                            child: Align(alignment: Alignment.center, child: Text(S.of(context).details)),
-                          ),
-                        ),
-                        Tab(
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), border: Border.all(color: Theme.of(context).colorScheme.secondary.withOpacity(0.2), width: 1)),
-                            child: Align(alignment: Alignment.center, child: Text(S.of(context).tracking_order)),
-                          ),
-                        ),
-                      ],
-                    ),
+                    focusElevation: 0,
+                    highlightElevation: 0,
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/Reviews', arguments: RouteArgument(id: _con.order.id, heroTag: "restaurant_reviews"));
+                    },
+                    padding: EdgeInsets.symmetric(vertical: 5),
+                    shape: StadiumBorder(),
+                    child: Row(mainAxisAlignment: MainAxisAlignment.center, children: Helper.getStarsList(double.parse(_con.order.foodOrders[0].food?.restaurant.rate ?? '0'), size: 35)),
                   ),
-                  SliverList(
-                    delegate: SliverChildListDelegate([
-                      Offstage(
-                        offstage: 0 != _tabIndex,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 30),
-                          child: Stack(
-                            alignment: AlignmentDirectional.topCenter,
-                            children: <Widget>[
-                              Opacity(
-                                opacity: _con.order.active ? 1 : 0.4,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: <Widget>[
-                                    Container(
-                                      margin: EdgeInsets.only(top: 14),
-                                      padding: EdgeInsets.only(top: 20, bottom: 5),
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).primaryColor.withOpacity(0.9),
-                                        boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.1), blurRadius: 5, offset: Offset(0, 2))],
-                                      ),
-                                      child: Theme(
-                                        data: theme,
-                                        child: ExpansionTile(
-                                          initiallyExpanded: true,
-                                          title: Column(
-                                            children: <Widget>[
-                                              Text('${S.of(context).order_id}: #${_con.order.id}'),
-                                              Text(DateFormat('dd-MM-yyyy | HH:mm').format(_con.order.dateTime), style: Theme.of(context).textTheme.bodySmall),
-                                            ],
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                          ),
-                                          trailing: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.end,
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Helper.getPrice(Helper.getTotalOrdersPrice(_con.order), context, style: Theme.of(context).textTheme.headlineLarge),
-                                              Text('${_con.order.payment.method}', style: Theme.of(context).textTheme.bodySmall),
-                                            ],
-                                          ),
+                ],
+              ),
+      ),
+      body: _con.orderStatus.isEmpty
+          ? CircularLoadingWidget(height: 400)
+          : CustomScrollView(
+              slivers: <Widget>[
+                SliverAppBar(
+                  snap: true,
+                  floating: true,
+                  centerTitle: true,
+                  title: Text(S.of(context).orderDetails, style: Theme.of(context).textTheme.headlineSmall?.merge(TextStyle(letterSpacing: 1.3))),
+                  actions: <Widget>[new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).colorScheme.secondary)],
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  elevation: 0,
+                  bottom: TabBar(
+                    controller: _tabController,
+                    indicatorSize: TabBarIndicatorSize.label,
+                    labelPadding: EdgeInsets.symmetric(horizontal: 10),
+                    unselectedLabelColor: Theme.of(context).colorScheme.secondary,
+                    labelColor: Theme.of(context).primaryColor,
+                    indicator: BoxDecoration(borderRadius: BorderRadius.circular(50), color: Theme.of(context).colorScheme.secondary),
+                    tabs: [
+                      Tab(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), border: Border.all(color: Theme.of(context).colorScheme.secondary.withOpacity(0.2), width: 1)),
+                          child: Align(alignment: Alignment.center, child: Text(S.of(context).details, style: TextStyle(fontSize: 12))),
+                        ),
+                      ),
+                      Tab(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), border: Border.all(color: Theme.of(context).colorScheme.secondary.withOpacity(0.2), width: 1)),
+                          child: Align(alignment: Alignment.center, child: Text(S.of(context).tracking_order, style: TextStyle(fontSize: 12))),
+                        ),
+                      ),
+                      Tab(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), border: Border.all(color: Theme.of(context).colorScheme.secondary.withOpacity(0.2), width: 1)),
+                          child: Align(alignment: Alignment.center, child: Text("Live Map", style: TextStyle(fontSize: 12))),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    // Details Tab
+                    Offstage(
+                      offstage: 0 != _tabIndex,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 30),
+                        child: Stack(
+                          alignment: AlignmentDirectional.topCenter,
+                          children: <Widget>[
+                            Opacity(
+                              opacity: _con.order.active ? 1 : 0.4,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: <Widget>[
+                                  Container(
+                                    margin: EdgeInsets.only(top: 14),
+                                    padding: EdgeInsets.only(top: 20, bottom: 5),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).primaryColor.withOpacity(0.9),
+                                      boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.1), blurRadius: 5, offset: Offset(0, 2))],
+                                    ),
+                                    child: Theme(
+                                      data: theme,
+                                      child: ExpansionTile(
+                                        initiallyExpanded: true,
+                                        title: Column(
                                           children: <Widget>[
-                                            Column(
-                                              children: List.generate(_con.order.foodOrders.length, (indexFood) {
-                                                return FoodOrderItemWidget(heroTag: 'my_order', order: _con.order, foodOrder: _con.order.foodOrders.elementAt(indexFood));
-                                              }),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Row(
-                                                    children: <Widget>[
-                                                      Expanded(child: Text(S.of(context).delivery_fee, style: Theme.of(context).textTheme.bodyLarge)),
-                                                      Helper.getPrice(_con.order.deliveryFee, context, style: Theme.of(context).textTheme.titleMedium),
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: <Widget>[
-                                                      Expanded(child: Text('${S.of(context).tax} (${_con.order.tax}%)', style: Theme.of(context).textTheme.bodyLarge)),
-                                                      Helper.getPrice(Helper.getTaxOrder(_con.order), context, style: Theme.of(context).textTheme.titleMedium),
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: <Widget>[
-                                                      Expanded(child: Text(S.of(context).total, style: Theme.of(context).textTheme.bodyLarge)),
-                                                      Helper.getPrice(Helper.getTotalOrdersPrice(_con.order), context, style: Theme.of(context).textTheme.headlineLarge),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
+                                            Text('${S.of(context).order_id}: #${_con.order.id}'),
+                                            Text(DateFormat('dd-MM-yyyy | HH:mm').format(_con.order.dateTime), style: Theme.of(context).textTheme.bodySmall),
+                                          ],
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                        ),
+                                        trailing: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Helper.getPrice(Helper.getTotalOrdersPrice(_con.order), context, style: Theme.of(context).textTheme.headlineLarge),
+                                            Text('${_con.order.payment.method}', style: Theme.of(context).textTheme.bodySmall),
                                           ],
                                         ),
-                                      ),
-                                    ),
-                                    Container(
-                                      child: Wrap(
-                                        alignment: WrapAlignment.end,
                                         children: <Widget>[
-                                          if (_con.order.canCancelOrder())
-                                            MaterialButton(
-                                              elevation: 0,
-                                              focusElevation: 0,
-                                              highlightElevation: 0,
-                                              onPressed: () {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext context) {
-                                                    // return object of type Dialog
-                                                    return AlertDialog(
-                                                      title: Wrap(
-                                                        spacing: 10,
-                                                        children: <Widget>[Icon(Icons.report, color: Colors.orange), Text(S.of(context).confirmation, style: TextStyle(color: Colors.orange))],
-                                                      ),
-                                                      content: Text(S.of(context).areYouSureYouWantToCancelThisOrder),
-                                                      contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 25),
-                                                      actions: <Widget>[
-                                                        MaterialButton(
-                                                          elevation: 0,
-                                                          focusElevation: 0,
-                                                          highlightElevation: 0,
-                                                          child: new Text(S.of(context).yes, style: TextStyle(color: Theme.of(context).hintColor)),
-                                                          onPressed: () {
-                                                            _con.doCancelOrder();
-                                                            Navigator.of(context).pop();
-                                                          },
-                                                        ),
-                                                        MaterialButton(
-                                                          elevation: 0,
-                                                          focusElevation: 0,
-                                                          highlightElevation: 0,
-                                                          child: new Text(S.of(context).close, style: TextStyle(color: Colors.orange)),
-                                                          onPressed: () {
-                                                            Navigator.of(context).pop();
-                                                          },
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                              textColor: Theme.of(context).hintColor,
-                                              child: Wrap(children: <Widget>[Text(S.of(context).cancelOrder + " ", style: TextStyle(height: 1.3)), Icon(Icons.clear)]),
-                                              padding: EdgeInsets.symmetric(horizontal: 20),
+                                          Column(
+                                            children: List.generate(_con.order.foodOrders.length, (indexFood) {
+                                              return FoodOrderItemWidget(heroTag: 'my_order', order: _con.order, foodOrder: _con.order.foodOrders.elementAt(indexFood));
+                                            }),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                            child: Column(
+                                              children: <Widget>[
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(child: Text(S.of(context).delivery_fee, style: Theme.of(context).textTheme.bodyLarge)),
+                                                    Helper.getPrice(_con.order.deliveryFee, context, style: Theme.of(context).textTheme.titleMedium),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(child: Text('${S.of(context).tax} (${_con.order.tax}%)', style: Theme.of(context).textTheme.bodyLarge)),
+                                                    Helper.getPrice(Helper.getTaxOrder(_con.order), context, style: Theme.of(context).textTheme.titleMedium),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(child: Text(S.of(context).total, style: Theme.of(context).textTheme.bodyLarge)),
+                                                    Helper.getPrice(Helper.getTotalOrdersPrice(_con.order), context, style: Theme.of(context).textTheme.headlineLarge),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
+                                          ),
                                         ],
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                height: 28,
-                                width: 160,
-                                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(100)), color: _con.order.active ? Theme.of(context).colorScheme.secondary : Colors.redAccent),
-                                alignment: AlignmentDirectional.center,
-                                child: Text(
-                                  _con.order.active ? '${_con.order.orderStatus.status}' : S.of(context).canceled,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.fade,
-                                  softWrap: false,
-                                  style: Theme.of(context).textTheme.bodySmall?.merge(TextStyle(height: 1, color: Theme.of(context).primaryColor)),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Offstage(
-                        offstage: 1 != _tabIndex,
-                        child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(12),
-                              child: Theme(
-                                data: ThemeData(primaryColor: Theme.of(context).colorScheme.secondary),
-                                child: Stepper(
-                                  physics: ClampingScrollPhysics(),
-                                  controlsBuilder: (BuildContext context, ControlsDetails controls) {
-                                    return SizedBox(height: 0);
-                                  },
-                                  steps: _con.getTrackingSteps(context, getCurrentOrderStatus(this._con.order.orderStatus)),
-                                  currentStep: getCurrentOrderStatus(this._con.order.orderStatus),
-                                ),
+                                  ),
+                                  Container(
+                                    child: Wrap(
+                                      alignment: WrapAlignment.end,
+                                      children: <Widget>[
+                                        if (_con.order.canCancelOrder())
+                                          MaterialButton(
+                                            elevation: 0,
+                                            focusElevation: 0,
+                                            highlightElevation: 0,
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Wrap(
+                                                      spacing: 10,
+                                                      children: <Widget>[Icon(Icons.report, color: Colors.orange), Text(S.of(context).confirmation, style: TextStyle(color: Colors.orange))],
+                                                    ),
+                                                    content: Text(S.of(context).areYouSureYouWantToCancelThisOrder),
+                                                    contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 25),
+                                                    actions: <Widget>[
+                                                      MaterialButton(
+                                                        elevation: 0,
+                                                        focusElevation: 0,
+                                                        highlightElevation: 0,
+                                                        child: new Text(S.of(context).yes, style: TextStyle(color: Theme.of(context).hintColor)),
+                                                        onPressed: () {
+                                                          _con.doCancelOrder();
+                                                          Navigator.of(context).pop();
+                                                        },
+                                                      ),
+                                                      MaterialButton(
+                                                        elevation: 0,
+                                                        focusElevation: 0,
+                                                        highlightElevation: 0,
+                                                        child: new Text(S.of(context).close, style: TextStyle(color: Colors.orange)),
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop();
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            textColor: Theme.of(context).hintColor,
+                                            child: Wrap(children: <Widget>[Text(S.of(context).cancelOrder + " ", style: TextStyle(height: 1.3)), Icon(Icons.clear)]),
+                                            padding: EdgeInsets.symmetric(horizontal: 20),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            _con.order.deliveryAddress.address != null
-                                ? Container(
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              height: 28,
+                              width: 160,
+                              decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(100)), color: _con.order.active ? Theme.of(context).colorScheme.secondary : Colors.redAccent),
+                              alignment: AlignmentDirectional.center,
+                              child: Text(
+                                _con.order.active ? '${_con.order.orderStatus.status}' : S.of(context).canceled,
+                                maxLines: 1,
+                                overflow: TextOverflow.fade,
+                                softWrap: false,
+                                style: Theme.of(context).textTheme.bodySmall?.merge(TextStyle(height: 1, color: Theme.of(context).primaryColor)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // Tracking Tab
+                    Offstage(
+                      offstage: 1 != _tabIndex,
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Theme(
+                              data: ThemeData(primaryColor: Theme.of(context).colorScheme.secondary),
+                              child: Stepper(
+                                physics: ClampingScrollPhysics(),
+                                controlsBuilder: (BuildContext context, ControlsDetails controls) {
+                                  return SizedBox(height: 0);
+                                },
+                                steps: _con.getTrackingSteps(context, getCurrentOrderStatus(this._con.order.orderStatus)),
+                                currentStep: getCurrentOrderStatus(this._con.order.orderStatus),
+                              ),
+                            ),
+                          ),
+                          _con.order.deliveryAddress.address != null
+                              ? Container(
                                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                                   decoration: BoxDecoration(color: Theme.of(context).primaryColor),
                                   child: Row(
@@ -331,15 +593,20 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
                                     ],
                                   ),
                                 )
-                                : SizedBox(height: 0),
-                            SizedBox(height: 30),
-                          ],
-                        ),
+                              : SizedBox(height: 0),
+                          SizedBox(height: 30),
+                        ],
                       ),
-                    ]),
-                  ),
-                ],
-              ),
+                    ),
+                    // Live Map Tab
+                    Offstage(
+                      offstage: 2 != _tabIndex,
+                      child: _buildLiveTrackingTab(),
+                    ),
+                  ]),
+                ),
+              ],
+            ),
     );
   }
 

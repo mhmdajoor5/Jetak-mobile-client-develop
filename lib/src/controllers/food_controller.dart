@@ -89,7 +89,36 @@ class FoodController extends ControllerMVC {
   //   }
   // }
 
-  void addToCart(Food food, BuildContext context, {bool reset = false}) async {
+  Future<void> addToCart(Food food, BuildContext context, {bool reset = false}) async {
+    // Check if cart is not empty and the new food is from a different restaurant
+    if (carts.isNotEmpty && !isSameRestaurants(food)) {
+      // Show confirmation dialog
+      final bool? confirm = await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text("warning"),
+          content: Text("orderingFromAnotherRestaurantWillClearYourCart"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text("cancel"),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text("continueText"),
+            ),
+          ],
+        ),
+      );
+
+      // If user cancels, return without adding to cart
+      if (confirm != true) {
+        return;
+      }
+      // If user confirms, reset the cart by setting reset to true
+      reset = true;
+    }
+
     setState(() => loadCart = true);
 
     final Cart newCart = Cart(food: food, extras: food.extras.where((e) => e.checked).toList(), quantity: quantity);
@@ -100,12 +129,16 @@ class FoodController extends ControllerMVC {
       await updateCart(oldCart);
       await listenForCart();
       setState(() => loadCart = false);
-      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text(S.of(state!.context).this_food_was_added_to_cart)));
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).this_food_was_added_to_cart)));
+      }
     } else {
       await addCart(newCart, reset);
       await listenForCart();
       setState(() => loadCart = false);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).this_food_was_added_to_cart)));
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).this_food_was_added_to_cart)));
+      }
     }
   }
 

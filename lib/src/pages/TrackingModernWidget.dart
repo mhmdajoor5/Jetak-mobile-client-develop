@@ -3,6 +3,8 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import '../../generated/l10n.dart';
 import '../controllers/tracking_controller.dart';
@@ -26,29 +28,43 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
   }
 
   bool _isLoadingRoute = true;
+  String? _routeError;
 
-  final String _apiKey = 'AIzaSyDa5865xd383IlBX694cl6zPeCtzXQ6XPs';
-
-  // Markers
-  //  final LatLng _restaurantLocation = LatLng(31.532640, 35.098614);
-  //  final LatLng _clientLocation = LatLng(31.536833, 35.050363);
+  // Use your correct API key
+  final String _apiKey = 'AIzaSyC6GK6c5IMopZIMo_F1btLZgYY4HTIuPLg';
 
   // Polyline
   PolylinePoints polylinePoints = PolylinePoints();
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
 
-  // Method to get the route polyline
-  // Update your _getPolyline method to this:
+  // Enhanced method to get the route polyline with better error handling
   _getPolyline() async {
     try {
-      setState(() => _isLoadingRoute = true);
+      setState(() {
+        _isLoadingRoute = true;
+        _routeError = null;
+      });
 
-      print("Attempting to fetch route...");
+      print("=== Starting Route Calculation ===");
+      print("Restaurant: ${_con.restaurantLocation.latitude}, ${_con.restaurantLocation.longitude}");
+      print("Client: ${_con.clientLocation.latitude}, ${_con.clientLocation.longitude}");
+      print("API Key: ${_apiKey.substring(0, 10)}...");
 
+      // Validate coordinates first
+      if (_con.restaurantLocation.latitude == 0.0 || 
+          _con.restaurantLocation.longitude == 0.0 ||
+          _con.clientLocation.latitude == 0.0 || 
+          _con.clientLocation.longitude == 0.0) {
+        throw Exception("Invalid coordinates: Restaurant or client location is zero");
+      }
+
+      // First, test the API key with a direct HTTP request
+      await _testDirectionsAPI();
+
+      // If test passes, proceed with polyline points
       final result = await polylinePoints.getRouteBetweenCoordinates(
         googleApiKey: _apiKey,
-
         request: PolylineRequest(
           origin: PointLatLng(
             _con.restaurantLocation.latitude,
@@ -62,28 +78,111 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         ),
       );
 
-      print("Route API response received. Status: ${result.status}");
+      print("Polyline API response received. Status: ${result.status}");
       print("Points count: ${result.points.length}");
 
-      if (result.points.isEmpty) {
-        print("No points received. Error: ${result.errorMessage}");
-        throw Exception(result.errorMessage ?? "No route points received");
+      if (result.status == null || result.status!.isEmpty) {
+        throw Exception("Empty status from Directions API");
       }
 
-      polylineCoordinates =
-          result.points
-              .map((point) => LatLng(point.latitude, point.longitude))
-              .toList();
+      if (result.status != "OK") {
+        String errorMsg = "API Error: ${result.status}";
+        if (result.errorMessage != null && result.errorMessage!.isNotEmpty) {
+          errorMsg += " - ${result.errorMessage}";
+        }
+        
+        // Handle specific error types
+        switch (result.status) {
+          case "ZERO_RESULTS":
+            errorMsg = "No route found between the selected points. Please check the locations.";
+            break;
+          case "REQUEST_DENIED":
+            errorMsg = "API access denied. Please check your API key and restrictions.";
+            break;
+          case "INVALID_REQUEST":
+            errorMsg = "Invalid request parameters.";
+            break;
+          case "OVER_QUERY_LIMIT":
+            errorMsg = "API quota exceeded. Please try again later.";
+            break;
+        }
+        
+        throw Exception(errorMsg);
+      }
 
+      if (result.points.isEmpty) {
+        throw Exception("No route points received despite OK status");
+      }
+
+      polylineCoordinates = result.points
+          .map((point) => LatLng(point.latitude, point.longitude))
+          .toList();
+
+      print("Successfully got ${polylineCoordinates.length} route points");
       _addPolyline();
+
     } catch (e) {
       print("Error in _getPolyline: $e");
-      // Show error to user if needed
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to load route: ${e.toString()}")),
-      );
+      setState(() {
+        _routeError = e.toString();
+      });
+
+      // Show error to user
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Route Error: ${e.toString()}"),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 5),
+            action: SnackBarAction(
+              label: "Retry",
+              textColor: Colors.white,
+              onPressed: _getPolyline,
+            ),
+          ),
+        );
+      }
     } finally {
-      setState(() => _isLoadingRoute = false);
+      if (mounted) {
+        setState(() => _isLoadingRoute = false);
+      }
+    }
+  }
+
+  // Test the Directions API directly to diagnose issues
+  Future<void> _testDirectionsAPI() async {
+    final url = "https://maps.googleapis.com/maps/api/directions/json?"
+        "origin=${_con.restaurantLocation.latitude},${_con.restaurantLocation.longitude}"
+        "&destination=${_con.clientLocation.latitude},${_con.clientLocation.longitude}"
+        "&key=$_apiKey";
+
+    print("Testing Directions API: $url");
+
+    try {
+      final response = await http.get(Uri.parse(url)).timeout(
+        Duration(seconds: 15),
+        onTimeout: () => throw Exception("Request timeout"),
+      );
+
+      print("Direct API Response Status: ${response.statusCode}");
+      
+      if (response.statusCode != 200) {
+        throw Exception("HTTP ${response.statusCode}: ${response.body}");
+      }
+
+      final data = jsonDecode(response.body);
+      print("Direct API Response Status: ${data['status']}");
+      
+      if (data['status'] != 'OK') {
+        String errorMsg = data['error_message'] ?? "Unknown API error";
+        throw Exception("Directions API Error: ${data['status']} - $errorMsg");
+      }
+
+      print("✅ Direct API test successful");
+      
+    } catch (e) {
+      print("❌ Direct API test failed: $e");
+      throw e;
     }
   }
 
@@ -97,29 +196,32 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       final id = PolylineId("route_${DateTime.now().millisecondsSinceEpoch}");
       final polyline = Polyline(
         polylineId: id,
-        color: Colors.blue,
+        color: Color(0xFF26386A), // Match your app theme
         points: polylineCoordinates,
-        width: 4,
+        width: 5,
         geodesic: true,
+        patterns: [], // Solid line
       );
 
       setState(() {
         polylines = {id: polyline}; // Replace existing polylines
       });
 
-      // Zoom to fit the route
-      _mapController?.animateCamera(
-        CameraUpdate.newLatLngBounds(
-          _boundsFromLatLngList(polylineCoordinates),
-          50.0, // padding
-        ),
-      );
+      // Zoom to fit the route with some delay to ensure map is ready
+      Future.delayed(Duration(milliseconds: 500), () {
+        if (_mapController != null && polylineCoordinates.isNotEmpty) {
+          _mapController!.animateCamera(
+            CameraUpdate.newLatLngBounds(
+              _boundsFromLatLngList(polylineCoordinates),
+              100.0, // increased padding
+            ),
+          );
+        }
+      });
 
-      print(
-        "Polyline added successfully with ${polylineCoordinates.length} points",
-      );
+      print("✅ Polyline added successfully with ${polylineCoordinates.length} points");
     } catch (e) {
-      print("Error in _addPolyline: $e");
+      print("❌ Error in _addPolyline: $e");
     }
   }
 
@@ -146,68 +248,73 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
   @override
   void initState() {
     super.initState();
-    _getPolyline();
-
     if (widget.routeArgument != null && widget.routeArgument!.id != null) {
       _con.listenForOrder(orderId: widget.routeArgument!.id!);
       _con.getOrderDetailsTracking(orderId: widget.routeArgument!.id!);
     }
     loadMotorcycleIcon();
+    // Delay route calculation to ensure order data is loaded
+    Future.delayed(Duration(milliseconds: 1000), () {
+      if (mounted) {
+        _getPolyline();
+      }
+    });
   }
 
   BitmapDescriptor? motorcycleIcon;
 
   Future<void> loadMotorcycleIcon() async {
-    motorcycleIcon = await BitmapDescriptor.asset(
-      ImageConfiguration(size: Size(48, 48)), // Adjust size if needed
-      'assets/img/motocycle.png',
-    );
-    setState(() {}); // So marker rebuilds with the icon
+    try {
+      motorcycleIcon = await BitmapDescriptor.asset(
+        ImageConfiguration(size: Size(48, 48)),
+        'assets/img/motocycle.png',
+      );
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      print("Error loading motorcycle icon: $e");
+      // Use default marker as fallback
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    print('order.id: [32m[1m[4m[7m${widget.routeArgument?.id}[0m');
-    print('foodOrders.length: [34m${_con.order.foodOrders.length}[0m');
-    print('address: [35m${_con.order.deliveryAddress.address}[0m');
-    // حماية من محاولة قراءة بيانات غير جاهزة
+    print('Order ID: ${widget.routeArgument?.id}');
+    print('Food Orders Length: ${_con.order.foodOrders.length}');
+    print('Address: ${_con.order.deliveryAddress.address}');
+
+    // Show loading screen if order data is not ready
     if (_con.order.id == null || _con.order.foodOrders.isEmpty) {
       return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
-          title: Text(
-            S.of(context).tracking,
-            style: TextStyle(
-              //fontFamily: "Nunito",
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-              color: Color(0xFF272727),
-            ),
-          ),
-          leading: GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: Container(
-              margin: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                border: Border.all(color: Color(0xFFE7E7E9)),
+        // appBar: _buildAppBar(),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: Color(0xFF26386A),
               ),
-              child: Icon(Icons.arrow_back, color: Colors.black),
-            ),
+              SizedBox(height: 16),
+              Text(
+                "Loading order details...",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Color(0xFF272727),
+                ),
+              ),
+            ],
           ),
         ),
-        body: Center(child: CircularProgressIndicator()),
       );
     }
 
-    // استخراج الإحداثيات إذا توفرت
+    // Extract coordinates with better error handling
     double? restaurantLat;
     double? restaurantLng;
     double? clientLat;
     double? clientLng;
+
     try {
       if (_con.order.foodOrders.isNotEmpty) {
         restaurantLat = double.tryParse(
@@ -219,324 +326,392 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       }
       clientLat = _con.order.deliveryAddress.latitude;
       clientLng = _con.order.deliveryAddress.longitude;
-    } catch (e) {}
-
-    Set<Marker> markers = {};
-    List<LatLng> polylinePoints = [];
-    if (restaurantLat != null && restaurantLng != null) {
-      // markers.add(
-      //   Marker(
-      //     markerId: MarkerId('restaurant'),
-      //     position: LatLng(restaurantLat, restaurantLng),
-      //     infoWindow: InfoWindow(title: 'Restaurant'),
-      //     icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-      //   ),
-      // );
-      // polylinePoints.add(LatLng(restaurantLat, restaurantLng));
-      if (motorcycleIcon != null) {
-        print("we are here");
-        markers.add(
-          Marker(
-            markerId: MarkerId('Delivery boy'),
-            position: LatLng(restaurantLat!, restaurantLng!),
-            infoWindow: InfoWindow(title: 'Delivery boy'),
-            icon: motorcycleIcon!,
-          ),
-        );
-        polylinePoints.add(LatLng(restaurantLat, restaurantLng));
-      }
+    } catch (e) {
+      print("Error extracting coordinates: $e");
     }
 
-    if (clientLat != null && clientLng != null) {
+    // Validate coordinates
+    if (restaurantLat == null || restaurantLng == null || 
+        clientLat == null || clientLng == null ||
+        restaurantLat == 0.0 || restaurantLng == 0.0 ||
+        clientLat == 0.0 || clientLng == 0.0) {
+      return Scaffold(
+        // appBar: _buildAppBar(),
+        body: _buildErrorView("Invalid location coordinates"),
+      );
+    }
+
+    // Build markers
+    Set<Marker> markers = {};
+    
+    // Add delivery boy marker
+    if (motorcycleIcon != null) {
       markers.add(
         Marker(
-          markerId: MarkerId('client'),
-          position: LatLng(clientLat, clientLng),
-          infoWindow: InfoWindow(title: 'Client'),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+          markerId: MarkerId('delivery_boy'),
+          position: LatLng(restaurantLat, restaurantLng),
+          infoWindow: InfoWindow(title: 'Delivery Person'),
+          icon: motorcycleIcon!,
         ),
       );
-      polylinePoints.add(LatLng(clientLat, clientLng));
+    } else {
+      markers.add(
+        Marker(
+          markerId: MarkerId('delivery_boy'),
+          position: LatLng(restaurantLat, restaurantLng),
+          infoWindow: InfoWindow(title: 'Delivery Person'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+        ),
+      );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          S.of(context).tracking,
-          style: TextStyle(
-            //fontFamily: "Nunito",
-            fontWeight: FontWeight.w600,
-            fontSize: 16,
-            color: Color(0xFF272727),
-          ),
-        ),
-        leading: GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
-          child: Container(
-            margin: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              border: Border.all(color: Color(0xFFE7E7E9)),
-            ),
-            child: Icon(Icons.arrow_back, color: Colors.black),
-          ),
-        ),
+    // Add client marker
+    markers.add(
+      Marker(
+        markerId: MarkerId('client'),
+        position: LatLng(clientLat, clientLng),
+        infoWindow: InfoWindow(title: 'Delivery Address'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
       ),
+    );
+
+    return Scaffold(
+      // appBar: _buildAppBar(),
       body: Stack(
         children: [
-          // Container(
-          //   height: MediaQuery.of(context).size.height * 0.5,
-          //   width: double.infinity,
-          //   child: GoogleMap(
-          //     initialCameraPosition: CameraPosition(
-          //       target: LatLng(
-          //         (21.771909 + 21.826662) / 2,
-          //         (39.219161 + 39.199765) / 2,
-          //       ),
-          //       zoom: 12,
-          //     ),
-          //     markers: {
-          //       Marker(
-          //         markerId: MarkerId('restaurant'),
-          //         position: LatLng(21.771909, 39.219161),
-          //       ),
-          //       Marker(
-          //         markerId: MarkerId('client'),
-          //         position: LatLng(21.826662, 39.199765),
-          //       ),
-          //     },
-          //     polylines: {
-          //       Polyline(
-          //         polylineId: PolylineId('route'),
-          //         points: [
-          //           LatLng(21.771909, 39.219161),
-          //           LatLng(21.826662, 39.199765),
-          //         ],
-          //         color: Colors.red,
-          //         width: 6,
-          //       ),
-          //     },
-          //     onMapCreated: (controller) => _mapController = controller,
-          //   ),
-          // ),
-          // Update your GoogleMap widget to this:
-          // Replace your Container with this more robust version
-          Expanded(
-            child: Stack(
-              children: [
-                GoogleMap(
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(
-                      (_con.restaurantLocation.latitude +
-                              _con.clientLocation.latitude) /
-                          2,
-                      (_con.restaurantLocation.longitude +
-                              _con.clientLocation.longitude) /
-                          2,
-                    ),
-
-                    zoom: 12,
-                  ),
-                  markers: {
-                    // Marker(
-                    //   markerId: MarkerId('restaurant'),
-                    //   position: _con.restaurantLocation,
-                    //   icon: BitmapDescriptor.defaultMarkerWithHue(
-                    //     BitmapDescriptor.hueRed,
-                    //   ),
-                    // ),
-                    Marker(
-                      markerId: MarkerId('Delivery boy'),
-                      position: _con.restaurantLocation,
-                      infoWindow: InfoWindow(title: 'Delivery boy'),
-                      icon: motorcycleIcon!,
-                    ),
-                    Marker(
-                      markerId: MarkerId('client'),
-                      position: _con.clientLocation,
-                      icon: BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueBlue,
-                      ),
-                    ),
-                  },
-                  polylines: polylines.values.toSet(),
-                  onMapCreated: (controller) {
-                    _mapController = controller;
-                    // Wait for map to settle before getting route
-                    Future.delayed(Duration(milliseconds: 500), _getPolyline);
-                  },
-                  myLocationEnabled: true,
-                  myLocationButtonEnabled: true,
-                  zoomControlsEnabled: false,
-                ),
-                if (_isLoadingRoute)
-                  Center(
-                    child: Container(
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.8),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(height: 8),
-                          Text("Loading route..."),
-                        ],
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10)],
+          // Map
+          GoogleMap(
+            initialCameraPosition: CameraPosition(
+              target: LatLng(
+                (restaurantLat + clientLat) / 2,
+                (restaurantLng + clientLng) / 2,
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Container(
-                      width: 40,
-                      height: 4,
-                      margin: EdgeInsets.only(bottom: 20),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFEDEDED),
-                        borderRadius: BorderRadius.circular(999),
+              zoom: 12,
+            ),
+            markers: markers,
+            polylines: polylines.values.toSet(),
+            onMapCreated: (controller) {
+              _mapController = controller;
+              print("Map created successfully");
+            },
+            myLocationEnabled: true,
+            myLocationButtonEnabled: true,
+            zoomControlsEnabled: false,
+            mapToolbarEnabled: false,
+          ),
+          
+          // Loading overlay
+          if (_isLoadingRoute && _routeError == null)
+            Center(
+              child: Container(
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(
+                      color: Color(0xFF26386A),
+                    ),
+                    SizedBox(height: 12),
+                    Text(
+                      "Loading route...",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF272727),
                       ),
                     ),
-                  ),
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 24,
-                        backgroundImage: AssetImage(
-                          "assets/images/image-removebg-preview.png",
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Column(
+                  ],
+                ),
+              ),
+            ),
+          
+          // Error overlay
+          if (_routeError != null)
+            Positioned(
+              top: 20,
+              left: 20,
+              right: 20,
+              child: Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.red.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.red.shade200),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.error_outline, color: Colors.red),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          /// TODO : driver name
                           Text(
-                            _con.trackingOrderDetails?.data.driver?.name ??
-                                "not available now",
-
-                            // TODO: استبدل باسم الكابتن الحقيقي عند توفره
+                            "Route Loading Failed",
                             style: TextStyle(
-                              fontFamily: "Nunito",
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              height: 1.0,
-                              letterSpacing: -0.02,
-                              color: Color(0xFF272727),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red.shade800,
                             ),
                           ),
-                          SizedBox(height: 4),
-
-                          /// TODO : driver type
                           Text(
-                            "Courier",
-                            // TODO: استبدل بنوع الكابتن الحقيقي عند توفره
+                            _routeError!,
                             style: TextStyle(
-                              fontFamily: "Nunito",
-                              fontWeight: FontWeight.w400,
                               fontSize: 12,
-                              height: 1.4,
-                              letterSpacing: -0.02,
-                              color: Color(0xFF9D9FA4),
+                              color: Colors.red.shade700,
                             ),
                           ),
                         ],
                       ),
-                      Spacer(),
-                      _buildActionIconPhone(),
-                      SizedBox(width: 10),
-                      Stack(
-                        children: [
-                          _buildActionIconMassge(),
-                          Positioned(
-                            right: 0,
-                            top: 0,
-                            child: CircleAvatar(
-                              radius: 8,
-                              backgroundColor: Colors.red,
-                              child: Text(
-                                "3",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  LayoutBuilder(
-                    builder:
-                        (context, constraints) => Row(
-                          children: List.generate(
-                            (constraints.maxWidth / 10).floor(),
-                            (index) {
-                              return Container(
-                                width: 6,
-                                height: 1,
-                                margin: EdgeInsets.symmetric(horizontal: 2),
-                                color: Color(0xFFE7E7E9),
-                              );
-                            },
-                          ),
-                        ),
-                  ),
-                  SizedBox(height: 20),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: _buildStepProgress(
-                      _con.order.orderStatus.id,
-                    ), // TODO: اربطه بمراحل الطلب الحقيقية
-                  ),
-                  SizedBox(height: 20),
-
-                  /// TODO: delivery time
-                  _buildInfoTile(
-                    "Delivery time",
-                    "assets/img/clock.svg",
-                    _con.trackingOrderDetails?.data.estimatedTime ??
-                        "not available now",
-                  ),
-                  // TODO: اربطه بوقت التوصيل المتوقع الحقيقي
-                  _buildInfoTile(
-                    "Delivery address",
-                    "assets/img/locationorder.svg",
-                    _con.order.deliveryAddress.address ?? "",
-                  ),
-                ],
+                    ),
+                    TextButton(
+                      onPressed: _getPolyline,
+                      child: Text("Retry"),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
+          
+          // Bottom sheet
+          _buildBottomSheet(),
         ],
       ),
     );
   }
 
+  Widget _buildAppBar() {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+      title: Text(
+        S.of(context).tracking,
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 16,
+          color: Color(0xFF272727),
+        ),
+      ),
+      leading: GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        child: Container(
+          margin: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(color: Color(0xFFE7E7E9)),
+          ),
+          child: Icon(Icons.arrow_back, color: Colors.black),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorView(String message) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline,
+              size: 64,
+              color: Colors.red,
+            ),
+            SizedBox(height: 20),
+            Text(
+              "Tracking Unavailable",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF272727),
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+                color: Color(0xFF9D9FA4),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF26386A),
+                foregroundColor: Colors.white,
+              ),
+              child: Text("Go Back"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomSheet() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 10,
+              spreadRadius: 2,
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                margin: EdgeInsets.only(bottom: 20),
+                decoration: BoxDecoration(
+                  color: Color(0xFFEDEDED),
+                  borderRadius: BorderRadius.circular(999),
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 24,
+                  backgroundImage: AssetImage(
+                    "assets/images/image-removebg-preview.png",
+                  ),
+                ),
+                SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _con.trackingOrderDetails?.data.driver?.name ?? "Driver",
+                      style: TextStyle(
+                        fontFamily: "Nunito",
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                        height: 1.0,
+                        letterSpacing: -0.02,
+                        color: Color(0xFF272727),
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      "Courier",
+                      style: TextStyle(
+                        fontFamily: "Nunito",
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12,
+                        height: 1.4,
+                        letterSpacing: -0.02,
+                        color: Color(0xFF9D9FA4),
+                      ),
+                    ),
+                  ],
+                ),
+                Spacer(),
+                _buildActionIconPhone(),
+                SizedBox(width: 10),
+                Stack(
+                  children: [
+                    _buildActionIconMessage(),
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: CircleAvatar(
+                        radius: 8,
+                        backgroundColor: Colors.red,
+                        child: Text(
+                          "3",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            LayoutBuilder(
+              builder: (context, constraints) => Row(
+                children: List.generate(
+                  (constraints.maxWidth / 10).floor(),
+                  (index) {
+                    return Container(
+                      width: 6,
+                      height: 1,
+                      margin: EdgeInsets.symmetric(horizontal: 2),
+                      color: Color(0xFFE7E7E9),
+                    );
+                  },
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: _buildStepProgress(_con.order.orderStatus.id),
+            ),
+            SizedBox(height: 20),
+            _buildInfoTile(
+              "Delivery time",
+              "assets/img/clock.svg",
+              _con.trackingOrderDetails?.data.estimatedTime ?? "Calculating...",
+            ),
+            _buildInfoTile(
+              "Delivery address",
+              "assets/img/locationorder.svg",
+              _con.order.deliveryAddress.address ?? "Address not available",
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Keep all your existing _buildStepProgress methods and other UI methods...
+  Widget _buildStepProgress(String? statusId) {
+    switch (statusId) {
+      case '1':
+      case '2':
+        return _buildStepProgress1();
+      case '3':
+        return _buildStepProgress2();
+      case '4':
+        return _buildStepProgress3();
+      case '5':
+        return _buildStepProgress4();
+      default:
+        return _buildStepProgress1();
+    }
+  }
+
   Widget _buildStepProgress1() {
-    // TODO: اربط الخطوات بحالة الطلب الحقيقية من _con.orderStatus
     return Row(
       children: [
         _buildStepIcon('assets/img/receipt-item.svg', true),
@@ -551,7 +726,6 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
   }
 
   Widget _buildStepProgress2() {
-    // TODO: اربط الخطوات بحالة الطلب الحقيقية من _con.orderStatus
     return Row(
       children: [
         _buildStepIcon('assets/img/receipt-item.svg', true),
@@ -566,7 +740,6 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
   }
 
   Widget _buildStepProgress3() {
-    // TODO: اربط الخطوات بحالة الطلب الحقيقية من _con.orderStatus
     return Row(
       children: [
         _buildStepIcon('assets/img/receipt-item.svg', true),
@@ -581,7 +754,6 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
   }
 
   Widget _buildStepProgress4() {
-    // TODO: اربط الخطوات بحالة الطلب الحقيقية من _con.orderStatus
     return Row(
       children: [
         _buildStepIcon('assets/img/receipt-item.svg', true),
@@ -593,38 +765,6 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         _buildStepIcon('assets/img/tick-circle.svg', true),
       ],
     );
-  }
-
-  Widget _buildStepProgress(String? statusId) {
-    switch (statusId) {
-      case '1' || '2':
-        return _buildStepProgress1(); // Pending
-      case '3':
-        return _buildStepProgress2(); // Pending
-      case '4':
-        return _buildStepProgress3(); // Pending
-      case '5':
-        return _buildStepProgress4(); // Pending
-      default:
-        return _buildStepProgress1(); // Pending
-    }
-  }
-
-  IconData _getStatusIcon(String? statusId) {
-    switch (statusId) {
-      case '1':
-        return Icons.schedule; // Pending
-      case '2':
-        return Icons.restaurant; // Preparing
-      case '3':
-        return Icons.shopping_bag; // Ready for pickup
-      case '4':
-        return Icons.delivery_dining; // On the way
-      case '5':
-        return Icons.check_circle; // Delivered
-      default:
-        return Icons.info;
-    }
   }
 
   Widget _buildDashedLine(bool active) {
@@ -694,7 +834,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     );
   }
 
-  Widget _buildActionIconMassge() {
+  Widget _buildActionIconMessage() {
     return Container(
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
