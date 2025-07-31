@@ -1099,7 +1099,7 @@ abstract class AppLocalizations {
   /// No description provided for @km.
   ///
   /// In en, this message translates to:
-  /// **'Km'**
+  /// **'km'**
   String get km;
 
   /// No description provided for @mi.
@@ -1431,6 +1431,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This food was removed from favorites'**
   String get thisFoodWasRemovedFromFavorites;
+
+  /// No description provided for @cannot_add_from_different_restaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot add products from different restaurants in the same order. Do you want to clear the cart and add products from this restaurant?'**
+  String get cannot_add_from_different_restaurant;
 
   /// No description provided for @foodRefreshedSuccessfuly.
   ///
@@ -2239,13 +2245,13 @@ abstract class AppLocalizations {
   /// No description provided for @dateTimeFormatMmmDdYyyyHhMm.
   ///
   /// In en, this message translates to:
-  /// **'MMM dd, yyyy • HH:mm'**
+  /// **'MMM dd, yyyy HH:mm'**
   String get dateTimeFormatMmmDdYyyyHhMm;
 
   /// No description provided for @dateTimeFormatDdMmYyyyHhMm.
   ///
   /// In en, this message translates to:
-  /// **'dd-MM-yyyy | HH:mm'**
+  /// **'dd/MM/yyyy HH:mm'**
   String get dateTimeFormatDdMmYyyyHhMm;
 
   /// No description provided for @addressDetails.
@@ -2655,6 +2661,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Other instructions for the courier'**
   String get otherInstructionsForCourier;
+
+  /// No description provided for @verify_your_internet_connection.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your internet connection'**
+  String get verify_your_internet_connection;
+
+  /// No description provided for @carts_refreshed_successfuly.
+  ///
+  /// In en, this message translates to:
+  /// **'Carts refreshed successfully'**
+  String get carts_refreshed_successfuly;
+
+  /// No description provided for @category_refreshed_successfuly.
+  ///
+  /// In en, this message translates to:
+  /// **'Category refreshed successfully'**
+  String get category_refreshed_successfuly;
+
+  /// No description provided for @card_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Card number'**
+  String get card_number;
+
+  /// No description provided for @expiry_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry date'**
+  String get expiry_date;
+
+  /// No description provided for @favorite_foods.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite foods'**
+  String get favorite_foods;
+
+  /// No description provided for @order_id.
+  ///
+  /// In en, this message translates to:
+  /// **'Order ID'**
+  String get order_id;
+
+  /// No description provided for @i_dont_have_an_account.
+  ///
+  /// In en, this message translates to:
+  /// **'I don\'t have an account'**
+  String get i_dont_have_an_account;
+
+  /// No description provided for @search_for_restaurants_or_foods.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for restaurants or foods'**
+  String get search_for_restaurants_or_foods;
+
+  /// No description provided for @ordered_by_nearby_first.
+  ///
+  /// In en, this message translates to:
+  /// **'Ordered by nearby first'**
+  String get ordered_by_nearby_first;
+
+  /// No description provided for @maps_explorer.
+  ///
+  /// In en, this message translates to:
+  /// **'Maps Explorer'**
+  String get maps_explorer;
+
+  /// No description provided for @top_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Restaurants'**
+  String get top_restaurants;
+
+  /// No description provided for @most_popular.
+  ///
+  /// In en, this message translates to:
+  /// **'Most Popular'**
+  String get most_popular;
+
+  /// No description provided for @trending_this_week.
+  ///
+  /// In en, this message translates to:
+  /// **'Trending this week'**
+  String get trending_this_week;
+
+  /// No description provided for @payment_mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment mode'**
+  String get payment_mode;
+
+  /// No description provided for @select_your_preferred_payment_mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your preferred payment mode'**
+  String get select_your_preferred_payment_mode;
+
+  /// No description provided for @or_checkout_with.
+  ///
+  /// In en, this message translates to:
+  /// **'Or checkout with'**
+  String get or_checkout_with;
+
+  /// No description provided for @estimated_time.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated time'**
+  String get estimated_time;
+
+  /// No description provided for @your_credit_card_not_valid.
+  ///
+  /// In en, this message translates to:
+  /// **'Your credit card is not valid'**
+  String get your_credit_card_not_valid;
+
+  /// No description provided for @confirm_payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Payment'**
+  String get confirm_payment;
+
+  /// No description provided for @add_to_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to cart'**
+  String get add_to_cart;
+
+  /// No description provided for @help_supports.
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Supports'**
+  String get help_supports;
+
+  /// No description provided for @your_order_has_been_successfully_submitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Your order has been successfully submitted'**
+  String get your_order_has_been_successfully_submitted;
+
+  /// No description provided for @featured_foods.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured Foods'**
+  String get featured_foods;
+
+  /// No description provided for @what_they_say.
+  ///
+  /// In en, this message translates to:
+  /// **'What they say'**
+  String get what_they_say;
+
+  /// No description provided for @sign.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign'**
+  String get sign;
 }
 
 class _AppLocalizationsDelegate

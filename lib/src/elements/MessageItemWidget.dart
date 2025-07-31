@@ -92,7 +92,7 @@ class _MessageItemWidgetState extends State<MessageItemWidget> {
                           ),
                         ),
                         Text(
-                          DateFormat(S.of(context).HHmm).format(DateTime.fromMillisecondsSinceEpoch(widget.message.lastMessageTime, isUtc: true)),
+                          '',
                           overflow: TextOverflow.fade,
                           softWrap: false,
                           style: Theme.of(context).textTheme.bodyMedium,

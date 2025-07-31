@@ -1710,10 +1710,10 @@ class S {
     );
   }
 
-  /// `Km`
+  /// `km`
   String get km {
     return Intl.message(
-      'Km',
+      'km',
       name: 'km',
       desc: '',
       args: [],
@@ -2265,6 +2265,16 @@ class S {
     return Intl.message(
       'This food was removed from favorites',
       name: 'thisFoodWasRemovedFromFavorites',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cannot add products from different restaurants in the same order. Do you want to clear the cart and add products from this restaurant?`
+  String get cannot_add_from_different_restaurant {
+    return Intl.message(
+      'Cannot add products from different restaurants in the same order. Do you want to clear the cart and add products from this restaurant?',
+      name: 'cannot_add_from_different_restaurant',
       desc: '',
       args: [],
     );
@@ -3610,20 +3620,20 @@ class S {
     );
   }
 
-  /// `MMM dd, yyyy • HH:mm`
+  /// `MMM dd, yyyy HH:mm`
   String get dateTimeFormatMmmDdYyyyHhMm {
     return Intl.message(
-      'MMM dd, yyyy • HH:mm',
+      'MMM dd, yyyy HH:mm',
       name: 'dateTimeFormatMmmDdYyyyHhMm',
       desc: '',
       args: [],
     );
   }
 
-  /// `dd-MM-yyyy | HH:mm`
+  /// `dd/MM/yyyy HH:mm`
   String get dateTimeFormatDdMmYyyyHhMm {
     return Intl.message(
-      'dd-MM-yyyy | HH:mm',
+      'dd/MM/yyyy HH:mm',
       name: 'dateTimeFormatDdMmYyyyHhMm',
       desc: '',
       args: [],
@@ -4370,41 +4380,11 @@ class S {
     );
   }
 
-  /// `HH:mm`
-  String get HHmm {
-    return Intl.message(
-      'HH:mm',
-      name: 'HHmm',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `MMM dd, yyyy HH:mm`
-  String get MMMddyyyyHHmm {
-    return Intl.message(
-      'MMM dd, yyyy HH:mm',
-      name: 'MMMddyyyyHHmm',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Order ID`
   String get order_id {
     return Intl.message(
       'Order ID',
       name: 'order_id',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `dd/MM/yyyy HH:mm`
-  String get ddMMyyyyHHmm {
-    return Intl.message(
-      'dd/MM/yyyy HH:mm',
-      name: 'ddMMyyyyHHmm',
       desc: '',
       args: [],
     );
@@ -4435,26 +4415,6 @@ class S {
     return Intl.message(
       'Ordered by nearby first',
       name: 'ordered_by_nearby_first',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Enter your email`
-  String get Enter_your_email {
-    return Intl.message(
-      'Enter your email',
-      name: 'Enter_your_email',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Enter password`
-  String get Enter_password {
-    return Intl.message(
-      'Enter password',
-      name: 'Enter_password',
       desc: '',
       args: [],
     );

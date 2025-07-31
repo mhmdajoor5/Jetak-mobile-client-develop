@@ -530,10 +530,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get open => 'Open';
 
   @override
-  String get km => 'Km';
+  String get km => 'كم';
 
   @override
-  String get mi => 'mi';
+  String get mi => 'ميل';
 
   @override
   String get delivery_address => 'Delivery Address';
@@ -584,7 +584,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get fields => 'Fields';
 
   @override
-  String get this_food_was_added_to_cart => 'This food was added to cart';
+  String get this_food_was_added_to_cart => 'تم إضافة المنتج إلى السلة';
 
   @override
   String get foods_result => 'Foods result';
@@ -678,7 +678,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'Ordering from another restaurant will clear your current cart. Do you want to continue?';
 
   @override
-  String get continueText => 'Continue';
+  String get continueText => 'متابعة';
 
   @override
   String get number => 'Number';
@@ -708,6 +708,10 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get thisFoodWasRemovedFromFavorites =>
       'تمت إزالة هذا الطعام من المفضلة';
+
+  @override
+  String get cannot_add_from_different_restaurant =>
+      'لا يمكن إضافة منتجات من مطاعم مختلفة في نفس الطلب. هل تريد إفراغ السلة وإضافة منتجات من هذا المطعم؟';
 
   @override
   String get foodRefreshedSuccessfuly => 'تم تحديث الطعام بنجاح';
@@ -977,10 +981,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get didntReceiveTheCodeResendit => 'لم يصلك الرمز؟ أعد الإرسال';
 
   @override
-  String get enterYourEmail => 'Enter your email';
+  String get enterYourEmail => 'أدخل بريدك الإلكتروني';
 
   @override
-  String get enterPassword => 'Enter password';
+  String get enterPassword => 'أدخل كلمة المرور';
 
   @override
   String get forgot_password => 'هل نسيت كلمة المرور؟';
@@ -1141,10 +1145,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get ddMMyyyy => 'dd-MM-yyyy';
 
   @override
-  String get dateTimeFormatMmmDdYyyyHhMm => 'MMM dd, yyyy • HH:mm';
+  String get dateTimeFormatMmmDdYyyyHhMm => 'MMM dd, yyyy HH:mm';
 
   @override
-  String get dateTimeFormatDdMmYyyyHhMm => 'dd-MM-yyyy | HH:mm';
+  String get dateTimeFormatDdMmYyyyHhMm => 'dd/MM/yyyy HH:mm';
 
   @override
   String get addressDetails => 'تفاصيل العنوان';
@@ -1357,4 +1361,83 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get otherInstructionsForCourier => 'تعليمات أخرى لمندوب التوصيل';
+
+  @override
+  String get verify_your_internet_connection => 'تحقق من اتصال الإنترنت';
+
+  @override
+  String get carts_refreshed_successfuly => 'تم تحديث السلة بنجاح';
+
+  @override
+  String get category_refreshed_successfuly => 'تم تحديث التصنيف بنجاح';
+
+  @override
+  String get card_number => 'رقم البطاقة';
+
+  @override
+  String get expiry_date => 'تاريخ الانتهاء';
+
+  @override
+  String get favorite_foods => 'الأطعمة المفضلة';
+
+  @override
+  String get order_id => 'رقم الطلب';
+
+  @override
+  String get i_dont_have_an_account => 'لا أملك حسابًا';
+
+  @override
+  String get search_for_restaurants_or_foods => 'ابحث عن مطاعم أو أطعمة';
+
+  @override
+  String get ordered_by_nearby_first => 'مرتبة حسب الأقرب أولاً';
+
+  @override
+  String get maps_explorer => 'مستكشف الخرائط';
+
+  @override
+  String get top_restaurants => 'أفضل المطاعم';
+
+  @override
+  String get most_popular => 'الأكثر شهرة';
+
+  @override
+  String get trending_this_week => 'الشائع هذا الأسبوع';
+
+  @override
+  String get payment_mode => 'طريقة الدفع';
+
+  @override
+  String get select_your_preferred_payment_mode => 'اختر طريقة الدفع المفضلة';
+
+  @override
+  String get or_checkout_with => 'أو ادفع بواسطة';
+
+  @override
+  String get estimated_time => 'الوقت المتوقع';
+
+  @override
+  String get your_credit_card_not_valid => 'بطاقتك غير صالحة';
+
+  @override
+  String get confirm_payment => 'تأكيد الدفع';
+
+  @override
+  String get add_to_cart => 'أضف إلى السلة';
+
+  @override
+  String get help_supports => 'المساعدة والدعم';
+
+  @override
+  String get your_order_has_been_successfully_submitted =>
+      'تم إرسال طلبك بنجاح';
+
+  @override
+  String get featured_foods => 'الأطعمة المميزة';
+
+  @override
+  String get what_they_say => 'آراء العملاء';
+
+  @override
+  String get sign => 'تسجيل دخول';
 }

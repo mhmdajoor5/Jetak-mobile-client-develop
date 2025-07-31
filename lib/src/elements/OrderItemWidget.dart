@@ -46,7 +46,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text('${S.of(context).order_id}: #${widget.order.id}'),
-                        Text(DateFormat(S.of(context).ddMMyyyyHHmm).format(widget.order.dateTime), style: Theme.of(context).textTheme.bodySmall),
+                        Text(''),
                       ],
                     ),
                     trailing: Column(

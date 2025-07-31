@@ -43,13 +43,6 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "Enter_password":
-            MessageLookupByLibrary.simpleMessage("Enter password"),
-        "Enter_your_email":
-            MessageLookupByLibrary.simpleMessage("Enter your email"),
-        "HHmm": MessageLookupByLibrary.simpleMessage("HH:mm"),
-        "MMMddyyyyHHmm":
-            MessageLookupByLibrary.simpleMessage("MMM dd, yyyy HH:mm"),
         "about": MessageLookupByLibrary.simpleMessage("About"),
         "add": MessageLookupByLibrary.simpleMessage("Add"),
         "addNewAddress":
@@ -109,6 +102,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "cancelOrder": MessageLookupByLibrary.simpleMessage("Cancel Order"),
         "canceled": MessageLookupByLibrary.simpleMessage("Canceled"),
+        "cannot_add_from_different_restaurant":
+            MessageLookupByLibrary.simpleMessage(
+                "Cannot add products from different restaurants in the same order. Do you want to clear the cart and add products from this restaurant?"),
         "cardNumber": MessageLookupByLibrary.simpleMessage("CARD NUMBER"),
         "card_added_successfully":
             MessageLookupByLibrary.simpleMessage("Card added successfully"),
@@ -195,12 +191,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "cvv": MessageLookupByLibrary.simpleMessage("CVV"),
         "dark_mode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
         "dateTimeFormatDdMmYyyyHhMm":
-            MessageLookupByLibrary.simpleMessage("dd-MM-yyyy | HH:mm"),
-        "dateTimeFormatMmmDdYyyyHhMm":
-            MessageLookupByLibrary.simpleMessage("MMM dd, yyyy • HH:mm"),
-        "ddMMyyyy": MessageLookupByLibrary.simpleMessage("dd-MM-yyyy"),
-        "ddMMyyyyHHmm":
             MessageLookupByLibrary.simpleMessage("dd/MM/yyyy HH:mm"),
+        "dateTimeFormatMmmDdYyyyHhMm":
+            MessageLookupByLibrary.simpleMessage("MMM dd, yyyy HH:mm"),
+        "ddMMyyyy": MessageLookupByLibrary.simpleMessage("dd-MM-yyyy"),
         "debug": MessageLookupByLibrary.simpleMessage("Debug"),
         "default_credit_card":
             MessageLookupByLibrary.simpleMessage("Default Credit Card"),
@@ -360,7 +354,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "keep_your_old_meals_of_this_restaurant":
             MessageLookupByLibrary.simpleMessage(
                 "Keep your old meals of this restaurant"),
-        "km": MessageLookupByLibrary.simpleMessage("Km"),
+        "km": MessageLookupByLibrary.simpleMessage("km"),
         "languages": MessageLookupByLibrary.simpleMessage("Languages"),
         "last_name": MessageLookupByLibrary.simpleMessage("Last Name"),
         "lets_start_with_login":

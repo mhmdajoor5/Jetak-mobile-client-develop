@@ -538,7 +538,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get open => 'Open';
 
   @override
-  String get km => 'Km';
+  String get km => 'km';
 
   @override
   String get mi => 'mi';
@@ -717,6 +717,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get thisFoodWasRemovedFromFavorites =>
       'This food was removed from favorites';
+
+  @override
+  String get cannot_add_from_different_restaurant =>
+      'Cannot add products from different restaurants in the same order. Do you want to clear the cart and add products from this restaurant?';
 
   @override
   String get foodRefreshedSuccessfuly => 'Food refreshed successfully';
@@ -1152,10 +1156,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ddMMyyyy => 'dd-MM-yyyy';
 
   @override
-  String get dateTimeFormatMmmDdYyyyHhMm => 'MMM dd, yyyy • HH:mm';
+  String get dateTimeFormatMmmDdYyyyHhMm => 'MMM dd, yyyy HH:mm';
 
   @override
-  String get dateTimeFormatDdMmYyyyHhMm => 'dd-MM-yyyy | HH:mm';
+  String get dateTimeFormatDdMmYyyyHhMm => 'dd/MM/yyyy HH:mm';
 
   @override
   String get addressDetails => 'Address Details';
@@ -1372,4 +1376,87 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get otherInstructionsForCourier =>
       'Other instructions for the courier';
+
+  @override
+  String get verify_your_internet_connection =>
+      'Verify your internet connection';
+
+  @override
+  String get carts_refreshed_successfuly => 'Carts refreshed successfully';
+
+  @override
+  String get category_refreshed_successfuly =>
+      'Category refreshed successfully';
+
+  @override
+  String get card_number => 'Card number';
+
+  @override
+  String get expiry_date => 'Expiry date';
+
+  @override
+  String get favorite_foods => 'Favorite foods';
+
+  @override
+  String get order_id => 'Order ID';
+
+  @override
+  String get i_dont_have_an_account => 'I don\'t have an account';
+
+  @override
+  String get search_for_restaurants_or_foods =>
+      'Search for restaurants or foods';
+
+  @override
+  String get ordered_by_nearby_first => 'Ordered by nearby first';
+
+  @override
+  String get maps_explorer => 'Maps Explorer';
+
+  @override
+  String get top_restaurants => 'Top Restaurants';
+
+  @override
+  String get most_popular => 'Most Popular';
+
+  @override
+  String get trending_this_week => 'Trending this week';
+
+  @override
+  String get payment_mode => 'Payment mode';
+
+  @override
+  String get select_your_preferred_payment_mode =>
+      'Select your preferred payment mode';
+
+  @override
+  String get or_checkout_with => 'Or checkout with';
+
+  @override
+  String get estimated_time => 'Estimated time';
+
+  @override
+  String get your_credit_card_not_valid => 'Your credit card is not valid';
+
+  @override
+  String get confirm_payment => 'Confirm Payment';
+
+  @override
+  String get add_to_cart => 'Add to cart';
+
+  @override
+  String get help_supports => 'Help & Supports';
+
+  @override
+  String get your_order_has_been_successfully_submitted =>
+      'Your order has been successfully submitted';
+
+  @override
+  String get featured_foods => 'Featured Foods';
+
+  @override
+  String get what_they_say => 'What they say';
+
+  @override
+  String get sign => 'Sign';
 }

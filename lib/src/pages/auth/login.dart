@@ -159,7 +159,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> with SingleTickerProviderS
                     return null;
                   },
                   decoration: InputDecoration(
-                    labelText: S.of(context).Enter_your_email,
+                    labelText: '',
                     labelStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
                     contentPadding: EdgeInsets.all(12),
                     hintText: 'johndoe@gmail.com',
@@ -187,7 +187,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> with SingleTickerProviderS
                   },
                   obscureText: _con.hidePassword,
                   decoration: InputDecoration(
-                    labelText: S.of(context).Enter_password,
+                    labelText: '',
                     labelStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
                     contentPadding: EdgeInsets.all(12),
                     hintText: '••••••••••••',

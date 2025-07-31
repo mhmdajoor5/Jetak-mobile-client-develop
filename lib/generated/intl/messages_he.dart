@@ -40,12 +40,6 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "Enter_password": MessageLookupByLibrary.simpleMessage("הזן סיסמה"),
-        "Enter_your_email":
-            MessageLookupByLibrary.simpleMessage("הזן את כתובת האימייל שלך"),
-        "HHmm": MessageLookupByLibrary.simpleMessage("HH:mm"),
-        "MMMddyyyyHHmm":
-            MessageLookupByLibrary.simpleMessage("MMM dd, yyyy • HH:mm"),
         "about": MessageLookupByLibrary.simpleMessage("אודות"),
         "add": MessageLookupByLibrary.simpleMessage("הוסף"),
         "addNewAddress":
@@ -100,6 +94,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("ביטול"),
         "cancelOrder": MessageLookupByLibrary.simpleMessage("בטל הזמנה"),
         "canceled": MessageLookupByLibrary.simpleMessage("בוטל"),
+        "cannot_add_from_different_restaurant":
+            MessageLookupByLibrary.simpleMessage(
+                "לא ניתן להוסיף מוצרים ממסעדות שונות באותה הזמנה. האם תרצה לנקות את העגלה ולהוסיף מוצרים ממסעדה זו?"),
         "card_added_successfully":
             MessageLookupByLibrary.simpleMessage("הכרטיס נוסף בהצלחה"),
         "card_already_exist":
@@ -172,9 +169,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "cvc": MessageLookupByLibrary.simpleMessage("CVC"),
         "cvv": MessageLookupByLibrary.simpleMessage("קוד CVV"),
         "dark_mode": MessageLookupByLibrary.simpleMessage("מצב חשוך"),
-        "ddMMyyyy": MessageLookupByLibrary.simpleMessage("dd-MM-yyyy"),
-        "ddMMyyyyHHmm":
+        "dateTimeFormatDdMmYyyyHhMm":
             MessageLookupByLibrary.simpleMessage("dd-MM-yyyy | HH:mm"),
+        "dateTimeFormatMmmDdYyyyHhMm":
+            MessageLookupByLibrary.simpleMessage("MMM dd, yyyy • HH:mm"),
+        "ddMMyyyy": MessageLookupByLibrary.simpleMessage("dd-MM-yyyy"),
         "debug": MessageLookupByLibrary.simpleMessage("ניפוי באגים"),
         "default_credit_card":
             MessageLookupByLibrary.simpleMessage("כרטיס אשראי ברירת מחדל"),
@@ -227,9 +226,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "english": MessageLookupByLibrary.simpleMessage("אנגלית"),
         "enterAnotherAddress":
             MessageLookupByLibrary.simpleMessage("הזן כתובת אחרת"),
+        "enterPassword": MessageLookupByLibrary.simpleMessage("הזן סיסמה"),
         "enterThe4DigitCodeSentTo": m3,
         "enterTheDoorCode":
             MessageLookupByLibrary.simpleMessage("הזן את קוד הדלת"),
+        "enterYourEmail":
+            MessageLookupByLibrary.simpleMessage("הזן את כתובת האימייל שלך"),
         "entranceStaircase":
             MessageLookupByLibrary.simpleMessage("כניסה / מדרגות"),
         "errorFetchingNotifications": m4,
@@ -634,6 +636,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("המזון הזה נוסף לעגלה"),
         "this_restaurant_is_closed_":
             MessageLookupByLibrary.simpleMessage("המסעדה הזו סגורה!"),
+        "timeFormatHhMm": MessageLookupByLibrary.simpleMessage("HH:mm"),
         "tip_check_card_info": MessageLookupByLibrary.simpleMessage(
             "• בדוק שוב את פרטי הכרטיס שלך."),
         "tip_contact_issuer": MessageLookupByLibrary.simpleMessage(

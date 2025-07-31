@@ -705,6 +705,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get thisFoodWasRemovedFromFavorites => 'המזון הזה הוסר מהמועדפים';
 
   @override
+  String get cannot_add_from_different_restaurant =>
+      'לא ניתן להוסיף מוצרים ממסעדות שונות באותה הזמנה. האם תרצה לנקות את העגלה ולהוסיף מוצרים ממסעדה זו?';
+
+  @override
   String get foodRefreshedSuccessfuly => 'המזון רענן בהצלחה';
 
   @override
@@ -969,10 +973,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get didntReceiveTheCodeResendit => 'לא קיבלת את הקוד? שלח שוב';
 
   @override
-  String get enterYourEmail => 'Enter your email';
+  String get enterYourEmail => 'הזן את כתובת האימייל שלך';
 
   @override
-  String get enterPassword => 'Enter password';
+  String get enterPassword => 'הזן סיסמה';
 
   @override
   String get forgot_password => 'שכחת סיסמה?';
@@ -1349,4 +1353,85 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get otherInstructionsForCourier => 'הוראות נוספות לשליח';
+
+  @override
+  String get verify_your_internet_connection => 'אמת את חיבור האינטרנט שלך';
+
+  @override
+  String get carts_refreshed_successfuly => 'עגלות רעננו בהצלחה';
+
+  @override
+  String get category_refreshed_successfuly => 'קטגוריה רעננה בהצלחה';
+
+  @override
+  String get card_number => 'מספר כרטיס';
+
+  @override
+  String get expiry_date => 'תאריך תפוגה';
+
+  @override
+  String get favorite_foods => 'Favorite foods';
+
+  @override
+  String get order_id => 'Order ID';
+
+  @override
+  String get i_dont_have_an_account => 'I don\'t have an account';
+
+  @override
+  String get search_for_restaurants_or_foods =>
+      'Search for restaurants or foods';
+
+  @override
+  String get ordered_by_nearby_first => 'Ordered by nearby first';
+
+  @override
+  String get maps_explorer => 'סייר מפות';
+
+  @override
+  String get top_restaurants => 'מסעדות מובילות';
+
+  @override
+  String get most_popular => 'הפופולריים ביותר';
+
+  @override
+  String get trending_this_week => 'טרנדי השבוע';
+
+  @override
+  String get payment_mode => 'אמצעי תשלום';
+
+  @override
+  String get select_your_preferred_payment_mode =>
+      'בחר את אמצעי התשלום המועדף עליך';
+
+  @override
+  String get or_checkout_with => 'או בצע תשלום באמצעות';
+
+  @override
+  String get estimated_time => 'זמן משוער';
+
+  @override
+  String get your_credit_card_not_valid => 'כרטיס האשראי שלך אינו תקף';
+
+  @override
+  String get confirm_payment => 'אשר תשלום';
+
+  @override
+  String get add_to_cart => 'הוסף לעגלה';
+
+  @override
+  String get help_supports => 'עזרה ותמיכה';
+
+  @override
+  String get your_order_has_been_successfully_submitted =>
+      'ההזמנה שלך נשלחה בהצלחה';
+
+  @override
+  String get featured_foods => 'מנות מומלצות';
+
+  @override
+  String get what_they_say => 'מה הם אומרים';
+
+  @override
+  String get sign => 'שלנו';
 }

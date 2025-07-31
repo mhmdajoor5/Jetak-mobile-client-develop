@@ -267,7 +267,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     try {
       motorcycleIcon = await BitmapDescriptor.asset(
         ImageConfiguration(size: Size(48, 48)),
-        'assets/img/motocycle.png',
+        'assets/img/pointer.png',
       );
       if (mounted) {
         setState(() {});
@@ -360,7 +360,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
           markerId: MarkerId('delivery_boy'),
           position: LatLng(restaurantLat, restaurantLng),
           infoWindow: InfoWindow(title: 'Delivery Person'),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
         ),
       );
     }
@@ -390,9 +390,17 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
             ),
             markers: markers,
             polylines: polylines.values.toSet(),
-            onMapCreated: (controller) {
+            onMapCreated: (controller) async {
               _mapController = controller;
               print("Map created successfully");
+              
+              // Apply custom map style
+              try {
+                final mapStyle = await DefaultAssetBundle.of(context).loadString('assets/cfg/map_style.json');
+                controller.setMapStyle(mapStyle);
+              } catch (e) {
+                print("Error loading map style: $e");
+              }
             },
             myLocationEnabled: true,
             myLocationButtonEnabled: true,

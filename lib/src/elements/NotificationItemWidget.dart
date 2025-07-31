@@ -173,7 +173,7 @@ class NotificationItemWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          DateFormat(S.of(context).MMMddyyyyHHmm).format(notification.createdAt),
+                          '',
                           style: Theme.of(context).textTheme.bodySmall!.merge(
                             TextStyle(
                               color: Theme.of(context).textTheme.bodySmall!.color!.withOpacity(0.7),
