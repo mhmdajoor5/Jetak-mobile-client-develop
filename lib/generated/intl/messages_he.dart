@@ -32,13 +32,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(time) => "פתוח עד ${time}";
 
-  static String m9(id) => "הזמנה: #${id} בוטלה";
+  static String m8(id) => "הזמנה: #${id} בוטלה";
 
   static String m6(seconds) => "שליחה מחדש תהיה זמינה בעוד ${seconds} שניות";
 
-  static String m7(foodname) => "ה${foodname} הוסר מהעגלה שלך";
-
-  static String m8(phone) => "הזן את קוד האימות בן 4 הספרות שנשלח ל־${phone}";
+  static String m7(phone) => "הזן את קוד האימות בן 4 הספרות שנשלח ל־${phone}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -48,7 +46,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "HHmm": MessageLookupByLibrary.simpleMessage("HH:mm"),
         "MMMddyyyyHHmm":
             MessageLookupByLibrary.simpleMessage("MMM dd, yyyy • HH:mm"),
-        "Sign": MessageLookupByLibrary.simpleMessage("הרשמה"),
         "about": MessageLookupByLibrary.simpleMessage("אודות"),
         "add": MessageLookupByLibrary.simpleMessage("הוסף"),
         "addNewAddress":
@@ -56,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addOrCreateAddressLabelsToEasilyChooseBetweenDeliveryAddresses":
             MessageLookupByLibrary.simpleMessage(
                 "הוסף או צור תוויות כתובת כדי לבחור בקלות בין כתובות המשלוח."),
+        "addToCart": MessageLookupByLibrary.simpleMessage("הוסף לעגלה"),
         "add_credit_card":
             MessageLookupByLibrary.simpleMessage("הוסף כרטיס אשראי חדש"),
         "add_delivery_address":
@@ -77,7 +75,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addresses_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("כתובות רעננו בהצלחה"),
         "all": MessageLookupByLibrary.simpleMessage("הכל"),
-        "all_menu": MessageLookupByLibrary.simpleMessage("כל התפריט"),
+        "allMenu": MessageLookupByLibrary.simpleMessage("כל התפריט"),
         "already_logged_in":
             MessageLookupByLibrary.simpleMessage("אתה כבר מחובר"),
         "apartment": MessageLookupByLibrary.simpleMessage("דירה"),
@@ -88,7 +86,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "apiInfoTitle": MessageLookupByLibrary.simpleMessage("מידע על ה-API"),
         "apiToken": MessageLookupByLibrary.simpleMessage(
             "טוקן: fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv"),
-        "app_language": MessageLookupByLibrary.simpleMessage("שפת האפליקציה"),
+        "appLanguage": MessageLookupByLibrary.simpleMessage("שפת האפליקציה"),
         "app_settings": MessageLookupByLibrary.simpleMessage("הגדרות אפליקציה"),
         "application_preferences":
             MessageLookupByLibrary.simpleMessage("העדפות האפליקציה"),
@@ -161,11 +159,13 @@ class MessageLookup extends MessageLookupByLibrary {
                 "השלם את פרטי הפרופיל שלך כדי להמשיך"),
         "complete_order": MessageLookupByLibrary.simpleMessage("השלם הזמנה"),
         "complete_payment": MessageLookupByLibrary.simpleMessage("השלם תשלום"),
-        "confirm_payment": MessageLookupByLibrary.simpleMessage("אישור תשלום"),
+        "confirmPayment": MessageLookupByLibrary.simpleMessage("אישור תשלום"),
+        "confirm_payment": MessageLookupByLibrary.simpleMessage("אשר תשלום"),
         "confirm_your_delivery_address":
             MessageLookupByLibrary.simpleMessage("אישור כתובת המשלוח שלך"),
         "confirmation": MessageLookupByLibrary.simpleMessage("אישור"),
         "continueBtn": MessageLookupByLibrary.simpleMessage("המשך"),
+        "continueText": MessageLookupByLibrary.simpleMessage("המשך"),
         "continue_button": MessageLookupByLibrary.simpleMessage("המשך"),
         "cuisines": MessageLookupByLibrary.simpleMessage("סוגי מטבח"),
         "current_location": MessageLookupByLibrary.simpleMessage("מיקום נוכחי"),
@@ -216,7 +216,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "doorIsOpen": MessageLookupByLibrary.simpleMessage("הדלת פתוחה"),
         "doorbellIntercom":
             MessageLookupByLibrary.simpleMessage("פעמון / אינטרקום"),
-        "double_click_on_the_food_to_add_it_to_the":
+        "doubleClickOnTheFoodToAddItToTheCart":
             MessageLookupByLibrary.simpleMessage(
                 "לחץ פעמיים על המזון כדי להוסיף אותו לעגלה"),
         "edit": MessageLookupByLibrary.simpleMessage("עריכה"),
@@ -243,23 +243,22 @@ class MessageLookup extends MessageLookupByLibrary {
         "faq": MessageLookupByLibrary.simpleMessage("שאלות נפוצות"),
         "faqsRefreshedSuccessfuly":
             MessageLookupByLibrary.simpleMessage("שאלות נפוצות רעננו בהצלחה"),
-        "favorite_foods":
-            MessageLookupByLibrary.simpleMessage("מזונות מועדפים"),
+        "favoriteFoods": MessageLookupByLibrary.simpleMessage("מזונות מועדפים"),
         "favorites": MessageLookupByLibrary.simpleMessage("מועדפים"),
         "favorites_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("המועדפים רעננו בהצלחה"),
-        "featured_foods":
-            MessageLookupByLibrary.simpleMessage("מזונות מובחרים"),
+        "featuredFoods": MessageLookupByLibrary.simpleMessage("מזונות מובחרים"),
+        "featured_foods": MessageLookupByLibrary.simpleMessage("מנות מומלצות"),
         "fetchAllNotifications":
             MessageLookupByLibrary.simpleMessage("שליפת כל ההתראות"),
         "fields": MessageLookupByLibrary.simpleMessage("שדות"),
         "filter": MessageLookupByLibrary.simpleMessage("סנן"),
         "first_name": MessageLookupByLibrary.simpleMessage("שם פרטי"),
         "floor": MessageLookupByLibrary.simpleMessage("קומה"),
+        "foodCategories":
+            MessageLookupByLibrary.simpleMessage("קטגוריות מזונות"),
         "foodRefreshedSuccessfuly":
             MessageLookupByLibrary.simpleMessage("המזון רענן בהצלחה"),
-        "food_categories":
-            MessageLookupByLibrary.simpleMessage("קטגוריות מזונות"),
         "foods_result": MessageLookupByLibrary.simpleMessage("תוצאת מזונות"),
         "foods_results": MessageLookupByLibrary.simpleMessage("תוצאות מזונות"),
         "forMoreDetailsPleaseChatWithOurManagers":
@@ -277,6 +276,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "guest": MessageLookupByLibrary.simpleMessage("אורח"),
         "haveCouponCode":
             MessageLookupByLibrary.simpleMessage("יש לך קוד קופון?"),
+        "helpAndSupports": MessageLookupByLibrary.simpleMessage("עזרה ותמיכה"),
         "help__support": MessageLookupByLibrary.simpleMessage("עזרה ותמיכה"),
         "help_support": MessageLookupByLibrary.simpleMessage("עזרה ותמיכה"),
         "help_supports": MessageLookupByLibrary.simpleMessage("עזרה ותמיכה"),
@@ -295,10 +295,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "איך היית מדרג את המסעדה הזו?"),
         "iCredit": MessageLookupByLibrary.simpleMessage("שלם עכשיו"),
-        "i_dont_have_an_account":
+        "iDontHaveAnAccount":
             MessageLookupByLibrary.simpleMessage("אין לי חשבון?"),
-        "i_forgot_password":
-            MessageLookupByLibrary.simpleMessage("שכחתי סיסמה?"),
+        "iForgotPassword": MessageLookupByLibrary.simpleMessage("שכחתי סיסמה?"),
         "i_have_account_back_to_login":
             MessageLookupByLibrary.simpleMessage("יש לי חשבון? חזרה להתחברות"),
         "i_remember_my_password_return_to_login":
@@ -358,20 +357,23 @@ class MessageLookup extends MessageLookupByLibrary {
         "long_press_to_edit_item_swipe_item_to_delete_it":
             MessageLookupByLibrary.simpleMessage(
                 "לחיצה ארוכה לעריכת פריט, החלק פריט למחיקה"),
-        "longpress_on_the_food_to_add_suplements":
+        "longpressOnTheFoodToAddSuplements":
             MessageLookupByLibrary.simpleMessage(
                 "לחיצה ארוכה על המזון להוספת תוספות"),
         "makeItDefault":
             MessageLookupByLibrary.simpleMessage("הגדר כברירת מחדל"),
         "maps": MessageLookupByLibrary.simpleMessage("מפות"),
-        "maps_explorer": MessageLookupByLibrary.simpleMessage("מגלה מפות"),
+        "mapsExplorer": MessageLookupByLibrary.simpleMessage("מגלה מפות"),
+        "maps_explorer": MessageLookupByLibrary.simpleMessage("סייר מפות"),
         "mastercard": MessageLookupByLibrary.simpleMessage("MasterCard"),
         "menu": MessageLookupByLibrary.simpleMessage("תפריט"),
         "messages": MessageLookupByLibrary.simpleMessage("הודעות"),
         "mi": MessageLookupByLibrary.simpleMessage("מייל"),
         "more": MessageLookupByLibrary.simpleMessage("עוד"),
+        "mostPopular": MessageLookupByLibrary.simpleMessage("הכי פופולרי"),
         "most_ordered": MessageLookupByLibrary.simpleMessage("הכי מוזמן"),
-        "most_popular": MessageLookupByLibrary.simpleMessage("הכי פופולרי"),
+        "most_popular":
+            MessageLookupByLibrary.simpleMessage("הפופולריים ביותר"),
         "multirestaurants":
             MessageLookupByLibrary.simpleMessage("מסעדות מרובות"),
         "my_orders": MessageLookupByLibrary.simpleMessage("ההזמנות שלי"),
@@ -429,18 +431,23 @@ class MessageLookup extends MessageLookupByLibrary {
         "opened_restaurants":
             MessageLookupByLibrary.simpleMessage("מסעדות פתוחות"),
         "optional": MessageLookupByLibrary.simpleMessage("אופציונלי"),
-        "or_checkout_with":
+        "orCheckoutWith":
             MessageLookupByLibrary.simpleMessage("או בצע הזמנה עם"),
+        "or_checkout_with":
+            MessageLookupByLibrary.simpleMessage("או בצע תשלום באמצעות"),
         "order": MessageLookupByLibrary.simpleMessage("הזמנה"),
         "orderDetails": MessageLookupByLibrary.simpleMessage("פרטי הזמנה"),
-        "orderThisorderidHasBeenCanceled": m9,
-        "order_id": MessageLookupByLibrary.simpleMessage("מספר הזמנה"),
+        "orderId": MessageLookupByLibrary.simpleMessage("מספר הזמנה"),
+        "orderThisorderidHasBeenCanceled": m8,
         "order_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("הזמנה רעננה בהצלחה"),
         "order_status_changed":
             MessageLookupByLibrary.simpleMessage("סטטוס הזמנה שונה"),
-        "ordered_by_nearby_first":
+        "orderedByNearbyFirst":
             MessageLookupByLibrary.simpleMessage("מסודר על פי קרבה ראשית"),
+        "orderingFromAnotherRestaurantWillClearYourCart":
+            MessageLookupByLibrary.simpleMessage(
+                "הזמנה ממסעדה אחרת תמחק את העגלה הנוכחית שלך. האם ברצונך להמשיך?"),
         "orders_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("הזמנות רעננו בהצלחה"),
         "other": MessageLookupByLibrary.simpleMessage("אחר"),
@@ -465,6 +472,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "password": MessageLookupByLibrary.simpleMessage("סיסמה"),
         "payNow": MessageLookupByLibrary.simpleMessage("שלם עכשיו"),
         "pay_on_pickup": MessageLookupByLibrary.simpleMessage("תשלום באיסוף"),
+        "paymentMode": MessageLookupByLibrary.simpleMessage("אמצעי תשלום"),
         "payment_card_updated_successfully":
             MessageLookupByLibrary.simpleMessage("כרטיס התשלום עודכן בהצלחה"),
         "payment_mode": MessageLookupByLibrary.simpleMessage("אמצעי תשלום"),
@@ -504,11 +512,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "razorpay": MessageLookupByLibrary.simpleMessage("RazorPay"),
         "razorpayPayment":
             MessageLookupByLibrary.simpleMessage("תשלום RazorPay"),
-        "recent_orders": MessageLookupByLibrary.simpleMessage("הזמנות אחרונות"),
-        "recent_reviews":
+        "recentReviews":
             MessageLookupByLibrary.simpleMessage("ביקורות אחרונות"),
-        "recents_search":
-            MessageLookupByLibrary.simpleMessage("חיפושים אחרונים"),
+        "recent_orders": MessageLookupByLibrary.simpleMessage("הזמנות אחרונות"),
         "refreshNotificationCount":
             MessageLookupByLibrary.simpleMessage("רענון מספר התראות"),
         "register": MessageLookupByLibrary.simpleMessage("הרשמה"),
@@ -537,18 +543,20 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("ביקורות רעננו בהצלחה!"),
         "save": MessageLookupByLibrary.simpleMessage("שמירה"),
         "search": MessageLookupByLibrary.simpleMessage("חיפוש"),
-        "search_for_restaurants_or_foods":
+        "searchForRestaurantsOrFoods":
             MessageLookupByLibrary.simpleMessage("חפש מסעדות או מזונות"),
         "see_all": MessageLookupByLibrary.simpleMessage("הצג הכל"),
         "select": MessageLookupByLibrary.simpleMessage("בחר"),
+        "selectExtrasToAddThemOnTheFood":
+            MessageLookupByLibrary.simpleMessage("בחר תוספות להוספתן למזון"),
         "selectLocationType":
             MessageLookupByLibrary.simpleMessage("בחר סוג מיקום"),
+        "selectYourPreferredLanguages":
+            MessageLookupByLibrary.simpleMessage("בחר את שפת המועדפת עליך"),
+        "selectYourPreferredPaymentMode": MessageLookupByLibrary.simpleMessage(
+            "בחר את אמצעי התשלום המועדף עליך"),
         "select_extras":
             MessageLookupByLibrary.simpleMessage("בחר תוספות להוספה למנה"),
-        "select_extras_to_add_them_on_the_food":
-            MessageLookupByLibrary.simpleMessage("בחר תוספות להוספתן למזון"),
-        "select_your_preferred_languages":
-            MessageLookupByLibrary.simpleMessage("בחר את שפת המועדפת עליך"),
         "select_your_preferred_payment_mode":
             MessageLookupByLibrary.simpleMessage(
                 "בחר את אמצעי התשלום המועדף עליך"),
@@ -565,6 +573,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("צריך להיות יותר מ-3 אותיות"),
         "should_be_more_than_6_letters":
             MessageLookupByLibrary.simpleMessage("צריך להיות יותר מ-6 אותיות"),
+        "sign": MessageLookupByLibrary.simpleMessage("שלנו"),
         "signinToChatWithOurManagers": MessageLookupByLibrary.simpleMessage(
             "היכנס כדי לשוחח עם המנהלים שלנו"),
         "skip": MessageLookupByLibrary.simpleMessage("דלג"),
@@ -604,7 +613,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("הכתובת עודכנה בהצלחה"),
         "the_food_has_been_rated_successfully":
             MessageLookupByLibrary.simpleMessage("האוכל דורג בהצלחה"),
-        "the_food_was_removed_from_your_cart": m7,
         "the_restaurant_has_been_rated_successfully":
             MessageLookupByLibrary.simpleMessage("המסעדה דורגה בהצלחה"),
         "thisFoodWasAddedToFavorite":
@@ -634,6 +642,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "• השתמש בכרטיס אחר או שיטה חלופית."),
         "tips_complete_order":
             MessageLookupByLibrary.simpleMessage("טיפים להשלמת ההזמנה שלך"),
+        "topRestaurants":
+            MessageLookupByLibrary.simpleMessage("מסעדות מובילות"),
         "top_restaurants":
             MessageLookupByLibrary.simpleMessage("מסעדות מובילות"),
         "total": MessageLookupByLibrary.simpleMessage("סך הכל"),
@@ -644,8 +654,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("מעקב רענן בהצלחה"),
         "transaction_declined":
             MessageLookupByLibrary.simpleMessage("העסקה נדחתה"),
-        "trending_this_week":
+        "trendingThisWeek":
             MessageLookupByLibrary.simpleMessage("טרנדים השבוע"),
+        "trending_this_week":
+            MessageLookupByLibrary.simpleMessage("טרנדי השבוע"),
         "twentyToThirtyMin": MessageLookupByLibrary.simpleMessage("20–30 דקות"),
         "typeToStartChat":
             MessageLookupByLibrary.simpleMessage("הקלד כדי להתחיל בשיחה"),
@@ -658,7 +670,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("קוד קופון תקף"),
         "verification_failed":
             MessageLookupByLibrary.simpleMessage("האימות נכשל"),
-        "verification_instruction": m8,
+        "verification_instruction": m7,
         "verification_title": MessageLookupByLibrary.simpleMessage("קוד אימות"),
         "verify": MessageLookupByLibrary.simpleMessage("אמת"),
         "verifyCode": MessageLookupByLibrary.simpleMessage("אמת קוד"),
@@ -672,11 +684,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "view": MessageLookupByLibrary.simpleMessage("הצג"),
         "viewDetails": MessageLookupByLibrary.simpleMessage("צפה בפרטים"),
         "visa_card": MessageLookupByLibrary.simpleMessage("כרטיס Visa"),
+        "warning": MessageLookupByLibrary.simpleMessage("אזהרה"),
         "weAreSendingOtpToValidateYourMobileNumberHang":
             MessageLookupByLibrary.simpleMessage(
                 "אנו שולחים OTP כדי לאמת את מספר הטלפון שלך. נא להמתין!"),
         "welcome": MessageLookupByLibrary.simpleMessage("ברוך הבא"),
-        "what_they_say": MessageLookupByLibrary.simpleMessage("מה הם אומרים?"),
+        "whatTheySay": MessageLookupByLibrary.simpleMessage("מה הם אומרים?"),
+        "what_they_say": MessageLookupByLibrary.simpleMessage("מה הם אומרים"),
         "work": MessageLookupByLibrary.simpleMessage("עבודה"),
         "writeEmailAndPassword": MessageLookupByLibrary.simpleMessage(
             "היי 👋 כתוב את האימייל והסיסמה שלך 💁‍♂️"),
@@ -696,13 +710,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "you_must_signin_to_access_to_this_section":
             MessageLookupByLibrary.simpleMessage(
                 "עליך להיכנס כדי לגשת לאזור זה"),
+        "yourOrderHasBeenSuccessfullySubmitted":
+            MessageLookupByLibrary.simpleMessage("ההזמנה שלך הוגשה בהצלחה!"),
         "your_address": MessageLookupByLibrary.simpleMessage("הכתובת שלך"),
         "your_biography": MessageLookupByLibrary.simpleMessage("הביוגרפיה שלך"),
         "your_credit_card_not_valid":
-            MessageLookupByLibrary.simpleMessage("הכרטיס האשראי שלך לא תקין"),
+            MessageLookupByLibrary.simpleMessage("כרטיס האשראי שלך אינו תקף"),
         "your_location": MessageLookupByLibrary.simpleMessage("המיקום שלך"),
         "your_order_has_been_successfully_submitted":
-            MessageLookupByLibrary.simpleMessage("ההזמנה שלך הוגשה בהצלחה!"),
+            MessageLookupByLibrary.simpleMessage("ההזמנה שלך נשלחה בהצלחה"),
         "your_reset_link_has_been_sent_to_your_email":
             MessageLookupByLibrary.simpleMessage(
                 "קישור האיפוס שלך נשלח לדואר האלקטרוני שלך")

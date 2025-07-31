@@ -388,6 +388,37 @@
   "providePhoneNumber": "زوّدنا برقم هاتفك 🙅‍♂️",
   "codeSent": "لقد أرسلنا لك رمزًا 🧏‍♂️",
   "enterTheDoorCode": "اكتب لنا كود الباب",
-  "otherInstructionsForCourier": "تعليمات أخرى لمندوب التوصيل"
+  "otherInstructionsForCourier": "تعليمات أخرى لمندوب التوصيل",
+  "verify_your_internet_connection": "تحقق من اتصال الإنترنت",
+  "carts_refreshed_successfuly": "تم تحديث السلة بنجاح",
+  "category_refreshed_successfuly": "تم تحديث التصنيف بنجاح",
+  "card_number": "رقم البطاقة",
+  "expiry_date": "تاريخ الانتهاء",
+  "favorite_foods": "الأطعمة المفضلة",
+  "HHmm": "HH:mm",
+  "MMMddyyyyHHmm": "MMM dd, yyyy HH:mm",
+  "order_id": "رقم الطلب",
+  "ddMMyyyyHHmm": "dd/MM/yyyy HH:mm",
+  "i_dont_have_an_account": "لا أملك حسابًا",
+  "search_for_restaurants_or_foods": "ابحث عن مطاعم أو أطعمة",
+  "ordered_by_nearby_first": "مرتبة حسب الأقرب أولاً",
+  "Enter_your_email": "أدخل بريدك الإلكتروني",
+  "Enter_password": "أدخل كلمة المرور",
+  "maps_explorer": "مستكشف الخرائط",
+  "top_restaurants": "أفضل المطاعم",
+  "most_popular": "الأكثر شهرة",
+  "trending_this_week": "الشائع هذا الأسبوع",
+  "payment_mode": "طريقة الدفع",
+  "select_your_preferred_payment_mode": "اختر طريقة الدفع المفضلة",
+  "or_checkout_with": "أو ادفع بواسطة",
+  "estimated_time": "الوقت المتوقع",
+  "your_credit_card_not_valid": "بطاقتك غير صالحة",
+  "confirm_payment": "تأكيد الدفع",
+  "add_to_cart": "أضف إلى السلة",
+  "help_supports": "المساعدة والدعم",
+  "your_order_has_been_successfully_submitted": "تم إرسال طلبك بنجاح",
+  "featured_foods": "الأطعمة المميزة",
+  "what_they_say": "آراء العملاء",
+  "sign": "تسجيل دخول"
 
 }

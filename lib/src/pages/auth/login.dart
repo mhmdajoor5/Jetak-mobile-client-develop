@@ -279,7 +279,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> with SingleTickerProviderS
                         Navigator.of(context).pushReplacementNamed('/SignUp');
                       },
                       child: Text(
-                        S.of(context).Sign,
+                        S.of(context).sign,
                         style: TextStyle(color: Colors.blue),
                       ),
                     ),

@@ -32,13 +32,13 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(time) => "Open until ${time}";
 
-  static String m9(id) => "Order: #${id} has been canceled";
+  static String m8(id) => "Order: #${id} has been canceled";
 
   static String m6(seconds) => "Resend available in ${seconds} seconds";
 
-  static String m7(foodname) => "The ${foodname} was removed from your cart";
+  static String m9(foodname) => "The ${foodname} was removed from your cart";
 
-  static String m8(phone) =>
+  static String m7(phone) =>
       "Enter the 4-digit verification code sent to ${phone}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -49,8 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Enter your email"),
         "HHmm": MessageLookupByLibrary.simpleMessage("HH:mm"),
         "MMMddyyyyHHmm":
-            MessageLookupByLibrary.simpleMessage("MMM dd, yyyy • HH:mm"),
-        "Sign": MessageLookupByLibrary.simpleMessage("Sign"),
+            MessageLookupByLibrary.simpleMessage("MMM dd, yyyy HH:mm"),
         "about": MessageLookupByLibrary.simpleMessage("About"),
         "add": MessageLookupByLibrary.simpleMessage("Add"),
         "addNewAddress":
@@ -58,6 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addOrCreateAddressLabelsToEasilyChooseBetweenDeliveryAddresses":
             MessageLookupByLibrary.simpleMessage(
                 "Add or create address labels to easily choose between delivery addresses."),
+        "addToCart": MessageLookupByLibrary.simpleMessage("Add to Cart"),
         "add_a_promo_code":
             MessageLookupByLibrary.simpleMessage("Add a promo code"),
         "add_courier_tip":
@@ -71,7 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Add New Credit Card"),
         "add_new_delivery_address":
             MessageLookupByLibrary.simpleMessage("Add new delivery address"),
-        "add_to_cart": MessageLookupByLibrary.simpleMessage("Add to Cart"),
+        "add_to_cart": MessageLookupByLibrary.simpleMessage("Add to cart"),
         "added_to_cart": m0,
         "addingExactAddressDetailsHelpsUsFindYouFaster":
             MessageLookupByLibrary.simpleMessage(
@@ -84,7 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addresses_refreshed_successfuly": MessageLookupByLibrary.simpleMessage(
             "Addresses refreshed successfuly"),
         "all": MessageLookupByLibrary.simpleMessage("All"),
-        "all_menu": MessageLookupByLibrary.simpleMessage("All Menu"),
+        "allMenu": MessageLookupByLibrary.simpleMessage("All Menu"),
         "already_logged_in":
             MessageLookupByLibrary.simpleMessage("You are already logged in"),
         "apartment": MessageLookupByLibrary.simpleMessage("Apartment"),
@@ -95,7 +95,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "apiInfoTitle": MessageLookupByLibrary.simpleMessage("API Info"),
         "apiToken": MessageLookupByLibrary.simpleMessage(
             "Token: fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv"),
-        "app_language": MessageLookupByLibrary.simpleMessage("App Language"),
+        "appLanguage": MessageLookupByLibrary.simpleMessage("App Language"),
         "app_settings": MessageLookupByLibrary.simpleMessage("App Settings"),
         "application_preferences":
             MessageLookupByLibrary.simpleMessage("Application Preferences"),
@@ -109,21 +109,26 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "cancelOrder": MessageLookupByLibrary.simpleMessage("Cancel Order"),
         "canceled": MessageLookupByLibrary.simpleMessage("Canceled"),
+        "cardNumber": MessageLookupByLibrary.simpleMessage("CARD NUMBER"),
         "card_added_successfully":
             MessageLookupByLibrary.simpleMessage("Card added successfully"),
         "card_already_exist":
             MessageLookupByLibrary.simpleMessage("The card is Already Exist"),
         "card_deleted_successfully":
             MessageLookupByLibrary.simpleMessage("Card deleted successfully"),
-        "card_number": MessageLookupByLibrary.simpleMessage("CARD NUMBER"),
+        "card_number": MessageLookupByLibrary.simpleMessage("Card number"),
         "cart": MessageLookupByLibrary.simpleMessage("Cart"),
         "cartIsEmpty": MessageLookupByLibrary.simpleMessage("Cart is empty"),
+        "cartsRefreshedSuccessfully": MessageLookupByLibrary.simpleMessage(
+            "Carts refreshed successfully"),
         "carts_refreshed_successfuly": MessageLookupByLibrary.simpleMessage(
             "Carts refreshed successfully"),
         "cash": MessageLookupByLibrary.simpleMessage("Cash"),
         "cash_on_delivery":
             MessageLookupByLibrary.simpleMessage("Cash on delivery"),
         "category": MessageLookupByLibrary.simpleMessage("Category"),
+        "categoryRefreshedSuccessfully": MessageLookupByLibrary.simpleMessage(
+            "Category refreshed successfully"),
         "category_refreshed_successfuly": MessageLookupByLibrary.simpleMessage(
             "Category refreshed successfully"),
         "change": MessageLookupByLibrary.simpleMessage("Change"),
@@ -172,12 +177,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Complete Order"),
         "complete_payment":
             MessageLookupByLibrary.simpleMessage("Complete Payment"),
+        "confirmPayment":
+            MessageLookupByLibrary.simpleMessage("Confirm Payment"),
         "confirm_payment":
             MessageLookupByLibrary.simpleMessage("Confirm Payment"),
         "confirm_your_delivery_address": MessageLookupByLibrary.simpleMessage(
             "Confirm your delivery address"),
         "confirmation": MessageLookupByLibrary.simpleMessage("Confirmation"),
         "continueBtn": MessageLookupByLibrary.simpleMessage("Continue"),
+        "continueText": MessageLookupByLibrary.simpleMessage("Continue"),
         "continue_button": MessageLookupByLibrary.simpleMessage("Continue"),
         "credit_card": MessageLookupByLibrary.simpleMessage("Credit card"),
         "cuisines": MessageLookupByLibrary.simpleMessage("Cuisines"),
@@ -186,9 +194,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "cvc": MessageLookupByLibrary.simpleMessage("CVC"),
         "cvv": MessageLookupByLibrary.simpleMessage("CVV"),
         "dark_mode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
+        "dateTimeFormatDdMmYyyyHhMm":
+            MessageLookupByLibrary.simpleMessage("dd-MM-yyyy | HH:mm"),
+        "dateTimeFormatMmmDdYyyyHhMm":
+            MessageLookupByLibrary.simpleMessage("MMM dd, yyyy • HH:mm"),
         "ddMMyyyy": MessageLookupByLibrary.simpleMessage("dd-MM-yyyy"),
         "ddMMyyyyHHmm":
-            MessageLookupByLibrary.simpleMessage("dd-MM-yyyy | HH:mm"),
+            MessageLookupByLibrary.simpleMessage("dd/MM/yyyy HH:mm"),
         "debug": MessageLookupByLibrary.simpleMessage("Debug"),
         "default_credit_card":
             MessageLookupByLibrary.simpleMessage("Default Credit Card"),
@@ -232,7 +244,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "doorIsOpen": MessageLookupByLibrary.simpleMessage("Door is Open"),
         "doorbellIntercom":
             MessageLookupByLibrary.simpleMessage("Doorbell / Intercom"),
-        "double_click_on_the_food_to_add_it_to_the":
+        "doubleClickOnTheFoodToAddItToTheCart":
             MessageLookupByLibrary.simpleMessage(
                 "Double click on the food to add it to the cart"),
         "edit": MessageLookupByLibrary.simpleMessage("Edit"),
@@ -243,9 +255,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "english": MessageLookupByLibrary.simpleMessage("English"),
         "enterAnotherAddress":
             MessageLookupByLibrary.simpleMessage("Enter another address"),
+        "enterPassword": MessageLookupByLibrary.simpleMessage("Enter password"),
         "enterThe4DigitCodeSentTo": m3,
         "enterTheDoorCode":
             MessageLookupByLibrary.simpleMessage("Enter the door code"),
+        "enterYourEmail":
+            MessageLookupByLibrary.simpleMessage("Enter your email"),
         "enter_here": MessageLookupByLibrary.simpleMessage("Enter here"),
         "entranceStaircase":
             MessageLookupByLibrary.simpleMessage("Entrance / Staircase"),
@@ -257,16 +272,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "estimated_time":
             MessageLookupByLibrary.simpleMessage("Estimated time"),
         "exp_date": MessageLookupByLibrary.simpleMessage("Exp Date"),
-        "expiry_date": MessageLookupByLibrary.simpleMessage("EXPIRY DATE"),
+        "expiryDate": MessageLookupByLibrary.simpleMessage("EXPIRY DATE"),
+        "expiry_date": MessageLookupByLibrary.simpleMessage("Expiry date"),
         "extras": MessageLookupByLibrary.simpleMessage("Extras"),
         "faq": MessageLookupByLibrary.simpleMessage("Faq"),
         "faqsRefreshedSuccessfuly":
             MessageLookupByLibrary.simpleMessage("Faqs refreshed successfully"),
+        "favoriteFoods": MessageLookupByLibrary.simpleMessage("Favorite Foods"),
         "favorite_foods":
-            MessageLookupByLibrary.simpleMessage("Favorite Foods"),
+            MessageLookupByLibrary.simpleMessage("Favorite foods"),
         "favorites": MessageLookupByLibrary.simpleMessage("Favorites"),
         "favorites_refreshed_successfuly": MessageLookupByLibrary.simpleMessage(
             "Favorites refreshed successfully"),
+        "featuredFoods": MessageLookupByLibrary.simpleMessage("Featured Foods"),
         "featured_foods":
             MessageLookupByLibrary.simpleMessage("Featured Foods"),
         "fetchAllNotifications":
@@ -275,10 +293,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "filter": MessageLookupByLibrary.simpleMessage("Filter"),
         "first_name": MessageLookupByLibrary.simpleMessage("First Name"),
         "floor": MessageLookupByLibrary.simpleMessage("Floor"),
+        "foodCategories":
+            MessageLookupByLibrary.simpleMessage("Food Categories"),
         "foodRefreshedSuccessfuly":
             MessageLookupByLibrary.simpleMessage("Food refreshed successfully"),
-        "food_categories":
-            MessageLookupByLibrary.simpleMessage("Food Categories"),
         "foods_result": MessageLookupByLibrary.simpleMessage("Foods result"),
         "foods_results": MessageLookupByLibrary.simpleMessage("Foods Results"),
         "forMoreDetailsPleaseChatWithOurManagers":
@@ -297,6 +315,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "guest": MessageLookupByLibrary.simpleMessage("Guest"),
         "haveCouponCode":
             MessageLookupByLibrary.simpleMessage("Have Coupon Code?"),
+        "helpAndSupports":
+            MessageLookupByLibrary.simpleMessage("Help & Supports"),
         "help__support": MessageLookupByLibrary.simpleMessage("Help & Support"),
         "help_support": MessageLookupByLibrary.simpleMessage("Help & Support"),
         "help_supports":
@@ -317,10 +337,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "How would you rate this restaurant ?"),
         "iCredit": MessageLookupByLibrary.simpleMessage("Pay now"),
-        "i_dont_have_an_account":
+        "iDontHaveAnAccount":
             MessageLookupByLibrary.simpleMessage("I don\'t have an account?"),
-        "i_forgot_password":
+        "iForgotPassword":
             MessageLookupByLibrary.simpleMessage("I forgot password ?"),
+        "i_dont_have_an_account":
+            MessageLookupByLibrary.simpleMessage("I don\'t have an account"),
         "i_have_account_back_to_login": MessageLookupByLibrary.simpleMessage(
             "I have account? Back to login"),
         "i_remember_my_password_return_to_login":
@@ -384,18 +406,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "long_press_to_edit_item_swipe_item_to_delete_it":
             MessageLookupByLibrary.simpleMessage(
                 "Long press to edit item, swipe item to delete it"),
-        "longpress_on_the_food_to_add_suplements":
+        "longpressOnTheFoodToAddSuplements":
             MessageLookupByLibrary.simpleMessage(
                 "Longpress on the food to add suplements"),
         "makeItDefault":
             MessageLookupByLibrary.simpleMessage("Make it default"),
         "maps": MessageLookupByLibrary.simpleMessage("Maps"),
+        "mapsExplorer": MessageLookupByLibrary.simpleMessage("Maps Explorer"),
         "maps_explorer": MessageLookupByLibrary.simpleMessage("Maps Explorer"),
         "mastercard": MessageLookupByLibrary.simpleMessage("MasterCard"),
         "menu": MessageLookupByLibrary.simpleMessage("Menu"),
         "messages": MessageLookupByLibrary.simpleMessage("Messages"),
         "mi": MessageLookupByLibrary.simpleMessage("mi"),
         "more": MessageLookupByLibrary.simpleMessage("More"),
+        "mostPopular": MessageLookupByLibrary.simpleMessage("Most Popular"),
         "most_ordered": MessageLookupByLibrary.simpleMessage("Most ordered"),
         "most_popular": MessageLookupByLibrary.simpleMessage("Most Popular"),
         "multirestaurants":
@@ -461,19 +485,27 @@ class MessageLookup extends MessageLookupByLibrary {
         "opened_restaurants":
             MessageLookupByLibrary.simpleMessage("Opened Restaurants"),
         "optional": MessageLookupByLibrary.simpleMessage("Optional"),
-        "or_checkout_with":
+        "orCheckoutWith":
             MessageLookupByLibrary.simpleMessage("Or Checkout With"),
+        "or_checkout_with":
+            MessageLookupByLibrary.simpleMessage("Or checkout with"),
         "order": MessageLookupByLibrary.simpleMessage("Order"),
         "orderDetails": MessageLookupByLibrary.simpleMessage("Order Details"),
-        "orderThisorderidHasBeenCanceled": m9,
-        "order_id": MessageLookupByLibrary.simpleMessage("Order Id"),
+        "orderId": MessageLookupByLibrary.simpleMessage("Order Id"),
+        "orderThisorderidHasBeenCanceled": m8,
+        "order_id": MessageLookupByLibrary.simpleMessage("Order ID"),
         "order_refreshed_successfuly": MessageLookupByLibrary.simpleMessage(
             "Order refreshed successfully"),
         "order_status_changed":
             MessageLookupByLibrary.simpleMessage("Order status changed"),
         "order_summary": MessageLookupByLibrary.simpleMessage("Order Summary"),
-        "ordered_by_nearby_first":
+        "orderedByNearbyFirst":
             MessageLookupByLibrary.simpleMessage("Ordered by Nearby first"),
+        "ordered_by_nearby_first":
+            MessageLookupByLibrary.simpleMessage("Ordered by nearby first"),
+        "orderingFromAnotherRestaurantWillClearYourCart":
+            MessageLookupByLibrary.simpleMessage(
+                "Ordering from another restaurant will clear your current cart. Do you want to continue?"),
         "orders_refreshed_successfuly": MessageLookupByLibrary.simpleMessage(
             "Orders refreshed successfully"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),
@@ -500,12 +532,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "pay_now": MessageLookupByLibrary.simpleMessage("Pay now"),
         "pay_on_pickup": MessageLookupByLibrary.simpleMessage("Pay on Pickup"),
         "payment": MessageLookupByLibrary.simpleMessage("Payment"),
+        "paymentMode": MessageLookupByLibrary.simpleMessage("Payment Mode"),
         "payment_card_updated_successfully":
             MessageLookupByLibrary.simpleMessage(
                 "Payment card updated successfully"),
         "payment_method":
             MessageLookupByLibrary.simpleMessage("Payment method"),
-        "payment_mode": MessageLookupByLibrary.simpleMessage("Payment Mode"),
+        "payment_mode": MessageLookupByLibrary.simpleMessage("Payment mode"),
         "payment_options":
             MessageLookupByLibrary.simpleMessage("Payment Options"),
         "payment_settings":
@@ -545,11 +578,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "razorpay": MessageLookupByLibrary.simpleMessage("RazorPay"),
         "razorpayPayment":
             MessageLookupByLibrary.simpleMessage("RazorPay Payment"),
+        "recentReviews": MessageLookupByLibrary.simpleMessage("Recent Reviews"),
         "recent_orders": MessageLookupByLibrary.simpleMessage("Recent Orders"),
-        "recent_reviews":
-            MessageLookupByLibrary.simpleMessage("Recent Reviews"),
-        "recents_search":
-            MessageLookupByLibrary.simpleMessage("Recents Search"),
+        "recentsSearch": MessageLookupByLibrary.simpleMessage("Recents Search"),
         "refreshNotificationCount":
             MessageLookupByLibrary.simpleMessage("Refresh Notification Count"),
         "register": MessageLookupByLibrary.simpleMessage("Register"),
@@ -579,19 +610,22 @@ class MessageLookup extends MessageLookupByLibrary {
             "Reviews refreshed successfully!"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
-        "search_for_restaurants_or_foods":
+        "searchForRestaurantsOrFoods":
             MessageLookupByLibrary.simpleMessage("Search for food, chef, etc"),
+        "search_for_restaurants_or_foods": MessageLookupByLibrary.simpleMessage(
+            "Search for restaurants or foods"),
         "see_all": MessageLookupByLibrary.simpleMessage("See all"),
         "select": MessageLookupByLibrary.simpleMessage("Select"),
+        "selectExtrasToAddThemOnTheFood": MessageLookupByLibrary.simpleMessage(
+            "Select extras to add them on the food"),
         "selectLocationType":
             MessageLookupByLibrary.simpleMessage("Select location type"),
+        "selectYourPreferredLanguages": MessageLookupByLibrary.simpleMessage(
+            "Select your preferred languages"),
+        "selectYourPreferredPaymentMode": MessageLookupByLibrary.simpleMessage(
+            "Select your preferred payment mode"),
         "select_extras": MessageLookupByLibrary.simpleMessage(
             "Select extras to add them on the food"),
-        "select_extras_to_add_them_on_the_food":
-            MessageLookupByLibrary.simpleMessage(
-                "Select extras to add them on the food"),
-        "select_your_preferred_languages": MessageLookupByLibrary.simpleMessage(
-            "Select your preferred languages"),
         "select_your_preferred_payment_mode":
             MessageLookupByLibrary.simpleMessage(
                 "Select your preferred payment mode"),
@@ -610,6 +644,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Should be more than 3 letters"),
         "should_be_more_than_6_letters": MessageLookupByLibrary.simpleMessage(
             "Should be more than 6 letters"),
+        "sign": MessageLookupByLibrary.simpleMessage("Sign"),
+        "signIn": MessageLookupByLibrary.simpleMessage("Sign In"),
         "signinToChatWithOurManagers": MessageLookupByLibrary.simpleMessage(
             "Sign-In to chat with our managers"),
         "skip": MessageLookupByLibrary.simpleMessage("Skip"),
@@ -646,13 +682,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Test Notifications"),
         "testingApiConnection":
             MessageLookupByLibrary.simpleMessage("Testing API connection..."),
+        "theFoodWasRemovedFromYourCart": m9,
         "the_address_updated_successfully":
             MessageLookupByLibrary.simpleMessage(
                 "The address updated successfully"),
         "the_food_has_been_rated_successfully":
             MessageLookupByLibrary.simpleMessage(
                 "The food has been rated successfully"),
-        "the_food_was_removed_from_your_cart": m7,
         "the_restaurant_has_been_rated_successfully":
             MessageLookupByLibrary.simpleMessage(
                 "The restaurant has been rated successfully"),
@@ -676,6 +712,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("This food was added to cart"),
         "this_restaurant_is_closed_":
             MessageLookupByLibrary.simpleMessage("This restaurant is closed !"),
+        "timeFormatHhMm": MessageLookupByLibrary.simpleMessage("HH:mm"),
         "tip_check_card_info": MessageLookupByLibrary.simpleMessage(
             "• Double-check your card information."),
         "tip_contact_issuer": MessageLookupByLibrary.simpleMessage(
@@ -684,6 +721,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "• Use a different card or alternative method."),
         "tips_complete_order":
             MessageLookupByLibrary.simpleMessage("Tips to complete your order"),
+        "topRestaurants":
+            MessageLookupByLibrary.simpleMessage("Top Restaurants"),
         "top_restaurants":
             MessageLookupByLibrary.simpleMessage("Top Restaurants"),
         "total": MessageLookupByLibrary.simpleMessage("Total"),
@@ -694,8 +733,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "Tracking refreshed successfully"),
         "transaction_declined": MessageLookupByLibrary.simpleMessage(
             "Transaction has been declined"),
-        "trending_this_week":
+        "trendingThisWeek":
             MessageLookupByLibrary.simpleMessage("Trending This Week"),
+        "trending_this_week":
+            MessageLookupByLibrary.simpleMessage("Trending this week"),
         "twentyToThirtyMin": MessageLookupByLibrary.simpleMessage("20–30 min"),
         "typeToStartChat":
             MessageLookupByLibrary.simpleMessage("Type to start chat"),
@@ -707,13 +748,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "validCouponCode": MessageLookupByLibrary.simpleMessage("Valid Coupon"),
         "verification_failed":
             MessageLookupByLibrary.simpleMessage("Verification failed"),
-        "verification_instruction": m8,
+        "verification_instruction": m7,
         "verification_title":
             MessageLookupByLibrary.simpleMessage("Verification Code"),
         "verify": MessageLookupByLibrary.simpleMessage("Verify"),
         "verifyCode": MessageLookupByLibrary.simpleMessage("Verify Code"),
         "verifyPhoneNumber":
             MessageLookupByLibrary.simpleMessage("Verify Phone Number"),
+        "verifyYourInternetConnection": MessageLookupByLibrary.simpleMessage(
+            "Verify your internet connection"),
         "verify_your_internet_connection": MessageLookupByLibrary.simpleMessage(
             "Verify your internet connection"),
         "verify_your_quantity_and_click_checkout":
@@ -723,12 +766,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "view": MessageLookupByLibrary.simpleMessage("View"),
         "viewDetails": MessageLookupByLibrary.simpleMessage("View Details"),
         "visa_card": MessageLookupByLibrary.simpleMessage("Visa Card"),
+        "warning": MessageLookupByLibrary.simpleMessage("Warning"),
         "weAreSendingOtpToValidateYourMobileNumberHang":
             MessageLookupByLibrary.simpleMessage(
                 "We are sending OTP to validate your mobile number. Hang on!"),
         "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),
-        "what_they_say":
-            MessageLookupByLibrary.simpleMessage("What They Say ?"),
+        "whatTheySay": MessageLookupByLibrary.simpleMessage("What They Say ?"),
+        "what_they_say": MessageLookupByLibrary.simpleMessage("What they say"),
         "work": MessageLookupByLibrary.simpleMessage("Work"),
         "writeEmailAndPassword": MessageLookupByLibrary.simpleMessage(
             "Write your email and password 💁‍♂️"),
@@ -749,15 +793,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "you_must_signin_to_access_to_this_section":
             MessageLookupByLibrary.simpleMessage(
                 "You must sign-in to access to this section"),
+        "yourCreditCardNotValid":
+            MessageLookupByLibrary.simpleMessage("Your credit card not valid"),
+        "yourOrderHasBeenSuccessfullySubmitted":
+            MessageLookupByLibrary.simpleMessage(
+                "Your order has been successfully submitted!"),
         "your_address": MessageLookupByLibrary.simpleMessage("Your Address"),
         "your_biography":
             MessageLookupByLibrary.simpleMessage("Your biography"),
-        "your_credit_card_not_valid":
-            MessageLookupByLibrary.simpleMessage("Your credit card not valid"),
+        "your_credit_card_not_valid": MessageLookupByLibrary.simpleMessage(
+            "Your credit card is not valid"),
         "your_location": MessageLookupByLibrary.simpleMessage("Your location"),
         "your_order_has_been_successfully_submitted":
             MessageLookupByLibrary.simpleMessage(
-                "Your order has been successfully submitted!"),
+                "Your order has been successfully submitted"),
         "your_reset_link_has_been_sent_to_your_email":
             MessageLookupByLibrary.simpleMessage(
                 "Your reset link has been sent to your email")

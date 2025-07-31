@@ -444,6 +444,24 @@
   "providePhoneNumber": "ספק לנו את מספר הטלפון שלך 🙅‍♂️",
   "codeSent": "שלחנו לך קוד 🧏‍♂️",
   "enterTheDoorCode": "הזן את קוד הדלת",
-  "otherInstructionsForCourier": "הוראות נוספות לשליח"
+  "otherInstructionsForCourier": "הוראות נוספות לשליח",
+  "Enter_your_email": "הזן את כתובת האימייל שלך",
+  "Enter_password": "הזן סיסמה",
+  "maps_explorer": "סייר מפות",
+  "top_restaurants": "מסעדות מובילות",
+  "most_popular": "הפופולריים ביותר",
+  "trending_this_week": "טרנדי השבוע",
+  "payment_mode": "אמצעי תשלום",
+  "select_your_preferred_payment_mode": "בחר את אמצעי התשלום המועדף עליך",
+  "or_checkout_with": "או בצע תשלום באמצעות",
+  "estimated_time": "זמן משוער",
+  "your_credit_card_not_valid": "כרטיס האשראי שלך אינו תקף",
+  "confirm_payment": "אשר תשלום",
+  "add_to_cart": "הוסף לעגלה",
+  "help_supports": "עזרה ותמיכה",
+  "your_order_has_been_successfully_submitted": "ההזמנה שלך נשלחה בהצלחה",
+  "featured_foods": "מנות מומלצות",
+  "what_they_say": "מה הם אומרים",
+  "sign":"שלנו"
 
 }
