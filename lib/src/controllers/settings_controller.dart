@@ -25,9 +25,9 @@ class SettingsController extends ControllerMVC {
   }
 
   Future<void> verifyPhone(userModel.User user) async {
-    final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
+    autoRetrieve(String verId) {
       repository.currentUser.value.verificationId = verId;
-    };
+    }
 
     final PhoneCodeSent smsCodeSent = (String verId, [int? forceCodeResent]) {
       repository.currentUser.value.verificationId = verId;
@@ -41,20 +41,20 @@ class SettingsController extends ControllerMVC {
                 )),
       );
     } as PhoneCodeSent;
-    final PhoneVerificationCompleted _verifiedSuccess = (AuthCredential auth) {
+    verifiedSuccess(AuthCredential auth) {
       Navigator.of(scaffoldKey.currentContext!).pushNamed('/Settings');
-    };
-    final PhoneVerificationFailed _verifyFailed = (FirebaseAuthException e) {
+    }
+    verifyFailed(FirebaseAuthException e) {
       ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
         content: Text(e.message!),
       ));
       print(e.toString());
-    };
+    }
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: user.phone,
       timeout: const Duration(seconds: 5),
-      verificationCompleted: _verifiedSuccess,
-      verificationFailed: _verifyFailed,
+      verificationCompleted: verifiedSuccess,
+      verificationFailed: verifyFailed,
       codeSent: smsCodeSent,
       codeAutoRetrievalTimeout: autoRetrieve,
     );
@@ -81,16 +81,16 @@ class SettingsController extends ControllerMVC {
 
   void listenForUser() async {
     creditCard = CreditCard();
-    CardItem cardItem = (await Helper.getSavedCards()).first;
-    creditCard.cvc = cardItem.cardCVV;
-    creditCard.number = cardItem.cardNumber;
-    creditCard.holderName = cardItem.cardHolderName;
-    creditCard.expiryDate = cardItem.cardExpirationDate;
+    CardItem? cardItem = (await Helper.getSavedCards()).firstOrNull;
+    creditCard.cvc = cardItem?.cardCVV??'';
+    creditCard.number = cardItem?.cardNumber??'';
+    creditCard.holderName = cardItem?.cardHolderName??'';
+    creditCard.expiryDate = cardItem?.cardExpirationDate??'';
     // creditCard = await repository.getCreditCard();
     setState(() {});
   }
 
   Future<void> refreshSettings() async {
-    creditCard = new CreditCard();
+    creditCard = CreditCard();
   }
 }

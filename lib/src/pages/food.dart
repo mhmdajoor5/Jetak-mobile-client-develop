@@ -539,7 +539,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                               backgroundColor: Colors.green,
                               //duration: Duration(seconds: 2),
                               behavior: SnackBarBehavior.floating,
-                            ),
+                            )
                           );
                           Navigator.of(context).pop();
                         },

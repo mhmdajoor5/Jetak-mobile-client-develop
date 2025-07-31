@@ -17,6 +17,7 @@ class ProfileController extends ControllerMVC {
   void listenForRecentOrders({String? message}) async {
     final Stream<Order> stream = await getRecentOrders();
     stream.listen((Order _order) {
+      print("Order User Name :"+_order.user.firstName.toString());
       setState(() {
         recentOrders.add(_order);
       });

@@ -30,6 +30,7 @@ class _MapWidgetState extends StateMVC<MapWidget> {
   void initState() {
     super.initState();
     _con.getCurrentLocation();
+    ApiKeyTester.testAllAPIs();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.routeArgument?.param is Restaurant) {
         // Single restaurant view with directions
@@ -75,7 +76,10 @@ class _MapWidgetState extends StateMVC<MapWidget> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.my_location, color: Theme.of(context).appBarTheme.iconTheme?.color),
-            onPressed: _con.goCurrentLocation,
+            onPressed: ()async {
+              await ApiKeyTester.testAllAPIs();
+              _con.goCurrentLocation();
+            },
           ),
           IconButton(
             icon: Icon(Icons.filter_list, color: Theme.of(context).appBarTheme.iconTheme?.color),

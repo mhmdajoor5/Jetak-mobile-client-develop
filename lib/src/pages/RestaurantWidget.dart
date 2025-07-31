@@ -63,35 +63,31 @@ class _RestaurantWidgetState extends StateMVC<RestaurantWidget> {
     return Scaffold(
       backgroundColor: Colors.white,
       key: _con.scaffoldKey,
-      body: RefreshIndicator(
-        onRefresh: _con.refreshRestaurant,
-        child:
-            _con.restaurant == null
-                ? CircularLoadingWidget(height: 500)
-                : Stack(
-                  fit: StackFit.expand,
-                  children: <Widget>[
-                    CustomScrollView(
-                      slivers: <Widget>[
-                        RestaurantAppBar(
-                          restaurant: _con.restaurant!,
-                          routeArgument: widget.routeArgument,
-                        ),
-                        SliverToBoxAdapter(
-                          child: RestaurantDetailsSection(
-                            con: _con,
-                            cart: _cart,
-                            addToCart: _addToCart,
-                            userLat: userLat,
-                            userLon: userLon,
-                          ),
-                        ),
-                      ],
+      body: _con.restaurant == null
+          ? CircularLoadingWidget(height: 500)
+          : Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              CustomScrollView(
+                slivers: <Widget>[
+                  RestaurantAppBar(
+                    restaurant: _con.restaurant!,
+                    routeArgument: widget.routeArgument,
+                  ),
+                  SliverToBoxAdapter(
+                    child: RestaurantDetailsSection(
+                      con: _con,
+                      cart: _cart,
+                      addToCart: _addToCart,
+                      userLat: userLat,
+                      userLon: userLon,
                     ),
-                    // RestaurantBottomCart()
-                  ],
-                ),
-      ),
+                  ),
+                ],
+              ),
+              // RestaurantBottomCart()
+            ],
+          ),
     );
   }
 }
