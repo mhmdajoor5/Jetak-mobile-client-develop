@@ -450,5 +450,12 @@
   "see_all": "See all",
   "location_type_hint": "The location type helps us to find you better, house, office",
   "cartIsEmpty": "Cart is empty",
-  "chooseOrderType": "Choose order type"
+  "chooseOrderType": "Choose order type",
+  "hi": "Hi 👋",
+  "writeEmailAndPassword": "Write your email and password 💁‍♂️",
+  "providePhoneNumber": "Provide us with your phone number 🙅‍♂️",
+  "codeSent": "We have sent you a code 🧏‍♂️",
+  "enterTheDoorCode": "Enter the door code",
+  "otherInstructionsForCourier": "Other instructions for the courier"
+
 }

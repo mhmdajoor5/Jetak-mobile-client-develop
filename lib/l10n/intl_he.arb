@@ -434,5 +434,12 @@
   },
   "otp_verification_error": "אירעה שגיאה במהלך האימות",
   "cartIsEmpty": "הסל ריק",
-  "chooseOrderType": "בחר סוג הזמנה"
+  "chooseOrderType": "בחר סוג הזמנה",
+  "hi": "היי 👋",
+  "writeEmailAndPassword": "היי 👋 כתוב את האימייל והסיסמה שלך 💁‍♂️",
+  "providePhoneNumber": "ספק לנו את מספר הטלפון שלך 🙅‍♂️",
+  "codeSent": "שלחנו לך קוד 🧏‍♂️",
+  "enterTheDoorCode": "הזן את קוד הדלת",
+  "otherInstructionsForCourier": "הוראות נוספות לשליח"
+
 }

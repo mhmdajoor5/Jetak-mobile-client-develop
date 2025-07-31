@@ -77,29 +77,8 @@ class _LoginWidgetState extends StateMVC<LoginWidget> with SingleTickerProviderS
                   padding: EdgeInsets.all(30),
                   child: Column(
                     children: [
-                      // App Logo with Business Theme
-                      Container(
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: Theme.of(context).primaryColor.withOpacity(0.3),
-                            width: 2,
-                          ),
-                        ),
-                        child: Image.asset(
-                          'assets/img/carry-eats-hub-logo.png',
-                          height: 80,
-                          width: 80,
-                        ),
-                      ),
-
-                      SizedBox(height: 25),
-
-                      // Business Welcome Text
                       Text(
-                        S.of(context).login_welcome,
+                        S.of(context).hi,
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
@@ -108,33 +87,64 @@ class _LoginWidgetState extends StateMVC<LoginWidget> with SingleTickerProviderS
                         ),
                         textAlign: TextAlign.center,
                       ),
-
-                      SizedBox(height: 10),
-
-
-                      SizedBox(height: 8),
-
-                      Text(
-                        S.of(context).login_subtitle,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black45,
-                          fontFamily: 'Cairo',
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-
-                      SizedBox(height: 20),
-
-                      // Business Icons Row
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _buildBusinessIcon(Icons.restaurant, S.of(context).login_icon_restaurants),
-                          _buildBusinessIcon(Icons.delivery_dining, S.of(context).login_icon_delivery),
-                          _buildBusinessIcon(Icons.star, S.of(context).login_icon_quality),
-                        ],
-                      ),
+                      // App Logo with Business Theme
+                      // Container(
+                      //   padding: EdgeInsets.all(20),
+                      //   decoration: BoxDecoration(
+                      //     color: Theme.of(context).primaryColor.withOpacity(0.1),
+                      //     borderRadius: BorderRadius.circular(20),
+                      //     border: Border.all(
+                      //       color: Theme.of(context).primaryColor.withOpacity(0.3),
+                      //       width: 2,
+                      //     ),
+                      //   ),
+                      //   child: Image.asset(
+                      //     'assets/img/carry-eats-hub-logo.png',
+                      //     height: 80,
+                      //     width: 80,
+                      //   ),
+                      // ),
+                      //
+                      // SizedBox(height: 25),
+                      //
+                      // // Business Welcome Text
+                      // Text(
+                      //   S.of(context).login_welcome,
+                      //   style: TextStyle(
+                      //     fontSize: 28,
+                      //     fontWeight: FontWeight.bold,
+                      //     color: Colors.black87,
+                      //     fontFamily: 'Cairo',
+                      //   ),
+                      //   textAlign: TextAlign.center,
+                      // ),
+                      //
+                      // SizedBox(height: 10),
+                      //
+                      //
+                      // SizedBox(height: 8),
+                      //
+                      // Text(
+                      //   S.of(context).login_subtitle,
+                      //   style: TextStyle(
+                      //     fontSize: 14,
+                      //     color: Colors.black45,
+                      //     fontFamily: 'Cairo',
+                      //   ),
+                      //   textAlign: TextAlign.center,
+                      // ),
+                      //
+                      // SizedBox(height: 20),
+                      //
+                      // // Business Icons Row
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //   children: [
+                      //     _buildBusinessIcon(Icons.restaurant, S.of(context).login_icon_restaurants),
+                      //     _buildBusinessIcon(Icons.delivery_dining, S.of(context).login_icon_delivery),
+                      //     _buildBusinessIcon(Icons.star, S.of(context).login_icon_quality),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),

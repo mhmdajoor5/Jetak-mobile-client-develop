@@ -4229,6 +4229,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Hi 👋`
+  String get hi {
+    return Intl.message(
+      'Hi 👋',
+      name: 'hi',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Write your email and password 💁‍♂️`
+  String get writeEmailAndPassword {
+    return Intl.message(
+      'Write your email and password 💁‍♂️',
+      name: 'writeEmailAndPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Provide us with your phone number 🙅‍♂️`
+  String get providePhoneNumber {
+    return Intl.message(
+      'Provide us with your phone number 🙅‍♂️',
+      name: 'providePhoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We have sent you a code 🧏‍♂️`
+  String get codeSent {
+    return Intl.message(
+      'We have sent you a code 🧏‍♂️',
+      name: 'codeSent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the door code`
+  String get enterTheDoorCode {
+    return Intl.message(
+      'Enter the door code',
+      name: 'enterTheDoorCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Other instructions for the courier`
+  String get otherInstructionsForCourier {
+    return Intl.message(
+      'Other instructions for the courier',
+      name: 'otherInstructionsForCourier',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

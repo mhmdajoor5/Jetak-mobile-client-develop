@@ -57,6 +57,11 @@ class Address {
   double? longitude;
   bool? isDefault;
   String? userId;
+  String? type;
+  String? entryMethod;
+  String? instructions;
+  String? label;
+
 
   Address({
     this.id,
@@ -66,6 +71,10 @@ class Address {
     this.longitude,
     this.isDefault,
     this.userId,
+    this.type,
+    this.entryMethod,
+    this.instructions,
+    this.label,
   });
 
   Address.fromJSON(Map<String, dynamic> jsonMap) {
@@ -76,6 +85,10 @@ class Address {
       latitude = jsonMap['latitude'] != null ? jsonMap['latitude'].toDouble() : null;
       longitude = jsonMap['longitude'] != null ? jsonMap['longitude'].toDouble() : null;
       isDefault = jsonMap['is_default'] ?? false;
+      type = jsonMap['type'];
+      entryMethod = jsonMap['entryMethod'];
+      instructions = jsonMap['instructions'];
+      label = jsonMap['label'];
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: e.toString()));
     }
@@ -112,6 +125,10 @@ class Address {
       'longitude': longitude,
       'is_default': isDefault,
       'user_id': userId,
+      "type": type,
+      "entryMethod": entryMethod,
+      "instructions": instructions,
+      "label": label,
     };
   }
 
@@ -124,6 +141,10 @@ class Address {
       longitude: (json['longitude'] != null) ? json['longitude'].toDouble() : null,
       isDefault: json['is_default'] ?? false,
       userId: json['user_id'],
+      type: json['type'],
+      entryMethod: json['entryMethod'],
+      instructions: json['instructions'],
+      label: json['label'],
     );
   }
 

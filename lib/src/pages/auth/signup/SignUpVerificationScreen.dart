@@ -169,7 +169,8 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              S.of(context).verification_instruction(widget.phoneNumber),
+              S.of(context).codeSent,
+              //S.of(context).verification_instruction(widget.phoneNumber),
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
             ),

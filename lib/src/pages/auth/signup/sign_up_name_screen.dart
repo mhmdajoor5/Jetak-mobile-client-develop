@@ -62,29 +62,8 @@ class _SignUpNameScreenState extends StateMVC<SignUpNameScreen> {
                   padding: EdgeInsets.all(30),
                   child: Column(
                     children: [
-                      // App Logo with Business Theme
-                      Container(
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: Theme.of(context).primaryColor.withOpacity(0.3),
-                            width: 2,
-                          ),
-                        ),
-                        child: Image.asset(
-                          'assets/img/carry-eats-hub-logo.png',
-                          height: 80,
-                          width: 80,
-                        ),
-                      ),
-
-                      SizedBox(height: 25),
-
-                      // Business Welcome Text
                       Text(
-                        'مرحباً بك في Jetak',
+                        S.of(context).hi,
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
@@ -93,33 +72,30 @@ class _SignUpNameScreenState extends StateMVC<SignUpNameScreen> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-
-                      SizedBox(height: 10),
-
-
-                      SizedBox(height: 8),
-
-                      Text(
-                        'اطلب من أفضل المطاعم واحصل على توصيل سريع',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black45,
-                          fontFamily: 'Cairo',
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-
-                      SizedBox(height: 20),
-
-                      // Business Icons Row
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _buildBusinessIcon(Icons.restaurant, 'مطاعم'),
-                          _buildBusinessIcon(Icons.delivery_dining, 'توصيل'),
-                          _buildBusinessIcon(Icons.star, 'جودة'),
-                        ],
-                      ),
+                       SizedBox(height: 10),
+                      // SizedBox(height: 8),
+                      //
+                      // Text(
+                      //   'اطلب من أفضل المطاعم واحصل على توصيل سريع',
+                      //   style: TextStyle(
+                      //     fontSize: 14,
+                      //     color: Colors.black45,
+                      //     fontFamily: 'Cairo',
+                      //   ),
+                      //   textAlign: TextAlign.center,
+                      // ),
+                      //
+                      // SizedBox(height: 20),
+                      //
+                      // // Business Icons Row
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //   children: [
+                      //     _buildBusinessIcon(Icons.restaurant, 'مطاعم'),
+                      //     _buildBusinessIcon(Icons.delivery_dining, 'توصيل'),
+                      //     _buildBusinessIcon(Icons.star, 'جودة'),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),

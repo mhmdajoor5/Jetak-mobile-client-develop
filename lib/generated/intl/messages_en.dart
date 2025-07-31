@@ -163,6 +163,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Click to pay with your Visa Card"),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
         "closed": MessageLookupByLibrary.simpleMessage("Closed"),
+        "codeSent": MessageLookupByLibrary.simpleMessage(
+            "We have sent you a code 🧏‍♂️"),
         "completeYourProfileDetailsToContinue":
             MessageLookupByLibrary.simpleMessage(
                 "Complete your profile details to continue"),
@@ -242,6 +244,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "enterAnotherAddress":
             MessageLookupByLibrary.simpleMessage("Enter another address"),
         "enterThe4DigitCodeSentTo": m3,
+        "enterTheDoorCode":
+            MessageLookupByLibrary.simpleMessage("Enter the door code"),
         "enter_here": MessageLookupByLibrary.simpleMessage("Enter here"),
         "entranceStaircase":
             MessageLookupByLibrary.simpleMessage("Entrance / Staircase"),
@@ -297,6 +301,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "help_support": MessageLookupByLibrary.simpleMessage("Help & Support"),
         "help_supports":
             MessageLookupByLibrary.simpleMessage("Help & Supports"),
+        "hi": MessageLookupByLibrary.simpleMessage("Hi 👋"),
         "hint_full_address": MessageLookupByLibrary.simpleMessage(
             "12 Street, City 21663, Country"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
@@ -472,6 +477,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "orders_refreshed_successfuly": MessageLookupByLibrary.simpleMessage(
             "Orders refreshed successfully"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),
+        "otherInstructionsForCourier": MessageLookupByLibrary.simpleMessage(
+            "Other instructions for the courier"),
         "otherInstructionsForTheCourier": MessageLookupByLibrary.simpleMessage(
             "Other instructions for the courier"),
         "otherTellUsHow":
@@ -532,6 +539,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Profile settings updated successfully"),
         "promo": MessageLookupByLibrary.simpleMessage("Promo"),
+        "providePhoneNumber": MessageLookupByLibrary.simpleMessage(
+            "Provide us with your phone number 🙅‍♂️"),
         "quantity": MessageLookupByLibrary.simpleMessage("Quantity"),
         "razorpay": MessageLookupByLibrary.simpleMessage("RazorPay"),
         "razorpayPayment":
@@ -721,6 +730,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "what_they_say":
             MessageLookupByLibrary.simpleMessage("What They Say ?"),
         "work": MessageLookupByLibrary.simpleMessage("Work"),
+        "writeEmailAndPassword": MessageLookupByLibrary.simpleMessage(
+            "Write your email and password 💁‍♂️"),
         "wrong_email_or_password":
             MessageLookupByLibrary.simpleMessage("Wrong email or password"),
         "wrong_password":

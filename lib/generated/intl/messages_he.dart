@@ -155,6 +155,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "לחץ כדי לשלם עם כרטיס ה-Visa שלך"),
         "close": MessageLookupByLibrary.simpleMessage("סגור"),
         "closed": MessageLookupByLibrary.simpleMessage("סגור"),
+        "codeSent": MessageLookupByLibrary.simpleMessage("שלחנו לך קוד 🧏‍♂️"),
         "completeYourProfileDetailsToContinue":
             MessageLookupByLibrary.simpleMessage(
                 "השלם את פרטי הפרופיל שלך כדי להמשיך"),
@@ -227,6 +228,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "enterAnotherAddress":
             MessageLookupByLibrary.simpleMessage("הזן כתובת אחרת"),
         "enterThe4DigitCodeSentTo": m3,
+        "enterTheDoorCode":
+            MessageLookupByLibrary.simpleMessage("הזן את קוד הדלת"),
         "entranceStaircase":
             MessageLookupByLibrary.simpleMessage("כניסה / מדרגות"),
         "errorFetchingNotifications": m4,
@@ -277,6 +280,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "help__support": MessageLookupByLibrary.simpleMessage("עזרה ותמיכה"),
         "help_support": MessageLookupByLibrary.simpleMessage("עזרה ותמיכה"),
         "help_supports": MessageLookupByLibrary.simpleMessage("עזרה ותמיכה"),
+        "hi": MessageLookupByLibrary.simpleMessage("היי 👋"),
         "hint_full_address":
             MessageLookupByLibrary.simpleMessage("רחוב 12, עיר 21663, מדינה"),
         "home": MessageLookupByLibrary.simpleMessage("בית"),
@@ -440,6 +444,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "orders_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("הזמנות רעננו בהצלחה"),
         "other": MessageLookupByLibrary.simpleMessage("אחר"),
+        "otherInstructionsForCourier":
+            MessageLookupByLibrary.simpleMessage("הוראות נוספות לשליח"),
         "otherInstructionsForTheCourier":
             MessageLookupByLibrary.simpleMessage("הוראות נוספות לשליח"),
         "otherTellUsHow":
@@ -492,6 +498,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "profile_settings_updated_successfully":
             MessageLookupByLibrary.simpleMessage(
                 "הגדרות הפרופיל עודכנו בהצלחה"),
+        "providePhoneNumber": MessageLookupByLibrary.simpleMessage(
+            "ספק לנו את מספר הטלפון שלך 🙅‍♂️"),
         "quantity": MessageLookupByLibrary.simpleMessage("כמות"),
         "razorpay": MessageLookupByLibrary.simpleMessage("RazorPay"),
         "razorpayPayment":
@@ -670,6 +678,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "welcome": MessageLookupByLibrary.simpleMessage("ברוך הבא"),
         "what_they_say": MessageLookupByLibrary.simpleMessage("מה הם אומרים?"),
         "work": MessageLookupByLibrary.simpleMessage("עבודה"),
+        "writeEmailAndPassword": MessageLookupByLibrary.simpleMessage(
+            "היי 👋 כתוב את האימייל והסיסמה שלך 💁‍♂️"),
         "wrong_email_or_password": MessageLookupByLibrary.simpleMessage(
             "כתובת האימייל או הסיסמה שגויים"),
         "wrong_password": MessageLookupByLibrary.simpleMessage("הסיסמה שגויה"),

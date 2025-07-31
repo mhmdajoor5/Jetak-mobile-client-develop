@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 import '../../../generated/l10n.dart';
 import '../../controllers/delivery_pickup_controller.dart';
 import '../../models/address.dart';
+import '../../repository/user_repository.dart' as userRepo;
+import '../../repository/user_repository.dart' as controller;
 import '../checkout.dart';
 import '../delivery_addresses.dart';
 import '../delivery_pickup.dart';
@@ -18,6 +21,12 @@ class AddressDetailsPage extends StatefulWidget {
 
 class _AddressDetailsPageState extends State<AddressDetailsPage> {
   String selectedType = '';
+  final buildingNameController = TextEditingController();
+  final entranceController = TextEditingController();
+  final floorController = TextEditingController();
+  final unitController = TextEditingController();
+  final instructionsController = TextEditingController();
+
   Map<String, bool> dropdownVisibility = {
     'Apartment': false,
     'House': false,
@@ -42,6 +51,22 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
       isAddressDetailsExpanded = !isAddressDetailsExpanded;
     });
   }
+
+  Future<Map<String, dynamic>> addAddress(Map<String, dynamic> payload) async {
+    final response = await http.post(
+      Uri.parse('https://example.com/api/addresses'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(payload),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return jsonDecode(response.body);
+    } else {
+      print('❌ خطأ في السيرفر: ${response.body}');
+      throw Exception('فشل في إضافة العنوان');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -202,6 +227,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                                       border: Border.all(color: Colors.grey.shade400),
                                     ),
                                     child: TextField(
+                                      controller: buildingNameController,
                                       decoration: InputDecoration(
                                         border: InputBorder.none,
                                         hintText: 'Building name',
@@ -221,6 +247,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                                       border: Border.all(color: Colors.grey.shade400),
                                     ),
                                     child: TextField(
+                                      controller: entranceController,
                                       decoration: InputDecoration(
                                         border: InputBorder.none,
                                         hintText: 'Entrance / Staircase',
@@ -244,6 +271,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                                             border: Border.all(color: Colors.grey.shade400),
                                           ),
                                           child: TextField(
+                                            controller: floorController,
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
                                               hintText: 'Floor',
@@ -261,6 +289,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                                             border: Border.all(color: Colors.grey.shade400),
                                           ),
                                           child: TextField(
+                                            controller: unitController,
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
                                               hintText: type == 'Apartment' ? 'Apartment' : type == 'Office' ? 'Office' : 'Unit',
@@ -367,12 +396,15 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                                       border: Border.all(color: Colors.grey.shade400),
                                     ),
                                     child: TextField(
+                                      controller: instructionsController,
                                       maxLines: null,
                                       expands: true,
                                       textAlignVertical: TextAlignVertical.top,
                                       decoration: InputDecoration(
                                         border: InputBorder.none,
-                                        hintText: 'Other instructions for the courier',
+                                        hintText: selectedEntryMethod == 'code'
+                                            ? S.of(context).enterTheDoorCode
+                                            : S.of(context).otherInstructionsForCourier,
                                         hintStyle: TextStyle(color: Colors.grey[500]),
                                       ),
                                     ),
@@ -443,19 +475,55 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                   SizedBox(width: 16),
                   Flexible(
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => DeliveryAddressesWidget(
-                              shouldChooseDeliveryHere: true,
-                              conDeliverPickupController: DeliveryPickupController(),
-                              newAddress: Address(address: widget.address),
-                            ),
-                          ),
+                      onPressed: () async {
+                        String fullAddress = [
+                          widget.address,
+                          buildingNameController.text,
+                          entranceController.text,
+                          floorController.text,
+                          unitController.text,
+                        ].where((part) => part.isNotEmpty).join(', ');
+
+                        double? latitude;
+                        double? longitude;
+
+                        final address = Address(
+                          address: fullAddress,
+                          description: instructionsController.text.isNotEmpty
+                              ? instructionsController.text
+                              : 'No description provided',
+                          latitude: latitude,
+                          longitude: longitude,
+                          isDefault: false,
+                          type: selectedType,
+                          entryMethod: selectedEntryMethod,
+                          instructions: instructionsController.text,
+                          label: selectedLabel,
+                          userId: '0',
                         );
+
+                        try {
+                          final addedAddress = await userRepo.addAddress(address);
+                          print("✅ العنوان أُضيف بنجاح");
+
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => DeliveryAddressesWidget(
+                                shouldChooseDeliveryHere: true,
+                                conDeliverPickupController: DeliveryPickupController(),
+                                newAddress: addedAddress,
+                              ),
+                            ),
+                          );
+                        } catch (e) {
+                          print('❌ خطأ أثناء إضافة العنوان: $e');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('فشل في إضافة العنوان')),
+                          );
+                        }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.secondary,
+                        backgroundColor: Colors.blue,
                         minimumSize: Size(100, 45),
                       ),
                       child: Text(
@@ -465,6 +533,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                       ),
                     ),
                   ),
+
                 ],
               ),
             ],

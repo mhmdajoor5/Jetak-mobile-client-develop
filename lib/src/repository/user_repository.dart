@@ -222,8 +222,18 @@ Future<Address> addAddress(Address address) async {
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(address.toMap()),
   );
-  return Address.fromJSON(json.decode(response.body)['data']);
+
+  print('Response body: ${response.body}');
+
+  final Map<String, dynamic> jsonResponse = json.decode(response.body);
+
+  if (jsonResponse['data'] == null) {
+    throw Exception('Response JSON does not contain "data" or it is null');
+  }
+
+  return Address.fromJSON(jsonResponse['data']);
 }
+
 
 Future<Address> updateAddress(Address address) async {
   userModel.User _user = currentUser.value;

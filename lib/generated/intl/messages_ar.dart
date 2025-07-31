@@ -131,6 +131,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "انقر على النجوم أدناه لترك تعليق"),
         "close": MessageLookupByLibrary.simpleMessage("اغلاق"),
+        "codeSent":
+            MessageLookupByLibrary.simpleMessage("لقد أرسلنا لك رمزًا 🧏‍♂️"),
         "completeYourProfileDetailsToContinue":
             MessageLookupByLibrary.simpleMessage(
                 "أكمل تفاصيل ملفك الشخصي للمتابعة"),
@@ -186,6 +188,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "enterAnotherAddress":
             MessageLookupByLibrary.simpleMessage("أدخل عنوانًا آخر"),
         "enterThe4DigitCodeSentTo": m3,
+        "enterTheDoorCode":
+            MessageLookupByLibrary.simpleMessage("اكتب لنا كود الباب"),
         "enter_here": MessageLookupByLibrary.simpleMessage("ادخل هنا"),
         "entranceStaircase":
             MessageLookupByLibrary.simpleMessage("المدخل / السلم"),
@@ -232,6 +236,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "help__support": MessageLookupByLibrary.simpleMessage("المساعدة"),
         "help_support": MessageLookupByLibrary.simpleMessage("المساعدة"),
         "help_supports": MessageLookupByLibrary.simpleMessage("المساعدة"),
+        "hi": MessageLookupByLibrary.simpleMessage("مرحبًا 👋"),
         "hint_full_address": MessageLookupByLibrary.simpleMessage(
             "المدينة المنورة ، حي الازهري ، الشارع العام ، خلف مكتبة الحرمين"),
         "home": MessageLookupByLibrary.simpleMessage("المنزل"),
@@ -379,6 +384,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "orders_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("تم تحديث الطلبات بنجاح"),
         "other": MessageLookupByLibrary.simpleMessage("أخرى"),
+        "otherInstructionsForCourier":
+            MessageLookupByLibrary.simpleMessage("تعليمات أخرى لمندوب التوصيل"),
         "otherInstructionsForTheCourier":
             MessageLookupByLibrary.simpleMessage("تعليمات أخرى للساعي"),
         "otherTellUsHow":
@@ -429,6 +436,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "تم تحديث إعدادات الملف الشخصي بنجاح"),
         "promo": MessageLookupByLibrary.simpleMessage("الخصم"),
+        "providePhoneNumber":
+            MessageLookupByLibrary.simpleMessage("زوّدنا برقم هاتفك 🙅‍♂️"),
         "quantity": MessageLookupByLibrary.simpleMessage("الكمية"),
         "razorpay": MessageLookupByLibrary.simpleMessage("RazorPay"),
         "razorpayPayment": MessageLookupByLibrary.simpleMessage("دفع RazorPay"),
@@ -578,6 +587,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "what_they_say":
             MessageLookupByLibrary.simpleMessage("ماذا يقول عملائنا ؟"),
         "work": MessageLookupByLibrary.simpleMessage("العمل"),
+        "writeEmailAndPassword": MessageLookupByLibrary.simpleMessage(
+            " اكتب بريدك الإلكتروني وكلمة المرور 💁‍♂️"),
         "wrong_email_or_password": MessageLookupByLibrary.simpleMessage(
             "بريد إلكتروني أو كلمة مرور خاطئة"),
         "wrong_password":
