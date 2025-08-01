@@ -62,6 +62,8 @@ class Notification {
       );
       
       print('Parsed notification: ${notification.id} - ${notification.type}'); // Debug log
+      print('Data title: ${notification.getDataTitle()}'); // Debug log
+      print('Data body: ${notification.getDataBody()}'); // Debug log
       return notification;
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: 'Error parsing notification: $e'));
@@ -107,6 +109,68 @@ class Notification {
       return 'Order #$orderId has been updated';
     }
     return 'You have a new notification';
+  }
+
+  // Helper method to get title from data field
+  String getDataTitle() {
+    if (data.containsKey('title')) {
+      return data['title']?.toString() ?? '';
+    }
+    return '';
+  }
+
+  // Helper method to get body from data field
+  String getDataBody() {
+    if (data.containsKey('body')) {
+      return data['body']?.toString() ?? '';
+    }
+    return '';
+  }
+
+  // Helper method to get a readable notification title
+  String getDisplayTitle() {
+    // First try to get title from data field
+    String dataTitle = getDataTitle();
+    if (dataTitle.isNotEmpty) {
+      return dataTitle;
+    }
+    
+    // Fallback to type-based title
+    switch (type) {
+      case 'App\\Notifications\\StatusChangedOrder':
+        return 'Order Status Changed';
+      case 'App\\Notifications\\NewOrder':
+        return 'New Order';
+      case 'fcm':
+        return 'Push Notification';
+      default:
+        return type.split('\\').last;
+    }
+  }
+
+  // Helper method to get a readable notification message
+  String getDisplayMessage() {
+    // First try to get body from data field
+    String dataBody = getDataBody();
+    if (dataBody.isNotEmpty) {
+      return dataBody;
+    }
+    
+    // Fallback to raw data if parsing failed
+    if (data.containsKey('raw')) {
+      return data['raw']?.toString() ?? '';
+    }
+    
+    // Fallback to default message
+    if (isOrderNotification && orderId != null) {
+      return 'Order #$orderId has been updated';
+    }
+    return 'You have a new notification';
+  }
+
+  // Helper method to get raw data for debugging
+  String getRawData() {
+    return data.toString();
   }
 
   @override

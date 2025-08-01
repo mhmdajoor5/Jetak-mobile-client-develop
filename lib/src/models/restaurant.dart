@@ -91,7 +91,6 @@ class Restaurant {
             (jsonMap?['distance'] != null)
                 ? double.tryParse(jsonMap!['distance'].toString()) ?? 0.0
                 : 0.0,
-
         users:
             jsonMap?['users'] != null
                 ? List<User>.from(
@@ -136,4 +135,6 @@ class Restaurant {
       'distance': distance,
     };
   }
+
+
 }

@@ -51,24 +51,28 @@ class NotificationItemWidget extends StatelessWidget {
       ],
       child: GestureDetector(
         onTap: onTap,
-        child: Container(
-          margin: EdgeInsets.symmetric(vertical: 10),
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          decoration: BoxDecoration(
-            color: notification.read 
-              ? Theme.of(context).scaffoldBackgroundColor 
-              : Theme.of(context).primaryColor.withOpacity(0.05),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: notification.read 
-                ? Colors.transparent 
-                : Theme.of(context).primaryColor.withOpacity(0.1),
-              width: 1,
-            ),
+        child: ClipRect(
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      constraints: BoxConstraints(
+            minHeight: 125,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
+            decoration: BoxDecoration(
+              color: notification.read 
+                ? Theme.of(context).scaffoldBackgroundColor 
+                : Theme.of(context).primaryColor.withOpacity(0.05),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: notification.read 
+                  ? Colors.transparent 
+                  : Theme.of(context).primaryColor.withOpacity(0.1),
+                width: 1,
+              ),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
               Stack(
                 children: <Widget>[
                   Container(
@@ -132,15 +136,16 @@ class NotificationItemWidget extends StatelessWidget {
                 ],
               ),
               SizedBox(width: 15),
-              Flexible(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  // clipBehavior: Clip.hardEdge,
                   children: <Widget>[
                     // Notification title
                     Text(
-                      notification.getNotificationTitle(),
+                      notification.getDisplayTitle(),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: Theme.of(context).textTheme.titleMedium!.merge(
@@ -153,21 +158,22 @@ class NotificationItemWidget extends StatelessWidget {
                       ),
                     ),
                     // Notification message
-                    Text(
-                      notification.getNotificationMessage(),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.bodyMedium!.merge(
-                        TextStyle(
-                          fontWeight: notification.read ? FontWeight.w300 : FontWeight.w400,
-                          color: notification.read 
-                            ? Theme.of(context).textTheme.bodySmall!.color 
-                            : Theme.of(context).textTheme.bodyMedium!.color,
-                        )
+                    Flexible(
+                      child: Text(
+                        notification.getDisplayMessage(),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context).textTheme.bodyMedium!.merge(
+                          TextStyle(
+                            fontWeight: notification.read ? FontWeight.w300 : FontWeight.w400,
+                            color: notification.read 
+                              ? Theme.of(context).textTheme.bodySmall!.color 
+                              : Theme.of(context).textTheme.bodyMedium!.color,
+                          )
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 8),
+                                          ),
                     // Date and order info
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -180,23 +186,38 @@ class NotificationItemWidget extends StatelessWidget {
                             )
                           ),
                         ),
-                        if (notification.orderId != null)
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(
-                              '#${notification.orderId}',
-                              style: Theme.of(context).textTheme.bodySmall!.merge(
-                                TextStyle(
-                                  color: Theme.of(context).colorScheme.secondary,
-                                  fontWeight: FontWeight.w500,
-                                )
+                        Row(
+                          children: [
+                            if (notification.orderId != null)
+                              Container(
+                                margin: EdgeInsets.only(right: 8),
+                                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  '#${notification.orderId}',
+                                  style: Theme.of(context).textTheme.bodySmall!.merge(
+                                    TextStyle(
+                                      color: Theme.of(context).colorScheme.secondary,
+                                      fontWeight: FontWeight.w500,
+                                    )
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
+                            // Debug indicator
+                            if (notification.getDataTitle().isEmpty && notification.getDataBody().isEmpty)
+                              Tooltip(
+                                message: 'Raw data: ${notification.getRawData()}',
+                                child: Icon(
+                                  Icons.bug_report,
+                                  size: 16,
+                                  color: Colors.orange,
+                                ),
+                              ),
+                          ],
+                        ),
                       ],
                     ),
                   ],
@@ -204,6 +225,7 @@ class NotificationItemWidget extends StatelessWidget {
               ),
             ],
           ),
+        ),
         ),
       ),
     );
