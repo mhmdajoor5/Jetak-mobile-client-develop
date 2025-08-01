@@ -95,6 +95,7 @@
   "warning": "تحذير",
   "ordering_from_another_restaurant_will_clear_your_cart": "الطلب من مطعم آخر سيقوم بإفراغ سلة التسوق الحالية. هل تريد المتابعة؟",
   "continue_text": "متابعة",
+  "continueText": "متابعة",
   "cancel": "إلغاء",
   "help__support": "المساعدة",
   "light_mode": "الوضع الفاتح",
@@ -168,6 +169,8 @@
   "faqsRefreshedSuccessfuly": "تم تحديث الأسئلة الشائعة بنجاح",
   "thisFoodWasAddedToFavorite": "تمت إضافة هذا الطعام إلى المفضلة",
   "thisFoodWasRemovedFromFavorites": "تمت إزالة هذا الطعام من المفضلة",
+  "this_food_was_added_to_cart": "تم إضافة المنتج إلى السلة",
+  "cannot_add_from_different_restaurant": "لا يمكن إضافة منتجات من مطاعم مختلفة في نفس الطلب. هل تريد إفراغ السلة وإضافة منتجات من هذا المطعم؟",
   "foodRefreshedSuccessfuly": "تم تحديث الطعام بنجاح",
   "razorpayPayment": "دفع RazorPay",
   "razorpay": "RazorPay",
@@ -419,6 +422,8 @@
   "your_order_has_been_successfully_submitted": "تم إرسال طلبك بنجاح",
   "featured_foods": "الأطعمة المميزة",
   "what_they_say": "آراء العملاء",
-  "sign": "تسجيل دخول"
+  "sign": "تسجيل دخول",
+  "km": "كم",
+  "mi": "ميل"
 
 }

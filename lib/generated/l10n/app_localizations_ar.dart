@@ -530,10 +530,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get open => 'Open';
 
   @override
-  String get km => 'Km';
+  String get km => 'كم';
 
   @override
-  String get mi => 'mi';
+  String get mi => 'ميل';
 
   @override
   String get delivery_address => 'Delivery Address';
@@ -584,7 +584,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get fields => 'Fields';
 
   @override
-  String get this_food_was_added_to_cart => 'This food was added to cart';
+  String get this_food_was_added_to_cart => 'تم إضافة المنتج إلى السلة';
 
   @override
   String get foods_result => 'Foods result';
@@ -678,7 +678,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'Ordering from another restaurant will clear your current cart. Do you want to continue?';
 
   @override
-  String get continueText => 'Continue';
+  String get continueText => 'متابعة';
 
   @override
   String get number => 'Number';
@@ -708,6 +708,10 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get thisFoodWasRemovedFromFavorites =>
       'تمت إزالة هذا الطعام من المفضلة';
+
+  @override
+  String get cannot_add_from_different_restaurant =>
+      'لا يمكن إضافة منتجات من مطاعم مختلفة في نفس الطلب. هل تريد إفراغ السلة وإضافة منتجات من هذا المطعم؟';
 
   @override
   String get foodRefreshedSuccessfuly => 'تم تحديث الطعام بنجاح';

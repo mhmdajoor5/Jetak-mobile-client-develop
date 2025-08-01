@@ -538,7 +538,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get open => 'Open';
 
   @override
-  String get km => 'Km';
+  String get km => 'km';
 
   @override
   String get mi => 'mi';
@@ -717,6 +717,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get thisFoodWasRemovedFromFavorites =>
       'This food was removed from favorites';
+
+  @override
+  String get cannot_add_from_different_restaurant =>
+      'Cannot add products from different restaurants in the same order. Do you want to clear the cart and add products from this restaurant?';
 
   @override
   String get foodRefreshedSuccessfuly => 'Food refreshed successfully';

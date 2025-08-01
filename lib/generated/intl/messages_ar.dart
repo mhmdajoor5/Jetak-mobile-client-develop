@@ -87,6 +87,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تعديل الرقم"),
         "buildingName": MessageLookupByLibrary.simpleMessage("اسم المبنى"),
         "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
+        "cannot_add_from_different_restaurant":
+            MessageLookupByLibrary.simpleMessage(
+                "لا يمكن إضافة منتجات من مطاعم مختلفة في نفس الطلب. هل تريد إفراغ السلة وإضافة منتجات من هذا المطعم؟"),
         "card_added_successfully":
             MessageLookupByLibrary.simpleMessage("تمت إضافة البطاقة بنجاح"),
         "card_already_exist":
@@ -129,6 +132,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirm_payment": MessageLookupByLibrary.simpleMessage("تأكيد الدفع"),
         "confirmation": MessageLookupByLibrary.simpleMessage("التأكيد"),
         "continueBtn": MessageLookupByLibrary.simpleMessage("متابعة"),
+        "continueText": MessageLookupByLibrary.simpleMessage("متابعة"),
         "continue_button": MessageLookupByLibrary.simpleMessage("استمرار"),
         "credit_card": MessageLookupByLibrary.simpleMessage("بطاقة ائتمان"),
         "cuisines": MessageLookupByLibrary.simpleMessage("المطابخ"),
@@ -258,6 +262,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "keep_your_old_meals_of_this_restaurant":
             MessageLookupByLibrary.simpleMessage(
                 "لا تفرغ السلة واحتفظ باختياراتي السابقة"),
+        "km": MessageLookupByLibrary.simpleMessage("كم"),
         "languages": MessageLookupByLibrary.simpleMessage("اللغات"),
         "last_name": MessageLookupByLibrary.simpleMessage("اسم العائلة"),
         "lets_start_with_login":
@@ -308,6 +313,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "maps_explorer": MessageLookupByLibrary.simpleMessage("مستكشف الخرائط"),
         "menu": MessageLookupByLibrary.simpleMessage("المينيو"),
         "messages": MessageLookupByLibrary.simpleMessage("الرسائل"),
+        "mi": MessageLookupByLibrary.simpleMessage("ميل"),
         "more": MessageLookupByLibrary.simpleMessage("المزيد"),
         "most_ordered": MessageLookupByLibrary.simpleMessage("الأكثر طلبًا"),
         "most_popular": MessageLookupByLibrary.simpleMessage("الأكثر شهرة"),
@@ -522,6 +528,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "thisNotificationHasMarkedAsUnread":
             MessageLookupByLibrary.simpleMessage(
                 "تم تمييز هذا الإشعار كغير مقروء"),
+        "this_food_was_added_to_cart":
+            MessageLookupByLibrary.simpleMessage("تم إضافة المنتج إلى السلة"),
         "timeFormatHhMm": MessageLookupByLibrary.simpleMessage("HH:mm"),
         "tip_check_card_info": MessageLookupByLibrary.simpleMessage(
             "• تحقق من معلومات البطاقة جيدًا."),

@@ -96,16 +96,16 @@ class FoodController extends ControllerMVC {
       final bool? confirm = await showDialog<bool>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: Text("warning"),
-          content: Text("orderingFromAnotherRestaurantWillClearYourCart"),
+          title: Text(S.of(context).warning),
+          content: Text(S.of(context).cannot_add_from_different_restaurant),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: Text("cancel"),
+              child: Text(S.of(context).cancel),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: Text("continueText"),
+              child: Text(S.of(context).continueText),
             ),
           ],
         ),

@@ -94,6 +94,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("ביטול"),
         "cancelOrder": MessageLookupByLibrary.simpleMessage("בטל הזמנה"),
         "canceled": MessageLookupByLibrary.simpleMessage("בוטל"),
+        "cannot_add_from_different_restaurant":
+            MessageLookupByLibrary.simpleMessage(
+                "לא ניתן להוסיף מוצרים ממסעדות שונות באותה הזמנה. האם תרצה לנקות את העגלה ולהוסיף מוצרים ממסעדה זו?"),
         "card_added_successfully":
             MessageLookupByLibrary.simpleMessage("הכרטיס נוסף בהצלחה"),
         "card_already_exist":

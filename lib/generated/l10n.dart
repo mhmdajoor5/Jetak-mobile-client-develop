@@ -1710,10 +1710,10 @@ class S {
     );
   }
 
-  /// `Km`
+  /// `km`
   String get km {
     return Intl.message(
-      'Km',
+      'km',
       name: 'km',
       desc: '',
       args: [],
@@ -2265,6 +2265,16 @@ class S {
     return Intl.message(
       'This food was removed from favorites',
       name: 'thisFoodWasRemovedFromFavorites',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cannot add products from different restaurants in the same order. Do you want to clear the cart and add products from this restaurant?`
+  String get cannot_add_from_different_restaurant {
+    return Intl.message(
+      'Cannot add products from different restaurants in the same order. Do you want to clear the cart and add products from this restaurant?',
+      name: 'cannot_add_from_different_restaurant',
       desc: '',
       args: [],
     );

@@ -224,6 +224,8 @@
   "faqsRefreshedSuccessfuly": "שאלות נפוצות רעננו בהצלחה",
   "thisFoodWasAddedToFavorite": "המזון הזה נוסף למועדפים",
   "thisFoodWasRemovedFromFavorites": "המזון הזה הוסר מהמועדפים",
+  "this_food_was_added_to_cart": "המזון הזה נוסף לעגלה",
+  "cannot_add_from_different_restaurant": "לא ניתן להוסיף מוצרים ממסעדות שונות באותה הזמנה. האם תרצה לנקות את העגלה ולהוסיף מוצרים ממסעדה זו?",
   "foodRefreshedSuccessfuly": "המזון רענן בהצלחה",
   "deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants": "כתובת המשלוח מחוץ לטווח המשלוח של המסעדות הללו.",
   "thisRestaurantNotSupportDeliveryMethod": "המסעדה הזו לא תומכת בשיטת משלוח.",
@@ -462,6 +464,8 @@
   "your_order_has_been_successfully_submitted": "ההזמנה שלך נשלחה בהצלחה",
   "featured_foods": "מנות מומלצות",
   "what_they_say": "מה הם אומרים",
-  "sign":"שלנו"
+  "sign":"שלנו",
+  "km": "ק\"מ",
+  "mi": "מייל"
 
 }

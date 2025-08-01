@@ -162,7 +162,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
           title: 'Delivery Address',
           snippet: _con.order.deliveryAddress.address ?? 'Your location',
         ),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
       ),
       if (restaurantLat != 0.0 && restaurantLng != 0.0)
         Marker(
@@ -232,8 +232,12 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
               markers: markers,
               myLocationEnabled: true,
               myLocationButtonEnabled: true,
-              mapType: MapType.normal,
-              onMapCreated: (GoogleMapController controller) {
+              mapType: MapType.satellite,
+              onMapCreated: (GoogleMapController controller) async {
+                // Apply custom map style
+                final mapStyle = await DefaultAssetBundle.of(context).loadString('assets/cfg/map_style.json');
+                controller.setMapStyle(mapStyle);
+                
                 // Fit bounds to show both markers if restaurant exists
                 if (restaurantLat != 0.0 && restaurantLng != 0.0) {
                   controller.animateCamera(
