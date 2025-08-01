@@ -126,11 +126,11 @@ class _CategoryWidgetState extends StateMVC<CategoryWidget> {
                         if (currentUser.value.apiToken == null) {
                           Navigator.of(context).pushNamed('/Login');
                         } else if (_con.isSameRestaurants(food)) {
-                          _con.addToCart(food);
+                          _con.addToCart(food, context);
                         } else {
                           showDialog(
                             context: context,
-                            builder: (context) => AddToCartAlertDialogWidget(oldFood: _con.carts.first.food!, newFood: food, onPressed: (f, {reset = true}) => _con.addToCart(f, reset: true)),
+                            builder: (context) => AddToCartAlertDialogWidget(oldFood: _con.carts.first.food!, newFood: food, onPressed: (f, context, {reset = true}) => _con.addToCart(f, context, reset: reset)),
                           );
                         }
                       },

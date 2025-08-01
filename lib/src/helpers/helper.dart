@@ -315,12 +315,9 @@ class Helper {
   }
 
   static String getDistance(double distance, String unit) {
-    // المسافة محسوبة بالأميال (من دالة calculateDistance)
-    // إذا كانت الوحدة المطلوبة هي الكيلومترات، نحول من أميال إلى كيلومترات
     if (unit == 'km' || unit.contains('km')) {
       distance *= 1.60934;
     }
-    // إذا كانت الوحدة المطلوبة هي الأميال، نتركها كما هي
     return distance.toStringAsFixed(2) + " " + unit;
   }
 

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../generated/l10n.dart';
 import '../models/food.dart';
 
-typedef FoodBoolFunc = void Function(Food food, {bool reset});
+typedef FoodBoolFunc = void Function(Food food, BuildContext context, {bool reset});
 
 class AddToCartAlertDialogWidget extends StatelessWidget {
   final Food oldFood;
@@ -33,7 +33,7 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
         TextButton(
           child: Text(S.of(context).reset),
           onPressed: () {
-            onPressed(newFood, reset: true);
+            onPressed(newFood, context, reset: true);
             Navigator.of(context).pop();
           },
         ),
@@ -47,7 +47,7 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
       splashColor: Theme.of(context).colorScheme.secondary,
       onTap: () {
         if (isNew) {
-          onPressed(newFood, reset: true);
+          onPressed(newFood, context, reset: true);
         }
         Navigator.of(context).pop();
       },

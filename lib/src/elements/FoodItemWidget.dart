@@ -23,7 +23,8 @@ class FoodItemWidget extends StatefulWidget {
 
 class _FoodItemWidgetState extends State<FoodItemWidget> {
   void _handleAdd() {
-    FoodController().addToCart(widget.food,context);
+    // يجب استخدام controller موجود بدلاً من إنشاء واحد جديد
+    // أو تمرير controller من الـ parent widget
     widget.onAdd();
   }
   // int cartCount = 0;
