@@ -222,8 +222,6 @@
   "faqsRefreshedSuccessfuly": "Faqs refreshed successfully",
   "thisFoodWasAddedToFavorite": "This food was added to favorite",
   "thisFoodWasRemovedFromFavorites": "This food was removed from favorites",
-  "this_food_was_added_to_cart": "This food was added to cart",
-  "cannot_add_from_different_restaurant": "Cannot add products from different restaurants in the same order. Do you want to clear the cart and add products from this restaurant?",
   "foodRefreshedSuccessfuly": "Food refreshed successfully",
   "deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants": "Delivery address outside the delivery range of this restaurants.",
   "thisRestaurantNotSupportDeliveryMethod": "This restaurant not support delivery method.",
@@ -493,8 +491,6 @@
   "your_order_has_been_successfully_submitted": "Your order has been successfully submitted",
   "featured_foods": "Featured Foods",
   "what_they_say": "What they say",
-  "sign": "Sign",
-  "km": "km",
-  "mi": "mi"
+  "sign": "Sign"
 
 }

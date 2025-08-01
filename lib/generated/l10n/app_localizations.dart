@@ -1099,7 +1099,7 @@ abstract class AppLocalizations {
   /// No description provided for @km.
   ///
   /// In en, this message translates to:
-  /// **'km'**
+  /// **'Km'**
   String get km;
 
   /// No description provided for @mi.
@@ -1431,12 +1431,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This food was removed from favorites'**
   String get thisFoodWasRemovedFromFavorites;
-
-  /// No description provided for @cannot_add_from_different_restaurant.
-  ///
-  /// In en, this message translates to:
-  /// **'Cannot add products from different restaurants in the same order. Do you want to clear the cart and add products from this restaurant?'**
-  String get cannot_add_from_different_restaurant;
 
   /// No description provided for @foodRefreshedSuccessfuly.
   ///

@@ -531,8 +531,16 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                     SizedBox(width: 20),
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () async {
-                          await _con.addToCart(_con.food, context);
+                        onPressed: () {
+                          _con.addToCart(_con.food, context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('تم إضافة ${_con.food.name} للسلة'),
+                              backgroundColor: Colors.green,
+                              //duration: Duration(seconds: 2),
+                              behavior: SnackBarBehavior.floating,
+                            )
+                          );
                           Navigator.of(context).pop();
                         },
                         style: ElevatedButton.styleFrom(

@@ -705,10 +705,6 @@ class AppLocalizationsHe extends AppLocalizations {
   String get thisFoodWasRemovedFromFavorites => 'המזון הזה הוסר מהמועדפים';
 
   @override
-  String get cannot_add_from_different_restaurant =>
-      'לא ניתן להוסיף מוצרים ממסעדות שונות באותה הזמנה. האם תרצה לנקות את העגלה ולהוסיף מוצרים ממסעדה זו?';
-
-  @override
   String get foodRefreshedSuccessfuly => 'המזון רענן בהצלחה';
 
   @override

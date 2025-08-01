@@ -315,13 +315,11 @@ class Helper {
   }
 
   static String getDistance(double distance, String unit) {
-    // المسافة محسوبة بالأميال (من دالة calculateDistance)
-    // إذا كانت الوحدة المطلوبة هي الكيلومترات، نحول من أميال إلى كيلومترات
-    if (unit == 'km' || unit.contains('km')) {
+    String _unit = setting.value.distanceUnit;
+    if (_unit == 'km') {
       distance *= 1.60934;
     }
-    // إذا كانت الوحدة المطلوبة هي الأميال، نتركها كما هي
-    return distance.toStringAsFixed(2) + " " + unit;
+    return distance != null ? distance.toStringAsFixed(2) + " " + unit : "";
   }
 
   static bool canDelivery(Restaurant _restaurant, {List<Cart> carts = const []}) {

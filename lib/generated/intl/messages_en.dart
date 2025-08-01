@@ -102,9 +102,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "cancelOrder": MessageLookupByLibrary.simpleMessage("Cancel Order"),
         "canceled": MessageLookupByLibrary.simpleMessage("Canceled"),
-        "cannot_add_from_different_restaurant":
-            MessageLookupByLibrary.simpleMessage(
-                "Cannot add products from different restaurants in the same order. Do you want to clear the cart and add products from this restaurant?"),
         "cardNumber": MessageLookupByLibrary.simpleMessage("CARD NUMBER"),
         "card_added_successfully":
             MessageLookupByLibrary.simpleMessage("Card added successfully"),
@@ -354,7 +351,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "keep_your_old_meals_of_this_restaurant":
             MessageLookupByLibrary.simpleMessage(
                 "Keep your old meals of this restaurant"),
-        "km": MessageLookupByLibrary.simpleMessage("km"),
+        "km": MessageLookupByLibrary.simpleMessage("Km"),
         "languages": MessageLookupByLibrary.simpleMessage("Languages"),
         "last_name": MessageLookupByLibrary.simpleMessage("Last Name"),
         "lets_start_with_login":
