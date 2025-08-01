@@ -5,6 +5,7 @@ import 'dart:async';
 import '../../generated/l10n.dart';
 import '../models/notification.dart' as model;
 import '../repository/notification_repository.dart';
+import '../repository/user_repository.dart';
 
 class NotificationController extends ControllerMVC {
   List<model.Notification> notifications = <model.Notification>[];
@@ -73,23 +74,39 @@ class NotificationController extends ControllerMVC {
   Future<void> loadNotificationsList() async {
     if (isLoading) return;
     
+    // Check if user is logged in
+    if (currentUser.value.apiToken == null) {
+      print('User not logged in, skipping notifications load');
+      setState(() {
+        isLoading = false;
+        notifications = [];
+      });
+      return;
+    }
+    
     setState(() {
       isLoading = true;
     });
 
     try {
+      print('Loading notifications list...'); // Debug log
       final List<model.Notification> fetchedNotifications = await getNotificationsList();
+      print('Fetched ${fetchedNotifications.length} notifications'); // Debug log
+      
       setState(() {
         notifications = fetchedNotifications;
         isLoading = false;
       });
       _updateUnreadCount();
     } catch (e) {
+      print('Error loading notifications: $e'); // Debug log
       setState(() {
         isLoading = false;
       });
-      //_showSnackBar(S.of(state!.context).verify_your_internet_connection);
+      if (state?.context != null) {
+        _showSnackBar('Error loading notifications: $e');
       }
+    }
   }
 
   Future<void> refreshNotifications({bool showMessage = true}) async {
@@ -223,7 +240,10 @@ class NotificationController extends ControllerMVC {
   void _showSnackBar(String message) {
     if (scaffoldKey.currentContext != null) {
       ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
-        SnackBar(content: Text(message)),
+        SnackBar(
+          content: Text(message),
+          backgroundColor: message.contains('Error') ? Colors.red : Colors.green,
+        ),
       );
     }
   }

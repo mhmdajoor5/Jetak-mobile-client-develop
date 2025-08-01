@@ -15,14 +15,26 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(S.of(context).reset_cart),
+      title: Text(
+        S.of(context).reset_cart,
+        style: TextStyle(
+          color: Colors.black87,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
       contentPadding: const EdgeInsets.symmetric(vertical: 20),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
             padding: const EdgeInsets.only(right: 20, left: 20, bottom: 20),
-            child: Text(S.of(context).you_must_add_foods_of_the_same_restaurants_choose_one, style: Theme.of(context).textTheme.bodySmall),
+            child: Text(
+              S.of(context).you_must_add_foods_of_the_same_restaurants_choose_one,
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: 16,
+              ),
+            ),
           ),
           _buildRestaurantOption(context, newFood, isNew: true),
           const SizedBox(height: 20),
@@ -31,13 +43,28 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          child: Text(S.of(context).reset),
+          child: Text(
+            S.of(context).reset,
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           onPressed: () {
             onPressed(newFood, context, reset: true);
             Navigator.of(context).pop();
           },
         ),
-        TextButton(child: Text(S.of(context).close), onPressed: () => Navigator.of(context).pop()),
+        TextButton(
+          child: Text(
+            S.of(context).close,
+            style: TextStyle(
+              color: Colors.grey[700],
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ],
     );
   }
@@ -72,9 +99,24 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(food.restaurant.name ?? '', overflow: TextOverflow.ellipsis, maxLines: 2, style: Theme.of(context).textTheme.titleMedium),
+                  Text(
+                    food.restaurant.name ?? '',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
                   const SizedBox(height: 8),
-                  Text(isNew ? S.of(context).reset_your_cart_and_order_meals_form_this_restaurant : S.of(context).keep_your_old_meals_of_this_restaurant, style: Theme.of(context).textTheme.bodySmall),
+                  Text(
+                    isNew ? S.of(context).reset_your_cart_and_order_meals_form_this_restaurant : S.of(context).keep_your_old_meals_of_this_restaurant,
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 14,
+                    ),
+                  ),
                 ],
               ),
             ),

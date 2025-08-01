@@ -63,16 +63,27 @@ Future<List<Notification>> getNotificationsList() async {
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
       
+      print('API Response: $jsonResponse'); // Debug log
+      
       if (jsonResponse['success'] == true && jsonResponse['data'] is List) {
         List<dynamic> notificationsData = jsonResponse['data'];
+        print('Found ${notificationsData.length} notifications'); // Debug log
+        
+        return notificationsData.map((data) => Notification.fromJSON(data)).toList();
+      } else if (jsonResponse['data'] is List) {
+        // Handle case where success field might not be present
+        List<dynamic> notificationsData = jsonResponse['data'];
+        print('Found ${notificationsData.length} notifications (no success field)'); // Debug log
         
         return notificationsData.map((data) => Notification.fromJSON(data)).toList();
       } else {
         print('API Error: ${jsonResponse['message'] ?? 'Unknown error'}');
+        print('Response structure: ${jsonResponse.keys.toList()}');
         return [];
       }
     } else {
       print('HTTP Error: ${response.statusCode}');
+      print('Response body: ${response.body}');
       return [];
     }
   } catch (e) {

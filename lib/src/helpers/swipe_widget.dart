@@ -31,11 +31,17 @@ class _OnSlideState extends State<OnSlide> {
   ScrollController controller = new ScrollController();
   bool isOpen = false;
 
-  late Size childSize;
+  Size? childSize;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   bool _handleScrollNotification(dynamic notification) {
@@ -56,12 +62,27 @@ class _OnSlideState extends State<OnSlide> {
 
   @override
   Widget build(BuildContext context) {
+    // Use a default size if childSize is not available yet
+    final size = childSize ?? Size(MediaQuery.of(context).size.width, 100);
+    
     List<Widget> above = <Widget>[
       new Container(
-        width: childSize.width,
-        height: childSize.height,
+        width: size.width,
+        height: size.height,
         color: widget.backgroundColor,
-        child: widget.child,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // Update childSize when the child is laid out
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted && childSize != Size(constraints.maxWidth, constraints.maxHeight)) {
+                setState(() {
+                  childSize = Size(constraints.maxWidth, constraints.maxHeight);
+                });
+              }
+            });
+            return widget.child;
+          },
+        ),
       ),
     ];
     List<Widget> under = <Widget>[];
@@ -71,7 +92,7 @@ class _OnSlideState extends State<OnSlide> {
         alignment: Alignment.center,
         color: item.backgroudColor,
         width: 60.0,
-        height: childSize.height,
+        height: size.height,
         child: item.icon,
       ));
 
@@ -79,7 +100,7 @@ class _OnSlideState extends State<OnSlide> {
           child: new Container(
             alignment: Alignment.center,
             width: 60.0,
-            height: childSize.height,
+            height: size.height,
           ),
           onTap: () {
             controller.jumpTo(2.0);
@@ -88,8 +109,8 @@ class _OnSlideState extends State<OnSlide> {
     }
 
     Widget items = new Container(
-      width: childSize.width,
-      height: childSize.height,
+      width: size.width,
+      height: size.height,
       color: widget.backgroundColor,
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.end,

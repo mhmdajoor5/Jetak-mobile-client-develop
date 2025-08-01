@@ -39,6 +39,7 @@ import 'src/pages/auth/signup.dart';
 import 'src/pages/splash_screen.dart';
 import 'src/pages/test_notifications.dart';
 import 'src/pages/notifications.dart';
+import 'src/pages/RecentOrdersWidget.dart';
 import 'src/controllers/home_controller.dart';
 // Import the new address pages
 import 'src/pages/new_address/AddressDetailsPage.dart';
@@ -66,6 +67,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => TestNotificationsPage());
       case '/Notifications':
         return MaterialPageRoute(builder: (_) => NotificationsWidget());
+      case '/RecentOrders':
+        return MaterialPageRoute(builder: (_) => RecentOrdersWidget());
       case '/SignUp':
       case '/MobileVerification':
       // case '/MobileVerification2':

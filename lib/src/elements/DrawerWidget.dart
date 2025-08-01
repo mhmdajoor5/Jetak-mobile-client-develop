@@ -71,11 +71,11 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                   ),
                 ),
               ),
-              _buildTile(context, '/Pages', S.of(context).home, Icons.home, 2),
-              _buildTile(context, '/Pages', S.of(context).notifications, Icons.notifications, 0),
-              _buildTile(context, '/Pages', S.of(context).my_orders, Icons.local_mall, 3),
+              _buildTile(context, '/Pages', S.of(context).home, Icons.home, 0),
+              _buildTile(context, '/Notifications', S.of(context).notifications, Icons.notifications),
+              _buildTile(context, '/RecentOrders', S.of(context).my_orders, Icons.local_mall),
               _buildTile(context, '/Favorites', S.of(context).favorite_foods, Icons.favorite),
-              _buildTile(context, '/Pages', S.of(context).messages, Icons.chat, 4),
+              _buildTile(context, '/Chat', S.of(context).messages, Icons.chat),
               _buildDividerTile(context, S.of(context).application_preferences),
               _buildTile(context, '/Help', S.of(context).help__support, Icons.help),
               ListTile(
@@ -93,7 +93,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                 onTap: () {
                   if (user.apiToken != null) {
                     logout().then((_) {
-                      Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 2);
+                      Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 0);
                     });
                   } else {
                     Navigator.of(context).pushNamed('/Login');

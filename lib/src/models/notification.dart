@@ -27,6 +27,8 @@ class Notification {
 
   factory Notification.fromJSON(Map<String, dynamic>? jsonMap) {
     try {
+      print('Parsing notification: $jsonMap'); // Debug log
+      
       // Parse data field - it might be a string or already a Map
       Map<String, dynamic> parsedData = {};
       if (jsonMap?['data'] != null) {
@@ -41,7 +43,7 @@ class Notification {
         }
       }
 
-      return Notification(
+      final notification = Notification(
         id: jsonMap?['id']?.toString() ?? '',
         type: jsonMap?['type']?.toString() ?? '',
         notifiableType: jsonMap?['notifiable_type']?.toString() ?? '',
@@ -58,8 +60,11 @@ class Notification {
           ? jsonMap!['custom_fields'] 
           : [],
       );
+      
+      print('Parsed notification: ${notification.id} - ${notification.type}'); // Debug log
+      return notification;
     } catch (e) {
-      print(CustomTrace(StackTrace.current, message: e.toString()));
+      print(CustomTrace(StackTrace.current, message: 'Error parsing notification: $e'));
       return Notification();
     }
   }
