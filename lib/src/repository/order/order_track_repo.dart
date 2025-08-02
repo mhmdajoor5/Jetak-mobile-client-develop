@@ -12,12 +12,16 @@ Future<TrackingOrderModel> getTrackingOrderModel({required String orderId}) asyn
   // الحصول على token المستخدم الحالي
   final user = userRepo.currentUser.value;
   if (user.apiToken == null || user.apiToken!.isEmpty) {
-    throw Exception('User API token not available');
+    print("❌ Error: User API token not available");
+    throw Exception('User API token not available. Please login again.');
   }
   
   try {
+    final url = '${GlobalConfiguration().getValue('api_base_url')}orders/${orderId}/status-history?api_token=${user.apiToken}';
+    print("🌐 Requesting URL: $url");
+    
     final response = await http.get(
-      Uri.parse('${GlobalConfiguration().getValue('api_base_url')}orders/${orderId}/status-history?api_token=${user.apiToken}'),
+      Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -34,14 +38,33 @@ Future<TrackingOrderModel> getTrackingOrderModel({required String orderId}) asyn
         throw Exception('Server returned HTML instead of JSON. Please check API endpoint.');
       }
       
+      // التحقق من أن الاستجابة ليست فارغة
+      if (response.body.trim().isEmpty) {
+        print("❌ Error: Empty response from server");
+        throw Exception('Empty response from server. Please try again.');
+      }
+      
       try {
         final Map<String, dynamic> data = json.decode(response.body);
         print("✅ JSON parsed successfully");
+        
+        // التحقق من أن البيانات تحتوي على المعلومات المطلوبة
+        if (data['success'] == false) {
+          print("❌ API returned success: false");
+          throw Exception(data['message'] ?? 'Failed to load tracking data');
+        }
+        
         return TrackingOrderModel.fromJson(data);
       } catch (e) {
         print("❌ JSON parsing error: $e");
         throw Exception('Failed to parse JSON response: $e');
       }
+    } else if (response.statusCode == 404) {
+      print("❌ Error: Order not found (404)");
+      throw Exception('Order not found. Please check the order ID.');
+    } else if (response.statusCode == 401) {
+      print("❌ Error: Unauthorized (401)");
+      throw Exception('Unauthorized. Please login again.');
     } else {
       print("❌ Error response: ${response.statusCode}");
       print("❌ Error body: ${response.body}");

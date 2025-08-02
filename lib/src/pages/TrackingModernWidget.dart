@@ -51,12 +51,23 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       print("Client: ${_con.clientLocation.latitude}, ${_con.clientLocation.longitude}");
       print("API Key: ${_apiKey.substring(0, 10)}...");
 
-      // Validate coordinates first
-      if (_con.restaurantLocation.latitude == 0.0 || 
-          _con.restaurantLocation.longitude == 0.0 ||
-          _con.clientLocation.latitude == 0.0 || 
-          _con.clientLocation.longitude == 0.0) {
-        throw Exception("Invalid coordinates: Restaurant or client location is zero");
+      // Check if we have both coordinates for route calculation
+      bool hasRestaurantCoords = _con.restaurantLocation.latitude != 0.0 && 
+                                _con.restaurantLocation.longitude != 0.0;
+      bool hasClientCoords = _con.clientLocation.latitude != 0.0 && 
+                            _con.clientLocation.longitude != 0.0;
+
+      // If we don't have both coordinates, skip route calculation
+      if (!hasRestaurantCoords || !hasClientCoords) {
+        print("⚠️ Skipping route calculation - missing coordinates:");
+        print("   - Restaurant coordinates available: $hasRestaurantCoords");
+        print("   - Client coordinates available: $hasClientCoords");
+        
+        setState(() {
+          _isLoadingRoute = false;
+          _routeError = null;
+        });
+        return;
       }
 
       // First, test the API key with a direct HTTP request
@@ -330,50 +341,86 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       print("Error extracting coordinates: $e");
     }
 
-    // Validate coordinates
-    if (restaurantLat == null || restaurantLng == null || 
-        clientLat == null || clientLng == null ||
-        restaurantLat == 0.0 || restaurantLng == 0.0 ||
-        clientLat == 0.0 || clientLng == 0.0) {
+    // Validate coordinates - تعديل للسماح بعرض الخريطة حتى لو كانت إحداثيات واحدة فقط متوفرة
+    bool hasRestaurantCoords = restaurantLat != null && restaurantLng != null && 
+                              restaurantLat != 0.0 && restaurantLng != 0.0;
+    bool hasClientCoords = clientLat != null && clientLng != null && 
+                          clientLat != 0.0 && clientLng != 0.0;
+    
+    // إذا لم تكن هناك أي إحداثيات متوفرة، اعرض رسالة خطأ
+    if (!hasRestaurantCoords && !hasClientCoords) {
+      print("❌ Tracking Error: No coordinates available");
+      print("   - Restaurant coordinates: lat=$restaurantLat, lng=$restaurantLng");
+      print("   - Client coordinates: lat=$clientLat, lng=$clientLng");
+      
       return Scaffold(
-        // appBar: _buildAppBar(),
-        body: _buildErrorView("Invalid location coordinates"),
+        body: _buildErrorView("No location data available for this order."),
       );
     }
+    
+    // إذا كانت هناك إحداثيات متوفرة، اعرض الخريطة بدون مسار
+    print("✅ Showing map with available coordinates:");
+    print("   - Restaurant coordinates: lat=$restaurantLat, lng=$restaurantLng (available: $hasRestaurantCoords)");
+    print("   - Client coordinates: lat=$clientLat, lng=$clientLng (available: $hasClientCoords)");
 
-    // Build markers
+    // Build markers - بناء العلامات المتوفرة فقط
     Set<Marker> markers = {};
     
-    // Add delivery boy marker
-    if (motorcycleIcon != null) {
+    // Add restaurant marker if coordinates are available
+    if (hasRestaurantCoords) {
+      if (motorcycleIcon != null) {
+        markers.add(
+          Marker(
+            markerId: MarkerId('restaurant'),
+            position: LatLng(restaurantLat!, restaurantLng!),
+            infoWindow: InfoWindow(title: 'Restaurant'),
+            icon: motorcycleIcon!,
+          ),
+        );
+      } else {
+        markers.add(
+          Marker(
+            markerId: MarkerId('restaurant'),
+            position: LatLng(restaurantLat!, restaurantLng!),
+            infoWindow: InfoWindow(title: 'Restaurant'),
+            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+          ),
+        );
+      }
+    }
+
+    // Add client marker if coordinates are available
+    if (hasClientCoords) {
       markers.add(
         Marker(
-          markerId: MarkerId('delivery_boy'),
-          position: LatLng(restaurantLat, restaurantLng),
-          infoWindow: InfoWindow(title: 'Delivery Person'),
-          icon: motorcycleIcon!,
-        ),
-      );
-    } else {
-      markers.add(
-        Marker(
-          markerId: MarkerId('delivery_boy'),
-          position: LatLng(restaurantLat, restaurantLng),
-          infoWindow: InfoWindow(title: 'Delivery Person'),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+          markerId: MarkerId('client'),
+          position: LatLng(clientLat!, clientLng!),
+          infoWindow: InfoWindow(title: 'Delivery Address'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         ),
       );
     }
 
-    // Add client marker
-    markers.add(
-      Marker(
-        markerId: MarkerId('client'),
-        position: LatLng(clientLat, clientLng),
-        infoWindow: InfoWindow(title: 'Delivery Address'),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-      ),
-    );
+    // Calculate camera position based on available coordinates
+    LatLng cameraTarget;
+    double zoom = 12;
+    
+    if (hasRestaurantCoords && hasClientCoords) {
+      // Both coordinates available - center between them
+      cameraTarget = LatLng(
+        (restaurantLat! + clientLat!) / 2,
+        (restaurantLng! + clientLng!) / 2,
+      );
+      zoom = 12;
+    } else if (hasRestaurantCoords) {
+      // Only restaurant coordinates available
+      cameraTarget = LatLng(restaurantLat!, restaurantLng!);
+      zoom = 14;
+    } else {
+      // Only client coordinates available
+      cameraTarget = LatLng(clientLat!, clientLng!);
+      zoom = 14;
+    }
 
     return Scaffold(
       // appBar: _buildAppBar(),
@@ -382,11 +429,8 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
           // Map
           GoogleMap(
             initialCameraPosition: CameraPosition(
-              target: LatLng(
-                (restaurantLat + clientLat) / 2,
-                (restaurantLng + clientLng) / 2,
-              ),
-              zoom: 12,
+              target: cameraTarget,
+              zoom: zoom,
             ),
             markers: markers,
             polylines: polylines.values.toSet(),
@@ -534,9 +578,9 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.error_outline,
+              Icons.location_off,
               size: 64,
-              color: Colors.red,
+              color: Colors.orange,
             ),
             SizedBox(height: 20),
             Text(
@@ -557,13 +601,74 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
               ),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF26386A),
-                foregroundColor: Colors.white,
+            Text(
+              "This might be due to:",
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Color(0xFF272727),
               ),
-              child: Text("Go Back"),
+            ),
+            SizedBox(height: 10),
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Color(0xFFF5F5F5),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "• Missing location data from the order",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF666666),
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    "• Invalid coordinates in the delivery address",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF666666),
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    "• Restaurant location not properly set",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF666666),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF26386A),
+                    foregroundColor: Colors.white,
+                  ),
+                  child: Text("Go Back"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // يمكن إضافة إعادة تحميل الصفحة هنا
+                    setState(() {});
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: Text("Retry"),
+                ),
+              ],
             ),
           ],
         ),

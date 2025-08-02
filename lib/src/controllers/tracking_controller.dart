@@ -173,10 +173,28 @@ class TrackingController extends ControllerMVC {
       print(
         "mElkerm Tracking Controller ❌ Error fetching tracking data: $error",
       );
+      
+      // تحليل نوع الخطأ لتقديم رسالة أكثر وضوحاً
+      String errorMessage = "Failed to load tracking information";
+      
+      if (error.toString().contains("User API token not available")) {
+        errorMessage = "Please login again to view tracking information";
+      } else if (error.toString().contains("Order not found")) {
+        errorMessage = "Order not found. Please check the order ID.";
+      } else if (error.toString().contains("Unauthorized")) {
+        errorMessage = "Unauthorized. Please login again.";
+      } else if (error.toString().contains("Empty response")) {
+        errorMessage = "No tracking data available for this order.";
+      } else if (error.toString().contains("Failed to load tracking data")) {
+        errorMessage = "Tracking data is not available for this order.";
+      }
+      
       if (scaffoldKey.currentContext != null) {
         ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
           SnackBar(
-            content: Text(S.of(state!.context).verify_your_internet_connection),
+            content: Text(errorMessage),
+            backgroundColor: Colors.orange,
+            duration: Duration(seconds: 4),
           ),
         );
       }

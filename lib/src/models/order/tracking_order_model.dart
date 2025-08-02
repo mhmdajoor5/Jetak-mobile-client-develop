@@ -10,11 +10,16 @@ class TrackingOrderModel {
   });
 
   factory TrackingOrderModel.fromJson(Map<String, dynamic> json) {
-    return TrackingOrderModel(
-      success: json["success"].toString().toLowerCase() == 'true',
-      data: Data.fromJson(json["data"]),
-      message: json["message"] ?? '',
-    );
+    try {
+      return TrackingOrderModel(
+        success: json["success"]?.toString().toLowerCase() == 'true',
+        data: Data.fromJson(json["data"] ?? {}),
+        message: json["message"] ?? '',
+      );
+    } catch (e) {
+      print("❌ Error parsing TrackingOrderModel: $e");
+      throw Exception('Failed to parse tracking data: $e');
+    }
   }
 }
 
@@ -34,18 +39,23 @@ class Data {
   });
 
   factory Data.fromJson(Map<String, dynamic> json) {
-    return Data(
-      statusHistory: (json["status_history"] as List?)
-          ?.map((i) => StatusHistory.fromJson(i))
-          .toList() ??
-          [],
-      preparationTime: json["preparation_time"],
-      estimatedTime: json["estimated_time"],
-      deliveryAddress: json["delivery_address"] != null
-          ? DeliveryAddress.fromJson(json["delivery_address"])
-          : null,
-      driver: json["driver"] != null ? Driver.fromJson(json["driver"]) : null,
-    );
+    try {
+      return Data(
+        statusHistory: (json["status_history"] as List?)
+            ?.map((i) => StatusHistory.fromJson(i))
+            .toList() ??
+            [],
+        preparationTime: json["preparation_time"],
+        estimatedTime: json["estimated_time"],
+        deliveryAddress: json["delivery_address"] != null
+            ? DeliveryAddress.fromJson(json["delivery_address"])
+            : null,
+        driver: json["driver"] != null ? Driver.fromJson(json["driver"]) : null,
+      );
+    } catch (e) {
+      print("❌ Error parsing Data: $e");
+      throw Exception('Failed to parse tracking data details: $e');
+    }
   }
 }
 
@@ -65,13 +75,18 @@ class DeliveryAddress {
   });
 
   factory DeliveryAddress.fromJson(Map<String, dynamic> json) {
-    return DeliveryAddress(
-      id: int.parse(json["id"].toString()),
-      address: json["address"] ?? '',
-      latitude: double.tryParse(json["latitude"].toString()) ?? 0.0,
-      longitude: double.tryParse(json["longitude"].toString()) ?? 0.0,
-      description: json["description"] ?? '',
-    );
+    try {
+      return DeliveryAddress(
+        id: int.tryParse(json["id"]?.toString() ?? '0') ?? 0,
+        address: json["address"] ?? '',
+        latitude: double.tryParse(json["latitude"]?.toString() ?? '0') ?? 0.0,
+        longitude: double.tryParse(json["longitude"]?.toString() ?? '0') ?? 0.0,
+        description: json["description"] ?? '',
+      );
+    } catch (e) {
+      print("❌ Error parsing DeliveryAddress: $e");
+      throw Exception('Failed to parse delivery address: $e');
+    }
   }
 }
 
@@ -95,15 +110,20 @@ class Driver {
   });
 
   factory Driver.fromJson(Map<String, dynamic> json) {
-    return Driver(
-      id: int.parse(json["id"].toString()),
-      name: json["name"] ?? '',
-      phone: json["phone"],
-      email: json["email"] ?? '',
-      latitude: json["latitude"],
-      longitude: json["longitude"],
-      avatar: json["avatar"],
-    );
+    try {
+      return Driver(
+        id: int.tryParse(json["id"]?.toString() ?? '0') ?? 0,
+        name: json["name"] ?? '',
+        phone: json["phone"],
+        email: json["email"] ?? '',
+        latitude: json["latitude"],
+        longitude: json["longitude"],
+        avatar: json["avatar"],
+      );
+    } catch (e) {
+      print("❌ Error parsing Driver: $e");
+      throw Exception('Failed to parse driver information: $e');
+    }
   }
 }
 
@@ -125,13 +145,18 @@ class StatusHistory {
   });
 
   factory StatusHistory.fromJson(Map<String, dynamic> json) {
-    return StatusHistory(
-      id: int.parse(json["id"].toString()),
-      statusId: int.parse(json["status_id"].toString()),
-      statusName: json["status_name"] ?? '',
-      notes: json["notes"] ?? '',
-      createdAt: DateTime.tryParse(json["created_at"] ?? '') ?? DateTime.now(),
-      userName: json["user_name"] ?? '',
-    );
+    try {
+      return StatusHistory(
+        id: int.tryParse(json["id"]?.toString() ?? '0') ?? 0,
+        statusId: int.tryParse(json["status_id"]?.toString() ?? '0') ?? 0,
+        statusName: json["status_name"] ?? '',
+        notes: json["notes"] ?? '',
+        createdAt: DateTime.tryParse(json["created_at"] ?? '') ?? DateTime.now(),
+        userName: json["user_name"] ?? '',
+      );
+    } catch (e) {
+      print("❌ Error parsing StatusHistory: $e");
+      throw Exception('Failed to parse status history: $e');
+    }
   }
 }

@@ -58,13 +58,40 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
   }
 
   Future<void> _loadDeliveryMap() async {
-    if (_con.order.deliveryAddress.latitude == null || 
-        _con.order.deliveryAddress.longitude == null) {
+    // تحقق من إحداثيات العنوان
+    bool hasDeliveryCoords = _con.order.deliveryAddress.latitude != null && 
+                            _con.order.deliveryAddress.longitude != null &&
+                            _con.order.deliveryAddress.latitude != 0.0 &&
+                            _con.order.deliveryAddress.longitude != 0.0;
+    
+    // تحقق من إحداثيات المطعم
+    bool hasRestaurantCoords = false;
+    if (_con.order.foodOrders.isNotEmpty) {
+      double? restaurantLat = double.tryParse(
+        _con.order.foodOrders[0].food?.restaurant.latitude ?? '',
+      );
+      double? restaurantLng = double.tryParse(
+        _con.order.foodOrders[0].food?.restaurant.longitude ?? '',
+      );
+      hasRestaurantCoords = restaurantLat != null && restaurantLng != null && 
+                           restaurantLat != 0.0 && restaurantLng != 0.0;
+    }
+    
+    // إذا لم تكن هناك أي إحداثيات متوفرة، اعرض رسالة خطأ
+    if (!hasDeliveryCoords && !hasRestaurantCoords) {
       setState(() {
-        _mapError = "Delivery address coordinates not available";
+        _mapError = "No location data available for this order.";
       });
+      print("❌ Map Error: No coordinates available");
+      print("   - Delivery coordinates available: $hasDeliveryCoords");
+      print("   - Restaurant coordinates available: $hasRestaurantCoords");
       return;
     }
+    
+    // إذا كانت هناك إحداثيات متوفرة، اعرض الخريطة
+    print("✅ Showing map with available coordinates:");
+    print("   - Delivery coordinates available: $hasDeliveryCoords");
+    print("   - Restaurant coordinates available: $hasRestaurantCoords");
 
     try {
       setState(() {
@@ -76,6 +103,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
         _mapError = "Failed to load map: $e";
         _showMap = false;
       });
+      print("❌ Map Error: $e");
     }
   }
 
@@ -107,7 +135,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
-            Icons.error_outline,
+            Icons.location_off,
             size: 64,
             color: Colors.orange,
           ),
@@ -124,24 +152,67 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 20),
-          ElevatedButton.icon(
-            onPressed: () {
-              setState(() {
-                _mapError = null;
-                _showMap = false;
-              });
-              _loadDeliveryMap();
-            },
-            icon: Icon(Icons.refresh),
-            label: Text("Retry"),
+          Container(
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.grey.shade300),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Possible reasons:",
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text("• No location data available for this order"),
+                SizedBox(height: 4),
+                Text("• Missing delivery address coordinates"),
+                SizedBox(height: 4),
+                Text("• Restaurant location not available"),
+                SizedBox(height: 4),
+                Text("• Network connectivity issues"),
+              ],
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Colors.grey.shade600,
+              ),
+            ),
           ),
-          SizedBox(height: 10),
-          TextButton(
-            onPressed: () {
-              // Open external map app
-              _openInExternalMap();
-            },
-            child: Text("Open in Maps App"),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  setState(() {
+                    _mapError = null;
+                    _showMap = false;
+                  });
+                  _loadDeliveryMap();
+                },
+                icon: Icon(Icons.refresh),
+                label: Text("Retry"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  foregroundColor: Colors.white,
+                ),
+              ),
+              TextButton.icon(
+                onPressed: () {
+                  // Open external map app
+                  _openInExternalMap();
+                },
+                icon: Icon(Icons.open_in_new),
+                label: Text("Open in Maps"),
+                style: TextButton.styleFrom(
+                  foregroundColor: Theme.of(context).primaryColor,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -149,22 +220,47 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
   }
 
   Widget _buildDeliveryMap() {
+    // تحقق من إحداثيات العنوان
+    bool hasDeliveryCoords = _con.order.deliveryAddress.latitude != null && 
+                            _con.order.deliveryAddress.longitude != null &&
+                            _con.order.deliveryAddress.latitude != 0.0 &&
+                            _con.order.deliveryAddress.longitude != 0.0;
+    
+    // تحقق من إحداثيات المطعم
+    bool hasRestaurantCoords = false;
+    double restaurantLat = 0.0;
+    double restaurantLng = 0.0;
+    
+    if (_con.order.foodOrders.isNotEmpty) {
+      restaurantLat = double.tryParse(_con.order.foodOrders.first.food?.restaurant.latitude ?? '0') ?? 0.0;
+      restaurantLng = double.tryParse(_con.order.foodOrders.first.food?.restaurant.longitude ?? '0') ?? 0.0;
+      hasRestaurantCoords = restaurantLat != 0.0 && restaurantLng != 0.0;
+    }
+
     final deliveryLat = _con.order.deliveryAddress.latitude ?? 0.0;
     final deliveryLng = _con.order.deliveryAddress.longitude ?? 0.0;
-    final restaurantLat = double.tryParse(_con.order.foodOrders.first.food?.restaurant.latitude ?? '0') ?? 0.0;
-    final restaurantLng = double.tryParse(_con.order.foodOrders.first.food?.restaurant.longitude ?? '0') ?? 0.0;
 
-    Set<Marker> markers = {
-      Marker(
-        markerId: MarkerId('delivery'),
-        position: LatLng(deliveryLat, deliveryLng),
-        infoWindow: InfoWindow(
-          title: 'Delivery Address',
-          snippet: _con.order.deliveryAddress.address ?? 'Your location',
+    // بناء العلامات المتوفرة فقط
+    Set<Marker> markers = {};
+    
+    // إضافة علامة العنوان إذا كانت الإحداثيات متوفرة
+    if (hasDeliveryCoords) {
+      markers.add(
+        Marker(
+          markerId: MarkerId('delivery'),
+          position: LatLng(deliveryLat, deliveryLng),
+          infoWindow: InfoWindow(
+            title: 'Delivery Address',
+            snippet: _con.order.deliveryAddress.address ?? 'Your location',
+          ),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
         ),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-      ),
-      if (restaurantLat != 0.0 && restaurantLng != 0.0)
+      );
+    }
+    
+    // إضافة علامة المطعم إذا كانت الإحداثيات متوفرة
+    if (hasRestaurantCoords) {
+      markers.add(
         Marker(
           markerId: MarkerId('restaurant'),
           position: LatLng(restaurantLat, restaurantLng),
@@ -174,7 +270,29 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
           ),
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
         ),
-    };
+      );
+    }
+
+    // حساب موقع الكاميرا بناءً على الإحداثيات المتوفرة
+    LatLng cameraTarget;
+    double zoom = 12;
+    
+    if (hasDeliveryCoords && hasRestaurantCoords) {
+      // كلا الإحداثيات متوفرة - مركز بينهما
+      cameraTarget = LatLng(
+        (deliveryLat + restaurantLat) / 2,
+        (deliveryLng + restaurantLng) / 2,
+      );
+      zoom = 12;
+    } else if (hasDeliveryCoords) {
+      // إحداثيات العنوان فقط متوفرة
+      cameraTarget = LatLng(deliveryLat, deliveryLng);
+      zoom = 14;
+    } else {
+      // إحداثيات المطعم فقط متوفرة
+      cameraTarget = LatLng(restaurantLat, restaurantLng);
+      zoom = 14;
+    }
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.6,
@@ -226,8 +344,8 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
           Expanded(
             child: GoogleMap(
               initialCameraPosition: CameraPosition(
-                target: LatLng(deliveryLat, deliveryLng),
-                zoom: 14,
+                target: cameraTarget,
+                zoom: zoom,
               ),
               markers: markers,
               myLocationEnabled: true,
@@ -239,7 +357,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
                 controller.setMapStyle(mapStyle);
                 
                 // Fit bounds to show both markers if restaurant exists
-                if (restaurantLat != 0.0 && restaurantLng != 0.0) {
+                if (hasRestaurantCoords) {
                   controller.animateCamera(
                     CameraUpdate.newLatLngBounds(
                       LatLngBounds(
