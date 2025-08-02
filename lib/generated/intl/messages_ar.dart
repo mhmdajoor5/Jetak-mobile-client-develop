@@ -409,6 +409,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "payment_settings_updated_successfully":
             MessageLookupByLibrary.simpleMessage(
                 "تم تحديث إعدادات الدفع بنجاح"),
+        "payment_will_be_cash_on_delivery":
+            MessageLookupByLibrary.simpleMessage(
+                "سيتم الدفع نقداً عند التسليم"),
         "payments": MessageLookupByLibrary.simpleMessage("المدفوعات"),
         "payments_settings":
             MessageLookupByLibrary.simpleMessage("إعدادات الدفع"),

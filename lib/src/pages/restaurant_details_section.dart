@@ -50,6 +50,15 @@ class RestaurantDetailsSection extends StatelessWidget {
     final restLat = double.tryParse(con.restaurant?.latitude ?? '0') ?? 0.0;
     final restLon = double.tryParse(con.restaurant?.longitude ?? '0') ?? 0.0;
     final distance = calculateDistance(userLat, userLon, restLat, restLon);
+    
+    print('🔍 ===== RESTAURANT DISTANCE DEBUG START =====');
+    print('🔍 USER LATITUDE: $userLat');
+    print('🔍 USER LONGITUDE: $userLon');
+    print('🔍 RESTAURANT LATITUDE: $restLat');
+    print('🔍 RESTAURANT LONGITUDE: $restLon');
+    print('🔍 CALCULATED DISTANCE: $distance');
+    print('🔍 DISTANCE UNIT: ${setting.value.distanceUnit}');
+    print('🔍 ===== RESTAURANT DISTANCE DEBUG END =====');
 
     return Container(
       color: Colors.white,

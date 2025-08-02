@@ -340,7 +340,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         if (saleResponse.status == 0) {
           print('[DEBUG] ✅ تم إنشاء الطلب بنجاح للدفع النقدي');
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("✅ سيتم الدفع نقداً عند التسليم"),
+            content: Text(S.of(context).payment_will_be_cash_on_delivery),
             backgroundColor: Colors.green,
           ));
 

@@ -540,6 +540,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "payment_settings_updated_successfully":
             MessageLookupByLibrary.simpleMessage(
                 "Payment settings updated successfully"),
+        "payment_will_be_cash_on_delivery":
+            MessageLookupByLibrary.simpleMessage(
+                "Payment will be made in cash upon delivery"),
         "payments": MessageLookupByLibrary.simpleMessage("Payments"),
         "payments_settings":
             MessageLookupByLibrary.simpleMessage("Payments Settings"),

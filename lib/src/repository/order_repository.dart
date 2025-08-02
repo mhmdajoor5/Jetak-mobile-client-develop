@@ -38,6 +38,7 @@ Future<Stream<Order>> getOrder(orderId) async {
     return Order.fromJSON(data);
   });
 }
+
 Future<Stream<Order>> getRecentOrders() async {
   try {
     // Validate user first
@@ -304,3 +305,21 @@ Future<Order> cancelOrder(Order order) async {
     throw new Exception(response.body);
   }
 }
+
+
+
+// احداثيات المستخدم الي في العنوان
+// وفي احداثياتت المطعم
+// الفرق بين المطعم والمستخدم
+//
+// بدك تقارنها ي ام اقل او تساوي الdelivery range
+
+// وتاكد انو القيم المطعم بترجع صح
+
+
+// lat - long المطعم
+// lat - long المستخدم
+
+// اذا كان الفرق بين المطعم والمستخدم اقل او يساوي الdelivery range
+
+// يعني المستخدم في نطاق التوصيل

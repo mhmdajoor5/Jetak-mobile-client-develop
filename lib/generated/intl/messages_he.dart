@@ -484,6 +484,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("הגדרות תשלום"),
         "payment_settings_updated_successfully":
             MessageLookupByLibrary.simpleMessage("הגדרות התשלום עודכנו בהצלחה"),
+        "payment_will_be_cash_on_delivery":
+            MessageLookupByLibrary.simpleMessage(
+                "התשלום יבוצע במזומן בעת המסירה"),
         "payments": MessageLookupByLibrary.simpleMessage("תשלומים"),
         "payments_settings":
             MessageLookupByLibrary.simpleMessage("הגדרות תשלומים"),

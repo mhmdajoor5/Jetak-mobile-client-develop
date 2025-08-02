@@ -315,43 +315,84 @@ class Helper {
   }
 
   static String getDistance(double distance, String unit) {
+    print('🔍 ===== GET DISTANCE DEBUG START =====');
+    print('🔍 INPUT DISTANCE: $distance');
+    print('🔍 INPUT UNIT: $unit');
+    
+    // تحويل المسافة للوحدة المطلوبة
     if (unit == 'km' || unit.contains('km')) {
+      // إذا كانت المسافة بالمايل، نحولها للكيلومتر
       distance *= 1.60934;
     }
+    
+    print('🔍 CONVERTED DISTANCE: $distance');
+    print('🔍 FINAL RESULT: ${distance.toStringAsFixed(2)} $unit');
+    print('🔍 ===== GET DISTANCE DEBUG END =====');
+    
     return distance.toStringAsFixed(2) + " " + unit;
   }
 
   static bool canDelivery(Restaurant _restaurant, {List<Cart> carts = const []}) {
-    return true;
-    // bool _can = true;
-    // return _can;
-    // String _unit = setting.value.distanceUnit;
-    // double _deliveryRange = _restaurant.deliveryRange;
-    // double _distance = _restaurant.distance;
-    // carts?.forEach((Cart _cart) {
-    //   _can &= _cart.food.deliverable;
-    // });
-    //
-    // if (_unit == 'km') {
-    //   _deliveryRange /= 1.60934;
-    // }
-    // if (_distance == 0 && !deliveryAddress.value.isUnknown()) {
-    //   _distance = sqrt(pow(
-    //           69.1 *
-    //               (double.parse(_restaurant.latitude) -
-    //                   deliveryAddress.value.latitude),
-    //           2) +
-    //       pow(
-    //           69.1 *
-    //               (deliveryAddress.value.longitude -
-    //                   double.parse(_restaurant.longitude)) *
-    //               cos(double.parse(_restaurant.latitude) / 57.3),
-    //           2));
-    // }
-    // _can &= _restaurant.availableForDelivery &&
-    //     (_distance < _deliveryRange) &&
-    //     !deliveryAddress.value.isUnknown();
-    // return _can;
+    print('🔍 ===== CAN DELIVERY DEBUG START =====');
+    print('🔍 RESTAURANT: ${_restaurant.name}');
+    print('🔍 RESTAURANT LATITUDE: ${_restaurant.latitude}');
+    print('🔍 RESTAURANT LONGITUDE: ${_restaurant.longitude}');
+    print('🔍 RESTAURANT DELIVERY RANGE: ${_restaurant.deliveryRange}');
+    print('🔍 RESTAURANT AVAILABLE FOR DELIVERY: ${_restaurant.availableForDelivery}');
+    
+    bool _can = true;
+    String _unit = setting.value.distanceUnit;
+    double _deliveryRange = _restaurant.deliveryRange;
+    double _distance = _restaurant.distance;
+    
+    print('🔍 INITIAL DISTANCE: $_distance');
+    print('🔍 DELIVERY RANGE: $_deliveryRange');
+    print('🔍 DELIVERY ADDRESS: ${deliveryAddress.value.address}');
+    print('🔍 DELIVERY ADDRESS LATITUDE: ${deliveryAddress.value.latitude}');
+    print('🔍 DELIVERY ADDRESS LONGITUDE: ${deliveryAddress.value.longitude}');
+    
+    // التحقق من أن الطعام قابل للتوصيل
+    for (Cart _cart in carts) {
+      _can &= _cart.food!.deliverable;
+    }
+    
+    // تحويل الوحدة إذا لزم الأمر
+    if (_unit == 'km') {
+      _deliveryRange /= 1.60934;
+    }
+    
+    // حساب المسافة إذا لم تكن محسوبة
+    if (_distance == 0 && !deliveryAddress.value.isUnknown()) {
+      try {
+        double restaurantLat = double.tryParse(_restaurant.latitude) ?? 0.0;
+        double restaurantLng = double.tryParse(_restaurant.longitude) ?? 0.0;
+        double userLat = deliveryAddress.value.latitude ?? 0.0;
+        double userLng = deliveryAddress.value.longitude ?? 0.0;
+        
+        if (restaurantLat != 0.0 && restaurantLng != 0.0 && userLat != 0.0 && userLng != 0.0) {
+          _distance = sqrt(pow(
+            69.1 * (restaurantLat - userLat), 2) +
+            pow(69.1 * (userLng - restaurantLng) * cos(restaurantLat / 57.3), 2));
+        }
+      } catch (e) {
+        print('🔍 ERROR CALCULATING DISTANCE: $e');
+        _distance = 0.0;
+      }
+    }
+    
+    print('🔍 CALCULATED DISTANCE: $_distance');
+    print('🔍 FINAL DELIVERY RANGE: $_deliveryRange');
+    print('🔍 DISTANCE < DELIVERY RANGE: ${_distance < _deliveryRange}');
+    
+    // التحقق من شروط التوصيل
+    _can &= _restaurant.availableForDelivery &&
+        (_distance < _deliveryRange) &&
+        !deliveryAddress.value.isUnknown();
+    
+    print('🔍 FINAL RESULT: $_can');
+    print('🔍 ===== CAN DELIVERY DEBUG END =====');
+    
+    return _can;
   }
 
   static String skipHtml(String htmlString) {

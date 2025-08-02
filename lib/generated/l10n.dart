@@ -4579,6 +4579,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Payment will be made in cash upon delivery`
+  String get payment_will_be_cash_on_delivery {
+    return Intl.message(
+      'Payment will be made in cash upon delivery',
+      name: 'payment_will_be_cash_on_delivery',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
