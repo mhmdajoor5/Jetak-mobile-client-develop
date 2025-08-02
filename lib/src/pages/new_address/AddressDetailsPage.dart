@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:geolocator/geolocator.dart';
 import '../../../generated/l10n.dart';
 import '../../controllers/delivery_pickup_controller.dart';
 import '../../models/address.dart';
@@ -12,8 +13,15 @@ import '../delivery_pickup.dart';
 
 class AddressDetailsPage extends StatefulWidget {
   final String address;
+  final double? latitude;
+  final double? longitude;
 
-  const AddressDetailsPage({Key? key, required this.address}) : super(key: key);
+  const AddressDetailsPage({
+    Key? key, 
+    required this.address,
+    this.latitude,
+    this.longitude,
+  }) : super(key: key);
 
   @override
   State<AddressDetailsPage> createState() => _AddressDetailsPageState();
@@ -52,20 +60,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
     });
   }
 
-  Future<Map<String, dynamic>> addAddress(Map<String, dynamic> payload) async {
-    final response = await http.post(
-      Uri.parse('https://example.com/api/addresses'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(payload),
-    );
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return jsonDecode(response.body);
-    } else {
-      print('❌ خطأ في السيرفر: ${response.body}');
-      throw Exception('فشل في إضافة العنوان');
-    }
-  }
+  // تم إزالة الدالة المخصصة addAddress لأننا نستخدم userRepo.addAddress
 
 
   @override
@@ -484,8 +479,42 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                           unitController.text,
                         ].where((part) => part.isNotEmpty).join(', ');
 
-                        double? latitude;
-                        double? longitude;
+                        // الحصول على الإحداثيات من العنوان المحدد
+                        double? latitude = widget.latitude;
+                        double? longitude = widget.longitude;
+
+                        print('📍 الإحداثيات المستلمة من الصفحة السابقة: lat=$latitude, lng=$longitude');
+
+                        // إذا لم تكن الإحداثيات متوفرة، احصل على الموقع الحالي
+                        if (latitude == null || longitude == null) {
+                          print('⚠️ الإحداثيات غير متوفرة، جاري الحصول على الموقع الحالي...');
+                          try {
+                            bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+                            if (serviceEnabled) {
+                              LocationPermission permission = await Geolocator.checkPermission();
+                              if (permission == LocationPermission.denied) {
+                                permission = await Geolocator.requestPermission();
+                              }
+                              
+                              if (permission == LocationPermission.whileInUse || 
+                                  permission == LocationPermission.always) {
+                                Position position = await Geolocator.getCurrentPosition(
+                                  desiredAccuracy: LocationAccuracy.high,
+                                );
+                                latitude = position.latitude;
+                                longitude = position.longitude;
+                                print('📍 تم الحصول على الإحداثيات الحالية: lat=$latitude, lng=$longitude');
+                                print('📍 دقة الموقع: ${position.accuracy} متر');
+                              } else {
+                                print('❌ لم يتم منح صلاحيات الموقع');
+                              }
+                            } else {
+                              print('❌ خدمة الموقع معطلة');
+                            }
+                          } catch (e) {
+                            print('❌ خطأ في الحصول على الإحداثيات: $e');
+                          }
+                        }
 
                         final address = Address(
                           address: fullAddress,
@@ -502,9 +531,24 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                           userId: '0',
                         );
 
+                        // طباعة بيانات العنوان قبل الإرسال
+                        print('📍 بيانات العنوان في AddressDetailsPage:');
+                        print('- address: ${address.address}');
+                        print('- latitude: ${address.latitude}');
+                        print('- longitude: ${address.longitude}');
+                        print('- description: ${address.description}');
+                        print('- type: ${address.type}');
+                        print('- entryMethod: ${address.entryMethod}');
+                        print('- instructions: ${address.instructions}');
+                        print('- label: ${address.label}');
+
                         try {
+                          print("🚀 بدء إرسال العنوان إلى API...");
                           final addedAddress = await userRepo.addAddress(address);
                           print("✅ العنوان أُضيف بنجاح");
+                          print("✅ العنوان المُضاف يحتوي على الإحداثيات: lat=${addedAddress.latitude}, lng=${addedAddress.longitude}");
+                          print("✅ العنوان المُضاف يحتوي على الوصف: ${addedAddress.description}");
+                          print("✅ العنوان المُضاف يحتوي على النوع: ${addedAddress.type}");
 
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(

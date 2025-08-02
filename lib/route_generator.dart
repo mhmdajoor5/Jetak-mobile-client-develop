@@ -281,10 +281,20 @@ class RouteGenerator {
           ),
         );
       case '/AddressDetails':
-        final String address = args as String;
-        return MaterialPageRoute(
-          builder: (_) => AddressDetailsPage(address: address),
-        );
+        if (args is Map<String, dynamic>) {
+          return MaterialPageRoute(
+            builder: (_) => AddressDetailsPage(
+              address: args['address'] as String,
+              latitude: args['latitude'] as double?,
+              longitude: args['longitude'] as double?,
+            ),
+          );
+        } else {
+          final String address = args as String;
+          return MaterialPageRoute(
+            builder: (_) => AddressDetailsPage(address: address),
+          );
+        }
       case '/DeliveryPickup':
         return MaterialPageRoute(
           builder: (_) => DeliveryPickupWidget(

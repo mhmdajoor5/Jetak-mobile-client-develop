@@ -107,6 +107,10 @@ class Address {
     map["longitude"] = longitude;
     map["is_default"] = isDefault;
     map["user_id"] = userId;
+    map["type"] = type;
+    map["entryMethod"] = entryMethod;
+    map["instructions"] = instructions;
+    map["label"] = label;
     return map;
   }
 

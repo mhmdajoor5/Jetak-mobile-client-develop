@@ -214,16 +214,33 @@ Future<Address> addAddress(Address address) async {
 
   final String _apiToken = 'api_token=${_user.apiToken}';
   address.userId = _user.id!;
+  
+  // طباعة بيانات العنوان قبل الإرسال
+  print('📍 بيانات العنوان المرسلة:');
+  print('- address: ${address.address}');
+  print('- latitude: ${address.latitude}');
+  print('- longitude: ${address.longitude}');
+  print('- description: ${address.description}');
+  print('- type: ${address.type}');
+  print('- entryMethod: ${address.entryMethod}');
+  print('- instructions: ${address.instructions}');
+  print('- label: ${address.label}');
+  
   final String url =
       '${GlobalConfiguration().getValue('api_base_url')}delivery_addresses?$_apiToken';
   final client = http.Client();
+  final addressMap = address.toMap();
+  final requestBody = json.encode(addressMap);
+  print('📤 البيانات المرسلة إلى API: $requestBody');
+  print('📤 خريطة العنوان: $addressMap');
+  
   final response = await client.post(
     Uri.parse(url),
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    body: json.encode(address.toMap()),
+    body: requestBody,
   );
 
-  print('Response body: ${response.body}');
+  print('📥 Response body: ${response.body}');
 
   final Map<String, dynamic> jsonResponse = json.decode(response.body);
 
@@ -231,7 +248,10 @@ Future<Address> addAddress(Address address) async {
     throw Exception('Response JSON does not contain "data" or it is null');
   }
 
-  return Address.fromJSON(jsonResponse['data']);
+  final addedAddress = Address.fromJSON(jsonResponse['data']);
+  print('✅ العنوان المُضاف من API يحتوي على الإحداثيات: lat=${addedAddress.latitude}, lng=${addedAddress.longitude}');
+  
+  return addedAddress;
 }
 
 

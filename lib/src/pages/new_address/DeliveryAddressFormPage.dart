@@ -177,9 +177,45 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                       _address.address = fullAddressController.text.trim();
                       _address.isDefault = isDefault;
 
-                      await deliveryAddressesController.addAddress(_address);
+                      // الحصول على الإحداثيات قبل إرسال العنوان
+                      double? latitude;
+                      double? longitude;
+                      
+                      try {
+                        bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+                        if (serviceEnabled) {
+                          LocationPermission permission = await Geolocator.checkPermission();
+                          if (permission == LocationPermission.denied) {
+                            permission = await Geolocator.requestPermission();
+                          }
+                          
+                          if (permission == LocationPermission.whileInUse || 
+                              permission == LocationPermission.always) {
+                            Position position = await Geolocator.getCurrentPosition(
+                              desiredAccuracy: LocationAccuracy.high,
+                            );
+                            latitude = position.latitude;
+                            longitude = position.longitude;
+                            print('📍 تم الحصول على الإحداثيات: lat=$latitude, lng=$longitude');
+                            print('📍 دقة الموقع: ${position.accuracy} متر');
+                          }
+                        }
+                      } catch (e) {
+                        print('❌ خطأ في الحصول على الإحداثيات: $e');
+                      }
 
-                      Navigator.of(context).pushNamed('/AddressDetails', arguments: fullAddressController.text.trim());
+                      // طباعة الإحداثيات قبل التمرير
+                      print('📍 الإحداثيات المرسلة إلى AddressDetailsPage:');
+                      print('- address: ${fullAddressController.text.trim()}');
+                      print('- latitude: $latitude');
+                      print('- longitude: $longitude');
+
+                      // تمرير الإحداثيات مع العنوان
+                      Navigator.of(context).pushNamed('/AddressDetails', arguments: {
+                        'address': fullAddressController.text.trim(),
+                        'latitude': latitude,
+                        'longitude': longitude,
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.secondary,
