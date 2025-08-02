@@ -25,6 +25,10 @@ class Setting {
   String appVersion = '';
   bool enableVersion = true;
   List<String> homeSections = [];
+  
+  // حقول جديدة لحالة التطبيق
+  bool appStatus = true; // true = متاح، false = معطل (افتراضياً مفتوح)
+  String maintenanceMessage = 'التطبيق حالياً غير متاح. يرجى المحاولة لاحقاً.';
 
   ValueNotifier<Brightness> brightness = ValueNotifier(Brightness.light);
 
@@ -55,6 +59,11 @@ class Setting {
       setting.payPalEnabled = jsonMap?['enable_paypal'] == '1';
       setting.stripeEnabled = jsonMap?['enable_stripe'] == '1';
       setting.razorPayEnabled = jsonMap?['enable_razorpay'] == '1';
+      
+      // قراءة حقول حالة التطبيق الجديدة
+      // إذا لم يرسل الباك اند القيمة، افتراضياً التطبيق مفتوح
+      setting.appStatus = jsonMap?['app_status'] == '1' || jsonMap?['app_status'] == true || jsonMap?['app_status'] == null;
+      setting.maintenanceMessage = jsonMap?['maintenance_message']?.toString() ?? 'التطبيق حالياً غير متاح. يرجى المحاولة لاحقاً.';
 
       for (int i = 1; i <= 12; i++) {
         final section = jsonMap?['home_section_$i']?.toString() ?? 'empty';
@@ -77,6 +86,8 @@ class Setting {
       "enable_stripe": stripeEnabled,
       "enable_razorpay": razorPayEnabled,
       "mobile_language": mobileLanguage.value.languageCode,
+      "app_status": appStatus ? '1' : '0',
+      "maintenance_message": maintenanceMessage,
     };
   }
 }

@@ -2877,6 +2877,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please correct the errors in the form'**
   String get please_correct_form_errors;
+
+  /// No description provided for @app_maintenance_title.
+  ///
+  /// In en, this message translates to:
+  /// **'App Unavailable'**
+  String get app_maintenance_title;
+
+  /// No description provided for @app_maintenance_message.
+  ///
+  /// In en, this message translates to:
+  /// **'The app is currently unavailable. Please try again later.'**
+  String get app_maintenance_message;
+
+  /// No description provided for @retry_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry_button;
+
+  /// No description provided for @checking_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking...'**
+  String get checking_status;
+
+  /// No description provided for @app_will_be_back_soon.
+  ///
+  /// In en, this message translates to:
+  /// **'The app will be back soon'**
+  String get app_will_be_back_soon;
+
+  /// No description provided for @app_still_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'App is still unavailable'**
+  String get app_still_unavailable;
+
+  /// No description provided for @server_connection_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Server connection error'**
+  String get server_connection_error;
 }
 
 class _AppLocalizationsDelegate

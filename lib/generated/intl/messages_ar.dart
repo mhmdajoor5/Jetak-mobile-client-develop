@@ -86,7 +86,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "apiInfoTitle": MessageLookupByLibrary.simpleMessage("معلومات الـ API"),
         "apiToken": MessageLookupByLibrary.simpleMessage(
             "التوكن: fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv"),
+        "app_maintenance_message": MessageLookupByLibrary.simpleMessage(
+            "التطبيق حالياً غير متاح. يرجى المحاولة لاحقاً."),
+        "app_maintenance_title":
+            MessageLookupByLibrary.simpleMessage("التطبيق غير متاح حالياً"),
         "app_settings": MessageLookupByLibrary.simpleMessage("إعدادات التطبيق"),
+        "app_still_unavailable":
+            MessageLookupByLibrary.simpleMessage("التطبيق لا يزال غير متاح"),
+        "app_will_be_back_soon": MessageLookupByLibrary.simpleMessage(
+            "سيتم إعادة تفعيل التطبيق قريباً"),
         "application_preferences":
             MessageLookupByLibrary.simpleMessage("تفضيلات التطبيق"),
         "back_to_edit_number":
@@ -117,6 +125,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "chats": MessageLookupByLibrary.simpleMessage("المحادثات"),
         "check_on_waze":
             MessageLookupByLibrary.simpleMessage("افحص الموقع على تطبيق Waze:"),
+        "checking_status":
+            MessageLookupByLibrary.simpleMessage("جاري التحقق..."),
         "checkout": MessageLookupByLibrary.simpleMessage("إتمام الشراء"),
         "chooseOrderType":
             MessageLookupByLibrary.simpleMessage("اختيار نوع الطلب"),
@@ -476,6 +486,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "restaurant_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("تم تحديث المطبخ بنجاح"),
         "restaurants": MessageLookupByLibrary.simpleMessage("المطاعم"),
+        "retry_button": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
         "reviews": MessageLookupByLibrary.simpleMessage("التعليقات"),
         "reviews_refreshed_successfully":
             MessageLookupByLibrary.simpleMessage("تم تحديث المراجعات بنجاح!"),
@@ -493,6 +504,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("اختر طريقة الدفع المفضلة"),
         "send_password_reset_link": MessageLookupByLibrary.simpleMessage(
             "ارسل رابط استعادة كلمة المرور"),
+        "server_connection_error":
+            MessageLookupByLibrary.simpleMessage("خطأ في الاتصال بالخادم"),
         "service_fee": MessageLookupByLibrary.simpleMessage("ضريبة الخدمة"),
         "settings": MessageLookupByLibrary.simpleMessage("الإعدادات"),
         "shopping_cart": MessageLookupByLibrary.simpleMessage("سلة التسوق"),

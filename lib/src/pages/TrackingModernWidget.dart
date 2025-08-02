@@ -4,10 +4,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 
 import '../../generated/l10n.dart';
 import '../controllers/tracking_controller.dart';
+import '../helpers/helper.dart';
 import '../models/route_argument.dart';
 
 class TrackingModernWidget extends StatefulWidget {
@@ -276,12 +278,12 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
 
   Future<void> loadMotorcycleIcon() async {
     try {
-      motorcycleIcon = await BitmapDescriptor.asset(
-        ImageConfiguration(size: Size(48, 48)),
-        'assets/img/pointer.png',
-      );
-      if (mounted) {
-        setState(() {});
+      final Uint8List? iconBytes = await Helper.getBytesFromAsset('assets/img/pointer.png', 48);
+      if (iconBytes != null) {
+        motorcycleIcon = BitmapDescriptor.fromBytes(iconBytes);
+        if (mounted) {
+          setState(() {});
+        }
       }
     } catch (e) {
       print("Error loading motorcycle icon: $e");

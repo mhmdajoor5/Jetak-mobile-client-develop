@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import '../../generated/l10n.dart';
 import '../controllers/home_controller.dart';
+import '../repository/settings_repository.dart' as settingRepo;
 
 class SplashScreen extends StatefulWidget {
   final HomeController con;
@@ -23,6 +25,9 @@ class _SplashScreenState extends StateMVC<SplashScreen> {
 
   Future<void> _loadData() async {
     try {
+      // التحقق من حالة التطبيق أولاً
+      await _checkAppStatus();
+      
       // Reset loading state to ensure fresh data load
       _con.resetDataLoading();
       
@@ -45,6 +50,30 @@ class _SplashScreenState extends StateMVC<SplashScreen> {
       if (mounted) {
         Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
       }
+    }
+  }
+
+  Future<void> _checkAppStatus() async {
+    try {
+      // تحميل الإعدادات من السيرفر
+      await settingRepo.initSettings();
+      
+      // التحقق من حالة التطبيق
+      if (!settingRepo.setting.value.appStatus) {
+        // التطبيق معطل، الانتقال لصفحة الصيانة
+        if (mounted) {
+          Navigator.of(context).pushReplacementNamed(
+            '/Maintenance',
+            arguments: settingRepo.setting.value.maintenanceMessage.isNotEmpty 
+                ? settingRepo.setting.value.maintenanceMessage 
+                : S.of(context).app_maintenance_message,
+          );
+        }
+        return;
+      }
+    } catch (e) {
+      print('Error checking app status: $e');
+      // في حالة الخطأ، نتابع التطبيق كالمعتاد
     }
   }
 

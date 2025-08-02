@@ -435,6 +435,13 @@
   "address_required": "العنوان مطلوب",
   "address_min_length": "العنوان يجب أن يكون 10 أحرف على الأقل",
   "address_max_length": "العنوان يجب أن يكون أقل من 200 حرف",
-  "please_correct_form_errors": "يرجى تصحيح الأخطاء في النموذج"
+  "please_correct_form_errors": "يرجى تصحيح الأخطاء في النموذج",
+  "app_maintenance_title": "التطبيق غير متاح حالياً",
+  "app_maintenance_message": "التطبيق حالياً غير متاح. يرجى المحاولة لاحقاً.",
+  "retry_button": "إعادة المحاولة",
+  "checking_status": "جاري التحقق...",
+  "app_will_be_back_soon": "سيتم إعادة تفعيل التطبيق قريباً",
+  "app_still_unavailable": "التطبيق لا يزال غير متاح",
+  "server_connection_error": "خطأ في الاتصال بالخادم"
 
 }

@@ -506,6 +506,13 @@
   "address_required": "Address is required",
   "address_min_length": "Address must be at least 10 characters",
   "address_max_length": "Address must be less than 200 characters",
-  "please_correct_form_errors": "Please correct the errors in the form"
+  "please_correct_form_errors": "Please correct the errors in the form",
+  "app_maintenance_title": "App Unavailable",
+  "app_maintenance_message": "The app is currently unavailable. Please try again later.",
+  "retry_button": "Retry",
+  "checking_status": "Checking...",
+  "app_will_be_back_soon": "The app will be back soon",
+  "app_still_unavailable": "App is still unavailable",
+  "server_connection_error": "Server connection error"
 
 }

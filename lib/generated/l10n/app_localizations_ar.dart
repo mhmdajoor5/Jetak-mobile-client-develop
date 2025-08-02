@@ -1470,4 +1470,26 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get please_correct_form_errors => 'يرجى تصحيح الأخطاء في النموذج';
+
+  @override
+  String get app_maintenance_title => 'التطبيق غير متاح حالياً';
+
+  @override
+  String get app_maintenance_message =>
+      'التطبيق حالياً غير متاح. يرجى المحاولة لاحقاً.';
+
+  @override
+  String get retry_button => 'إعادة المحاولة';
+
+  @override
+  String get checking_status => 'جاري التحقق...';
+
+  @override
+  String get app_will_be_back_soon => 'سيتم إعادة تفعيل التطبيق قريباً';
+
+  @override
+  String get app_still_unavailable => 'التطبيق لا يزال غير متاح';
+
+  @override
+  String get server_connection_error => 'خطأ في الاتصال بالخادم';
 }
