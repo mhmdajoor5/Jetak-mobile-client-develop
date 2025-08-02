@@ -95,15 +95,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "apiToken": MessageLookupByLibrary.simpleMessage(
             "Token: fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv"),
         "appLanguage": MessageLookupByLibrary.simpleMessage("App Language"),
-        "app_maintenance_message": MessageLookupByLibrary.simpleMessage(
-            "The app is currently unavailable. Please try again later."),
-        "app_maintenance_title":
-            MessageLookupByLibrary.simpleMessage("App Unavailable"),
         "app_settings": MessageLookupByLibrary.simpleMessage("App Settings"),
-        "app_still_unavailable":
-            MessageLookupByLibrary.simpleMessage("App is still unavailable"),
-        "app_will_be_back_soon":
-            MessageLookupByLibrary.simpleMessage("The app will be back soon"),
         "application_preferences":
             MessageLookupByLibrary.simpleMessage("Application Preferences"),
         "apply_filters": MessageLookupByLibrary.simpleMessage("Apply Filters"),
@@ -144,7 +136,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "change": MessageLookupByLibrary.simpleMessage("Change"),
         "chats": MessageLookupByLibrary.simpleMessage("Chats"),
         "check_on_waze": MessageLookupByLibrary.simpleMessage("Check on Waze:"),
-        "checking_status": MessageLookupByLibrary.simpleMessage("Checking..."),
         "checkout": MessageLookupByLibrary.simpleMessage("Checkout"),
         "chooseOrderType":
             MessageLookupByLibrary.simpleMessage("Choose order type"),
@@ -629,7 +620,6 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Restaurants near to your current location"),
         "restaurants_results":
             MessageLookupByLibrary.simpleMessage("Restaurants Results"),
-        "retry_button": MessageLookupByLibrary.simpleMessage("Retry"),
         "reviews": MessageLookupByLibrary.simpleMessage("Reviews"),
         "reviews_refreshed_successfully": MessageLookupByLibrary.simpleMessage(
             "Reviews refreshed successfully!"),
@@ -656,8 +646,6 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Select your preferred payment mode"),
         "send_password_reset_link":
             MessageLookupByLibrary.simpleMessage("Send link"),
-        "server_connection_error":
-            MessageLookupByLibrary.simpleMessage("Server connection error"),
         "service_fee": MessageLookupByLibrary.simpleMessage("Service fee"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "shopping": MessageLookupByLibrary.simpleMessage("Shopping"),

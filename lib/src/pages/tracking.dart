@@ -177,9 +177,9 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
                 SizedBox(height: 4),
                 Text("• Network connectivity issues"),
               ],
-              // style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              //   color: Colors.grey.shade600,
-              // ),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Colors.grey.shade600,
+              ),
             ),
           ),
           SizedBox(height: 20),

@@ -45,8 +45,6 @@ import 'src/controllers/home_controller.dart';
 import 'src/pages/new_address/AddressDetailsPage.dart';
 import 'src/pages/new_address/DeliveryAddressFormPage.dart';
 import 'src/models/address.dart';
-import 'src/pages/maintenance_page.dart';
-import 'generated/l10n.dart';
 
 class RouteGenerator {
   static final HomeController homeController = HomeController();
@@ -357,9 +355,6 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => HelpWidget());
       case '/Settings':
         return MaterialPageRoute(builder: (_) => SettingsWidget());
-      case '/Maintenance':
-        final String message = args is String ? args : S.current.app_maintenance_message;
-        return MaterialPageRoute(builder: (_) => MaintenancePage(message: message));
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

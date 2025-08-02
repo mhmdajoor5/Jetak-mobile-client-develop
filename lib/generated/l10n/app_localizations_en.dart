@@ -1493,26 +1493,4 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get please_correct_form_errors =>
       'Please correct the errors in the form';
-
-  @override
-  String get app_maintenance_title => 'App Unavailable';
-
-  @override
-  String get app_maintenance_message =>
-      'The app is currently unavailable. Please try again later.';
-
-  @override
-  String get retry_button => 'Retry';
-
-  @override
-  String get checking_status => 'Checking...';
-
-  @override
-  String get app_will_be_back_soon => 'The app will be back soon';
-
-  @override
-  String get app_still_unavailable => 'App is still unavailable';
-
-  @override
-  String get server_connection_error => 'Server connection error';
 }
