@@ -310,6 +310,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "For more details, please chat with our managers"),
         "forgot_password":
             MessageLookupByLibrary.simpleMessage("Forgot password?"),
+        "forgot_passwordd":
+            MessageLookupByLibrary.simpleMessage("Forgot password"),
         "fullAddress": MessageLookupByLibrary.simpleMessage("Full Address"),
         "full_address": MessageLookupByLibrary.simpleMessage("Full Address"),
         "full_name": MessageLookupByLibrary.simpleMessage("Full name"),
@@ -561,6 +563,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "paypal": MessageLookupByLibrary.simpleMessage("PayPal"),
         "paypal_payment":
             MessageLookupByLibrary.simpleMessage("PayPal Payment"),
+        "pending_payment":
+            MessageLookupByLibrary.simpleMessage("Pending Payment"),
         "phone": MessageLookupByLibrary.simpleMessage("Phone"),
         "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
         "pickup": MessageLookupByLibrary.simpleMessage("Pickup"),

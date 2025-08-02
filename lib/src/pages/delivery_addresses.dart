@@ -97,12 +97,6 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
               .headlineSmall
               ?.merge(TextStyle(letterSpacing: 1.3)),
         ),
-        actions: <Widget>[
-          ShoppingCartButtonWidget(
-            iconColor: Theme.of(context).hintColor,
-            labelColor: Theme.of(context).colorScheme.secondary,
-          ),
-        ],
       ),
       body: RefreshIndicator(
         onRefresh: _con.refreshAddresses,

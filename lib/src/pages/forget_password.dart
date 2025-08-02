@@ -29,7 +29,13 @@ class _ForgetPasswordWidgetState extends StateMVC<ForgetPasswordWidget> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/img/login.jpg', height: 180),
+                  // Image.asset('assets/img/login.jpg', height: 180),
+                  Text('${S.of(context).forgot_passwordd}',
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   SizedBox(height: 40),
 
                   TextFormField(

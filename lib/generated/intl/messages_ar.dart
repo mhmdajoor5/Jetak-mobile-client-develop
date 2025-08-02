@@ -229,6 +229,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "لمزيد من التفاصيل، يرجى الدردشة مع مديرينا"),
         "forgot_password":
             MessageLookupByLibrary.simpleMessage("هل نسيت كلمة المرور؟"),
+        "forgot_passwordd":
+            MessageLookupByLibrary.simpleMessage("هل نسيت كلمة المرور"),
         "fullAddress": MessageLookupByLibrary.simpleMessage("العنوان الكامل"),
         "full_address": MessageLookupByLibrary.simpleMessage("العنوان بالكامل"),
         "full_name": MessageLookupByLibrary.simpleMessage("الاسم الكامل"),
@@ -429,6 +431,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("إعدادات الدفع"),
         "paypal_payment":
             MessageLookupByLibrary.simpleMessage("الدفع بواسطة Paypal"),
+        "pending_payment":
+            MessageLookupByLibrary.simpleMessage("في انتظار الدفع"),
         "phone": MessageLookupByLibrary.simpleMessage("رقم الجوال"),
         "phoneNumber": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
         "pickup": MessageLookupByLibrary.simpleMessage("استلام"),
@@ -509,7 +513,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "streetCityCountry":
             MessageLookupByLibrary.simpleMessage("شارع، مدينة، دولة"),
         "submit": MessageLookupByLibrary.simpleMessage("ارسال"),
-        "subtotal": MessageLookupByLibrary.simpleMessage("مجموع الطلب"),
+        "subtotal": MessageLookupByLibrary.simpleMessage("المجموع الفرعي"),
         "swipeLeftTheNotificationToDeleteOrReadUnreadIt":
             MessageLookupByLibrary.simpleMessage(
                 "اسحب الإشعار إلى اليسار لحذفه أو تمييزه كمقروء/غير مقروء"),

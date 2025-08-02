@@ -50,17 +50,6 @@ class _RecentOrdersWidgetState extends StateMVC<RecentOrdersWidget> {
             ? EmptyOrdersWidget()
             : Column(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Text(
-                      "تم العثور على ${_con.recentOrders.length} طلب",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ),
                   Expanded(
                     child: ListView.separated(
           padding: EdgeInsets.all(16),

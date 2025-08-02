@@ -281,36 +281,94 @@ class Helper {
 
   static double getTotalOrderPrice(FoodOrder foodOrder) {
     double total = foodOrder.price;
-    foodOrder.extras.forEach((extra) {
-      total += extra.price != null ? extra.price : 0;
-    });
+    if (foodOrder.extras.isNotEmpty) {
+      foodOrder.extras.forEach((extra) {
+        total += extra.price != null ? extra.price : 0;
+      });
+    }
     total *= foodOrder.quantity;
     return total;
   }
 
   static double getOrderPrice(FoodOrder foodOrder) {
     double total = foodOrder.price;
-    foodOrder.extras.forEach((extra) {
-      total += extra.price != null ? extra.price : 0;
-    });
+    if (foodOrder.extras.isNotEmpty) {
+      foodOrder.extras.forEach((extra) {
+        total += extra.price != null ? extra.price : 0;
+      });
+    }
     return total;
   }
 
   static double getTaxOrder(Order order) {
-    double total = 0;
-    order.foodOrders.forEach((foodOrder) {
-      total += getTotalOrderPrice(foodOrder);
-    });
-    return order.tax * total / 100;
+    print('🔍 حساب الضريبة للطلب ${order.id}:');
+    print('   - عدد الأطعمة: ${order.foodOrders.length}');
+    print('   - نسبة الضريبة: ${order.tax}%');
+    
+    double foodTotal = 0;
+    if (order.foodOrders.isNotEmpty) {
+      order.foodOrders.forEach((foodOrder) {
+        double foodPrice = getTotalOrderPrice(foodOrder);
+        foodTotal += foodPrice;
+        print('   - سعر الطعام: $foodPrice');
+      });
+    } else {
+      print('   - ⚠️ لا توجد أطعمة في الطلب');
+    }
+    
+    double taxAmount = order.tax * foodTotal / 100;
+    print('   - إجمالي الطعام: $foodTotal');
+    print('   - مبلغ الضريبة: $taxAmount');
+    
+    return taxAmount;
+  }
+
+  static double getFoodTotalPrice(Order order) {
+    print('🔍 حساب إجمالي الطعام للطلب ${order.id}:');
+    print('   - عدد الأطعمة: ${order.foodOrders.length}');
+    
+    double foodTotal = 0;
+    if (order.foodOrders.isNotEmpty) {
+      order.foodOrders.forEach((foodOrder) {
+        double foodPrice = getTotalOrderPrice(foodOrder);
+        foodTotal += foodPrice;
+        print('   - سعر الطعام: $foodPrice');
+      });
+    } else {
+      print('   - ⚠️ لا توجد أطعمة في الطلب');
+    }
+    
+    print('   - إجمالي الطعام: $foodTotal');
+    return foodTotal;
   }
 
   static double getTotalOrdersPrice(Order order) {
-    double total = 0;
-    order.foodOrders.forEach((foodOrder) {
-      total += getTotalOrderPrice(foodOrder);
-    });
-    total += order.deliveryFee;
-    total += order.tax * total / 100;
+    print('🔍 حساب المجموع الكلي للطلب ${order.id}:');
+    print('   - عدد الأطعمة: ${order.foodOrders.length}');
+    print('   - نسبة الضريبة: ${order.tax}%');
+    print('   - رسوم التوصيل: ${order.deliveryFee}');
+    
+    double foodTotal = 0;
+    if (order.foodOrders.isNotEmpty) {
+      order.foodOrders.forEach((foodOrder) {
+        double foodPrice = getTotalOrderPrice(foodOrder);
+        foodTotal += foodPrice;
+        print('   - سعر الطعام: $foodPrice');
+      });
+    } else {
+      print('   - ⚠️ لا توجد أطعمة في الطلب');
+    }
+    
+    // حساب الضريبة على سعر الطعام فقط
+    double taxAmount = order.tax * foodTotal / 100;
+    
+    // المجموع الكلي = سعر الطعام + الضريبة + رسوم التوصيل
+    double total = foodTotal + taxAmount + order.deliveryFee;
+    
+    print('   - إجمالي الطعام: $foodTotal');
+    print('   - مبلغ الضريبة: $taxAmount');
+    print('   - المجموع الكلي: $total');
+    
     return total;
   }
 

@@ -5,6 +5,7 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 
 import '../helpers/helper.dart';
+import '../models/address.dart';
 import '../models/credit_card.dart';
 import '../models/order.dart';
 import '../models/order_status.dart';
@@ -286,11 +287,46 @@ Future<Order> addOrder(Order order, Payment payment) async {
   final client = new http.Client();
   Map params = order.toMap();
   params.addAll(_creditCard.toMap());
+  
+  // طباعة البيانات قبل الإرسال للتحقق
+  print('📤 البيانات المرسلة للباك إند:');
+  print('🔍 فحص حقل address:');
+  if (params.containsKey('address')) {
+    var addressValue = params['address'];
+    print('   - نوع البيانات: ${addressValue.runtimeType}');
+    print('   - القيمة: $addressValue');
+    if (addressValue is String) {
+      print('   - ✅ address هو String');
+    } else {
+      print('   - ❌ address ليس String! يجب أن يكون String');
+    }
+  } else {
+    print('   - ⚠️ حقل address غير موجود في البيانات');
+  }
+  
+  params.forEach((key, value) {
+    if (key == 'address') {
+      print('   - $key: "$value"'); // طباعة address كـ string
+    } else {
+      print('   - $key: $value');
+    }
+  });
+  
+  // طباعة البيانات النهائية قبل الإرسال
+  print('📤 البيانات النهائية قبل الإرسال للباك إند:');
+  print('   - JSON body: ${json.encode(params)}');
+  
   final response = await client.post(
     Uri.parse(url),
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(params),
   );
+  
+  // طباعة الاستجابة من الباك إند
+  print('📥 الاستجابة من الباك إند:');
+  print('   - Status Code: ${response.statusCode}');
+  print('   - Response Body: ${response.body}');
+  
   return Order.fromJSON(json.decode(response.body)['data']);
 }
 
@@ -313,6 +349,71 @@ Future<Order> cancelOrder(Order order) async {
 }
 
 
+
+// دالة منفصلة لإرسال بيانات العنوان فقط للباك إند
+Future<Map<String, dynamic>> sendDeliveryAddress(Address address) async {
+  User _user = userRepo.currentUser.value;
+  if (_user.apiToken == null) {
+    return {};
+  }
+  
+  final String _apiToken = 'api_token=${_user.apiToken}';
+  final String url = '${GlobalConfiguration().getValue('api_base_url')}delivery-address?$_apiToken';
+  
+      // تجميع المعلومات الإضافية في حقل instructions
+    List<String> additionalInfo = [];
+    if (address.description?.isNotEmpty == true) {
+      additionalInfo.add("Building: ${address.description}");
+    }
+    if (address.type?.isNotEmpty == true) {
+      additionalInfo.add("Entrance: ${address.type}");
+    }
+    if (address.entryMethod?.isNotEmpty == true) {
+      additionalInfo.add("Floor: ${address.entryMethod}");
+    }
+    if (address.instructions?.isNotEmpty == true) {
+      additionalInfo.add("Unit: ${address.instructions}");
+    }
+    if (address.label?.isNotEmpty == true) {
+      additionalInfo.add("Label: ${address.label}");
+    }
+    
+    Map<String, dynamic> addressData = {
+      "delivery_address_id": address.id,
+      "address": address.address ?? '',
+      "latitude": address.latitude,
+      "longitude": address.longitude,
+    };
+    
+    // إضافة instructions إذا كانت هناك معلومات إضافية
+    if (additionalInfo.isNotEmpty) {
+      addressData["instructions"] = additionalInfo.join(", ");
+    }
+  
+      print('📤 إرسال بيانات العنوان للباك إند:');
+    print('   - address: ${address.address}');
+    print('   - description (Building): ${address.description}');
+    print('   - type (Entrance): ${address.type}');
+    print('   - entryMethod (Floor): ${address.entryMethod}');
+    print('   - instructions (Unit): ${address.instructions}');
+    print('   - label: ${address.label}');
+    if (additionalInfo.isNotEmpty) {
+      print('   - instructions: ${additionalInfo.join(", ")}');
+    }
+    print('   - latitude: ${address.latitude}');
+    print('   - longitude: ${address.longitude}');
+  
+  final client = new http.Client();
+  final response = await client.post(
+    Uri.parse(url),
+    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    body: json.encode(addressData),
+  );
+  
+  print('📥 استجابة الباك إند: ${response.body}');
+  
+  return json.decode(response.body);
+}
 
 // احداثيات المستخدم الي في العنوان
 // وفي احداثياتت المطعم

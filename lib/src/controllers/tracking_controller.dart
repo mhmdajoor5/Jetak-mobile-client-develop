@@ -155,7 +155,7 @@ class TrackingController extends ControllerMVC {
     });
 
     try {
-      final result = await getTrackingOrderModel(orderId: '225');
+      final result = await getTrackingOrderModel(orderId: orderId);
       print("mElkerm Tracking Controller ✅ Tracking data fetched successfully");
 
       setState(() {
@@ -173,11 +173,13 @@ class TrackingController extends ControllerMVC {
       print(
         "mElkerm Tracking Controller ❌ Error fetching tracking data: $error",
       );
-      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
-        SnackBar(
-          content: Text(S.of(state!.context).verify_your_internet_connection),
-        ),
-      );
+      if (scaffoldKey.currentContext != null) {
+        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+          SnackBar(
+            content: Text(S.of(state!.context).verify_your_internet_connection),
+          ),
+        );
+      }
     }
   }
 

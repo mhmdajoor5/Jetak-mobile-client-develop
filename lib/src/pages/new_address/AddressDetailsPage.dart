@@ -471,13 +471,8 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                   Flexible(
                     child: ElevatedButton(
                       onPressed: () async {
-                        String fullAddress = [
-                          widget.address,
-                          buildingNameController.text,
-                          entranceController.text,
-                          floorController.text,
-                          unitController.text,
-                        ].where((part) => part.isNotEmpty).join(', ');
+                        // إرسال العنوان الأساسي فقط بدون المعلومات الإضافية
+                        String fullAddress = widget.address;
 
                         // الحصول على الإحداثيات من العنوان المحدد
                         double? latitude = widget.latitude;
@@ -516,31 +511,53 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                           }
                         }
 
+                        // تجميع المعلومات الإضافية في حقل instructions
+                        List<String> additionalInfo = [];
+                        if (buildingNameController.text.isNotEmpty) {
+                          additionalInfo.add("Building: ${buildingNameController.text}");
+                        }
+                        if (entranceController.text.isNotEmpty) {
+                          additionalInfo.add("Entrance: ${entranceController.text}");
+                        }
+                        if (floorController.text.isNotEmpty) {
+                          additionalInfo.add("Floor: ${floorController.text}");
+                        }
+                        if (unitController.text.isNotEmpty) {
+                          additionalInfo.add("Unit: ${unitController.text}");
+                        }
+                        if (instructionsController.text.isNotEmpty) {
+                          additionalInfo.add("Additional: ${instructionsController.text}");
+                        }
+                        
                         final address = Address(
                           address: fullAddress,
-                          description: instructionsController.text.isNotEmpty
-                              ? instructionsController.text
-                              : 'No description provided',
+                          description: buildingNameController.text.isNotEmpty 
+                              ? buildingNameController.text 
+                              : 'No building name provided',
                           latitude: latitude,
                           longitude: longitude,
                           isDefault: false,
                           type: selectedType,
                           entryMethod: selectedEntryMethod,
-                          instructions: instructionsController.text,
+                          instructions: additionalInfo.isNotEmpty ? additionalInfo.join(", ") : '',
                           label: selectedLabel,
                           userId: '0',
                         );
 
                         // طباعة بيانات العنوان قبل الإرسال
                         print('📍 بيانات العنوان في AddressDetailsPage:');
-                        print('- address: ${address.address}');
+                        print('- address (الأساسي): ${address.address}');
                         print('- latitude: ${address.latitude}');
                         print('- longitude: ${address.longitude}');
-                        print('- description: ${address.description}');
-                        print('- type: ${address.type}');
-                        print('- entryMethod: ${address.entryMethod}');
-                        print('- instructions: ${address.instructions}');
+                        print('- description (Building): ${address.description}');
+                        print('- type (Entrance): ${address.type}');
+                        print('- entryMethod (Floor): ${address.entryMethod}');
+                        print('- instructions (مجمعة): ${address.instructions}');
                         print('- label: ${address.label}');
+                        print('📍 المعلومات الإضافية المجمعة:');
+                        if (additionalInfo.isNotEmpty) {
+                          additionalInfo.forEach((info) => print('   - $info'));
+                        }
 
                         try {
                           print("🚀 بدء إرسال العنوان إلى API...");

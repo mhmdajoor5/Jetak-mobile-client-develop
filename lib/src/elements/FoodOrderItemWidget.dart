@@ -32,14 +32,16 @@ class FoodOrderItemWidget extends StatelessWidget {
               tag: heroTag + foodOrder.id,
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
-                child: CachedNetworkImage(
-                  height: 60,
-                  width: 60,
-                  fit: BoxFit.cover,
-                  imageUrl: foodOrder.food?.image?.thumb ?? '',
-                  placeholder: (context, url) => Image.asset('assets/img/loading.gif', fit: BoxFit.cover, height: 60, width: 60),
-                  errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, ),
-                ),
+                child: (foodOrder.food?.image?.thumb?.isNotEmpty == true)
+                    ? CachedNetworkImage(
+                        height: 60,
+                        width: 60,
+                        fit: BoxFit.cover,
+                        imageUrl: foodOrder.food!.image!.thumb!,
+                        placeholder: (context, url) => Image.asset('assets/img/loading.gif', fit: BoxFit.cover, height: 60, width: 60),
+                        errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, height: 60, width: 60),
+                      )
+                    : Image.asset('assets/img/logo.png', fit: BoxFit.fill, height: 60, width: 60),
               ),
             ),
             SizedBox(width: 15),

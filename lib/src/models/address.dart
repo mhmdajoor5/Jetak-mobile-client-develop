@@ -79,6 +79,14 @@ class Address {
 
   Address.fromJSON(Map<String, dynamic> jsonMap) {
     try {
+      print('🔍 تحليل بيانات العنوان:');
+      print('   - address raw: ${jsonMap['address']}');
+      print('   - description: ${jsonMap['description']}');
+      print('   - type: ${jsonMap['type']}');
+      print('   - entryMethod: ${jsonMap['entryMethod']}');
+      print('   - instructions: ${jsonMap['instructions']}');
+      print('   - label: ${jsonMap['label']}');
+      
       id = jsonMap['id'].toString();
       description = jsonMap['description'] != null ? jsonMap['description'].toString() : null;
       address = jsonMap['address'] != null ? jsonMap['address'] : null;
@@ -89,6 +97,8 @@ class Address {
       entryMethod = jsonMap['entryMethod'];
       instructions = jsonMap['instructions'];
       label = jsonMap['label'];
+      
+      print('   - العنوان النهائي: $address');
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: e.toString()));
     }

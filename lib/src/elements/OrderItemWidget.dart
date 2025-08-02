@@ -39,34 +39,74 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                 child: Theme(
                   data: theme,
                   child: ExpansionTile(
-                    
                     initiallyExpanded: widget.expanded,
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text('${S.of(context).order_id}: #${widget.order.id}'),
-                        Text(''),
+                        Text(
+                          '${S.of(context).order_id}: #${widget.order.id}',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 4),
                       ],
                     ),
-                    trailing: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Helper.getPrice(Helper.getTotalOrdersPrice(widget.order), context, style: Theme.of(context).textTheme.headlineLarge),
-                        Text(widget.order.payment.method, style: Theme.of(context).textTheme.bodySmall),
-                      ],
+                    trailing: Container(
+                      constraints: BoxConstraints(maxWidth: 120),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Flexible(
+                            child: Helper.getPrice(
+                              Helper.getTotalOrdersPrice(widget.order), 
+                              context, 
+                              style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontSize: 16)
+                            ),
+                          ),
+                          SizedBox(height: 2),
+                          Flexible(
+                            child: Text(
+                              widget.order.payment.method.isNotEmpty 
+                                  ? widget.order.payment.method 
+                                  : S.of(context).pending_payment ?? 'Pending Payment',
+                              style: Theme.of(context).textTheme.bodySmall,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     children: <Widget>[
-                      Column(
-                        children: List.generate(widget.order.foodOrders.length, (indexFood) {
-                          return FoodOrderItemWidget(heroTag: 'mywidget.orders', order: widget.order, foodOrder: widget.order.foodOrders.elementAt(indexFood));
-                        }),
+                      // طباعة معلومات الطلب للتحقق
+                      Builder(
+                        builder: (context) {
+                          print('🔍 عرض الطلب ${widget.order.id}:');
+                          print('   - عدد الأطعمة: ${widget.order.foodOrders.length}');
+                          print('   - إجمالي الطعام: ${Helper.getFoodTotalPrice(widget.order)}');
+                          print('   - الضريبة: ${Helper.getTaxOrder(widget.order)}');
+                          print('   - المجموع الكلي: ${Helper.getTotalOrdersPrice(widget.order)}');
+                          return SizedBox.shrink();
+                        },
                       ),
+                      if (widget.order.foodOrders.isNotEmpty)
+                        Column(
+                          children: List.generate(widget.order.foodOrders.length, (indexFood) {
+                            return FoodOrderItemWidget(heroTag: 'mywidget.orders', order: widget.order, foodOrder: widget.order.foodOrders.elementAt(indexFood));
+                          }),
+                        ),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 2, horizontal: 20),
                         child: Column(
                           children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Expanded(child: Text(S.of(context).subtotal ?? 'Subtotal', style: Theme.of(context).textTheme.bodyLarge)),
+                                Helper.getPrice(Helper.getFoodTotalPrice(widget.order), context, style: Theme.of(context).textTheme.titleMedium),
+                              ],
+                            ),
                             Row(
                               children: <Widget>[
                                 Expanded(child: Text(S.of(context).delivery_fee, style: Theme.of(context).textTheme.bodyLarge)),
@@ -79,10 +119,11 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                                 Helper.getPrice(Helper.getTaxOrder(widget.order), context, style: Theme.of(context).textTheme.titleMedium),
                               ],
                             ),
+                            Divider(),
                             Row(
                               children: <Widget>[
-                                Expanded(child: Text(S.of(context).total, style: Theme.of(context).textTheme.bodyLarge)),
-                                Helper.getPrice(Helper.getTotalOrdersPrice(widget.order), context, style: Theme.of(context).textTheme.headlineLarge),
+                                Expanded(child: Text(S.of(context).total, style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold))),
+                                Helper.getPrice(Helper.getTotalOrdersPrice(widget.order), context, style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ],
@@ -167,7 +208,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
           child: Text(
             widget.order.active ? widget.order.orderStatus.status : S.of(context).canceled,
             maxLines: 1,
-            overflow: TextOverflow.fade,
+            overflow: TextOverflow.ellipsis,
             softWrap: false,
             style: Theme.of(context).textTheme.bodySmall?.merge(TextStyle(height: 1, color: Theme.of(context).primaryColor)),
           ),

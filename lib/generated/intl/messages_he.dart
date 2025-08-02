@@ -279,6 +279,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "לפרטים נוספים, אנא שוחח עם המנהלים שלנו"),
         "forgot_password": MessageLookupByLibrary.simpleMessage("שכחת סיסמה?"),
+        "forgot_passwordd": MessageLookupByLibrary.simpleMessage("שכחת סיסמה"),
         "fullAddress": MessageLookupByLibrary.simpleMessage("כתובת מלאה"),
         "full_address": MessageLookupByLibrary.simpleMessage("כתובת מלאה"),
         "full_name": MessageLookupByLibrary.simpleMessage("שם מלא"),
@@ -505,6 +506,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paypal": MessageLookupByLibrary.simpleMessage("PayPal"),
         "paypal_payment":
             MessageLookupByLibrary.simpleMessage("תשלום ב-PayPal"),
+        "pending_payment": MessageLookupByLibrary.simpleMessage("תשلום בהמתנה"),
         "phone": MessageLookupByLibrary.simpleMessage("טלפון"),
         "phoneNumber": MessageLookupByLibrary.simpleMessage("מספר טלפון"),
         "pickup": MessageLookupByLibrary.simpleMessage("איסוף"),
@@ -603,7 +605,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "streetCityCountry":
             MessageLookupByLibrary.simpleMessage("רחוב, עיר, מדינה"),
         "submit": MessageLookupByLibrary.simpleMessage("שלח"),
-        "subtotal": MessageLookupByLibrary.simpleMessage("סכום חלקי"),
+        "subtotal": MessageLookupByLibrary.simpleMessage("סכום ביניים"),
         "swipeLeftTheNotificationToDeleteOrReadUnreadIt":
             MessageLookupByLibrary.simpleMessage(
                 "גרור שמאלה את ההתראה כדי למחוק אותה או לקרוא / לא לקרוא אותה"),
@@ -713,7 +715,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "what_they_say": MessageLookupByLibrary.simpleMessage("מה הם אומרים"),
         "work": MessageLookupByLibrary.simpleMessage("עבודה"),
         "writeEmailAndPassword": MessageLookupByLibrary.simpleMessage(
-            "היי 👋 כתוב את האימייל והסיסמה שלך 💁‍♂️"),
+            "כתוב את האימייל והסיסמה שלך 💁‍♂️"),
         "wrong_email_or_password": MessageLookupByLibrary.simpleMessage(
             "כתובת האימייל או הסיסמה שגויים"),
         "wrong_password": MessageLookupByLibrary.simpleMessage("הסיסמה שגויה"),

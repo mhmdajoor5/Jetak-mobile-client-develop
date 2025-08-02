@@ -302,6 +302,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get help__support => 'Help & Support';
 
   @override
+  String get pending_payment => 'Pending Payment';
+
+  @override
   String get light_mode => 'Light Mode';
 
   @override
@@ -998,6 +1001,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get forgot_password => 'Forgot password?';
+
+  @override
+  String get forgot_passwordd => 'Forgot password';
 
   @override
   String get signIn => 'Sign In';

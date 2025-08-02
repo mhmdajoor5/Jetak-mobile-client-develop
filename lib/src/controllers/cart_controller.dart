@@ -131,7 +131,7 @@ class CartController extends ControllerMVC {
               ? carts[0].food!.restaurant.deliveryFee
               : 0;
 
-      taxAmount = (subTotal + deliveryFee) * carts[0].food!.restaurant.defaultTax / 100;
+      taxAmount = subTotal * carts[0].food!.restaurant.defaultTax / 100;
       total = subTotal + taxAmount + deliveryFee;
       setState(() {});
     }

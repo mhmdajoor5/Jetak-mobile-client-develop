@@ -71,7 +71,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get orCheckoutWith => 'או בצע הזמנה עם';
 
   @override
-  String get subtotal => 'סכום חלקי';
+  String get subtotal => 'סכום ביניים';
 
   @override
   String get estimatedTime => 'זמן משוער:';
@@ -298,6 +298,9 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get help__support => 'עזרה ותמיכה';
+
+  @override
+  String get pending_payment => 'תשلום בהמתנה';
 
   @override
   String get light_mode => 'מצב אור';
@@ -982,6 +985,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get forgot_password => 'שכחת סיסמה?';
 
   @override
+  String get forgot_passwordd => 'שכחת סיסמה';
+
+  @override
   String get signIn => 'Sign In';
 
   @override
@@ -1339,8 +1345,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get hi => 'היי 👋';
 
   @override
-  String get writeEmailAndPassword =>
-      'היי 👋 כתוב את האימייל והסיסמה שלך 💁‍♂️';
+  String get writeEmailAndPassword => 'כתוב את האימייל והסיסמה שלך 💁‍♂️';
 
   @override
   String get providePhoneNumber => 'ספק לנו את מספר הטלפון שלך 🙅‍♂️';

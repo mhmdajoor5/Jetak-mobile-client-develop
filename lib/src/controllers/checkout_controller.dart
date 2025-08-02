@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:restaurantcustomer/src/models/address.dart';
 
 import '../../generated/l10n.dart';
 import '../models/cart.dart';
@@ -188,6 +189,20 @@ class CheckoutController extends CartController {
     }
     
     print('📍 تأكيد الإحداثيات قبل الإرسال: lat=${_order.deliveryAddress.latitude}, lng=${_order.deliveryAddress.longitude}');
+    
+    // اختبار طباعة العنوان كـ JSON
+    _order.printAddressAsJSON();
+    
+    // تجميع العنوان للطباعة
+    print('📍 العنوان المرسل:');
+    print('   - address: ${_order.deliveryAddress.address}');
+    print('   - description (Building): ${_order.deliveryAddress.description}');
+    print('   - type (Entrance): ${_order.deliveryAddress.type}');
+    print('   - entryMethod (Floor): ${_order.deliveryAddress.entryMethod}');
+    print('   - instructions (Unit): ${_order.deliveryAddress.instructions}');
+    print('   - label: ${_order.deliveryAddress.label}');
+    print('   - latitude: ${_order.deliveryAddress.latitude}');
+    print('   - longitude: ${_order.deliveryAddress.longitude}');
 
     orderRepo
         .addOrder(_order, payment!)
@@ -222,5 +237,60 @@ class CheckoutController extends CartController {
         ),
       );
     });
+  }
+
+  // دالة منفصلة لإرسال بيانات العنوان للباك إند
+  Map<String, dynamic> getDeliveryAddressData() {
+    Address address = settingRepo.deliveryAddress.value;
+    
+    if (address.isUnknown()) {
+      print('⚠️ تحذير: العنوان لا يحتوي على إحداثيات صحيحة');
+      return {};
+    }
+    
+    // تجميع المعلومات الإضافية في حقل instructions
+    List<String> additionalInfo = [];
+    if (address.description?.isNotEmpty == true) {
+      additionalInfo.add("Building: ${address.description}");
+    }
+    if (address.type?.isNotEmpty == true) {
+      additionalInfo.add("Entrance: ${address.type}");
+    }
+    if (address.entryMethod?.isNotEmpty == true) {
+      additionalInfo.add("Floor: ${address.entryMethod}");
+    }
+    if (address.instructions?.isNotEmpty == true) {
+      additionalInfo.add("Unit: ${address.instructions}");
+    }
+    if (address.label?.isNotEmpty == true) {
+      additionalInfo.add("Label: ${address.label}");
+    }
+    
+    Map<String, dynamic> addressData = {
+      "delivery_address_id": address.id,
+      "address": address.address ?? '',
+      "latitude": address.latitude,
+      "longitude": address.longitude,
+    };
+    
+    // إضافة instructions إذا كانت هناك معلومات إضافية
+    if (additionalInfo.isNotEmpty) {
+      addressData["instructions"] = additionalInfo.join(", ");
+    }
+    
+    print('📍 إرسال بيانات العنوان للباك إند:');
+    print('   - address: ${address.address}');
+    print('   - description (Building): ${address.description}');
+    print('   - type (Entrance): ${address.type}');
+    print('   - entryMethod (Floor): ${address.entryMethod}');
+    print('   - instructions (Unit): ${address.instructions}');
+    print('   - label: ${address.label}');
+    if (additionalInfo.isNotEmpty) {
+      print('   - instructions: ${additionalInfo.join(", ")}');
+    }
+    print('   - latitude: ${address.latitude}');
+    print('   - longitude: ${address.longitude}');
+    
+    return addressData;
   }
 }

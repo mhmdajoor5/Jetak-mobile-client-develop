@@ -71,7 +71,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get orCheckoutWith => 'Or Checkout With';
 
   @override
-  String get subtotal => 'مجموع الطلب';
+  String get subtotal => 'المجموع الفرعي';
 
   @override
   String get estimatedTime => 'الوقت المتوقع:';
@@ -299,6 +299,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get help__support => 'المساعدة';
+
+  @override
+  String get pending_payment => 'في انتظار الدفع';
 
   @override
   String get light_mode => 'الوضع الفاتح';
@@ -988,6 +991,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get forgot_password => 'هل نسيت كلمة المرور؟';
+
+  @override
+  String get forgot_passwordd => 'هل نسيت كلمة المرور';
 
   @override
   String get signIn => 'Sign In';

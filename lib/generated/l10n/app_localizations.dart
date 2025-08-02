@@ -664,6 +664,12 @@ abstract class AppLocalizations {
   /// **'Help & Support'**
   String get help__support;
 
+  /// No description provided for @pending_payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Payment'**
+  String get pending_payment;
+
   /// No description provided for @light_mode.
   ///
   /// In en, this message translates to:
@@ -1953,6 +1959,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Forgot password?'**
   String get forgot_password;
+
+  /// No description provided for @forgot_passwordd.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password'**
+  String get forgot_passwordd;
 
   /// No description provided for @signIn.
   ///

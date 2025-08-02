@@ -990,6 +990,16 @@ class S {
     );
   }
 
+  /// `Pending Payment`
+  String get pending_payment {
+    return Intl.message(
+      'Pending Payment',
+      name: 'pending_payment',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Light Mode`
   String get light_mode {
     return Intl.message(
@@ -3135,6 +3145,16 @@ class S {
     return Intl.message(
       'Forgot password?',
       name: 'forgot_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forgot password`
+  String get forgot_passwordd {
+    return Intl.message(
+      'Forgot password',
+      name: 'forgot_passwordd',
       desc: '',
       args: [],
     );
