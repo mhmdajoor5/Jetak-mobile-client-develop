@@ -11,6 +11,45 @@ import '../models/user.dart' as userModel;
 
 ValueNotifier<userModel.User> currentUser = ValueNotifier(userModel.User());
 
+// دالة التحقق من صحة العنوان
+String? validateAddress(Address address) {
+  // التحقق من وجود العنوان
+  if (address.address == null || address.address!.trim().isEmpty) {
+    return 'العنوان مطلوب';
+  }
+  
+  // التحقق من طول العنوان
+  if (address.address!.trim().length < 10) {
+    return 'العنوان يجب أن يكون 10 أحرف على الأقل';
+  }
+  
+  // التحقق من وجود الإحداثيات
+  if (address.latitude == null || address.longitude == null) {
+    return 'إحداثيات الموقع مطلوبة';
+  }
+  
+  // التحقق من صحة الإحداثيات
+  if (address.latitude! < -90 || address.latitude! > 90) {
+    return 'خط العرض غير صحيح';
+  }
+  
+  if (address.longitude! < -180 || address.longitude! > 180) {
+    return 'خط الطول غير صحيح';
+  }
+  
+  // التحقق من وجود وصف العنوان
+  if (address.description == null || address.description!.trim().isEmpty) {
+    return 'وصف العنوان مطلوب';
+  }
+  
+  // التحقق من طول وصف العنوان
+  if (address.description!.trim().length < 3) {
+    return 'وصف العنوان يجب أن يكون 3 أحرف على الأقل';
+  }
+  
+  return null; // العنوان صحيح
+}
+
 Future<userModel.User> login(userModel.User user) async {
   final String url = '${GlobalConfiguration().getValue('api_base_url')}login';
   final client = http.Client();
@@ -212,6 +251,12 @@ Future<Address> addAddress(Address address) async {
     throw Exception("User not authenticated");
   }
 
+  // التحقق من صحة العنوان قبل الإرسال
+  String? validationError = validateAddress(address);
+  if (validationError != null) {
+    throw Exception(validationError);
+  }
+
   final String _apiToken = 'api_token=${_user.apiToken}';
   address.userId = _user.id!;
   
@@ -259,6 +304,12 @@ Future<Address> updateAddress(Address address) async {
   userModel.User _user = currentUser.value;
   if (_user.apiToken == null) {
     throw Exception("User not authenticated");
+  }
+
+  // التحقق من صحة العنوان قبل الإرسال
+  String? validationError = validateAddress(address);
+  if (validationError != null) {
+    throw Exception(validationError);
   }
 
   final String _apiToken = 'api_token=${_user.apiToken}';

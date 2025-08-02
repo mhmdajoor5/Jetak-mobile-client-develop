@@ -425,6 +425,13 @@
   "sign": "تسجيل دخول",
   "km": "كم",
   "mi": "ميل",
-  "payment_will_be_cash_on_delivery": "سيتم الدفع نقداً عند التسليم"
+  "payment_will_be_cash_on_delivery": "سيتم الدفع نقداً عند التسليم",
+  "description_required": "الوصف مطلوب",
+  "description_min_length": "الوصف يجب أن يكون 3 أحرف على الأقل",
+  "description_max_length": "الوصف يجب أن يكون أقل من 50 حرف",
+  "address_required": "العنوان مطلوب",
+  "address_min_length": "العنوان يجب أن يكون 10 أحرف على الأقل",
+  "address_max_length": "العنوان يجب أن يكون أقل من 200 حرف",
+  "please_correct_form_errors": "يرجى تصحيح الأخطاء في النموذج"
 
 }

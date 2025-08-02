@@ -174,6 +174,20 @@ class CheckoutController extends CartController {
 
     print('📦 جاري إضافة الطلب...');
     print('📦 طريقة الدفع: ${payment?.method}');
+    
+    // التحقق النهائي من وجود الإحداثيات قبل الإرسال
+    if (_order.deliveryAddress.latitude == null || _order.deliveryAddress.longitude == null) {
+      print('❌ خطأ: العنوان لا يحتوي على إحداثيات صحيحة قبل الإرسال');
+      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+        SnackBar(content: Text('خطأ في بيانات العنوان. يرجى إعادة تحديد العنوان')),
+      );
+      setState(() {
+        loading = false;
+      });
+      return;
+    }
+    
+    print('📍 تأكيد الإحداثيات قبل الإرسال: lat=${_order.deliveryAddress.latitude}, lng=${_order.deliveryAddress.longitude}');
 
     orderRepo
         .addOrder(_order, payment!)

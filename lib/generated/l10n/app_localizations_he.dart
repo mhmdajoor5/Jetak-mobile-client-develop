@@ -1434,4 +1434,29 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get sign => 'שלנו';
+
+  @override
+  String get payment_will_be_cash_on_delivery =>
+      'התשלום יבוצע במזומן בעת המסירה';
+
+  @override
+  String get description_required => 'התיאור נדרש';
+
+  @override
+  String get description_min_length => 'התיאור חייב להיות לפחות 3 תווים';
+
+  @override
+  String get description_max_length => 'התיאור חייב להיות פחות מ-50 תווים';
+
+  @override
+  String get address_required => 'הכתובת נדרשת';
+
+  @override
+  String get address_min_length => 'הכתובת חייבת להיות לפחות 10 תווים';
+
+  @override
+  String get address_max_length => 'הכתובת חייבת להיות פחות מ-200 תווים';
+
+  @override
+  String get please_correct_form_errors => 'אנא תקן את השגיאות בטופס';
 }

@@ -2817,6 +2817,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign'**
   String get sign;
+
+  /// No description provided for @payment_will_be_cash_on_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment will be made in cash upon delivery'**
+  String get payment_will_be_cash_on_delivery;
+
+  /// No description provided for @description_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Description is required'**
+  String get description_required;
+
+  /// No description provided for @description_min_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Description must be at least 3 characters'**
+  String get description_min_length;
+
+  /// No description provided for @description_max_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Description must be less than 50 characters'**
+  String get description_max_length;
+
+  /// No description provided for @address_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Address is required'**
+  String get address_required;
+
+  /// No description provided for @address_min_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Address must be at least 10 characters'**
+  String get address_min_length;
+
+  /// No description provided for @address_max_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Address must be less than 200 characters'**
+  String get address_max_length;
+
+  /// No description provided for @please_correct_form_errors.
+  ///
+  /// In en, this message translates to:
+  /// **'Please correct the errors in the form'**
+  String get please_correct_form_errors;
 }
 
 class _AppLocalizationsDelegate

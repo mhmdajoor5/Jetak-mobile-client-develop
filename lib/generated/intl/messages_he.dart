@@ -66,6 +66,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "addressDetails": MessageLookupByLibrary.simpleMessage("פרטי הכתובת"),
         "addressTypeAndLabel":
             MessageLookupByLibrary.simpleMessage("סוג הכתובת ותווית"),
+        "address_max_length": MessageLookupByLibrary.simpleMessage(
+            "הכתובת חייבת להיות פחות מ-200 תווים"),
+        "address_min_length": MessageLookupByLibrary.simpleMessage(
+            "הכתובת חייבת להיות לפחות 10 תווים"),
+        "address_required":
+            MessageLookupByLibrary.simpleMessage("הכתובת נדרשת"),
         "addresses_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("כתובות רעננו בהצלחה"),
         "all": MessageLookupByLibrary.simpleMessage("הכל"),
@@ -199,6 +205,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "delivery_or_pickup":
             MessageLookupByLibrary.simpleMessage("משלוח או איסוף"),
         "description": MessageLookupByLibrary.simpleMessage("תיאור"),
+        "description_max_length": MessageLookupByLibrary.simpleMessage(
+            "התיאור חייב להיות פחות מ-50 תווים"),
+        "description_min_length": MessageLookupByLibrary.simpleMessage(
+            "התיאור חייב להיות לפחות 3 תווים"),
+        "description_required":
+            MessageLookupByLibrary.simpleMessage("התיאור נדרש"),
         "details": MessageLookupByLibrary.simpleMessage("פרטים"),
         "didntReceiveTheCodeResendit":
             MessageLookupByLibrary.simpleMessage("לא קיבלת את הקוד? שלח שוב"),
@@ -501,6 +513,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseEnterOrSelectAddress":
             MessageLookupByLibrary.simpleMessage("אנא הזן או בחר כתובת"),
         "pleaseWait": MessageLookupByLibrary.simpleMessage("אנא המתן..."),
+        "please_correct_form_errors":
+            MessageLookupByLibrary.simpleMessage("אנא תקן את השגיאות בטופס"),
         "please_enter_phone_number":
             MessageLookupByLibrary.simpleMessage("אנא הזן את מספר הטלפון שלך"),
         "please_fill_all_fields":

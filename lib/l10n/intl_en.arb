@@ -496,6 +496,13 @@
   "sign": "Sign",
   "km": "km",
   "mi": "mi",
-  "payment_will_be_cash_on_delivery": "Payment will be made in cash upon delivery"
+  "payment_will_be_cash_on_delivery": "Payment will be made in cash upon delivery",
+  "description_required": "Description is required",
+  "description_min_length": "Description must be at least 3 characters",
+  "description_max_length": "Description must be less than 50 characters",
+  "address_required": "Address is required",
+  "address_min_length": "Address must be at least 10 characters",
+  "address_max_length": "Address must be less than 200 characters",
+  "please_correct_form_errors": "Please correct the errors in the form"
 
 }

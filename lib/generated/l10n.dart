@@ -4589,6 +4589,76 @@ class S {
       args: [],
     );
   }
+
+  /// `Description is required`
+  String get description_required {
+    return Intl.message(
+      'Description is required',
+      name: 'description_required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description must be at least 3 characters`
+  String get description_min_length {
+    return Intl.message(
+      'Description must be at least 3 characters',
+      name: 'description_min_length',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description must be less than 50 characters`
+  String get description_max_length {
+    return Intl.message(
+      'Description must be less than 50 characters',
+      name: 'description_max_length',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Address is required`
+  String get address_required {
+    return Intl.message(
+      'Address is required',
+      name: 'address_required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Address must be at least 10 characters`
+  String get address_min_length {
+    return Intl.message(
+      'Address must be at least 10 characters',
+      name: 'address_min_length',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Address must be less than 200 characters`
+  String get address_max_length {
+    return Intl.message(
+      'Address must be less than 200 characters',
+      name: 'address_max_length',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please correct the errors in the form`
+  String get please_correct_form_errors {
+    return Intl.message(
+      'Please correct the errors in the form',
+      name: 'please_correct_form_errors',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

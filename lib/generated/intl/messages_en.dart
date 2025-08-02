@@ -74,6 +74,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Address Details"),
         "addressTypeAndLabel":
             MessageLookupByLibrary.simpleMessage("Address Type and Label"),
+        "address_max_length": MessageLookupByLibrary.simpleMessage(
+            "Address must be less than 200 characters"),
+        "address_min_length": MessageLookupByLibrary.simpleMessage(
+            "Address must be at least 10 characters"),
+        "address_required":
+            MessageLookupByLibrary.simpleMessage("Address is required"),
         "addresses_refreshed_successfuly": MessageLookupByLibrary.simpleMessage(
             "Addresses refreshed successfuly"),
         "all": MessageLookupByLibrary.simpleMessage("All"),
@@ -221,6 +227,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "delivery_or_pickup":
             MessageLookupByLibrary.simpleMessage("Delivery or Pickup"),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
+        "description_max_length": MessageLookupByLibrary.simpleMessage(
+            "Description must be less than 50 characters"),
+        "description_min_length": MessageLookupByLibrary.simpleMessage(
+            "Description must be at least 3 characters"),
+        "description_required":
+            MessageLookupByLibrary.simpleMessage("Description is required"),
         "details": MessageLookupByLibrary.simpleMessage("Details"),
         "didntReceiveTheCodeResendit": MessageLookupByLibrary.simpleMessage(
             "Didn\'t receive the code? Resend it"),
@@ -558,6 +570,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseEnterOrSelectAddress": MessageLookupByLibrary.simpleMessage(
             "Please enter or select an address"),
         "pleaseWait": MessageLookupByLibrary.simpleMessage("Please wait..."),
+        "please_correct_form_errors": MessageLookupByLibrary.simpleMessage(
+            "Please correct the errors in the form"),
         "please_enter_phone_number": MessageLookupByLibrary.simpleMessage(
             "Please enter your phone number"),
         "please_fill_all_fields": MessageLookupByLibrary.simpleMessage(

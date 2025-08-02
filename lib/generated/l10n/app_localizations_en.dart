@@ -1459,4 +1459,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sign => 'Sign';
+
+  @override
+  String get payment_will_be_cash_on_delivery =>
+      'Payment will be made in cash upon delivery';
+
+  @override
+  String get description_required => 'Description is required';
+
+  @override
+  String get description_min_length =>
+      'Description must be at least 3 characters';
+
+  @override
+  String get description_max_length =>
+      'Description must be less than 50 characters';
+
+  @override
+  String get address_required => 'Address is required';
+
+  @override
+  String get address_min_length => 'Address must be at least 10 characters';
+
+  @override
+  String get address_max_length => 'Address must be less than 200 characters';
+
+  @override
+  String get please_correct_form_errors =>
+      'Please correct the errors in the form';
 }

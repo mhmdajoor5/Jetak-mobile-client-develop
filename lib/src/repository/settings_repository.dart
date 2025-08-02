@@ -104,6 +104,9 @@ Future<Address> changeCurrentLocation(Address _address) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('delivery_address', json.encode(_address.toMap()));
     print('✅ تم حفظ العنوان في الإعدادات: ${_address.address} (lat: ${_address.latitude}, lng: ${_address.longitude})');
+    
+    // تحديث deliveryAddress.value أيضاً
+    deliveryAddress.value = _address;
   } else {
     print('⚠️ تحذير: محاولة حفظ عنوان بدون إحداثيات في الإعدادات');
   }
@@ -115,16 +118,18 @@ Future<Address> getCurrentLocation() async {
   //await prefs.clear();
   if (prefs.containsKey('delivery_address')) {
     String storedDeliveryAddress = await prefs.getString('delivery_address')!;
-    deliveryAddress.value = Address.fromJSON(json.decode(storedDeliveryAddress));
+    Address loadedAddress = Address.fromJSON(json.decode(storedDeliveryAddress));
     
     // التحقق من وجود الإحداثيات
-    if (deliveryAddress.value.latitude == null || deliveryAddress.value.longitude == null) {
+    if (loadedAddress.latitude == null || loadedAddress.longitude == null) {
       print('⚠️ العنوان المحفوظ في الإعدادات لا يحتوي على إحداثيات صحيحة');
       // إعادة تعيين عنوان فارغ
       deliveryAddress.value = Address.fromJSON({});
       return deliveryAddress.value;
     }
     
+    // تحديث deliveryAddress.value فقط إذا كانت الإحداثيات صحيحة
+    deliveryAddress.value = loadedAddress;
     print('✅ تم تحميل العنوان من الإعدادات: ${deliveryAddress.value.address} (lat: ${deliveryAddress.value.latitude}, lng: ${deliveryAddress.value.longitude})');
     return deliveryAddress.value;
   } else {

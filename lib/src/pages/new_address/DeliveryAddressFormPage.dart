@@ -34,6 +34,34 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
   String currentAddress = 'جاري تحديد موقعك...';
   bool locationLoaded = false;
 
+  // دالة التحقق من صحة الوصف
+  String? _validateDescription(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return S.of(context).description_required;
+    }
+    if (value.trim().length < 3) {
+      return S.of(context).description_min_length;
+    }
+    if (value.trim().length > 50) {
+      return S.of(context).description_max_length;
+    }
+    return null;
+  }
+
+  // دالة التحقق من صحة العنوان
+  String? _validateAddress(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return S.of(context).address_required;
+    }
+    if (value.trim().length < 10) {
+      return S.of(context).address_min_length;
+    }
+    if (value.trim().length > 200) {
+      return S.of(context).address_max_length;
+    }
+    return null;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -152,7 +180,13 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                       label: Text(S.of(context).description),
                       hintText: 'Home Address',
                       border: OutlineInputBorder(),
+                      errorMaxLines: 2,
                     ),
+                    validator: _validateDescription,
+                    onChanged: (value) {
+                      // إعادة التحقق عند التغيير
+                      setState(() {});
+                    },
                   ),
                   SizedBox(height: 20),
                   TextFormField(
@@ -161,19 +195,29 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                       label: Text(S.of(context).fullAddress),
                       hintText: 'Street, City, Country',
                       border: OutlineInputBorder(),
+                      errorMaxLines: 2,
                     ),
+                    validator: _validateAddress,
+                    onChanged: (value) {
+                      // إعادة التحقق عند التغيير
+                      setState(() {});
+                    },
                   ),
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () async {
-                      if (fullAddressController.text.trim().isEmpty) {
+                      // التحقق من صحة النموذج
+                      if (!_formKey.currentState!.validate()) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(S.of(context).pleaseEnterOrSelectAddress)),
+                                                  SnackBar(
+                          content: Text(S.of(context).please_correct_form_errors),
+                          backgroundColor: Colors.red,
+                        ),
                         );
                         return;
                       }
 
-                      _address.description = descriptionController.text;
+                      _address.description = descriptionController.text.trim();
                       _address.address = fullAddressController.text.trim();
                       _address.isDefault = isDefault;
 

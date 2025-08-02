@@ -1440,4 +1440,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get sign => 'تسجيل دخول';
+
+  @override
+  String get payment_will_be_cash_on_delivery => 'سيتم الدفع نقداً عند التسليم';
+
+  @override
+  String get description_required => 'الوصف مطلوب';
+
+  @override
+  String get description_min_length => 'الوصف يجب أن يكون 3 أحرف على الأقل';
+
+  @override
+  String get description_max_length => 'الوصف يجب أن يكون أقل من 50 حرف';
+
+  @override
+  String get address_required => 'العنوان مطلوب';
+
+  @override
+  String get address_min_length => 'العنوان يجب أن يكون 10 أحرف على الأقل';
+
+  @override
+  String get address_max_length => 'العنوان يجب أن يكون أقل من 200 حرف';
+
+  @override
+  String get please_correct_form_errors => 'يرجى تصحيح الأخطاء في النموذج';
 }

@@ -467,6 +467,13 @@
   "sign":"שלנו",
   "km": "ק\"מ",
   "mi": "מייל",
-  "payment_will_be_cash_on_delivery": "התשלום יבוצע במזומן בעת המסירה"
+  "payment_will_be_cash_on_delivery": "התשלום יבוצע במזומן בעת המסירה",
+  "description_required": "התיאור נדרש",
+  "description_min_length": "התיאור חייב להיות לפחות 3 תווים",
+  "description_max_length": "התיאור חייב להיות פחות מ-50 תווים",
+  "address_required": "הכתובת נדרשת",
+  "address_min_length": "הכתובת חייבת להיות לפחות 10 תווים",
+  "address_max_length": "הכתובת חייבת להיות פחות מ-200 תווים",
+  "please_correct_form_errors": "אנא תקן את השגיאות בטופס"
 
 }

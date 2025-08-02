@@ -32,7 +32,18 @@ class DeliveryAddressDialog {
                       keyboardType: TextInputType.text,
                       decoration: getInputDecoration(hintText: S.of(context).home_address, labelText: S.of(context).description),
                       initialValue: address.description?.isNotEmpty == true ? address.description : null,
-                      validator: (input) => (input == null || input.trim().isEmpty) ? 'Not valid address description' : null,
+                      validator: (input) {
+                        if (input == null || input.trim().isEmpty) {
+                          return S.of(context).description_required;
+                        }
+                        if (input.trim().length < 3) {
+                          return S.of(context).description_min_length;
+                        }
+                        if (input.trim().length > 50) {
+                          return S.of(context).description_max_length;
+                        }
+                        return null;
+                      },
                       onSaved: (input) => address.description = input ?? '',
                     ),
                   ),
@@ -43,7 +54,18 @@ class DeliveryAddressDialog {
                       keyboardType: TextInputType.text,
                       decoration: getInputDecoration(hintText: S.of(context).hint_full_address, labelText: S.of(context).full_address),
                       initialValue: address.address?.isNotEmpty == true ? address.address : null,
-                      validator: (input) => (input == null || input.trim().isEmpty) ? S.of(context).notValidAddress : null,
+                      validator: (input) {
+                        if (input == null || input.trim().isEmpty) {
+                          return S.of(context).address_required;
+                        }
+                        if (input.trim().length < 10) {
+                          return S.of(context).address_min_length;
+                        }
+                        if (input.trim().length > 200) {
+                          return S.of(context).address_max_length;
+                        }
+                        return null;
+                      },
                       onSaved: (input) => address.address = input ?? '',
                     ),
                   ),

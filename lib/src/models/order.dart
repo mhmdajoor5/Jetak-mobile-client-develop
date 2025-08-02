@@ -72,8 +72,17 @@ class Order {
       "order_type": orderType,
     };
 
+    // إرسال بيانات العنوان مباشرة بدلاً من ID فقط
     if (!deliveryAddress.isUnknown()) {
       map["delivery_address_id"] = deliveryAddress.id;
+      // إرسال الإحداثيات مباشرة للباك إند
+      map["latitude"] = deliveryAddress.latitude;
+      map["longitude"] = deliveryAddress.longitude;
+      map["address"] = deliveryAddress.address;
+      map["description"] = deliveryAddress.description;
+      print('📍 إرسال إحداثيات العنوان للباك إند: lat=${deliveryAddress.latitude}, lng=${deliveryAddress.longitude}');
+    } else {
+      print('⚠️ تحذير: العنوان لا يحتوي على إحداثيات صحيحة');
     }
 
     return map;

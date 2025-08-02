@@ -68,6 +68,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تفاصيل العنوان"),
         "addressTypeAndLabel":
             MessageLookupByLibrary.simpleMessage("نوع العنوان والوسم"),
+        "address_max_length": MessageLookupByLibrary.simpleMessage(
+            "العنوان يجب أن يكون أقل من 200 حرف"),
+        "address_min_length": MessageLookupByLibrary.simpleMessage(
+            "العنوان يجب أن يكون 10 أحرف على الأقل"),
+        "address_required":
+            MessageLookupByLibrary.simpleMessage("العنوان مطلوب"),
         "addresses_refreshed_successfuly":
             MessageLookupByLibrary.simpleMessage("تم تحديث العناوين بنجاح"),
         "already_logged_in":
@@ -155,6 +161,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("عناوين التوصيل"),
         "delivery_fee": MessageLookupByLibrary.simpleMessage("رسوم التوصيل"),
         "description": MessageLookupByLibrary.simpleMessage("الوصف"),
+        "description_max_length": MessageLookupByLibrary.simpleMessage(
+            "الوصف يجب أن يكون أقل من 50 حرف"),
+        "description_min_length": MessageLookupByLibrary.simpleMessage(
+            "الوصف يجب أن يكون 3 أحرف على الأقل"),
+        "description_required":
+            MessageLookupByLibrary.simpleMessage("الوصف مطلوب"),
         "didntReceiveTheCodeResendit":
             MessageLookupByLibrary.simpleMessage("لم يصلك الرمز؟ أعد الإرسال"),
         "discount": MessageLookupByLibrary.simpleMessage("خصم"),
@@ -423,6 +435,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseEnterOrSelectAddress":
             MessageLookupByLibrary.simpleMessage("يرجى إدخال أو اختيار عنوان"),
         "pleaseWait": MessageLookupByLibrary.simpleMessage("يرجى الانتظار..."),
+        "please_correct_form_errors": MessageLookupByLibrary.simpleMessage(
+            "يرجى تصحيح الأخطاء في النموذج"),
         "please_enter_phone_number":
             MessageLookupByLibrary.simpleMessage("يرجى إدخال رقم الهاتف"),
         "please_fill_all_fields": MessageLookupByLibrary.simpleMessage(
