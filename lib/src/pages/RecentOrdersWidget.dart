@@ -48,18 +48,35 @@ class _RecentOrdersWidgetState extends StateMVC<RecentOrdersWidget> {
             .recent_orders)),
         body: _con.recentOrders.isEmpty
             ? EmptyOrdersWidget()
-            : ListView.separated(
+            : Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Text(
+                      "تم العثور على ${_con.recentOrders.length} طلب",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.separated(
           padding: EdgeInsets.all(16),
           itemCount: _con.recentOrders.length,
           separatorBuilder: (_, __) => SizedBox(height: 20),
-          itemBuilder: (_, index) {
+                                itemBuilder: (_, index) {
             var order = _con.recentOrders[index];
             return OrderItemWidget(
               expanded: index == 0,
               order: order,
             );
           },
-        ),
+                    ),
+                  ),
+                ],
+              ),
       ),
     );
   }

@@ -15,6 +15,11 @@ class ProfileController extends ControllerMVC {
   }
 
   void listenForRecentOrders({String? message}) async {
+    print("🚀 بدء جلب الطلبات من API...");
+    // مسح القائمة السابقة
+    setState(() {
+      recentOrders.clear();
+    });
     final Stream<Order> stream = await getRecentOrders();
     stream.listen((Order _order) {
       print("Order User Name :"+_order.user.firstName.toString());
@@ -29,6 +34,7 @@ class ProfileController extends ControllerMVC {
     //   ));
     // },
         onDone: () {
+      print("✅ تم جلب ${recentOrders.length} طلب بنجاح");
       if (message != null) {
         ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
           content: Text(message),

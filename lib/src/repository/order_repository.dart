@@ -64,7 +64,7 @@ Future<Stream<Order>> getRecentOrders() async {
       // 'searchFields': 'user.id:=',
       'orderBy': 'updated_at',
       'sortedBy': 'desc',
-      'limit': '2',
+      // 'limit': '1',
     };
     
     // Build URI with query parameters
@@ -72,6 +72,8 @@ Future<Stream<Order>> getRecentOrders() async {
     final String url = uri.toString();
     
     print("🌐 Request URL: $url");
+    print("📋 Query parameters: $queryParams");
+    print("✅ تم إزالة limit - سيتم جلب جميع الطلبات");
 
     // Create HTTP client with timeout
     final client = http.Client();
@@ -194,12 +196,16 @@ Future<Stream<Order>> getRecentOrdersWithRecovery() async {
       'searchFields': 'user.id:=',
       'orderBy': 'updated_at',
       'sortedBy': 'desc',
-      'limit': '20',
+      // تم إزالة limit لجلب جميع الطلبات
     };
     
     // Build URI with query parameters
     final Uri uri = Uri.parse(endpointUrl).replace(queryParameters: queryParams);
     final String url = uri.toString();
+    
+    print("🌐 Request URL (Recovery): $url");
+    print("📋 Query parameters (Recovery): $queryParams");
+    print("✅ تم إزالة limit - سيتم جلب جميع الطلبات");
 
     final client = http.Client();
     
