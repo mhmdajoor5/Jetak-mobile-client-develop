@@ -40,13 +40,17 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
 
   // Enhanced method to get the route polyline with better error handling
   _getPolyline() async {
+    print("=== Starting Route Calculation ===");
+    print("Order ID: ${_con.order.id}");
+    print("Food Orders Count: ${_con.order.foodOrders.length}");
+    print("Current polylines count: ${polylines.length}");
+    print("Current polyline coordinates count: ${polylineCoordinates.length}");
+    
     try {
       setState(() {
         _isLoadingRoute = true;
         _routeError = null;
       });
-
-      print("=== Starting Route Calculation ===");
       
       // تحديث إحداثيات المطعم والمستخدم في الـ controller أولاً
       _updateControllerCoordinates();
@@ -59,13 +63,26 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
 
       try {
         if (_con.order.foodOrders.isNotEmpty) {
+          print("First food order restaurant data:");
+          print("  - Restaurant name: ${_con.order.foodOrders[0].food?.restaurant.name}");
+          print("  - Raw latitude: ${_con.order.foodOrders[0].food?.restaurant.latitude}");
+          print("  - Raw longitude: ${_con.order.foodOrders[0].food?.restaurant.longitude}");
+          
           restaurantLat = double.tryParse(
             _con.order.foodOrders[0].food?.restaurant.latitude ?? '',
           );
           restaurantLng = double.tryParse(
             _con.order.foodOrders[0].food?.restaurant.longitude ?? '',
           );
+        } else {
+          print("❌ No food orders available");
         }
+        
+        print("Delivery address data:");
+        print("  - Address: ${_con.order.deliveryAddress.address}");
+        print("  - Raw latitude: ${_con.order.deliveryAddress.latitude}");
+        print("  - Raw longitude: ${_con.order.deliveryAddress.longitude}");
+        
         clientLat = _con.order.deliveryAddress.latitude;
         clientLng = _con.order.deliveryAddress.longitude;
       } catch (e) {
@@ -99,6 +116,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       await _testDirectionsAPI(restaurantLat!, restaurantLng!, clientLat!, clientLng!);
 
       // If test passes, proceed with polyline points
+      print("Calling polylinePoints.getRouteBetweenCoordinates...");
       final result = await polylinePoints.getRouteBetweenCoordinates(
         googleApiKey: _apiKey,
         request: PolylineRequest(
@@ -116,6 +134,8 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
 
       print("Polyline API response received. Status: ${result.status}");
       print("Points count: ${result.points.length}");
+      print("Error message: ${result.errorMessage}");
+      print("Is successful: ${result.status == 'OK'}");
 
       if (result.status == null || result.status!.isEmpty) {
         throw Exception("Empty status from Directions API");
@@ -150,15 +170,21 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         throw Exception("No route points received despite OK status");
       }
 
+      print("Converting ${result.points.length} points to LatLng...");
       polylineCoordinates = result.points
           .map((point) => LatLng(point.latitude, point.longitude))
           .toList();
 
       print("Successfully got ${polylineCoordinates.length} route points");
+      print("First point: ${polylineCoordinates.isNotEmpty ? polylineCoordinates.first : 'N/A'}");
+      print("Last point: ${polylineCoordinates.isNotEmpty ? polylineCoordinates.last : 'N/A'}");
+      print("Calling _addPolyline()...");
       _addPolyline();
 
     } catch (e) {
-      print("Error in _getPolyline: $e");
+      print("❌ Error in _getPolyline: $e");
+      print("Error type: ${e.runtimeType}");
+      print("Error details: ${e.toString()}");
       setState(() {
         _routeError = e.toString();
       });
@@ -181,6 +207,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     } finally {
       if (mounted) {
         setState(() => _isLoadingRoute = false);
+        print("Route calculation completed. Loading: false");
       }
     }
   }
@@ -192,7 +219,12 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         "&destination=$clientLat,$clientLng"
         "&key=$_apiKey";
 
-    print("Testing Directions API: $url");
+    print("=== Testing Directions API ===");
+    print("URL: $url");
+    print("Parameters:");
+    print("  - Origin: $restaurantLat, $restaurantLng");
+    print("  - Destination: $clientLat, $clientLng");
+    print("  - API Key: ${_apiKey.substring(0, 10)}...");
 
     try {
       final response = await http.get(Uri.parse(url)).timeout(
@@ -200,21 +232,31 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         onTimeout: () => throw Exception("Request timeout"),
       );
 
-      print("Direct API Response Status: ${response.statusCode}");
+      print("HTTP Response Status: ${response.statusCode}");
+      print("Response Body Length: ${response.body.length}");
       
       if (response.statusCode != 200) {
+        print("❌ HTTP Error: ${response.statusCode}");
+        print("Response Body: ${response.body}");
         throw Exception("HTTP ${response.statusCode}: ${response.body}");
       }
 
       final data = jsonDecode(response.body);
-      print("Direct API Response Status: ${data['status']}");
+      print("API Response Status: ${data['status']}");
       
       if (data['status'] != 'OK') {
         String errorMsg = data['error_message'] ?? "Unknown API error";
+        print("❌ API Error: ${data['status']} - $errorMsg");
         throw Exception("Directions API Error: ${data['status']} - $errorMsg");
       }
 
       print("✅ Direct API test successful");
+      print("Routes count: ${data['routes']?.length ?? 0}");
+      
+      if (data['routes'] != null && data['routes'].isNotEmpty) {
+        final route = data['routes'][0];
+        print("First route overview_polyline: ${route['overview_polyline']?['points']?.substring(0, 50)}...");
+      }
       
     } catch (e) {
       print("❌ Direct API test failed: $e");
@@ -224,9 +266,20 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
 
   // Method to add polyline to the map
   _addPolyline() {
+    print("=== Adding Polyline to Map ===");
+    print("Polyline coordinates count: ${polylineCoordinates.length}");
+    print("Current polylines count: ${polylines.length}");
+    
     try {
+      
       if (polylineCoordinates.isEmpty) {
         throw Exception("No coordinates to draw polyline");
+      }
+
+      // طباعة أول وآخر نقطة في المسار
+      if (polylineCoordinates.isNotEmpty) {
+        print("First point: ${polylineCoordinates.first}");
+        print("Last point: ${polylineCoordinates.last}");
       }
 
       final id = PolylineId("route_${DateTime.now().millisecondsSinceEpoch}");
@@ -239,25 +292,38 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         patterns: [], // Solid line
       );
 
+      print("Created polyline with ID: $id");
+      print("Polyline points count: ${polyline.points.length}");
+
       setState(() {
         polylines = {id: polyline}; // Replace existing polylines
+        print("Updated polylines set. Current count: ${polylines.length}");
+        print("Polyline ID: $id");
+        print("Polyline color: ${polyline.color}");
+        print("Polyline width: ${polyline.width}");
+        print("Polyline points count: ${polyline.points.length}");
       });
 
       // Zoom to fit the route with some delay to ensure map is ready
       Future.delayed(Duration(milliseconds: 500), () {
         if (_mapController != null && polylineCoordinates.isNotEmpty) {
+          print("Zooming to fit polyline bounds");
           _mapController!.animateCamera(
             CameraUpdate.newLatLngBounds(
               _boundsFromLatLngList(polylineCoordinates),
               100.0, // increased padding
             ),
           );
+        } else {
+          print("⚠️ Cannot zoom: mapController=${_mapController != null}, coordinates=${polylineCoordinates.isNotEmpty}");
         }
       });
 
       print("✅ Polyline added successfully with ${polylineCoordinates.length} points");
+      print("Final polylines count: ${polylines.length}");
     } catch (e) {
       print("❌ Error in _addPolyline: $e");
+      print("Error details: ${e.toString()}");
     }
   }
 
@@ -284,16 +350,30 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
   @override
   void initState() {
     super.initState();
+    print("=== TrackingModernWidget initState ===");
+    print("Route Argument ID: ${widget.routeArgument?.id}");
+    
     if (widget.routeArgument != null && widget.routeArgument!.id != null) {
+      print("Starting order tracking for ID: ${widget.routeArgument!.id}");
       _con.listenForOrder(orderId: widget.routeArgument!.id!);
       _con.getOrderDetailsTracking(orderId: widget.routeArgument!.id!);
+    } else {
+      print("❌ No route argument or ID provided");
     }
+    
     loadMotorcycleIcon();
+    
     // Delay route calculation to ensure order data is loaded
+    print("Scheduling route calculation in 2 seconds...");
     Future.delayed(Duration(milliseconds: 2000), () {
       if (mounted) {
+        print("Executing delayed route calculation...");
+        print("Order ID: ${_con.order.id}");
+        print("Food Orders Count: ${_con.order.foodOrders.length}");
         _updateControllerCoordinates();
         _getPolyline();
+      } else {
+        print("Widget not mounted, skipping route calculation");
       }
     });
   }
@@ -301,8 +381,14 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
   // دالة لتحديث إحداثيات المطعم والمستخدم في الـ controller
   void _updateControllerCoordinates() {
     try {
+      print("=== Updating Controller Coordinates ===");
+      
       // استخراج إحداثيات المطعم من الطلب
       if (_con.order.foodOrders.isNotEmpty) {
+        print("Processing restaurant coordinates...");
+        print("  - Raw latitude: ${_con.order.foodOrders[0].food?.restaurant.latitude}");
+        print("  - Raw longitude: ${_con.order.foodOrders[0].food?.restaurant.longitude}");
+        
         double? restaurantLat = double.tryParse(
           _con.order.foodOrders[0].food?.restaurant.latitude ?? '',
         );
@@ -310,25 +396,46 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
           _con.order.foodOrders[0].food?.restaurant.longitude ?? '',
         );
         
+        print("  - Parsed latitude: $restaurantLat");
+        print("  - Parsed longitude: $restaurantLng");
+        
         if (restaurantLat != null && restaurantLng != null && 
             restaurantLat != 0.0 && restaurantLng != 0.0) {
           _con.restaurantLocation = LatLng(restaurantLat, restaurantLng);
           print("✅ Updated restaurant location: $_con.restaurantLocation");
+        } else {
+          print("⚠️ Restaurant coordinates invalid or zero");
         }
+      } else {
+        print("❌ No food orders available for restaurant coordinates");
       }
       
       // استخراج إحداثيات العميل من العنوان
+      print("Processing client coordinates...");
+      print("  - Raw latitude: ${_con.order.deliveryAddress.latitude}");
+      print("  - Raw longitude: ${_con.order.deliveryAddress.longitude}");
+      
       double? clientLat = _con.order.deliveryAddress.latitude;
       double? clientLng = _con.order.deliveryAddress.longitude;
+      
+      print("  - Parsed latitude: $clientLat");
+      print("  - Parsed longitude: $clientLng");
       
       if (clientLat != null && clientLng != null && 
           clientLat != 0.0 && clientLng != 0.0) {
         _con.clientLocation = LatLng(clientLat, clientLng);
         print("✅ Updated client location: $_con.clientLocation");
+      } else {
+        print("⚠️ Client coordinates invalid or zero");
       }
+      
+      print("=== Controller Coordinates Update Complete ===");
+      print("Final restaurant location: $_con.restaurantLocation");
+      print("Final client location: $_con.clientLocation");
       
     } catch (e) {
       print("❌ Error updating coordinates: $e");
+      print("Error details: ${e.toString()}");
     }
   }
 
@@ -356,7 +463,13 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     print('Address: ${_con.order.deliveryAddress.address}');
 
     // Show loading screen if order data is not ready
+    print("=== Building Tracking Widget ===");
+    print("Order ID: ${_con.order.id}");
+    print("Food Orders Count: ${_con.order.foodOrders.length}");
+    print("Order Status: ${_con.order.orderStatus.status}");
+    
     if (_con.order.id == null || _con.order.foodOrders.isEmpty) {
+      print("❌ Order data not ready, showing loading screen");
       return Scaffold(
         // appBar: _buildAppBar(),
         body: Center(
@@ -379,6 +492,8 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         ),
       );
     }
+    
+    print("✅ Order data ready, building map");
 
     // Extract coordinates with better error handling
     double? restaurantLat;
@@ -422,12 +537,17 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     print("✅ Showing map with available coordinates:");
     print("   - Restaurant coordinates: lat=$restaurantLat, lng=$restaurantLng (available: $hasRestaurantCoords)");
     print("   - Client coordinates: lat=$clientLat, lng=$clientLng (available: $hasClientCoords)");
+    print("   - Polylines count: ${polylines.length}");
+    print("   - Polyline coordinates count: ${polylineCoordinates.length}");
 
     // Build markers - بناء العلامات المتوفرة فقط
     Set<Marker> markers = {};
     
+    print("Building markers...");
+    
     // Add restaurant marker if coordinates are available
     if (hasRestaurantCoords) {
+      print("Adding restaurant marker at: $restaurantLat, $restaurantLng");
       if (motorcycleIcon != null) {
         markers.add(
           Marker(
@@ -447,10 +567,13 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
           ),
         );
       }
+    } else {
+      print("❌ Restaurant coordinates not available for marker");
     }
 
     // Add client marker if coordinates are available
     if (hasClientCoords) {
+      print("Adding client marker at: $clientLat, $clientLng");
       markers.add(
         Marker(
           markerId: MarkerId('client'),
@@ -459,11 +582,17 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         ),
       );
+    } else {
+      print("❌ Client coordinates not available for marker");
     }
+    
+    print("Total markers created: ${markers.length}");
 
     // Calculate camera position based on available coordinates
     LatLng cameraTarget;
     double zoom = 12;
+    
+    print("Calculating camera position...");
     
     if (hasRestaurantCoords && hasClientCoords) {
       // Both coordinates available - center between them
@@ -472,15 +601,22 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         (restaurantLng! + clientLng!) / 2,
       );
       zoom = 12;
+      print("✅ Camera centered between restaurant and client");
     } else if (hasRestaurantCoords) {
       // Only restaurant coordinates available
       cameraTarget = LatLng(restaurantLat!, restaurantLng!);
       zoom = 14;
+      print("⚠️ Camera centered on restaurant only");
     } else {
       // Only client coordinates available
       cameraTarget = LatLng(clientLat!, clientLng!);
       zoom = 14;
+      print("⚠️ Camera centered on client only");
     }
+    
+    print("Camera target: $cameraTarget, zoom: $zoom");
+    print("Final polylines count: ${polylines.length}");
+    print("Final markers count: ${markers.length}");
 
     return Scaffold(
       // appBar: _buildAppBar(),
@@ -497,6 +633,8 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
             onMapCreated: (controller) async {
               _mapController = controller;
               print("Map created successfully");
+              print("Markers count: ${markers.length}");
+              print("Polylines count: ${polylines.length}");
               
               // Apply custom map style
               try {

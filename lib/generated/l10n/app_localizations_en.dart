@@ -21,7 +21,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trendingThisWeek => 'Trending This Week';
 
   @override
-  String get doubleClickOnTheFoodToAddItToTheCart => 'Double click on the food to add it to the cart';
+  String get doubleClickOnTheFoodToAddItToTheCart =>
+      'Double click on the food to add it to the cart';
 
   @override
   String get foodCategories => 'Food Categories';
@@ -63,7 +64,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paymentMode => 'Payment Mode';
 
   @override
-  String get selectYourPreferredPaymentMode => 'Select your preferred payment mode';
+  String get selectYourPreferredPaymentMode =>
+      'Select your preferred payment mode';
 
   @override
   String get orCheckoutWith => 'Or Checkout With';
@@ -102,7 +104,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get extras => 'Extras';
 
   @override
-  String get selectExtrasToAddThemOnTheFood => 'Select extras to add them on the food';
+  String get selectExtrasToAddThemOnTheFood =>
+      'Select extras to add them on the food';
 
   @override
   String get ingredients => 'Ingredients';
@@ -141,7 +144,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get allMenu => 'All Menu';
 
   @override
-  String get longpressOnTheFoodToAddSuplements => 'Longpress on the food to add suplements';
+  String get longpressOnTheFoodToAddSuplements =>
+      'Longpress on the food to add suplements';
 
   @override
   String get notifications => 'Notifications';
@@ -150,7 +154,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirmation => 'Confirmation';
 
   @override
-  String get yourOrderHasBeenSuccessfullySubmitted => 'Your order has been successfully submitted!';
+  String get yourOrderHasBeenSuccessfullySubmitted =>
+      'Your order has been successfully submitted!';
 
   @override
   String get tax => 'TAX';
@@ -249,7 +254,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get discover__explorer => 'Discover & Explorer';
 
   @override
-  String get you_can_discover_restaurants => 'You can discover restaurants & fastfood arround you and choose you best meal after few minutes we prepare and delivere it for you';
+  String get you_can_discover_restaurants =>
+      'You can discover restaurants & fastfood arround you and choose you best meal after few minutes we prepare and delivere it for you';
 
   @override
   String get reset_cart => 'Reset Cart?';
@@ -261,22 +267,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get shopping_cart => 'Shopping Cart';
 
   @override
-  String get verify_your_quantity_and_click_checkout => 'Verify your quantity and click checkout';
+  String get verify_your_quantity_and_click_checkout =>
+      'Verify your quantity and click checkout';
 
   @override
   String get lets_start_with_login => 'Let\'s Start with Login!';
 
   @override
-  String get should_be_more_than_3_characters => 'Should be more than 3 characters';
+  String get should_be_more_than_3_characters =>
+      'Should be more than 3 characters';
 
   @override
-  String get you_must_add_foods_of_the_same_restaurants_choose_one => 'You must add foods of the same restaurants choose one restaurants only!';
+  String get you_must_add_foods_of_the_same_restaurants_choose_one =>
+      'You must add foods of the same restaurants choose one restaurants only!';
 
   @override
-  String get reset_your_cart_and_order_meals_form_this_restaurant => 'Reset your cart and order meals form this restaurant';
+  String get reset_your_cart_and_order_meals_form_this_restaurant =>
+      'Reset your cart and order meals form this restaurant';
 
   @override
-  String get keep_your_old_meals_of_this_restaurant => 'Keep your old meals of this restaurant';
+  String get keep_your_old_meals_of_this_restaurant =>
+      'Keep your old meals of this restaurant';
 
   @override
   String get reset => 'Reset';
@@ -306,13 +317,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get version => 'Version';
 
   @override
-  String get dont_have_any_item_in_your_cart => 'D\'ont have any item in your cart';
+  String get dont_have_any_item_in_your_cart =>
+      'D\'ont have any item in your cart';
 
   @override
   String get start_exploring => 'Start Exploring';
 
   @override
-  String get dont_have_any_item_in_the_notification_list => 'D\'ont have any item in the notification list';
+  String get dont_have_any_item_in_the_notification_list =>
+      'D\'ont have any item in the notification list';
 
   @override
   String get payment_settings => 'Payment Settings';
@@ -380,7 +393,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get categoryRefreshedSuccessfully => 'Category refreshed successfully';
 
   @override
-  String get notifications_refreshed_successfuly => 'Notifications refreshed successfully';
+  String get notifications_refreshed_successfuly =>
+      'Notifications refreshed successfully';
 
   @override
   String get order_refreshed_successfuly => 'Order refreshed successfully';
@@ -389,16 +403,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orders_refreshed_successfuly => 'Orders refreshed successfully';
 
   @override
-  String get restaurant_refreshed_successfuly => 'Restaurant refreshed successfully';
+  String get restaurant_refreshed_successfuly =>
+      'Restaurant refreshed successfully';
 
   @override
-  String get profile_settings_updated_successfully => 'Profile settings updated successfully';
+  String get profile_settings_updated_successfully =>
+      'Profile settings updated successfully';
 
   @override
-  String get payment_settings_updated_successfully => 'Payment settings updated successfully';
+  String get payment_settings_updated_successfully =>
+      'Payment settings updated successfully';
 
   @override
-  String get tracking_refreshed_successfuly => 'Tracking refreshed successfully';
+  String get tracking_refreshed_successfuly =>
+      'Tracking refreshed successfully';
 
   @override
   String get welcome => 'Welcome';
@@ -407,7 +425,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wrong_email_or_password => 'Wrong email or password';
 
   @override
-  String get addresses_refreshed_successfuly => 'Addresses refreshed successfuly';
+  String get addresses_refreshed_successfuly =>
+      'Addresses refreshed successfuly';
 
   @override
   String get delivery_addresses => 'Delivery Addresses';
@@ -419,10 +438,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get new_address_added_successfully => 'New Address added successfully';
 
   @override
-  String get the_address_updated_successfully => 'The address updated successfully';
+  String get the_address_updated_successfully =>
+      'The address updated successfully';
 
   @override
-  String get long_press_to_edit_item_swipe_item_to_delete_it => 'Long press to edit item, swipe item to delete it';
+  String get long_press_to_edit_item_swipe_item_to_delete_it =>
+      'Long press to edit item, swipe item to delete it';
 
   @override
   String get add_delivery_address => 'Add Delivery Address';
@@ -446,10 +467,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get send_password_reset_link => 'Send link';
 
   @override
-  String get i_remember_my_password_return_to_login => 'I remember my password return to login';
+  String get i_remember_my_password_return_to_login =>
+      'I remember my password return to login';
 
   @override
-  String get your_reset_link_has_been_sent_to_your_email => 'Your reset link has been sent to your email';
+  String get your_reset_link_has_been_sent_to_your_email =>
+      'Your reset link has been sent to your email';
 
   @override
   String get error_verify_email_settings => 'Error! Verify email settings';
@@ -458,25 +481,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get guest => 'Guest';
 
   @override
-  String get you_must_signin_to_access_to_this_section => 'You must sign-in to access to this section';
+  String get you_must_signin_to_access_to_this_section =>
+      'You must sign-in to access to this section';
 
   @override
   String get tell_us_about_this_restaurant => 'Tell us about this restaurant';
 
   @override
-  String get how_would_you_rate_this_restaurant_ => 'How would you rate this restaurant ?';
+  String get how_would_you_rate_this_restaurant_ =>
+      'How would you rate this restaurant ?';
 
   @override
   String get tell_us_about_this_food => 'Tell us about this food';
 
   @override
-  String get the_restaurant_has_been_rated_successfully => 'The restaurant has been rated successfully';
+  String get the_restaurant_has_been_rated_successfully =>
+      'The restaurant has been rated successfully';
 
   @override
-  String get the_food_has_been_rated_successfully => 'The food has been rated successfully';
+  String get the_food_has_been_rated_successfully =>
+      'The food has been rated successfully';
 
   @override
-  String get reviews_refreshed_successfully => 'Reviews refreshed successfully!';
+  String get reviews_refreshed_successfully =>
+      'Reviews refreshed successfully!';
 
   @override
   String get delivery_fee => 'Delivery Fee';
@@ -494,7 +522,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get delivery_or_pickup => 'Delivery or Pickup';
 
   @override
-  String get payment_card_updated_successfully => 'Payment card updated successfully';
+  String get payment_card_updated_successfully =>
+      'Payment card updated successfully';
 
   @override
   String get deliverable => 'Deliverable';
@@ -524,13 +553,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get current_location => 'Current location';
 
   @override
-  String get delivery_address_removed_successfully => 'Delivery Address removed successfully';
+  String get delivery_address_removed_successfully =>
+      'Delivery Address removed successfully';
 
   @override
   String get add_new_delivery_address => 'Add new delivery address';
 
   @override
-  String get restaurants_near_to_your_current_location => 'Restaurants near to your current location';
+  String get restaurants_near_to_your_current_location =>
+      'Restaurants near to your current location';
 
   @override
   String get restaurants_near_to => 'Restaurants near to';
@@ -542,7 +573,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get near_to_your_current_location => 'Near to your current location';
 
   @override
-  String get pickup_your_food_from_the_restaurant => 'Pickup your food from the restaurant';
+  String get pickup_your_food_from_the_restaurant =>
+      'Pickup your food from the restaurant';
 
   @override
   String get confirm_your_delivery_address => 'Confirm your delivery address';
@@ -584,13 +616,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unknown => 'Unknown';
 
   @override
-  String get how_would_you_rate_this_restaurant => 'How would you rate this restaurant ?';
+  String get how_would_you_rate_this_restaurant =>
+      'How would you rate this restaurant ?';
 
   @override
-  String get click_on_the_stars_below_to_leave_comments => 'Click on the stars below to leave comments';
+  String get click_on_the_stars_below_to_leave_comments =>
+      'Click on the stars below to leave comments';
 
   @override
-  String get click_to_confirm_your_address_and_pay_or_long_press => 'Click to confirm your address and pay or Long press to edit your address';
+  String get click_to_confirm_your_address_and_pay_or_long_press =>
+      'Click to confirm your address and pay or Long press to edit your address';
 
   @override
   String get visa_card => 'Visa Card';
@@ -608,16 +643,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pay_on_pickup => 'Pay on Pickup';
 
   @override
-  String get click_to_pay_with_your_visa_card => 'Click to pay with your Visa Card';
+  String get click_to_pay_with_your_visa_card =>
+      'Click to pay with your Visa Card';
 
   @override
   String get click_to_pay_with_icredit => 'Click to pay with your iCredit';
 
   @override
-  String get click_to_pay_with_your_mastercard => 'Click to pay with your MasterCard';
+  String get click_to_pay_with_your_mastercard =>
+      'Click to pay with your MasterCard';
 
   @override
-  String get click_to_pay_with_your_paypal_account => 'Click to pay with your PayPal account';
+  String get click_to_pay_with_your_paypal_account =>
+      'Click to pay with your PayPal account';
 
   @override
   String get click_to_pay_cash_on_delivery => 'Click to pay cash on delivery';
@@ -647,7 +685,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get warning => 'Warning';
 
   @override
-  String get orderingFromAnotherRestaurantWillClearYourCart => 'Ordering from another restaurant will clear your current cart. Do you want to continue?';
+  String get orderingFromAnotherRestaurantWillClearYourCart =>
+      'Ordering from another restaurant will clear your current cart. Do you want to continue?';
 
   @override
   String get continueText => 'Continue';
@@ -665,10 +704,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cuisines => 'Cuisines';
 
   @override
-  String get favorites_refreshed_successfuly => 'Favorites refreshed successfully';
+  String get favorites_refreshed_successfuly =>
+      'Favorites refreshed successfully';
 
   @override
-  String get completeYourProfileDetailsToContinue => 'Complete your profile details to continue';
+  String get completeYourProfileDetailsToContinue =>
+      'Complete your profile details to continue';
 
   @override
   String get faqsRefreshedSuccessfuly => 'Faqs refreshed successfully';
@@ -677,22 +718,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get thisFoodWasAddedToFavorite => 'This food was added to favorite';
 
   @override
-  String get thisFoodWasRemovedFromFavorites => 'This food was removed from favorites';
+  String get thisFoodWasRemovedFromFavorites =>
+      'This food was removed from favorites';
 
   @override
-  String get cannot_add_from_different_restaurant => 'Cannot add products from different restaurants in the same order. Do you want to clear the cart and add products from this restaurant?';
+  String get cannot_add_from_different_restaurant =>
+      'Cannot add products from different restaurants in the same order. Do you want to clear the cart and add products from this restaurant?';
 
   @override
   String get foodRefreshedSuccessfuly => 'Food refreshed successfully';
 
   @override
-  String get deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants => 'Delivery address outside the delivery range of this restaurants.';
+  String get deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants =>
+      'Delivery address outside the delivery range of this restaurants.';
 
   @override
-  String get thisRestaurantNotSupportDeliveryMethod => 'This restaurant not support delivery method.';
+  String get thisRestaurantNotSupportDeliveryMethod =>
+      'This restaurant not support delivery method.';
 
   @override
-  String get oneOrMoreFoodsInYourCartNotDeliverable => 'One or more foods in your cart not deliverable.';
+  String get oneOrMoreFoodsInYourCartNotDeliverable =>
+      'One or more foods in your cart not deliverable.';
 
   @override
   String get deliveryMethodNotAllowed => 'Delivery method not allowed!';
@@ -725,7 +771,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yes => 'Yes';
 
   @override
-  String get areYouSureYouWantToCancelThisOrder => 'Are you sure you want to cancel this order?';
+  String get areYouSureYouWantToCancelThisOrder =>
+      'Are you sure you want to cancel this order?';
 
   @override
   String orderThisorderidHasBeenCanceled(Object id) {
@@ -733,7 +780,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get clickOnTheFoodToGetMoreDetailsAboutIt => 'Click on the food to get more details about it';
+  String get clickOnTheFoodToGetMoreDetailsAboutIt =>
+      'Click on the food to get more details about it';
 
   @override
   String get razorpayPayment => 'RazorPay Payment';
@@ -742,7 +790,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get razorpay => 'RazorPay';
 
   @override
-  String get clickToPayWithRazorpayMethod => 'Click to pay with RazorPay method';
+  String get clickToPayWithRazorpayMethod =>
+      'Click to pay with RazorPay method';
 
   @override
   String get tapAgainToLeave => 'Tap again to leave';
@@ -766,7 +815,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newMessageFrom => 'New message from';
 
   @override
-  String get forMoreDetailsPleaseChatWithOurManagers => 'For more details, please chat with our managers';
+  String get forMoreDetailsPleaseChatWithOurManagers =>
+      'For more details, please chat with our managers';
 
   @override
   String get signinToChatWithOurManagers => 'Sign-In to chat with our managers';
@@ -781,16 +831,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notValidAddress => 'Not valid address';
 
   @override
-  String get swipeLeftTheNotificationToDeleteOrReadUnreadIt => 'Swipe left the notification to delete or read / unread it';
+  String get swipeLeftTheNotificationToDeleteOrReadUnreadIt =>
+      'Swipe left the notification to delete or read / unread it';
 
   @override
-  String get thisNotificationHasMarkedAsUnread => 'This notification has marked as unread';
+  String get thisNotificationHasMarkedAsUnread =>
+      'This notification has marked as unread';
 
   @override
   String get notificationWasRemoved => 'Notification was removed';
 
   @override
-  String get thisNotificationHasMarkedAsRead => 'This notification has marked as read';
+  String get thisNotificationHasMarkedAsRead =>
+      'This notification has marked as read';
 
   @override
   String get phoneNumber => 'Phone Number';
@@ -799,7 +852,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get smsHasBeenSentTo => 'SMS has been sent to';
 
   @override
-  String get weAreSendingOtpToValidateYourMobileNumberHang => 'We are sending OTP to validate your mobile number. Hang on!';
+  String get weAreSendingOtpToValidateYourMobileNumberHang =>
+      'We are sending OTP to validate your mobile number. Hang on!';
 
   @override
   String get verifyPhoneNumber => 'Verify Phone Number';
@@ -909,7 +963,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get choose_your_location => 'Please , Choose Your Location';
 
   @override
-  String get deliveryAddressOutsideRange => 'Your address is out of the delivery range. Please select pickup or change your address.';
+  String get deliveryAddressOutsideRange =>
+      'Your address is out of the delivery range. Please select pickup or change your address.';
 
   @override
   String get card_deleted_successfully => 'Card deleted successfully';
@@ -935,7 +990,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get didntReceiveTheCodeResendit => 'Didn\'t receive the code? Resend it';
+  String get didntReceiveTheCodeResendit =>
+      'Didn\'t receive the code? Resend it';
 
   @override
   String get enterYourEmail => 'Enter your email';
@@ -1003,10 +1059,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tip_check_card_info => '• Double-check your card information.';
 
   @override
-  String get tip_use_different_card => '• Use a different card or alternative method.';
+  String get tip_use_different_card =>
+      '• Use a different card or alternative method.';
 
   @override
-  String get tip_contact_issuer => '• Contact your card issuer to verify your account.';
+  String get tip_contact_issuer =>
+      '• Contact your card issuer to verify your account.';
 
   @override
   String get go_back_checkout => 'Go back to checkout';
@@ -1072,10 +1130,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get apiInfoTitle => 'API Info';
 
   @override
-  String get apiEndpoint => 'Endpoint: https://carrytechnologies.co/api/notifications';
+  String get apiEndpoint =>
+      'Endpoint: https://carrytechnologies.co/api/notifications';
 
   @override
-  String get apiToken => 'Token: fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv';
+  String get apiToken =>
+      'Token: fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv';
 
   @override
   String get tracking => 'Tracking';
@@ -1111,7 +1171,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addressDetails => 'Address Details';
 
   @override
-  String get addingExactAddressDetailsHelpsUsFindYouFaster => 'Adding exact address details helps us find you faster';
+  String get addingExactAddressDetailsHelpsUsFindYouFaster =>
+      'Adding exact address details helps us find you faster';
 
   @override
   String get buildingName => 'Building Name';
@@ -1150,13 +1211,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get otherTellUsHow => 'Other (tell us how)';
 
   @override
-  String get otherInstructionsForTheCourier => 'Other instructions for the courier';
+  String get otherInstructionsForTheCourier =>
+      'Other instructions for the courier';
 
   @override
   String get addressTypeAndLabel => 'Address Type and Label';
 
   @override
-  String get addOrCreateAddressLabelsToEasilyChooseBetweenDeliveryAddresses => 'Add or create address labels to easily choose between delivery addresses.';
+  String get addOrCreateAddressLabelsToEasilyChooseBetweenDeliveryAddresses =>
+      'Add or create address labels to easily choose between delivery addresses.';
 
   @override
   String get work => 'Work';
@@ -1186,13 +1249,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get locationServiceDisabled => 'Location service is disabled';
 
   @override
-  String get locationPermissionDeniedForever => 'Location permission denied permanently';
+  String get locationPermissionDeniedForever =>
+      'Location permission denied permanently';
 
   @override
   String get locationFetchError => 'Unable to determine location';
 
   @override
-  String get locationBasedMessage => 'Based on your phone\'s location, it looks like you\'re here:';
+  String get locationBasedMessage =>
+      'Based on your phone\'s location, it looks like you\'re here:';
 
   @override
   String get pleaseWait => 'Please wait...';
@@ -1216,7 +1281,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login_welcome => 'Welcome to Jetak';
 
   @override
-  String get login_subtitle => 'Order from top restaurants and get fast delivery';
+  String get login_subtitle =>
+      'Order from top restaurants and get fast delivery';
 
   @override
   String get login_icon_restaurants => 'Restaurants';
@@ -1289,7 +1355,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get see_all => 'See all';
 
   @override
-  String get location_type_hint => 'The location type helps us to find you better, house, office';
+  String get location_type_hint =>
+      'The location type helps us to find you better, house, office';
 
   @override
   String get cartIsEmpty => 'Cart is empty';
@@ -1313,16 +1380,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterTheDoorCode => 'Enter the door code';
 
   @override
-  String get otherInstructionsForCourier => 'Other instructions for the courier';
+  String get otherInstructionsForCourier =>
+      'Other instructions for the courier';
 
   @override
-  String get verify_your_internet_connection => 'Verify your internet connection';
+  String get verify_your_internet_connection =>
+      'Verify your internet connection';
 
   @override
   String get carts_refreshed_successfuly => 'Carts refreshed successfully';
 
   @override
-  String get category_refreshed_successfuly => 'Category refreshed successfully';
+  String get category_refreshed_successfuly =>
+      'Category refreshed successfully';
 
   @override
   String get card_number => 'Card number';
@@ -1340,7 +1410,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get i_dont_have_an_account => 'I don\'t have an account';
 
   @override
-  String get search_for_restaurants_or_foods => 'Search for restaurants or foods';
+  String get search_for_restaurants_or_foods =>
+      'Search for restaurants or foods';
 
   @override
   String get ordered_by_nearby_first => 'Ordered by nearby first';
@@ -1361,7 +1432,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get payment_mode => 'Payment mode';
 
   @override
-  String get select_your_preferred_payment_mode => 'Select your preferred payment mode';
+  String get select_your_preferred_payment_mode =>
+      'Select your preferred payment mode';
 
   @override
   String get or_checkout_with => 'Or checkout with';
@@ -1382,7 +1454,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get help_supports => 'Help & Supports';
 
   @override
-  String get your_order_has_been_successfully_submitted => 'Your order has been successfully submitted';
+  String get your_order_has_been_successfully_submitted =>
+      'Your order has been successfully submitted';
 
   @override
   String get featured_foods => 'Featured Foods';
@@ -1394,16 +1467,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sign => 'Sign';
 
   @override
-  String get payment_will_be_cash_on_delivery => 'Payment will be made in cash upon delivery';
+  String get payment_will_be_cash_on_delivery =>
+      'Payment will be made in cash upon delivery';
 
   @override
   String get description_required => 'Description is required';
 
   @override
-  String get description_min_length => 'Description must be at least 3 characters';
+  String get description_min_length =>
+      'Description must be at least 3 characters';
 
   @override
-  String get description_max_length => 'Description must be less than 50 characters';
+  String get description_max_length =>
+      'Description must be less than 50 characters';
 
   @override
   String get address_required => 'Address is required';
@@ -1415,5 +1491,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get address_max_length => 'Address must be less than 200 characters';
 
   @override
-  String get please_correct_form_errors => 'Please correct the errors in the form';
+  String get please_correct_form_errors =>
+      'Please correct the errors in the form';
 }
