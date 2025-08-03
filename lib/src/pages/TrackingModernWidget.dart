@@ -262,6 +262,8 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       
       print("=== Directions API Test Complete ===");
       
+      print("=== API Test Complete ===");
+      
     } catch (e) {
       print("❌ Direct API test failed: $e");
       throw e;
@@ -440,6 +442,8 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       print("=== Controller Coordinates Update Complete ===");
       print("Final restaurant location: $_con.restaurantLocation");
       print("Final client location: $_con.clientLocation");
+      
+      print("=== Coordinates Update Complete ===");
       
     } catch (e) {
       print("❌ Error updating coordinates: $e");
