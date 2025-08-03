@@ -204,13 +204,15 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
           ),
         );
       }
-    } finally {
-      if (mounted) {
-        setState(() => _isLoadingRoute = false);
-        print("Route calculation completed. Loading: false");
+          } finally {
+        if (mounted) {
+          setState(() => _isLoadingRoute = false);
+          print("Route calculation completed. Loading: false");
+        }
       }
+      
+      print("=== Route Calculation Complete ===");
     }
-  }
 
   // Test the Directions API directly to diagnose issues
   Future<void> _testDirectionsAPI(double restaurantLat, double restaurantLng, double clientLat, double clientLng) async {
@@ -323,6 +325,8 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
 
       print("✅ Polyline added successfully with ${polylineCoordinates.length} points");
       print("Final polylines count: ${polylines.length}");
+      
+      print("=== Polyline Addition Complete ===");
     } catch (e) {
       print("❌ Error in _addPolyline: $e");
       print("Error details: ${e.toString()}");
@@ -376,9 +380,11 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         _getPolyline();
       } else {
         print("Widget not mounted, skipping route calculation");
-      }
-    });
-  }
+              }
+      });
+      
+      print("=== initState Complete ===");
+    }
 
   // دالة لتحديث إحداثيات المطعم والمستخدم في الـ controller
   void _updateControllerCoordinates() {
