@@ -212,6 +212,8 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       }
       
       print("=== Route Calculation Complete ===");
+      print("=== Polyline Calculation Complete ===");
+      print("=== Route Polyline Complete ===");
     }
 
   // Test the Directions API directly to diagnose issues
@@ -388,6 +390,8 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       });
       
       print("=== initState Complete ===");
+      print("=== Widget Init Complete ===");
+      print("=== Tracking Init Complete ===");
     }
 
   // دالة لتحديث إحداثيات المطعم والمستخدم في الـ controller
@@ -633,6 +637,8 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     print("Final polylines count: ${polylines.length}");
     print("Final markers count: ${markers.length}");
     print("=== Building Complete ===");
+    print("=== Widget Build Complete ===");
+    print("=== Tracking Widget Complete ===");
 
     return Scaffold(
       // appBar: _buildAppBar(),
