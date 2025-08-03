@@ -500,6 +500,14 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       _con.listenForOrder(orderId: widget.routeArgument!.id!);
       _con.getOrderDetailsTracking(orderId: widget.routeArgument!.id!);
       
+             // إضافة listener لتحديث الخريطة عندما يتغير موقع السائق
+       // _con.addListener(() {
+       //   if (mounted) {
+       //     print("🔄 Driver location updated, rebuilding map...");
+       //     setState(() {});
+       //   }
+       // });
+      
       // إضافة retry mechanism لتحميل Order إذا فشل
       Timer.periodic(Duration(seconds: 3), (timer) {
         if (_con.order.id.isEmpty && timer.tick < 5) {
@@ -539,6 +547,15 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       print("=== Final Init State ===");
       print("=== End Init State ===");
     }
+    
+    // @override
+    // void dispose() {
+    //   // إزالة listener عند إزالة الـ widget
+    //   _con.removeListener(() {});
+    //   super.dispose();
+    // }
+    
+
 
   // دالة لتحديث إحداثيات المطعم والمستخدم في الـ controller
   void _updateControllerCoordinates() {
@@ -617,16 +634,19 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
 
   Future<void> loadMotorcycleIcon() async {
     try {
+      print("🔄 Loading motorcycle icon for driver...");
       motorcycleIcon = await BitmapDescriptor.asset(
         ImageConfiguration(size: Size(48, 48)),
         'assets/img/pointer.png',
       );
+      print("✅ Motorcycle icon loaded successfully for driver");
       if (mounted) {
         setState(() {});
+        print("🔄 Map rebuilt with motorcycle icon for driver");
       }
     } catch (e) {
-      print("Error loading motorcycle icon: $e");
-      // Use default marker as fallback
+      print("❌ Error loading motorcycle icon: $e");
+      // Use default red marker as fallback for driver
     }
   }
 
@@ -737,29 +757,26 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     // Add restaurant marker if coordinates are available
     if (hasRestaurantCoords) {
       print("Adding restaurant marker at: $restaurantLat, $restaurantLng");
-      if (motorcycleIcon != null) {
-        markers.add(
-          Marker(
-            markerId: MarkerId('restaurant'),
-            position: LatLng(restaurantLat!, restaurantLng!),
-            infoWindow: InfoWindow(title: 'Restaurant'),
-            icon: motorcycleIcon!,
+      markers.add(
+        Marker(
+          markerId: MarkerId('restaurant'),
+          position: LatLng(restaurantLat!, restaurantLng!),
+          infoWindow: InfoWindow(
+            title: '🏪 Restaurant (Red Marker)',
+            snippet: _con.order.foodOrders.isNotEmpty 
+              ? _con.order.foodOrders[0].food?.restaurant.name ?? 'Restaurant'
+              : 'Restaurant',
           ),
-        );
-      } else {
-        markers.add(
-          Marker(
-            markerId: MarkerId('restaurant'),
-            position: LatLng(restaurantLat!, restaurantLng!),
-            infoWindow: InfoWindow(title: 'Restaurant'),
-            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-          ),
-        );
-      }
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed), // marker أحمر للمطعم
+        ),
+      );
     } else {
       print("❌ Restaurant coordinates not available for marker");
     }
 
+    // Add client marker if coordinates are available
+
+    
     // Add client marker if coordinates are available
     if (hasClientCoords) {
       print("Adding client marker at: $clientLat, $clientLng");
@@ -767,12 +784,35 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         Marker(
           markerId: MarkerId('client'),
           position: LatLng(clientLat!, clientLng!),
-          infoWindow: InfoWindow(title: 'Delivery Address'),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+          infoWindow: InfoWindow(
+            title: '🏠 Delivery Address (Blue Marker)',
+            snippet: _con.order.deliveryAddress.address,
+          ),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue), // marker أزرق للعميل
         ),
       );
     } else {
       print("❌ Client coordinates not available for marker");
+    }
+    
+    // Add driver marker if coordinates are available (only once)
+    if (_con.driverLocation.latitude != 0.0 && _con.driverLocation.longitude != 0.0) {
+      print("Adding driver marker at: ${_con.driverLocation.latitude}, ${_con.driverLocation.longitude}");
+      
+      // استخدام marker ID ثابت للسائق لضمان عدم التكرار
+      markers.add(
+        Marker(
+          markerId: MarkerId('driver_location'), // ID ثابت للسائق
+          position: _con.driverLocation,
+          infoWindow: InfoWindow(
+            title: '🛵 Driver Location (Motorcycle Icon)',
+            snippet: 'Order ID: ${_con.order.id}\nLat: ${_con.driverLocation.latitude.toStringAsFixed(6)}\nLng: ${_con.driverLocation.longitude.toStringAsFixed(6)}\n🔄 Live tracking active',
+          ),
+          icon: motorcycleIcon ?? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed), // صورة الدراجة للسائق
+        ),
+      );
+    } else {
+      print("❌ Driver coordinates not available for marker");
     }
     
     print("Total markers created: ${markers.length}");
@@ -783,7 +823,17 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     
     print("Calculating camera position...");
     
-    if (hasRestaurantCoords && hasClientCoords) {
+    // التحقق من وجود موقع السائق
+    bool hasDriverCoords = _con.driverLocation.latitude != 0.0 && _con.driverLocation.longitude != 0.0;
+    
+    if (hasRestaurantCoords && hasClientCoords && hasDriverCoords) {
+      // All three coordinates available - center between all points
+      double avgLat = (restaurantLat! + clientLat! + _con.driverLocation.latitude) / 3;
+      double avgLng = (restaurantLng! + clientLng! + _con.driverLocation.longitude) / 3;
+      cameraTarget = LatLng(avgLat, avgLng);
+      zoom = 10; // zoom out to show all points
+      print("✅ Camera centered between restaurant, client, and driver");
+    } else if (hasRestaurantCoords && hasClientCoords) {
       // Both coordinates available - center between them
       cameraTarget = LatLng(
         (restaurantLat! + clientLat!) / 2,
@@ -791,16 +841,42 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       );
       zoom = 12;
       print("✅ Camera centered between restaurant and client");
+    } else if (hasRestaurantCoords && hasDriverCoords) {
+      // Restaurant and driver coordinates available
+      cameraTarget = LatLng(
+        (restaurantLat! + _con.driverLocation.latitude) / 2,
+        (restaurantLng! + _con.driverLocation.longitude) / 2,
+      );
+      zoom = 12;
+      print("✅ Camera centered between restaurant and driver");
+    } else if (hasClientCoords && hasDriverCoords) {
+      // Client and driver coordinates available
+      cameraTarget = LatLng(
+        (clientLat! + _con.driverLocation.latitude) / 2,
+        (clientLng! + _con.driverLocation.longitude) / 2,
+      );
+      zoom = 12;
+      print("✅ Camera centered between client and driver");
     } else if (hasRestaurantCoords) {
       // Only restaurant coordinates available
       cameraTarget = LatLng(restaurantLat!, restaurantLng!);
       zoom = 14;
       print("⚠️ Camera centered on restaurant only");
-    } else {
+    } else if (hasClientCoords) {
       // Only client coordinates available
       cameraTarget = LatLng(clientLat!, clientLng!);
       zoom = 14;
       print("⚠️ Camera centered on client only");
+    } else if (hasDriverCoords) {
+      // Only driver coordinates available
+      cameraTarget = _con.driverLocation;
+      zoom = 14;
+      print("⚠️ Camera centered on driver only");
+    } else {
+      // No coordinates available - use default
+      cameraTarget = LatLng(37.785834, -122.406417); // San Francisco default
+      zoom = 10;
+      print("❌ No coordinates available, using default location");
     }
     
     print("Camera target: $cameraTarget, zoom: $zoom");
@@ -1159,28 +1235,28 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
                   ],
                 ),
                 Spacer(),
-                _buildActionIconPhone(),
+                // _buildActionIconPhone(),
                 SizedBox(width: 10),
-                Stack(
-                  children: [
-                    _buildActionIconMessage(),
-                    Positioned(
-                      right: 0,
-                      top: 0,
-                      child: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.red,
-                        child: Text(
-                          "3",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                // Stack(
+                //   children: [
+                //     _buildActionIconMessage(),
+                //     Positioned(
+                //       right: 0,
+                //       top: 0,
+                //       child: CircleAvatar(
+                //         radius: 8,
+                //         backgroundColor: Colors.red,
+                //         child: Text(
+                //           "3",
+                //           style: TextStyle(
+                //             color: Colors.white,
+                //             fontSize: 10,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
             SizedBox(height: 20),
@@ -1214,6 +1290,24 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
               "Delivery address",
               "assets/img/locationorder.svg",
               _con.order.deliveryAddress.address ?? "Address not available",
+            ),
+            _buildInfoTile(
+              "Order ID",
+              "assets/img/bag.svg",
+              "#${_con.order.id}",
+            ),
+            if (_con.driverLocation.latitude != 0.0 && _con.driverLocation.longitude != 0.0)
+              _buildInfoTile(
+                "Driver Location",
+                "assets/img/location.svg",
+                "Lat: ${_con.driverLocation.latitude.toStringAsFixed(6)}\nLng: ${_con.driverLocation.longitude.toStringAsFixed(6)}\n🔄 Live updates active",
+              ),
+            _buildInfoTile(
+              "Live Tracking",
+              "assets/img/notification-bing.svg",
+              _con.driverLocation.latitude != 0.0 && _con.driverLocation.longitude != 0.0 
+                ? "✅ Connected - Driver location updated"
+                : "🔄 Connecting to driver...",
             ),
           ],
         ),

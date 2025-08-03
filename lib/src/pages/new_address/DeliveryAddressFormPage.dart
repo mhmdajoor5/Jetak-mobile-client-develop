@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
+// import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../../../generated/l10n.dart';
@@ -94,14 +94,14 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
       }
 
       final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      final placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
-      final place = placemarks.first;
+      // final placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+      // final place = placemarks.first;
 
-      setState(() {
-        currentAddress = '${place.street}, ${place.locality}, ${place.country}';
-        locationLoaded = true;
-        showOverlay = true;
-      });
+      // setState(() {
+      //   currentAddress = '${place.street}, ${place.locality}, ${place.country}';
+      //   locationLoaded = true;
+      //   showOverlay = true;
+      // });
     } catch (e) {
       print('Error fetching location: $e');
       setState(() {

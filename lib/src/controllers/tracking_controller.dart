@@ -61,8 +61,60 @@ class TrackingController extends ControllerMVC {
 
     Future<void> onEvent(PusherEvent event) async {
       log("onEvent: $event");
-
-
+      
+      // معالجة حدث تحديث موقع السائق
+      if (event.eventName == 'driver.location.updated') {
+        try {
+          log("📍 Received driver location update event");
+          
+          // تحليل البيانات
+          Map<String, dynamic> eventData = jsonDecode(event.data);
+          log("📊 Event data: $eventData");
+          
+          // التحقق من order_id
+          String? eventOrderId = eventData['order_id']?.toString();
+          log("🆔 Event order_id: $eventOrderId");
+          
+          // التحقق من أن الـ order_id يتطابق مع الـ order الحالي
+          if (eventOrderId != null && order.id.toString() == eventOrderId) {
+            log("✅ Order ID matches! Processing driver location update");
+            
+            // استخراج إحداثيات السائق
+            double? latitude = double.tryParse(eventData['latitude']?.toString() ?? '');
+            double? longitude = double.tryParse(eventData['longitude']?.toString() ?? '');
+            
+                         if (latitude != null && longitude != null) {
+               log("📍 Received driver location: $latitude, $longitude");
+               
+               // التحقق من تغيير الموقع لتجنب التحديثات غير الضرورية
+               bool locationChanged = driverLocation.latitude != latitude || driverLocation.longitude != longitude;
+               
+               if (locationChanged) {
+                 log("📍 Driver location changed, updating...");
+                 
+                 // تحديث موقع السائق
+                 driverLocation = LatLng(latitude, longitude);
+                 
+                 // تحديث الواجهة
+                 setState(() {});
+                 
+                 // إرسال إشعار لتحديث الخريطة
+                 notifyListeners();
+                 
+                 log("✅ Driver location updated successfully");
+               } else {
+                 log("📍 Driver location unchanged, skipping update");
+               }
+             } else {
+               log("❌ Invalid driver coordinates: latitude=$latitude, longitude=$longitude");
+             }
+          } else {
+            log("❌ Order ID mismatch: Event order_id=$eventOrderId, Current order_id=${order.id}");
+          }
+        } catch (e) {
+          log("❌ Error processing driver location event: $e");
+        }
+      }
     }
 
     void onDecryptionFailure(String event, String reason) {
@@ -95,7 +147,7 @@ class TrackingController extends ControllerMVC {
         onDecryptionFailure: onDecryptionFailure,
         onMemberAdded: onMemberAdded,
         onMemberRemoved: onMemberRemoved,
-        //authEndpoint: "https://my-website.com/broadcasting/auth",
+        // authEndpoint: "https://carrytechnologies.co/orders",
         onAuthorizer: onAuthorizer,
       );
       await _pusher.subscribe(channelName: 'order-tracking.$cleanOrderId');

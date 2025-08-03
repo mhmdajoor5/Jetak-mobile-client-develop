@@ -6,7 +6,7 @@ import 'package:flutter/material.dart' show ScaffoldState;
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:geocoding/geocoding.dart';
+// import 'package:geocoding/geocoding.dart';
 
 import '../helpers/helper.dart';
 import '../models/category.dart';
