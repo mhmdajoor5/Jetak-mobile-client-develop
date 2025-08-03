@@ -258,6 +258,8 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         print("First route overview_polyline: ${route['overview_polyline']?['points']?.substring(0, 50)}...");
       }
       
+      print("=== Directions API Test Complete ===");
+      
     } catch (e) {
       print("❌ Direct API test failed: $e");
       throw e;
@@ -617,6 +619,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     print("Camera target: $cameraTarget, zoom: $zoom");
     print("Final polylines count: ${polylines.length}");
     print("Final markers count: ${markers.length}");
+    print("=== Building Complete ===");
 
     return Scaffold(
       // appBar: _buildAppBar(),
