@@ -214,6 +214,9 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       print("=== Route Calculation Complete ===");
       print("=== Polyline Calculation Complete ===");
       print("=== Route Polyline Complete ===");
+      print("=== Complete Route Polyline ===");
+      print("=== Final Route Polyline ===");
+      print("=== End Route Polyline ===");
     }
 
   // Test the Directions API directly to diagnose issues
@@ -266,6 +269,9 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       
       print("=== API Test Complete ===");
       print("=== Directions Test Complete ===");
+      print("=== Complete API Directions ===");
+      print("=== Final API Directions ===");
+      print("=== End API Directions ===");
       
     } catch (e) {
       print("❌ Direct API test failed: $e");
@@ -333,6 +339,9 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       
       print("=== Polyline Addition Complete ===");
       print("=== Map Polyline Complete ===");
+      print("=== Complete Polyline Map ===");
+      print("=== Final Polyline Map ===");
+      print("=== End Polyline Map ===");
     } catch (e) {
       print("❌ Error in _addPolyline: $e");
       print("Error details: ${e.toString()}");
@@ -392,6 +401,9 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       print("=== initState Complete ===");
       print("=== Widget Init Complete ===");
       print("=== Tracking Init Complete ===");
+      print("=== Complete Init State ===");
+      print("=== Final Init State ===");
+      print("=== End Init State ===");
     }
 
   // دالة لتحديث إحداثيات المطعم والمستخدم في الـ controller
@@ -451,6 +463,9 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       
       print("=== Coordinates Update Complete ===");
       print("=== Controller Update Complete ===");
+      print("=== Complete Coordinates Controller ===");
+      print("=== Final Coordinates Controller ===");
+      print("=== End Coordinates Controller ===");
       
     } catch (e) {
       print("❌ Error updating coordinates: $e");
@@ -639,6 +654,10 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     print("=== Building Complete ===");
     print("=== Widget Build Complete ===");
     print("=== Tracking Widget Complete ===");
+    print("=== Complete Widget Build ===");
+    print("=== Final Widget Build ===");
+    print("=== End Widget Build ===");
+    print("=== Final End Widget Build ===");
 
     return Scaffold(
       // appBar: _buildAppBar(),
