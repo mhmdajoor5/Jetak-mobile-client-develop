@@ -88,6 +88,7 @@ dependencies:
   geolocator: ^14.0.1 # Updated
   geocoding: ^3.0.0
   web_socket_channel: ^2.4.0 # للتراكنج المباشر
+  pusher_client: ^2.0.0 # للاتصال بـ Pusher
 
 
 dev_dependencies:

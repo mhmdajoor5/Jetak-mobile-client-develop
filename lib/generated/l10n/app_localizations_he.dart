@@ -21,8 +21,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get trendingThisWeek => 'טרנדים השבוע';
 
   @override
-  String get doubleClickOnTheFoodToAddItToTheCart =>
-      'לחץ פעמיים על המזון כדי להוסיף אותו לעגלה';
+  String get doubleClickOnTheFoodToAddItToTheCart => 'לחץ פעמיים על המזון כדי להוסיף אותו לעגלה';
 
   @override
   String get foodCategories => 'קטגוריות מזונות';
@@ -64,8 +63,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get paymentMode => 'אמצעי תשלום';
 
   @override
-  String get selectYourPreferredPaymentMode =>
-      'בחר את אמצעי התשלום המועדף עליך';
+  String get selectYourPreferredPaymentMode => 'בחר את אמצעי התשלום המועדף עליך';
 
   @override
   String get orCheckoutWith => 'או בצע הזמנה עם';
@@ -143,8 +141,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get allMenu => 'כל התפריט';
 
   @override
-  String get longpressOnTheFoodToAddSuplements =>
-      'לחיצה ארוכה על המזון להוספת תוספות';
+  String get longpressOnTheFoodToAddSuplements => 'לחיצה ארוכה על המזון להוספת תוספות';
 
   @override
   String get notifications => 'התראות';
@@ -153,8 +150,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get confirmation => 'אישור';
 
   @override
-  String get yourOrderHasBeenSuccessfullySubmitted =>
-      'ההזמנה שלך הוגשה בהצלחה!';
+  String get yourOrderHasBeenSuccessfullySubmitted => 'ההזמנה שלך הוגשה בהצלחה!';
 
   @override
   String get tax => 'מס';
@@ -253,8 +249,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get discover__explorer => 'גליה וחוקר';
 
   @override
-  String get you_can_discover_restaurants =>
-      'אתה יכול לגלות מסעדות ואוכל מהיר באזור שלך ולבחור את המנה הטובה ביותר שלך לאחר כמה דקות אנו מכינים ומספקים אותה עבורך';
+  String get you_can_discover_restaurants => 'אתה יכול לגלות מסעדות ואוכל מהיר באזור שלך ולבחור את המנה הטובה ביותר שלך לאחר כמה דקות אנו מכינים ומספקים אותה עבורך';
 
   @override
   String get reset_cart => 'אתחל עגלה?';
@@ -266,8 +261,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get shopping_cart => 'עגלת קניות';
 
   @override
-  String get verify_your_quantity_and_click_checkout =>
-      'אמת את כמותך ולחץ על קופה';
+  String get verify_your_quantity_and_click_checkout => 'אמת את כמותך ולחץ על קופה';
 
   @override
   String get lets_start_with_login => 'בואו נתחיל עם התחברות!';
@@ -276,16 +270,13 @@ class AppLocalizationsHe extends AppLocalizations {
   String get should_be_more_than_3_characters => 'חייב להכיל יותר מ-3 תווים';
 
   @override
-  String get you_must_add_foods_of_the_same_restaurants_choose_one =>
-      'עליך להוסיף מזונות מאותו המסעדות לבחור מסעדה אחת בלבד!';
+  String get you_must_add_foods_of_the_same_restaurants_choose_one => 'עליך להוסיף מזונות מאותו המסעדות לבחור מסעדה אחת בלבד!';
 
   @override
-  String get reset_your_cart_and_order_meals_form_this_restaurant =>
-      'אתחל את העגלה שלך והזמן ארוחות מהמסעדה הזו';
+  String get reset_your_cart_and_order_meals_form_this_restaurant => 'אתחל את העגלה שלך והזמן ארוחות מהמסעדה הזו';
 
   @override
-  String get keep_your_old_meals_of_this_restaurant =>
-      'שמור על הארוחות הישנות שלך מהמסעדה הזו';
+  String get keep_your_old_meals_of_this_restaurant => 'שמור על הארוחות הישנות שלך מהמסעדה הזו';
 
   @override
   String get reset => 'אתחול';
@@ -321,8 +312,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get start_exploring => 'התחל לחקור';
 
   @override
-  String get dont_have_any_item_in_the_notification_list =>
-      'אין פריטים ברשימת ההתראות';
+  String get dont_have_any_item_in_the_notification_list => 'אין פריטים ברשימת ההתראות';
 
   @override
   String get payment_settings => 'הגדרות תשלום';
@@ -402,12 +392,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get restaurant_refreshed_successfuly => 'מסעדה רעננה בהצלחה';
 
   @override
-  String get profile_settings_updated_successfully =>
-      'הגדרות הפרופיל עודכנו בהצלחה';
+  String get profile_settings_updated_successfully => 'הגדרות הפרופיל עודכנו בהצלחה';
 
   @override
-  String get payment_settings_updated_successfully =>
-      'הגדרות התשלום עודכנו בהצלחה';
+  String get payment_settings_updated_successfully => 'הגדרות התשלום עודכנו בהצלחה';
 
   @override
   String get tracking_refreshed_successfuly => 'מעקב רענן בהצלחה';
@@ -434,8 +422,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get the_address_updated_successfully => 'הכתובת עודכנה בהצלחה';
 
   @override
-  String get long_press_to_edit_item_swipe_item_to_delete_it =>
-      'לחיצה ארוכה לעריכת פריט, החלק פריט למחיקה';
+  String get long_press_to_edit_item_swipe_item_to_delete_it => 'לחיצה ארוכה לעריכת פריט, החלק פריט למחיקה';
 
   @override
   String get add_delivery_address => 'הוסף כתובת למשלוח';
@@ -459,12 +446,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get send_password_reset_link => 'שלח קישור';
 
   @override
-  String get i_remember_my_password_return_to_login =>
-      'אני זוכר את הסיסמה שלי, חזרה להתחברות';
+  String get i_remember_my_password_return_to_login => 'אני זוכר את הסיסמה שלי, חזרה להתחברות';
 
   @override
-  String get your_reset_link_has_been_sent_to_your_email =>
-      'קישור האיפוס שלך נשלח לדואר האלקטרוני שלך';
+  String get your_reset_link_has_been_sent_to_your_email => 'קישור האיפוס שלך נשלח לדואר האלקטרוני שלך';
 
   @override
   String get error_verify_email_settings => 'שגיאה! אמת הגדרות דוא\"ל';
@@ -473,22 +458,19 @@ class AppLocalizationsHe extends AppLocalizations {
   String get guest => 'אורח';
 
   @override
-  String get you_must_signin_to_access_to_this_section =>
-      'עליך להיכנס כדי לגשת לאזור זה';
+  String get you_must_signin_to_access_to_this_section => 'עליך להיכנס כדי לגשת לאזור זה';
 
   @override
   String get tell_us_about_this_restaurant => 'ספר לנו על המסעדה הזו';
 
   @override
-  String get how_would_you_rate_this_restaurant_ =>
-      'איך היית מדרג את המסעדה הזו?';
+  String get how_would_you_rate_this_restaurant_ => 'איך היית מדרג את המסעדה הזו?';
 
   @override
   String get tell_us_about_this_food => 'ספר לנו על המזון הזה';
 
   @override
-  String get the_restaurant_has_been_rated_successfully =>
-      'המסעדה דורגה בהצלחה';
+  String get the_restaurant_has_been_rated_successfully => 'המסעדה דורגה בהצלחה';
 
   @override
   String get the_food_has_been_rated_successfully => 'האוכל דורג בהצלחה';
@@ -542,15 +524,13 @@ class AppLocalizationsHe extends AppLocalizations {
   String get current_location => 'מיקום נוכחי';
 
   @override
-  String get delivery_address_removed_successfully =>
-      'כתובת למשלוח הוסרה בהצלחה';
+  String get delivery_address_removed_successfully => 'כתובת למשלוח הוסרה בהצלחה';
 
   @override
   String get add_new_delivery_address => 'הוסף כתובת למשלוח חדשה';
 
   @override
-  String get restaurants_near_to_your_current_location =>
-      'מסעדות בקרבת מקום הנוכחי שלך';
+  String get restaurants_near_to_your_current_location => 'מסעדות בקרבת מקום הנוכחי שלך';
 
   @override
   String get restaurants_near_to => 'מסעדות בקרבת';
@@ -604,16 +584,13 @@ class AppLocalizationsHe extends AppLocalizations {
   String get unknown => 'לא ידוע';
 
   @override
-  String get how_would_you_rate_this_restaurant =>
-      'איך היית מדרג את המסעדה הזו?';
+  String get how_would_you_rate_this_restaurant => 'איך היית מדרג את המסעדה הזו?';
 
   @override
-  String get click_on_the_stars_below_to_leave_comments =>
-      'לחץ על הכוכבים למטה כדי להשאיר תגובות';
+  String get click_on_the_stars_below_to_leave_comments => 'לחץ על הכוכבים למטה כדי להשאיר תגובות';
 
   @override
-  String get click_to_confirm_your_address_and_pay_or_long_press =>
-      'לחץ כדי לאשר את כתובתך ולשלם או ללחוץ לחיצה ארוכה כדי לערוך את כתובתך';
+  String get click_to_confirm_your_address_and_pay_or_long_press => 'לחץ כדי לאשר את כתובתך ולשלם או ללחוץ לחיצה ארוכה כדי לערוך את כתובתך';
 
   @override
   String get visa_card => 'כרטיס Visa';
@@ -631,19 +608,16 @@ class AppLocalizationsHe extends AppLocalizations {
   String get pay_on_pickup => 'תשלום באיסוף';
 
   @override
-  String get click_to_pay_with_your_visa_card =>
-      'לחץ כדי לשלם עם כרטיס ה-Visa שלך';
+  String get click_to_pay_with_your_visa_card => 'לחץ כדי לשלם עם כרטיס ה-Visa שלך';
 
   @override
   String get click_to_pay_with_icredit => 'לחץ כדי לשלם עם האי-קרדיט שלך';
 
   @override
-  String get click_to_pay_with_your_mastercard =>
-      'לחץ כדי לשלם עם כרטיס ה-MasterCard שלך';
+  String get click_to_pay_with_your_mastercard => 'לחץ כדי לשלם עם כרטיס ה-MasterCard שלך';
 
   @override
-  String get click_to_pay_with_your_paypal_account =>
-      'לחץ כדי לשלם עם חשבון ה-PayPal שלך';
+  String get click_to_pay_with_your_paypal_account => 'לחץ כדי לשלם עם חשבון ה-PayPal שלך';
 
   @override
   String get click_to_pay_cash_on_delivery => 'לחץ כדי לשלם במזומן במשלוח';
@@ -673,8 +647,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get warning => 'אזהרה';
 
   @override
-  String get orderingFromAnotherRestaurantWillClearYourCart =>
-      'הזמנה ממסעדה אחרת תמחק את העגלה הנוכחית שלך. האם ברצונך להמשיך?';
+  String get orderingFromAnotherRestaurantWillClearYourCart => 'הזמנה ממסעדה אחרת תמחק את העגלה הנוכחית שלך. האם ברצונך להמשיך?';
 
   @override
   String get continueText => 'המשך';
@@ -695,8 +668,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get favorites_refreshed_successfuly => 'המועדפים רעננו בהצלחה';
 
   @override
-  String get completeYourProfileDetailsToContinue =>
-      'השלם את פרטי הפרופיל שלך כדי להמשיך';
+  String get completeYourProfileDetailsToContinue => 'השלם את פרטי הפרופיל שלך כדי להמשיך';
 
   @override
   String get faqsRefreshedSuccessfuly => 'שאלות נפוצות רעננו בהצלחה';
@@ -708,23 +680,19 @@ class AppLocalizationsHe extends AppLocalizations {
   String get thisFoodWasRemovedFromFavorites => 'המזון הזה הוסר מהמועדפים';
 
   @override
-  String get cannot_add_from_different_restaurant =>
-      'לא ניתן להוסיף מוצרים ממסעדות שונות באותה הזמנה. האם תרצה לנקות את העגלה ולהוסיף מוצרים ממסעדה זו?';
+  String get cannot_add_from_different_restaurant => 'לא ניתן להוסיף מוצרים ממסעדות שונות באותה הזמנה. האם תרצה לנקות את העגלה ולהוסיף מוצרים ממסעדה זו?';
 
   @override
   String get foodRefreshedSuccessfuly => 'המזון רענן בהצלחה';
 
   @override
-  String get deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants =>
-      'כתובת המשלוח מחוץ לטווח המשלוח של המסעדות הללו.';
+  String get deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants => 'כתובת המשלוח מחוץ לטווח המשלוח של המסעדות הללו.';
 
   @override
-  String get thisRestaurantNotSupportDeliveryMethod =>
-      'המסעדה הזו לא תומכת בשיטת משלוח.';
+  String get thisRestaurantNotSupportDeliveryMethod => 'המסעדה הזו לא תומכת בשיטת משלוח.';
 
   @override
-  String get oneOrMoreFoodsInYourCartNotDeliverable =>
-      'פריט או יותר בעגלתך אינם ניתנים למשלוח.';
+  String get oneOrMoreFoodsInYourCartNotDeliverable => 'פריט או יותר בעגלתך אינם ניתנים למשלוח.';
 
   @override
   String get deliveryMethodNotAllowed => 'שיטת המשלוח אינה מורשת!';
@@ -757,8 +725,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get yes => 'כן';
 
   @override
-  String get areYouSureYouWantToCancelThisOrder =>
-      'האם אתה בטוח שברצונך לבטל הזמנה זו?';
+  String get areYouSureYouWantToCancelThisOrder => 'האם אתה בטוח שברצונך לבטל הזמנה זו?';
 
   @override
   String orderThisorderidHasBeenCanceled(Object id) {
@@ -766,8 +733,7 @@ class AppLocalizationsHe extends AppLocalizations {
   }
 
   @override
-  String get clickOnTheFoodToGetMoreDetailsAboutIt =>
-      'לחץ על האוכל כדי לקבל פרטים נוספים עליו';
+  String get clickOnTheFoodToGetMoreDetailsAboutIt => 'לחץ על האוכל כדי לקבל פרטים נוספים עליו';
 
   @override
   String get razorpayPayment => 'תשלום RazorPay';
@@ -800,8 +766,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get newMessageFrom => 'הודעה חדשה מאת';
 
   @override
-  String get forMoreDetailsPleaseChatWithOurManagers =>
-      'לפרטים נוספים, אנא שוחח עם המנהלים שלנו';
+  String get forMoreDetailsPleaseChatWithOurManagers => 'לפרטים נוספים, אנא שוחח עם המנהלים שלנו';
 
   @override
   String get signinToChatWithOurManagers => 'היכנס כדי לשוחח עם המנהלים שלנו';
@@ -816,8 +781,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get notValidAddress => 'כתובת לא תקפה';
 
   @override
-  String get swipeLeftTheNotificationToDeleteOrReadUnreadIt =>
-      'גרור שמאלה את ההתראה כדי למחוק אותה או לקרוא / לא לקרוא אותה';
+  String get swipeLeftTheNotificationToDeleteOrReadUnreadIt => 'גרור שמאלה את ההתראה כדי למחוק אותה או לקרוא / לא לקרוא אותה';
 
   @override
   String get thisNotificationHasMarkedAsUnread => 'ההתראה הזו סומנה כלא נקראה';
@@ -835,8 +799,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get smsHasBeenSentTo => 'הודעת SMS נשלחה אל';
 
   @override
-  String get weAreSendingOtpToValidateYourMobileNumberHang =>
-      'אנו שולחים OTP כדי לאמת את מספר הטלפון שלך. נא להמתין!';
+  String get weAreSendingOtpToValidateYourMobileNumberHang => 'אנו שולחים OTP כדי לאמת את מספר הטלפון שלך. נא להמתין!';
 
   @override
   String get verifyPhoneNumber => 'אמת מספר טלפון';
@@ -946,8 +909,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get choose_your_location => 'Please , Choose Your Location';
 
   @override
-  String get deliveryAddressOutsideRange =>
-      'הכתובת שלך מחוץ לאזור המשלוח. אנא בחר באיסוף עצמי או שנה את הכתובת.';
+  String get deliveryAddressOutsideRange => 'הכתובת שלך מחוץ לאזור המשלוח. אנא בחר באיסוף עצמי או שנה את הכתובת.';
 
   @override
   String get card_deleted_successfully => 'הכרטיס נמחק בהצלחה';
@@ -1110,12 +1072,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get apiInfoTitle => 'מידע על ה-API';
 
   @override
-  String get apiEndpoint =>
-      'נקודת קצה: https://carrytechnologies.co/api/notifications';
+  String get apiEndpoint => 'נקודת קצה: https://carrytechnologies.co/api/notifications';
 
   @override
-  String get apiToken =>
-      'טוקן: fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv';
+  String get apiToken => 'טוקן: fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv';
 
   @override
   String get tracking => 'מעקב';
@@ -1151,8 +1111,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get addressDetails => 'פרטי הכתובת';
 
   @override
-  String get addingExactAddressDetailsHelpsUsFindYouFaster =>
-      'הוספת פרטי כתובת מדויקים עוזרת לנו למצוא אותך מהר יותר';
+  String get addingExactAddressDetailsHelpsUsFindYouFaster => 'הוספת פרטי כתובת מדויקים עוזרת לנו למצוא אותך מהר יותר';
 
   @override
   String get buildingName => 'שם המבנה';
@@ -1197,8 +1156,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get addressTypeAndLabel => 'סוג הכתובת ותווית';
 
   @override
-  String get addOrCreateAddressLabelsToEasilyChooseBetweenDeliveryAddresses =>
-      'הוסף או צור תוויות כתובת כדי לבחור בקלות בין כתובות המשלוח.';
+  String get addOrCreateAddressLabelsToEasilyChooseBetweenDeliveryAddresses => 'הוסף או צור תוויות כתובת כדי לבחור בקלות בין כתובות המשלוח.';
 
   @override
   String get work => 'עבודה';
@@ -1234,8 +1192,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get locationFetchError => 'לא ניתן לקבוע מיקום';
 
   @override
-  String get locationBasedMessage =>
-      'בהתבסס על מיקום הטלפון שלך, נראה שאתה כאן:';
+  String get locationBasedMessage => 'בהתבסס על מיקום הטלפון שלך, נראה שאתה כאן:';
 
   @override
   String get pleaseWait => 'אנא המתן...';
@@ -1332,8 +1289,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get see_all => 'הצג הכל';
 
   @override
-  String get location_type_hint =>
-      'סוג המיקום עוזר לנו למצוא אותך טוב יותר, בית, משרד';
+  String get location_type_hint => 'סוג המיקום עוזר לנו למצוא אותך טוב יותר, בית, משרד';
 
   @override
   String get cartIsEmpty => 'הסל ריק';
@@ -1384,8 +1340,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get i_dont_have_an_account => 'I don\'t have an account';
 
   @override
-  String get search_for_restaurants_or_foods =>
-      'Search for restaurants or foods';
+  String get search_for_restaurants_or_foods => 'Search for restaurants or foods';
 
   @override
   String get ordered_by_nearby_first => 'Ordered by nearby first';
@@ -1406,8 +1361,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get payment_mode => 'אמצעי תשלום';
 
   @override
-  String get select_your_preferred_payment_mode =>
-      'בחר את אמצעי התשלום המועדף עליך';
+  String get select_your_preferred_payment_mode => 'בחר את אמצעי התשלום המועדף עליך';
 
   @override
   String get or_checkout_with => 'או בצע תשלום באמצעות';
@@ -1428,8 +1382,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get help_supports => 'עזרה ותמיכה';
 
   @override
-  String get your_order_has_been_successfully_submitted =>
-      'ההזמנה שלך נשלחה בהצלחה';
+  String get your_order_has_been_successfully_submitted => 'ההזמנה שלך נשלחה בהצלחה';
 
   @override
   String get featured_foods => 'מנות מומלצות';
@@ -1441,8 +1394,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get sign => 'שלנו';
 
   @override
-  String get payment_will_be_cash_on_delivery =>
-      'התשלום יבוצע במזומן בעת המסירה';
+  String get payment_will_be_cash_on_delivery => 'התשלום יבוצע במזומן בעת המסירה';
 
   @override
   String get description_required => 'התיאור נדרש';

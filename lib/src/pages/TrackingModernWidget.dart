@@ -47,17 +47,42 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       });
 
       print("=== Starting Route Calculation ===");
-      print("Restaurant: ${_con.restaurantLocation.latitude}, ${_con.restaurantLocation.longitude}");
-      print("Client: ${_con.clientLocation.latitude}, ${_con.clientLocation.longitude}");
+      
+      // تحديث إحداثيات المطعم والمستخدم في الـ controller أولاً
+      _updateControllerCoordinates();
+      
+      // استخراج الإحداثيات الفعلية من الطلب
+      double? restaurantLat;
+      double? restaurantLng;
+      double? clientLat;
+      double? clientLng;
+
+      try {
+        if (_con.order.foodOrders.isNotEmpty) {
+          restaurantLat = double.tryParse(
+            _con.order.foodOrders[0].food?.restaurant.latitude ?? '',
+          );
+          restaurantLng = double.tryParse(
+            _con.order.foodOrders[0].food?.restaurant.longitude ?? '',
+          );
+        }
+        clientLat = _con.order.deliveryAddress.latitude;
+        clientLng = _con.order.deliveryAddress.longitude;
+      } catch (e) {
+        print("Error extracting coordinates: $e");
+      }
+
+      // التحقق من صحة الإحداثيات
+      bool hasRestaurantCoords = restaurantLat != null && restaurantLng != null && 
+                                restaurantLat != 0.0 && restaurantLng != 0.0;
+      bool hasClientCoords = clientLat != null && clientLng != null && 
+                            clientLat != 0.0 && clientLng != 0.0;
+
+      print("Restaurant: $restaurantLat, $restaurantLng (available: $hasRestaurantCoords)");
+      print("Client: $clientLat, $clientLng (available: $hasClientCoords)");
       print("API Key: ${_apiKey.substring(0, 10)}...");
 
-      // Check if we have both coordinates for route calculation
-      bool hasRestaurantCoords = _con.restaurantLocation.latitude != 0.0 && 
-                                _con.restaurantLocation.longitude != 0.0;
-      bool hasClientCoords = _con.clientLocation.latitude != 0.0 && 
-                            _con.clientLocation.longitude != 0.0;
-
-      // If we don't have both coordinates, skip route calculation
+      // إذا لم تكن هناك إحداثيات متوفرة، تخطى حساب المسار
       if (!hasRestaurantCoords || !hasClientCoords) {
         print("⚠️ Skipping route calculation - missing coordinates:");
         print("   - Restaurant coordinates available: $hasRestaurantCoords");
@@ -71,19 +96,19 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       }
 
       // First, test the API key with a direct HTTP request
-      await _testDirectionsAPI();
+      await _testDirectionsAPI(restaurantLat!, restaurantLng!, clientLat!, clientLng!);
 
       // If test passes, proceed with polyline points
       final result = await polylinePoints.getRouteBetweenCoordinates(
         googleApiKey: _apiKey,
         request: PolylineRequest(
           origin: PointLatLng(
-            _con.restaurantLocation.latitude,
-            _con.restaurantLocation.longitude,
+            restaurantLat!,
+            restaurantLng!,
           ),
           destination: PointLatLng(
-            _con.clientLocation.latitude,
-            _con.clientLocation.longitude,
+            clientLat!,
+            clientLng!,
           ),
           mode: TravelMode.driving,
         ),
@@ -161,10 +186,10 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
   }
 
   // Test the Directions API directly to diagnose issues
-  Future<void> _testDirectionsAPI() async {
+  Future<void> _testDirectionsAPI(double restaurantLat, double restaurantLng, double clientLat, double clientLng) async {
     final url = "https://maps.googleapis.com/maps/api/directions/json?"
-        "origin=${_con.restaurantLocation.latitude},${_con.restaurantLocation.longitude}"
-        "&destination=${_con.clientLocation.latitude},${_con.clientLocation.longitude}"
+        "origin=$restaurantLat,$restaurantLng"
+        "&destination=$clientLat,$clientLng"
         "&key=$_apiKey";
 
     print("Testing Directions API: $url");
@@ -265,11 +290,46 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     }
     loadMotorcycleIcon();
     // Delay route calculation to ensure order data is loaded
-    Future.delayed(Duration(milliseconds: 1000), () {
+    Future.delayed(Duration(milliseconds: 2000), () {
       if (mounted) {
+        _updateControllerCoordinates();
         _getPolyline();
       }
     });
+  }
+
+  // دالة لتحديث إحداثيات المطعم والمستخدم في الـ controller
+  void _updateControllerCoordinates() {
+    try {
+      // استخراج إحداثيات المطعم من الطلب
+      if (_con.order.foodOrders.isNotEmpty) {
+        double? restaurantLat = double.tryParse(
+          _con.order.foodOrders[0].food?.restaurant.latitude ?? '',
+        );
+        double? restaurantLng = double.tryParse(
+          _con.order.foodOrders[0].food?.restaurant.longitude ?? '',
+        );
+        
+        if (restaurantLat != null && restaurantLng != null && 
+            restaurantLat != 0.0 && restaurantLng != 0.0) {
+          _con.restaurantLocation = LatLng(restaurantLat, restaurantLng);
+          print("✅ Updated restaurant location: $_con.restaurantLocation");
+        }
+      }
+      
+      // استخراج إحداثيات العميل من العنوان
+      double? clientLat = _con.order.deliveryAddress.latitude;
+      double? clientLng = _con.order.deliveryAddress.longitude;
+      
+      if (clientLat != null && clientLng != null && 
+          clientLat != 0.0 && clientLng != 0.0) {
+        _con.clientLocation = LatLng(clientLat, clientLng);
+        print("✅ Updated client location: $_con.clientLocation");
+      }
+      
+    } catch (e) {
+      print("❌ Error updating coordinates: $e");
+    }
   }
 
   BitmapDescriptor? motorcycleIcon;
