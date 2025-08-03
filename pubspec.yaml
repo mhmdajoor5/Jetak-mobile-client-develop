@@ -43,10 +43,10 @@ dependencies:
   global_configuration: ^2.0.0 # No -nullsafety suffix needed for recent versions
   infinite_scroll_pagination: ^4.0.0 # Updated (check for Material 3 text style changes)
   html: ^0.15.4 # Check latest, this one doesn't change as often
-  shared_preferences: ^2.2.2 # Updated
+  shared_preferences:  # Updated
   flutter_html: ^3.0.0-beta.2 # Using beta as full 3.0.0 might not be out or stable, check pub.dev
   flutter_svg: ^2.0.9 # Updated
-  location: ^5.0.3 # Updated
+  location:  # Updated
   webview_flutter: ^4.12.0 # Updated
   url_launcher: ^6.2.5 # Update``d
   cached_network_image: ^3.3.1 # Updated (this had DecoderCallback issues)
@@ -66,7 +66,7 @@ dependencies:
   flutter_local_notifications: ^17.2.3 # For local notifications
 
   google_sign_in: ^6.3.0
-  flutter_facebook_auth: ^7.1.2
+#  flutter_facebook_auth: ^7.1.2
 #  ـsign_in_with_apple: ^5.0.0
   http: ^1.1.0
   flutter_swipe_button:
@@ -79,7 +79,10 @@ dependencies:
   collection: ^1.18.0 # Updated (usually updated with Dart SDK)
   carousel_slider: ^5.0.0
   chucker_flutter: ^1.8.5
-
+  pusher_channels_flutter:
+    git:
+      url: https://github.com/kishormainali/pusher-channels-flutter.git
+      ref: master
 
   flutter_easyloading: ^3.0.5
   flutter_spinkit: ^5.2.1

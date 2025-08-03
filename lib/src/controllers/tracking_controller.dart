@@ -1,10 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:pusher_client/pusher_client.dart';
+import 'package:pusher_client/pusher_client.dart' hide PusherEvent;
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -15,6 +18,9 @@ import '../helpers/helper.dart';
 import '../models/order.dart';
 import '../models/order/tracking_order_model.dart';
 import '../models/order_status.dart';
+import '../models/address.dart';
+import '../models/user.dart';
+import '../models/payment.dart';
 import '../repository/order/order_track_repo.dart';
 import '../repository/order_repository.dart';
 
@@ -26,7 +32,78 @@ class TrackingController extends ControllerMVC {
   TrackingController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }
+  final PusherChannelsFlutter _pusher = PusherChannelsFlutter.getInstance();
+  Future<void> _initPusher(cleanOrderId) async {
 
+    void onError(String message, int? code, dynamic e) {
+      log("onError: $message code: $code exception: $e");
+    }
+
+    void onConnectionStateChange(dynamic currentState, dynamic previousState) {
+      log("Connection: $currentState");
+    }
+
+    void onMemberRemoved(String channelName, PusherMember member) {
+      log("onMemberRemoved: $channelName member: $member");
+    }
+
+    void onMemberAdded(String channelName, PusherMember member) {
+      log("onMemberAdded: $channelName member: $member");
+    }
+
+    void onSubscriptionSucceeded(String channelName, dynamic data) {
+      log("onSubscriptionSucceeded: $channelName data: $data");
+    }
+
+    void onSubscriptionError(String message, dynamic e) {
+      log("onSubscriptionError: $message Exception: $e");
+    }
+
+    Future<void> onEvent(PusherEvent event) async {
+      log("onEvent: $event");
+
+
+    }
+
+    void onDecryptionFailure(String event, String reason) {
+      log("onDecryptionFailure: $event reason: $reason");
+    }
+
+    dynamic onAuthorizer(
+        String channelName, String socketId, dynamic options) async {
+      // var authUrl = "/chat/auth";
+      // var result = await DioHelper.post(
+      //   headers: {
+      //     "Authorization": 'Bearer ${AuthService().token}',
+      //   },
+      //   authUrl,
+      //   body: {"socket_id": socketId, "channel_name": channelName},
+      // );
+      // log("result: $result");
+      // return jsonDecode(result.data.toString());
+    }
+
+    try {
+      await _pusher.init(
+        apiKey: _pusherKey,
+        cluster: _pusherCluster,
+        onConnectionStateChange: onConnectionStateChange,
+        onError: onError,
+        onSubscriptionSucceeded: onSubscriptionSucceeded,
+        onEvent: onEvent,
+        onSubscriptionError: onSubscriptionError,
+        onDecryptionFailure: onDecryptionFailure,
+        onMemberAdded: onMemberAdded,
+        onMemberRemoved: onMemberRemoved,
+        //authEndpoint: "https://my-website.com/broadcasting/auth",
+        onAuthorizer: onAuthorizer,
+      );
+      await _pusher.subscribe(channelName: 'order-tracking.$cleanOrderId');
+      await _pusher.connect();
+    } catch (e) {
+      log("error in initialization: $e");
+    }
+  }
   /// TODO make it dynamic
   LatLng restaurantLocation = LatLng(0.0, 0.0);
   LatLng clientLocation = LatLng(0.0, 0.0);
@@ -50,6 +127,8 @@ class TrackingController extends ControllerMVC {
 
   // دالة للاتصال بـ Pusher للتراكنج المباشر
   void connectToDriverTracking(String orderId) {
+    _initPusher(orderId);
+    return;
     try {
       print("🚀 بدء الاتصال بـ Pusher للتراكنج المباشر");
       print("📡 Channel: order-tracking.$orderId");
@@ -67,22 +146,35 @@ class TrackingController extends ControllerMVC {
         PusherOptions(
           cluster: _pusherCluster,
           encrypted: true,
+          activityTimeout: 30000, // 30 seconds
+          pongTimeout: 6000, // 6 seconds
+          maxReconnectionAttempts: 6,
+          maxReconnectGapInSeconds: 30,
         ),
       );
       
       print("✅ تم إنشاء اتصال Pusher");
       
       // إضافة timeout للاتصال
-      Timer(_connectionTimeout, () {
+      Timer(Duration(seconds: 15), () {
         if (!_isPusherConnected) {
-          print("⏰ Pusher connection timeout");
+          print("⏰ Pusher connection timeout after 15 seconds");
           _handleConnectionError('Connection timeout', orderId);
         }
       });
       
       // الاستماع لأحداث الاتصال
       _pusherClient!.onConnectionStateChange((state) {
-        print("🔄 حالة الاتصال بـ Pusher: $state");
+        print("🔄 حالة الاتصال بـ Pusher:");
+        print("  - Current State: ${state?.currentState}");
+        print("  - Previous State: ${state?.previousState}");
+        
+        // محاولة الحصول على Socket ID من الـ client مباشرة
+        try {
+          print("  - Socket ID: ${_pusherClient?.getSocketId()}");
+        } catch (e) {
+          print("  - Socket ID: غير متوفر");
+        }
         
         if (state?.currentState == 'CONNECTED') {
           print("✅ تم الاتصال بـ Pusher بنجاح");
@@ -103,6 +195,12 @@ class TrackingController extends ControllerMVC {
               ),
             );
           }
+        } else if (state?.currentState == 'CONNECTING') {
+          print("🔄 جاري الاتصال بـ Pusher...");
+          _isPusherConnected = false;
+        } else if (state?.currentState == 'RECONNECTING') {
+          print("🔄 جاري إعادة الاتصال بـ Pusher...");
+          _isPusherConnected = false;
         } else if (state?.currentState == 'DISCONNECTED') {
           print("❌ تم قطع الاتصال بـ Pusher");
           _isPusherConnected = false;
@@ -118,10 +216,27 @@ class TrackingController extends ControllerMVC {
               ),
             );
           }
+        } else if (state?.currentState == 'FAILED') {
+          print("💥 فشل الاتصال بـ Pusher");
+          _isPusherConnected = false;
+          _handleConnectionError('Pusher connection failed', orderId);
+        } else {
+          print("🔄 حالة Pusher غير معروفة: ${state?.currentState}");
         }
       });
       
+      // الاستماع لأحداث الأخطاء
+      _pusherClient!.onConnectionError((error) {
+        print("❌ خطأ في اتصال Pusher:");
+        print("  - Message: ${error?.message}");
+        print("  - Code: ${error?.code}");
+        print("  - Exception: ${error?.exception}");
+        _isPusherConnected = false;
+        _handleConnectionError('Pusher connection error: ${error?.message}', orderId);
+      });
+      
       // بدء الاتصال
+      print("🚀 Starting Pusher connection...");
       _pusherClient!.connect();
       
     } catch (e) {
@@ -156,14 +271,14 @@ class TrackingController extends ControllerMVC {
       _trackingChannel!.bind('driver-location-update', (event) {
         print("📨 حدث تحديث موقع السائق: $event");
         if (event != null) {
-          _handleDriverLocationUpdate(event, orderId);
+          //_handleDriverLocationUpdate(event, orderId);
         }
       });
       
       _trackingChannel!.bind('order-status-update', (event) {
         print("📨 حدث تحديث حالة الطلب: $event");
         if (event != null) {
-          _handleOrderStatusUpdate(event, orderId);
+        //  _handleOrderStatusUpdate(event, orderId);
         }
       });
       
@@ -302,12 +417,17 @@ class TrackingController extends ControllerMVC {
       });
     } else {
       print("❌ تم تجاوز الحد الأقصى لمحاولات إعادة الاتصال");
+      print("🔄 تفعيل وضع العمل بدون live tracking");
+      
+      // تفعيل fallback mode
+      _enableFallbackMode();
+      
       if (scaffoldKey.currentContext != null) {
         ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
           SnackBar(
-            content: Text('Failed to connect to live tracking. Please check your internet connection.'),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 5),
+            content: Text('Live tracking unavailable. App continues in offline mode.'),
+            backgroundColor: Colors.orange,
+            duration: Duration(seconds: 4),
             action: SnackBarAction(
               label: 'Retry',
               onPressed: () {
@@ -319,6 +439,20 @@ class TrackingController extends ControllerMVC {
         );
       }
     }
+  }
+
+  // تفعيل وضع العمل بدون live tracking
+  void _enableFallbackMode() {
+    print("🔄 Fallback mode enabled - app will work without live tracking");
+    _isPusherConnected = false;
+    
+    // إيقاف محاولات إعادة الاتصال
+    _reconnectTimer?.cancel();
+    
+    // يمكن إضافة polling للحصول على تحديثات بدلاً من live tracking
+    // _startPollingForUpdates();
+    
+    setState(() {});
   }
 
   // دالة للتحقق من حالة الاتصال
@@ -655,48 +789,58 @@ class TrackingController extends ControllerMVC {
     // بدء التراكنج المباشر للسائق مع Pusher
     connectToDriverTracking(orderId);
     
-    final Stream<Order> stream = await getOrder(orderId);
-    print(
-      "mElkerm Tracking Controller ✅ Stream obtained for order ID: $orderId",
-    );
+    try {
+      print("🔄 Attempting to get order stream for ID: $orderId");
+      final Stream<Order> stream = await getOrder(orderId);
+      print("✅ Stream obtained for order ID: $orderId");
+      
+      _listenToOrderStream(stream, orderId);
+    } catch (error) {
+      print("❌ Error getting order stream: $error");
+      if (scaffoldKey.currentContext != null) {
+        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+          SnackBar(
+            content: Text("Failed to load order data: $error"),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 5),
+          ),
+        );
+      }
+    }
+  }
+  
+  void _listenToOrderStream(Stream<Order> stream, String orderId) {
 
     stream.listen(
       (Order _order) {
         setState(() {
-          print("mElkerm Tracking Controller ▶ Received order data");
-          print("mElkerm Tracking Controller → order id: ${_order.id}");
-          print(
-            "mElkerm Tracking Controller → order status id: ${_order.orderStatus.id}",
-          );
-          print(
-            "mElkerm Tracking Controller → order status: ${_order.orderStatus.status}",
-          );
-          print("mElkerm Tracking Controller → order date: ${_order.dateTime}");
-          print(
-            "mElkerm Tracking Controller → payment method: ${_order.payment.method}",
-          );
-          print("mElkerm Tracking Controller → active: ${_order.active}");
-          print("mElkerm Tracking Controller → hint: ${_order.hint}");
-          print(
-            "mElkerm Tracking Controller → lat: ${_order.deliveryAddress.longitude}",
-          );
-          print(
-            "mElkerm Tracking Controller → lang: ${_order.deliveryAddress.latitude}",
-          );
-          restaurantLocation = LatLng(
-            double.tryParse(_order.deliveryAddress.latitude.toString()) ?? 0.0,
-            35.4219985,
-          );
-
-          print(
-            "mElkerm Tracking Controller → restaurant location: $restaurantLocation",
-          );
+          print("=== Tracking Controller ▶ Received order data ===");
+          print("Order ID: ${_order.id}");
+          print("Food Orders Count: ${_order.foodOrders.length}");
+          print("Order Status ID: ${_order.orderStatus.id}");
+          print("Order Status: ${_order.orderStatus.status}");
+          print("Order Date: ${_order.dateTime}");
+          print("Payment Method: ${_order.payment.method}");
+          print("Active: ${_order.active}");
+          print("Hint: ${_order.hint}");
+          print("Delivery Address: ${_order.deliveryAddress.address}");
+          print("Delivery Lat: ${_order.deliveryAddress.latitude}");
+          print("Delivery Lng: ${_order.deliveryAddress.longitude}");
+          print("Restaurant Object: ${_order.restaurant}");
+          
+          // تعيين Order للمتحكم
+          order = _order;
+          // إزالة التعيين الثابت للإحداثيات
+          print("mElkerm Tracking Controller → Processing order coordinates...");
           
           // تحديث إحداثيات المطعم والمستخدم بناءً على البيانات الفعلية
           _updateOrderCoordinates(_order);
           
           print(
-            "mElkerm Tracking Controller → Updated restaurant location: $restaurantLocation",
+            "mElkerm Tracking Controller → Final restaurant location: $restaurantLocation",
+          );
+          print(
+            "mElkerm Tracking Controller → Final client location: $clientLocation",
           );
           print(
             "mElkerm Tracking Controller → Updated client location: $clientLocation",
@@ -913,6 +1057,12 @@ class TrackingController extends ControllerMVC {
 
       setState(() {
         trackingOrderDetails = result;
+        
+        // إذا لم يتم تحميل Order من endpoint الرئيسي، استخدم بيانات التتبع
+        if (order.id.isEmpty && result.data.deliveryAddress != null) {
+          print("🔄 Using tracking data as fallback for order coordinates");
+          _useTrackingDataAsFallback(result, orderId);
+        }
       });
 
       if (message != null) {
@@ -1012,6 +1162,62 @@ class TrackingController extends ControllerMVC {
       
     } catch (e) {
       print("❌ Error updating order coordinates: $e");
+    }
+  }
+
+  // دالة لاستخدام بيانات التتبع كـ fallback عندما لا يوجد order
+  void _useTrackingDataAsFallback(TrackingOrderModel trackingData, String orderId) {
+    try {
+      print("=== Using Tracking Data as Fallback ===");
+      
+      final deliveryAddress = trackingData.data.deliveryAddress;
+      if (deliveryAddress != null) {
+        print("📍 Delivery Address from Tracking:");
+        print("  - Address: ${deliveryAddress.address}");
+        print("  - Latitude: ${deliveryAddress.latitude}");
+        print("  - Longitude: ${deliveryAddress.longitude}");
+        
+        // تحديث موقع العميل
+        if (deliveryAddress.latitude != null && deliveryAddress.longitude != null) {
+          clientLocation = LatLng(
+            deliveryAddress.latitude!,
+            deliveryAddress.longitude!,
+          );
+          print("✅ Updated client location from tracking: $clientLocation");
+        }
+      }
+      
+      // إنشاء Order مؤقت بالبيانات المتوفرة
+      order = Order(
+        id: orderId,
+        foodOrders: [], // فارغ لأنه غير متوفر
+        deliveryAddress: Address(
+          id: deliveryAddress?.id?.toString() ?? '',
+          address: deliveryAddress?.address ?? '',
+          latitude: deliveryAddress?.latitude ?? 0.0,
+          longitude: deliveryAddress?.longitude ?? 0.0,
+          description: deliveryAddress?.description ?? '',
+        ),
+        // معلومات افتراضية للحقول المطلوبة
+        orderStatus: OrderStatus.fromJSON({'id': '1', 'status': 'Order Received'}),
+        user: User.fromJSON({}),
+        payment: Payment.fromJSON({}),
+        active: true,
+      );
+      
+      print("✅ Created fallback order with ID: ${order.id}");
+      print("✅ Order delivery address: ${order.deliveryAddress.address}");
+      print("✅ Order coordinates: ${order.deliveryAddress.latitude}, ${order.deliveryAddress.longitude}");
+      
+             // إضافة إحداثيات المطعم المؤقتة (من البيانات السابقة)
+       // TODO: الحصول على إحداثيات المطعم من API منفصل
+       restaurantLocation = LatLng(31.811115332221924, 35.23264194715977);
+       print("✅ Set temporary restaurant location: $restaurantLocation");
+      
+      setState(() {});
+      
+    } catch (e) {
+      print("❌ Error using tracking data as fallback: $e");
     }
   }
 

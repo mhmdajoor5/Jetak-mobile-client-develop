@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'dart:convert';
+import 'dart:async';
+import 'dart:math' as math;
 import 'package:http/http.dart' as http;
 
 import '../../generated/l10n.dart';
@@ -37,6 +39,12 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
   PolylinePoints polylinePoints = PolylinePoints();
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
+  
+  // Current coordinates for fallback
+  double? _currentRestaurantLat;
+  double? _currentRestaurantLng;
+  double? _currentClientLat;
+  double? _currentClientLng;
 
   // Enhanced method to get the route polyline with better error handling
   _getPolyline() async {
@@ -75,7 +83,13 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
             _con.order.foodOrders[0].food?.restaurant.longitude ?? '',
           );
         } else {
-          print("❌ No food orders available");
+          print("❌ No food orders available, checking controller coordinates");
+          // استخدام إحداثيات المطعم من الـ controller
+          if (_con.restaurantLocation != null) {
+            restaurantLat = _con.restaurantLocation!.latitude;
+            restaurantLng = _con.restaurantLocation!.longitude;
+            print("✅ Using restaurant coordinates from controller: $restaurantLat, $restaurantLng");
+          }
         }
         
         print("Delivery address data:");
@@ -88,6 +102,12 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       } catch (e) {
         print("Error extracting coordinates: $e");
       }
+
+      // حفظ الإحداثيات في متغيرات الكلاس للاستخدام لاحقاً
+      _currentRestaurantLat = restaurantLat;
+      _currentRestaurantLng = restaurantLng;
+      _currentClientLat = clientLat;
+      _currentClientLng = clientLng;
 
       // التحقق من صحة الإحداثيات
       bool hasRestaurantCoords = restaurantLat != null && restaurantLng != null && 
@@ -181,30 +201,42 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       print("Calling _addPolyline()...");
       _addPolyline();
 
-    } catch (e) {
+        } catch (e) {
       print("❌ Error in _getPolyline: $e");
       print("Error type: ${e.runtimeType}");
       print("Error details: ${e.toString()}");
-      setState(() {
-        _routeError = e.toString();
-      });
+      
+      // إذا كان الخطأ ZERO_RESULTS، ارسم خط مستقيم
+      if (e.toString().contains('ZERO_RESULTS') && 
+          _currentRestaurantLat != null && _currentRestaurantLng != null &&
+          _currentClientLat != null && _currentClientLng != null) {
+        print("🔄 Drawing straight line as fallback for ZERO_RESULTS");
+        _drawStraightLine(_currentRestaurantLat!, _currentRestaurantLng!, _currentClientLat!, _currentClientLng!);
+        setState(() {
+          _routeError = "No road route found. Showing straight line distance.";
+        });
+      } else {
+        setState(() {
+          _routeError = e.toString();
+        });
 
-      // Show error to user
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Route Error: ${e.toString()}"),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 5),
-            action: SnackBarAction(
-              label: "Retry",
-              textColor: Colors.white,
-              onPressed: _getPolyline,
+        // Show error to user
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Route Error: ${e.toString()}"),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 5),
+              action: SnackBarAction(
+                label: "Retry",
+                textColor: Colors.white,
+                onPressed: _getPolyline,
+              ),
             ),
-          ),
-        );
+          );
+        }
       }
-          } finally {
+    } finally {
         if (mounted) {
           setState(() => _isLoadingRoute = false);
           print("Route calculation completed. Loading: false");
@@ -232,6 +264,14 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     print("  - Origin: $restaurantLat, $restaurantLng");
     print("  - Destination: $clientLat, $clientLng");
     print("  - API Key: ${_apiKey.substring(0, 10)}...");
+    
+    // حساب المسافة بين النقطتين
+    double distance = _calculateDistance(restaurantLat, restaurantLng, clientLat, clientLng);
+    print("  - Distance between points: ${distance.toStringAsFixed(2)} km");
+    
+    if (distance > 100) {
+      print("⚠️ Warning: Distance is very large (${distance.toStringAsFixed(2)} km)");
+    }
 
     try {
       final response = await http.get(Uri.parse(url)).timeout(
@@ -250,10 +290,46 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
 
       final data = jsonDecode(response.body);
       print("API Response Status: ${data['status']}");
+      print("Full API Response: $data");
       
       if (data['status'] != 'OK') {
         String errorMsg = data['error_message'] ?? "Unknown API error";
         print("❌ API Error: ${data['status']} - $errorMsg");
+        
+        // معالجة خاصة لـ ZERO_RESULTS
+        if (data['status'] == 'ZERO_RESULTS') {
+          print("🔍 ZERO_RESULTS Analysis:");
+          print("  - This usually means no route found between the points");
+          print("  - Points might be in different countries/regions");
+          print("  - Points might be in water or inaccessible areas");
+          print("  - Try using 'mode=driving' explicitly");
+          
+          // محاولة بمعاملات مختلفة
+          final fallbackUrl = "https://maps.googleapis.com/maps/api/directions/json?"
+              "origin=$restaurantLat,$restaurantLng"
+              "&destination=$clientLat,$clientLng"
+              "&mode=driving"
+              "&avoid=tolls"
+              "&key=$_apiKey";
+          
+          print("🔄 Trying fallback request with different parameters...");
+          print("Fallback URL: $fallbackUrl");
+          
+          try {
+            final fallbackResponse = await http.get(Uri.parse(fallbackUrl)).timeout(Duration(seconds: 10));
+            final fallbackData = jsonDecode(fallbackResponse.body);
+            print("Fallback Response: ${fallbackData['status']}");
+            
+            if (fallbackData['status'] == 'OK') {
+              print("✅ Fallback request succeeded!");
+              // يمكن استخدام البيانات من fallbackData هنا
+              return;
+            }
+          } catch (e) {
+            print("❌ Fallback request also failed: $e");
+          }
+        }
+        
         throw Exception("Directions API Error: ${data['status']} - $errorMsg");
       }
 
@@ -300,11 +376,15 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       final id = PolylineId("route_${DateTime.now().millisecondsSinceEpoch}");
       final polyline = Polyline(
         polylineId: id,
-        color: Color(0xFF26386A), // Match your app theme
+        color: _routeError != null && _routeError!.contains("straight line") 
+            ? Colors.orange // لون مختلف للخط المستقيم
+            : Color(0xFF26386A), // Match your app theme
         points: polylineCoordinates,
         width: 5,
         geodesic: true,
-        patterns: [], // Solid line
+        patterns: _routeError != null && _routeError!.contains("straight line")
+            ? [PatternItem.dash(20), PatternItem.gap(10)] // خط متقطع للخط المستقيم
+            : [], // Solid line for normal route
       );
 
       print("Created polyline with ID: $id");
@@ -368,6 +448,47 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     );
   }
 
+  // دالة لحساب المسافة بين نقطتين جغرافيتين
+  double _calculateDistance(double lat1, double lng1, double lat2, double lng2) {
+    const double earthRadius = 6371; // نصف قطر الأرض بالكيلومتر
+    double dLat = _degreesToRadians(lat2 - lat1);
+    double dLng = _degreesToRadians(lng2 - lng1);
+    
+    double a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+        math.cos(_degreesToRadians(lat1)) * math.cos(_degreesToRadians(lat2)) *
+        math.sin(dLng / 2) * math.sin(dLng / 2);
+    
+    double c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
+    return earthRadius * c;
+  }
+  
+  double _degreesToRadians(double degrees) {
+    return degrees * (math.pi / 180);
+  }
+
+  // دالة لرسم خط مستقيم بين المطعم والعميل
+  void _drawStraightLine(double restaurantLat, double restaurantLng, double clientLat, double clientLng) {
+    print("=== Drawing Straight Line ===");
+    print("From: $restaurantLat, $restaurantLng");
+    print("To: $clientLat, $clientLng");
+    
+    try {
+      // إنشاء خط مستقيم بنقطتين فقط
+      polylineCoordinates = [
+        LatLng(restaurantLat, restaurantLng),
+        LatLng(clientLat, clientLng),
+      ];
+      
+      print("✅ Created straight line with ${polylineCoordinates.length} points");
+      print("Distance: ${_calculateDistance(restaurantLat, restaurantLng, clientLat, clientLng).toStringAsFixed(2)} km");
+      
+      _addPolyline();
+      
+    } catch (e) {
+      print("❌ Error drawing straight line: $e");
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -378,6 +499,19 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       print("Starting order tracking for ID: ${widget.routeArgument!.id}");
       _con.listenForOrder(orderId: widget.routeArgument!.id!);
       _con.getOrderDetailsTracking(orderId: widget.routeArgument!.id!);
+      
+      // إضافة retry mechanism لتحميل Order إذا فشل
+      Timer.periodic(Duration(seconds: 3), (timer) {
+        if (_con.order.id.isEmpty && timer.tick < 5) {
+          print("🔄 Retrying order loading... attempt ${timer.tick}");
+          _con.listenForOrder(orderId: widget.routeArgument!.id!);
+        } else {
+          timer.cancel();
+          if (_con.order.id.isNotEmpty) {
+            print("✅ Order loaded successfully on retry");
+          }
+        }
+      });
     } else {
       print("❌ No route argument or ID provided");
     }
@@ -436,6 +570,12 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         }
       } else {
         print("❌ No food orders available for restaurant coordinates");
+        // التحقق من وجود إحداثيات المطعم في الـ controller
+        if (_con.restaurantLocation != null) {
+          print("✅ Restaurant location already available in controller: $_con.restaurantLocation");
+        } else {
+          print("⚠️ No restaurant location in controller either");
+        }
       }
       
       // استخراج إحداثيات العميل من العنوان
@@ -502,7 +642,8 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     print("Food Orders Count: ${_con.order.foodOrders.length}");
     print("Order Status: ${_con.order.orderStatus.status}");
     
-    if (_con.order.id == null || _con.order.foodOrders.isEmpty) {
+    // تعديل الشرط ليسمح بعرض الخريطة حتى لو لم تكن هناك foodOrders
+    if (_con.order.id == null || _con.order.id.isEmpty) {
       print("❌ Order data not ready, showing loading screen");
       return Scaffold(
         // appBar: _buildAppBar(),
@@ -519,6 +660,14 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
                 style: TextStyle(
                   fontSize: 16,
                   color: Color(0xFF272727),
+                ),
+              ),
+              SizedBox(height: 8),
+              Text(
+                "Please wait while we fetch your order information",
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Color(0xFF9D9FA4),
                 ),
               ),
             ],
@@ -543,7 +692,13 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         restaurantLng = double.tryParse(
           _con.order.foodOrders[0].food?.restaurant.longitude ?? '',
         );
+      } else if (_con.restaurantLocation != null) {
+        // استخدام إحداثيات المطعم من الـ controller
+        restaurantLat = _con.restaurantLocation!.latitude;
+        restaurantLng = _con.restaurantLocation!.longitude;
+        print("Using restaurant coordinates from controller: $restaurantLat, $restaurantLng");
       }
+      
       clientLat = _con.order.deliveryAddress.latitude;
       clientLng = _con.order.deliveryAddress.longitude;
     } catch (e) {
@@ -727,7 +882,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
               ),
             ),
           
-          // Error overlay
+          // Error/Info overlay
           if (_routeError != null)
             Positioned(
               top: 20,
@@ -736,39 +891,59 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
               child: Container(
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.red.shade50,
+                  color: _routeError!.contains("straight line") 
+                      ? Colors.orange.shade50 
+                      : Colors.red.shade50,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.red.shade200),
+                  border: Border.all(
+                    color: _routeError!.contains("straight line") 
+                        ? Colors.orange.shade200 
+                        : Colors.red.shade200
+                  ),
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.error_outline, color: Colors.red),
+                    Icon(
+                      _routeError!.contains("straight line") 
+                          ? Icons.info_outline 
+                          : Icons.error_outline, 
+                      color: _routeError!.contains("straight line") 
+                          ? Colors.orange 
+                          : Colors.red
+                    ),
                     SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Route Loading Failed",
+                            _routeError!.contains("straight line") 
+                                ? "Showing Straight Line Distance" 
+                                : "Route Loading Failed",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.red.shade800,
+                              color: _routeError!.contains("straight line") 
+                                  ? Colors.orange.shade800 
+                                  : Colors.red.shade800,
                             ),
                           ),
                           Text(
                             _routeError!,
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.red.shade700,
+                              color: _routeError!.contains("straight line") 
+                                  ? Colors.orange.shade700 
+                                  : Colors.red.shade700,
                             ),
                           ),
                         ],
                       ),
                     ),
-                    TextButton(
-                      onPressed: _getPolyline,
-                      child: Text("Retry"),
-                    ),
+                    if (!_routeError!.contains("straight line"))
+                      TextButton(
+                        onPressed: _getPolyline,
+                        child: Text("Retry"),
+                      ),
                   ],
                 ),
               ),

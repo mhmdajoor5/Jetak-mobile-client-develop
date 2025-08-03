@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart' as userModel show User;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -308,42 +308,42 @@ class UserController extends ControllerMVC {
     }
   }
 
-  Future<void> loginWithFacebook() async {
-    if (context == null) return;
-    final loaderTimer = Timer(const Duration(milliseconds: 300), _showLoader);
-
-    try {
-      final result = await FacebookAuth.instance.login();
-
-      if (result.status != LoginStatus.success || result.accessToken == null) {
-        throw 'Facebook login canceled or failed';
-      }
-      final token = result.accessToken?.toJson()['token'];
-
-      if (token == null) {
-        throw 'Token is null';
-      }
-
-      final response = await http.post(
-        Uri.parse('https://your.api.com/social-login/facebook'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'token': token}),
-      );
-
-      if (response.statusCode == 200) {
-        _hideLoader();
-        _showSnackBar(S.of(context!).login_successful);
-        Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 0);
-      } else {
-        throw 'API error';
-      }
-    } catch (e) {
-      _hideLoader();
-      _showSnackBar('فشل تسجيل الدخول باستخدام فيسبوك');
-      debugPrint('Facebook login error: $e');
-    }
-  }
+  // Future<void> loginWithFacebook() async {
+  //   if (context == null) return;
+  //   final loaderTimer = Timer(const Duration(milliseconds: 300), _showLoader);
+  //
+  //   try {
+  //     final result = await FacebookAuth.instance.login();
+  //
+  //     if (result.status != LoginStatus.success || result.accessToken == null) {
+  //       throw 'Facebook login canceled or failed';
+  //     }
+  //     final token = result.accessToken?.toJson()['token'];
+  //
+  //     if (token == null) {
+  //       throw 'Token is null';
+  //     }
+  //
+  //     final response = await http.post(
+  //       Uri.parse('https://your.api.com/social-login/facebook'),
+  //       headers: {'Content-Type': 'application/json'},
+  //       body: jsonEncode({
+  //         'token': token}),
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       _hideLoader();
+  //       _showSnackBar(S.of(context!).login_successful);
+  //       Navigator.of(context!).pushReplacementNamed('/Pages', arguments: 0);
+  //     } else {
+  //       throw 'API error';
+  //     }
+  //   } catch (e) {
+  //     _hideLoader();
+  //     _showSnackBar('فشل تسجيل الدخول باستخدام فيسبوك');
+  //     debugPrint('Facebook login error: $e');
+  //   }
+  // }
 
   // Future<void> signInWithApple() async {
   //   if (Platform.isIOS) {

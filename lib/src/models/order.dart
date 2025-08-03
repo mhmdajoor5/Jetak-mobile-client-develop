@@ -23,6 +23,7 @@ class Order {
   Payment payment;
   Address deliveryAddress;
   String orderType;
+  Restaurant? restaurant;
 
   Order({
     this.id = '',
@@ -37,6 +38,7 @@ class Order {
     User? user,
     Payment? payment,
     Address? deliveryAddress,
+    this.restaurant,
   }) : orderStatus = orderStatus ?? OrderStatus.fromJSON({}),
        dateTime = dateTime ?? DateTime(0),
        user = user ?? User.fromJSON({}),
@@ -126,6 +128,7 @@ class Order {
         user: jsonMap?['user'] != null ? User.fromJSON(jsonMap!['user']) : User.fromJSON({}),
         deliveryAddress: jsonMap?['delivery_address'] != null ? Address.fromJSON(jsonMap!['delivery_address']) : Address.fromJSON({}),
         payment: jsonMap?['payment'] != null ? Payment.fromJSON(jsonMap!['payment']) : Payment.fromJSON({}),
+        restaurant: jsonMap?['restaurant'] != null ? Restaurant.fromJSON(jsonMap!['restaurant']) : null,
         foodOrders: foodOrders,
       );
     } catch (e) {

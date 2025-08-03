@@ -28,16 +28,57 @@ Future<Stream<Order>> getOrders() async {
 }
 
 Future<Stream<Order>> getOrder(orderId) async {
+  print("=== getOrder Repository ===");
+  print("Order ID: $orderId");
+  
   User _user = userRepo.currentUser.value;
+  if (_user == null || _user.apiToken == null) {
+    print("❌ No user or API token available");
+    throw Exception("User not authenticated");
+  }
+  
   final String _apiToken = 'api_token=${_user.apiToken}&';
   final String url =
-      '${GlobalConfiguration().getValue('api_base_url')}orders/$orderId?${_apiToken}with=user;foodOrders;foodOrders.food;foodOrders.extras;orderStatus;deliveryAddress;payment';
-  final client = new http.Client();
-  final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
-
-  return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data as Map<String, dynamic>?)).map((data) {
-    return Order.fromJSON(data);
-  });
+      '${GlobalConfiguration().getValue('api_base_url')}orders/$orderId?${_apiToken}with=user;foodOrders;foodOrders.food;foodOrders.extras;orderStatus;deliveryAddress;payment;restaurant';
+  
+  print("🌐 Request URL: $url");
+  
+  try {
+    final client = http.Client();
+    final request = http.Request('get', Uri.parse(url));
+    request.headers.addAll({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    });
+    
+    final streamedRest = await client.send(request).timeout(Duration(seconds: 30));
+    
+    print("📊 Response status: ${streamedRest.statusCode}");
+    
+    if (streamedRest.statusCode != 200) {
+      final errorBody = await streamedRest.stream
+          .transform(utf8.decoder)
+          .join();
+      print("❌ Error response: $errorBody");
+      throw Exception('HTTP ${streamedRest.statusCode}: $errorBody');
+    }
+    
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        .map((data) {
+          print("🔍 Raw API Response: $data");
+          final orderData = Helper.getData(data as Map<String, dynamic>?);
+          print("🔍 Helper processed data: $orderData");
+          final order = Order.fromJSON(orderData);
+          print("✅ Order created: ID=${order.id}, Restaurant=${order.restaurant}");
+          return order;
+        });
+        
+  } catch (e) {
+    print("❌ Error in getOrder: $e");
+    rethrow;
+  }
 }
 
 Future<Stream<Order>> getRecentOrders() async {
@@ -65,7 +106,7 @@ Future<Stream<Order>> getRecentOrders() async {
       'searchFields': 'user.id:=',
       'orderBy': 'updated_at',
       'sortedBy': 'desc',
-      // 'limit': '1',
+      'limit': '20',
     };
     
     // Build URI with query parameters
