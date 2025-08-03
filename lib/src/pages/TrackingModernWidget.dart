@@ -263,6 +263,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       print("=== Directions API Test Complete ===");
       
       print("=== API Test Complete ===");
+      print("=== Directions Test Complete ===");
       
     } catch (e) {
       print("❌ Direct API test failed: $e");
@@ -329,6 +330,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       print("Final polylines count: ${polylines.length}");
       
       print("=== Polyline Addition Complete ===");
+      print("=== Map Polyline Complete ===");
     } catch (e) {
       print("❌ Error in _addPolyline: $e");
       print("Error details: ${e.toString()}");
@@ -444,6 +446,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       print("Final client location: $_con.clientLocation");
       
       print("=== Coordinates Update Complete ===");
+      print("=== Controller Update Complete ===");
       
     } catch (e) {
       print("❌ Error updating coordinates: $e");
