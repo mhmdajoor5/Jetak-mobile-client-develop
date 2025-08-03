@@ -87,6 +87,7 @@ dependencies:
   # get user location
   geolocator: ^14.0.1 # Updated
   geocoding: ^3.0.0
+  web_socket_channel: ^2.4.0 # للتراكنج المباشر
 
 
 dev_dependencies:

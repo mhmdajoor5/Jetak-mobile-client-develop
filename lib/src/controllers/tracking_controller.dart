@@ -3,6 +3,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+import 'dart:convert';
 
 import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
@@ -23,8 +25,220 @@ class TrackingController extends ControllerMVC {
 
   /// TODO make it dynamic
   LatLng restaurantLocation = LatLng(0.0, 0.0);
-
   LatLng clientLocation = LatLng(0.0, 0.0);
+  LatLng driverLocation = LatLng(0.0, 0.0); // إضافة موقع السائق
+
+  // WebSocket للتراكنج المباشر
+  WebSocketChannel? _driverTrackingChannel;
+  bool _isDriverTrackingConnected = false;
+
+  // دالة للاتصال بـ WebSocket للتراكنج المباشر
+  void connectToDriverTracking(String orderId) {
+    try {
+      print("🚀 بدء الاتصال بـ WebSocket للتراكنج المباشر");
+      print("📡 Channel: order-tracking.$orderId");
+      
+      // إغلاق الاتصال السابق إذا كان موجود
+      _driverTrackingChannel?.sink.close();
+      
+      // إنشاء اتصال WebSocket جديد
+      _driverTrackingChannel = WebSocketChannel.connect(
+        Uri.parse('ws://carrytechnologies.co:6001'),
+      );
+      
+      // الاستماع للرسائل الواردة
+      _driverTrackingChannel!.stream.listen(
+        (data) {
+          print("📨 رسالة واردة من WebSocket: $data");
+          _handleDriverTrackingMessage(data, orderId);
+        },
+        onError: (error) {
+          print("❌ خطأ في WebSocket: $error");
+          _isDriverTrackingConnected = false;
+          setState(() {});
+          
+          // إظهار رسالة انقطاع الاتصال
+          if (scaffoldKey.currentContext != null) {
+            ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+              SnackBar(
+                content: Text('Live tracking connection lost. Tap to reconnect.'),
+                backgroundColor: Colors.orange,
+                duration: Duration(seconds: 3),
+              ),
+            );
+          }
+        },
+        onDone: () {
+          print("✅ WebSocket connection closed");
+          _isDriverTrackingConnected = false;
+          setState(() {});
+          
+          // إظهار رسالة إغلاق الاتصال
+          if (scaffoldKey.currentContext != null) {
+            ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+              SnackBar(
+                content: Text('Live tracking connection closed.'),
+                backgroundColor: Colors.grey,
+                duration: Duration(seconds: 2),
+              ),
+            );
+          }
+        },
+      );
+      
+      // إرسال رسالة الاشتراك في channel
+      _subscribeToDriverTracking(orderId);
+      
+      _isDriverTrackingConnected = true;
+      setState(() {});
+      
+      print("✅ تم الاتصال بـ WebSocket بنجاح");
+      
+      // إظهار رسالة نجاح الاتصال
+      if (scaffoldKey.currentContext != null) {
+        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+          SnackBar(
+            content: Text('Live tracking connected successfully!'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+      
+    } catch (e) {
+      print("❌ خطأ في الاتصال بـ WebSocket: $e");
+      _isDriverTrackingConnected = false;
+      setState(() {});
+    }
+  }
+
+  // دالة للاشتراك في channel التراكنج
+  void _subscribeToDriverTracking(String orderId) {
+    try {
+      final subscribeMessage = {
+        'event': 'subscribe',
+        'channel': 'order-tracking.$orderId',
+        'data': {
+          'order_id': orderId,
+        }
+      };
+      
+      _driverTrackingChannel?.sink.add(json.encode(subscribeMessage));
+      print("📡 تم الاشتراك في channel: order-tracking.$orderId");
+      
+    } catch (e) {
+      print("❌ خطأ في الاشتراك: $e");
+    }
+  }
+
+  // دالة لمعالجة الرسائل الواردة من WebSocket
+  void _handleDriverTrackingMessage(dynamic data, String orderId) {
+    try {
+      final message = json.decode(data.toString());
+      print("📨 معالجة رسالة التراكنج: $message");
+      
+      if (message['event'] == 'driver-location-update') {
+        final driverData = message['data'];
+        
+        if (driverData != null) {
+          final latitude = double.tryParse(driverData['latitude']?.toString() ?? '0') ?? 0.0;
+          final longitude = double.tryParse(driverData['longitude']?.toString() ?? '0') ?? 0.0;
+          
+          print("📍 موقع السائق المحدث: lat=$latitude, lng=$longitude");
+          
+          setState(() {
+            driverLocation = LatLng(latitude, longitude);
+          });
+          
+          // إظهار رسالة تحديث موقع السائق (فقط في المرة الأولى)
+          if (scaffoldKey.currentContext != null && 
+              (driverLocation.latitude != 0.0 || driverLocation.longitude != 0.0)) {
+            ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+              SnackBar(
+                content: Text('Driver location updated!'),
+                backgroundColor: Colors.green,
+                duration: Duration(seconds: 1),
+              ),
+            );
+          }
+        }
+      } else if (message['event'] == 'order-status-update') {
+        final statusData = message['data'];
+        print("🔄 تحديث حالة الطلب: $statusData");
+        
+        // تحديث حالة الطلب
+        if (statusData != null) {
+          final oldStatus = order.orderStatus.status;
+          setState(() {
+            order.orderStatus.status = statusData['status'] ?? order.orderStatus.status;
+            order.orderStatus.id = statusData['status_id']?.toString() ?? order.orderStatus.id;
+          });
+          
+          // إظهار رسالة تحديث حالة الطلب
+          if (scaffoldKey.currentContext != null && 
+              statusData['status'] != null && 
+              statusData['status'] != oldStatus) {
+            ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+              SnackBar(
+                content: Text('Order status updated: ${statusData['status']}'),
+                backgroundColor: Colors.blue,
+                duration: Duration(seconds: 2),
+              ),
+            );
+          }
+        }
+      }
+      
+    } catch (e) {
+      print("❌ خطأ في معالجة رسالة WebSocket: $e");
+    }
+  }
+
+  // دالة لإغلاق اتصال WebSocket
+  void disconnectFromDriverTracking() {
+    try {
+      print("🔌 إغلاق اتصال WebSocket");
+      _driverTrackingChannel?.sink.close();
+      _isDriverTrackingConnected = false;
+      setState(() {});
+      
+      // إظهار رسالة إغلاق الاتصال
+      if (scaffoldKey.currentContext != null) {
+        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+          SnackBar(
+            content: Text('Live tracking disconnected.'),
+            backgroundColor: Colors.grey,
+            duration: Duration(seconds: 1),
+          ),
+        );
+      }
+    } catch (e) {
+      print("❌ خطأ في إغلاق WebSocket: $e");
+    }
+  }
+
+  // دالة لإعادة الاتصال بالتراكنج المباشر
+  void reconnectToDriverTracking(String orderId) {
+    print("🔄 إعادة الاتصال بالتراكنج المباشر");
+    disconnectFromDriverTracking();
+    Future.delayed(Duration(seconds: 2), () {
+      connectToDriverTracking(orderId);
+    });
+    
+    // إظهار رسالة إعادة الاتصال
+    if (scaffoldKey.currentContext != null) {
+      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+        SnackBar(
+          content: Text('Reconnecting to live tracking...'),
+          backgroundColor: Colors.blue,
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  // دالة للتحقق من حالة الاتصال
+  bool get isDriverTrackingConnected => _isDriverTrackingConnected;
 
   Future<void> setClientLocationFromDevice() async {
     print("mElkerm Tracking Controller ▶ Getting current device location...");
@@ -74,6 +288,10 @@ class TrackingController extends ControllerMVC {
     print(
       "mElkerm Tracking Controller ▶ Starting listenForOrder for ID: $orderId",
     );
+    
+    // بدء التراكنج المباشر للسائق
+    connectToDriverTracking(orderId);
+    
     final Stream<Order> stream = await getOrder(orderId);
     print(
       "mElkerm Tracking Controller ✅ Stream obtained for order ID: $orderId",
@@ -222,6 +440,13 @@ class TrackingController extends ControllerMVC {
         print("mElkerm Tracking Controller ✅ Order status stream done");
       },
     );
+  }
+
+  // دالة لإغلاق جميع الاتصالات عند إغلاق الصفحة
+  void dispose() {
+    print("🧹 تنظيف موارد التراكنج");
+    disconnectFromDriverTracking();
+    super.dispose();
   }
 
   List<Step> getTrackingSteps(BuildContext context, int currentOrderStatus) {

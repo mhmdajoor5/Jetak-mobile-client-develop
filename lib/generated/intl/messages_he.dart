@@ -506,7 +506,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paypal": MessageLookupByLibrary.simpleMessage("PayPal"),
         "paypal_payment":
             MessageLookupByLibrary.simpleMessage("תשלום ב-PayPal"),
-        "pending_payment": MessageLookupByLibrary.simpleMessage("תשلום בהמתנה"),
+        "pending_payment": MessageLookupByLibrary.simpleMessage("תשום בהמתנה"),
         "phone": MessageLookupByLibrary.simpleMessage("טלפון"),
         "phoneNumber": MessageLookupByLibrary.simpleMessage("מספר טלפון"),
         "pickup": MessageLookupByLibrary.simpleMessage("איסוף"),

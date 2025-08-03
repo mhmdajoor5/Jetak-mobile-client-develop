@@ -204,6 +204,17 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   Future<void> _proceedWithPayment() async {
     print('[DEBUG] بدء عملية الدفع - طريقة الدفع: $selectedPaymentMethod');
 
+    // تحقق من اختيار العنوان إذا كان الطلب توصيل
+    if (selectedTap == 1 && (_con.deliveryAddress == null || _con.deliveryAddress?.address == null || _con.deliveryAddress?.address?.isEmpty == true)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('❌ يرجى اختيار عنوان التوصيل أولاً'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
     // فالديشن طريقة الدفع بالبطاقة الائتمانية
     if (selectedPaymentMethod == 'credit') {
       String orderType = selectedTap == 1 ? 'delivery' : 'pickup';

@@ -41,8 +41,18 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
     super.initState();
   }
 
+  @override
   void dispose() {
     _tabController.dispose();
+    // إغلاق اتصال التراكنج المباشر
+    _con.disconnectFromDriverTracking();
+    super.dispose();
+  }
+
+  void dispose() {
+    _tabController.dispose();
+    // إغلاق اتصال التراكنج المباشر
+    _con.disconnectFromDriverTracking();
     super.dispose();
   }
 
@@ -221,16 +231,16 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
 
   Widget _buildDeliveryMap() {
     // تحقق من إحداثيات العنوان
-    bool hasDeliveryCoords = _con.order.deliveryAddress.latitude != null && 
-                            _con.order.deliveryAddress.longitude != null &&
-                            _con.order.deliveryAddress.latitude != 0.0 &&
-                            _con.order.deliveryAddress.longitude != 0.0;
-    
+    bool hasDeliveryCoords = _con.order.deliveryAddress.latitude != null &&
+        _con.order.deliveryAddress.longitude != null &&
+        _con.order.deliveryAddress.latitude != 0.0 &&
+        _con.order.deliveryAddress.longitude != 0.0;
+
     // تحقق من إحداثيات المطعم
     bool hasRestaurantCoords = false;
     double restaurantLat = 0.0;
     double restaurantLng = 0.0;
-    
+
     if (_con.order.foodOrders.isNotEmpty) {
       restaurantLat = double.tryParse(_con.order.foodOrders.first.food?.restaurant.latitude ?? '0') ?? 0.0;
       restaurantLng = double.tryParse(_con.order.foodOrders.first.food?.restaurant.longitude ?? '0') ?? 0.0;
@@ -242,7 +252,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
 
     // بناء العلامات المتوفرة فقط
     Set<Marker> markers = {};
-    
+
     // إضافة علامة العنوان إذا كانت الإحداثيات متوفرة
     if (hasDeliveryCoords) {
       markers.add(
@@ -257,7 +267,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
         ),
       );
     }
-    
+
     // إضافة علامة المطعم إذا كانت الإحداثيات متوفرة
     if (hasRestaurantCoords) {
       markers.add(
@@ -273,25 +283,69 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
       );
     }
 
+    // إضافة علامة السائق إذا كان متصلاً بالتراكنج المباشر
+    bool hasDriverCoords = _con.driverLocation.latitude != 0.0 &&
+        _con.driverLocation.longitude != 0.0;
+
+    if (hasDriverCoords) {
+      markers.add(
+        Marker(
+          markerId: MarkerId('driver'),
+          position: _con.driverLocation,
+          infoWindow: InfoWindow(
+            title: 'Driver Location',
+            snippet: 'Live tracking',
+          ),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+        ),
+      );
+    }
+
     // حساب موقع الكاميرا بناءً على الإحداثيات المتوفرة
-    LatLng cameraTarget;
+    LatLng cameraTarget = const LatLng(31.5, 35.1); // موقع افتراضي
     double zoom = 12;
-    
-    if (hasDeliveryCoords && hasRestaurantCoords) {
-      // كلا الإحداثيات متوفرة - مركز بينهما
+
+    if (hasDriverCoords && hasDeliveryCoords) {
+      cameraTarget = LatLng(
+        (_con.driverLocation.latitude + deliveryLat) / 2,
+        (_con.driverLocation.longitude + deliveryLng) / 2,
+      );
+      zoom = 13;
+    } else if (hasDeliveryCoords && hasRestaurantCoords) {
       cameraTarget = LatLng(
         (deliveryLat + restaurantLat) / 2,
         (deliveryLng + restaurantLng) / 2,
       );
       zoom = 12;
     } else if (hasDeliveryCoords) {
-      // إحداثيات العنوان فقط متوفرة
       cameraTarget = LatLng(deliveryLat, deliveryLng);
       zoom = 14;
-    } else {
-      // إحداثيات المطعم فقط متوفرة
+    } else if (hasDriverCoords) {
+      cameraTarget = _con.driverLocation;
+      zoom = 14;
+    } else if (hasRestaurantCoords) {
       cameraTarget = LatLng(restaurantLat, restaurantLng);
       zoom = 14;
+    }
+
+    // إذا لم تتوفر أي إحداثيات، لا تغلق الصفحة بل اعرض رسالة ودية
+    if (!hasDeliveryCoords && !hasRestaurantCoords && !hasDriverCoords) {
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.6,
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.info_outline, color: Colors.grey, size: 48),
+            SizedBox(height: 16),
+            Text(
+              'لا تتوفر بيانات كافية لعرض الخريطة حالياً.\nسيتم التحديث تلقائياً عند توفر البيانات.',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey[700], fontSize: 16),
+            ),
+          ],
+        ),
+      );
     }
 
     return Container(
@@ -311,13 +365,13 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Order #${_con.order.id}",
+                        "Order # ${_con.order.id}",
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        _con.order.orderStatus.status,
+                        _con.order.orderStatus.status ?? '-',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
@@ -325,18 +379,60 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
                     ],
                   ),
                 ),
-                if (_con.order.active)
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(12),
+                Column(
+                  children: [
+                    if (_con.order.active)
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          "Active",
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        ),
+                      ),
+                    SizedBox(height: 4),
+                    // مؤشر حالة التراكنج المباشر
+                    GestureDetector(
+                      onTap: () {
+                        if (!_con.isDriverTrackingConnected) {
+                          _con.reconnectToDriverTracking(_con.order.id ?? '');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Reconnecting to live tracking...'),
+                              backgroundColor: Colors.blue,
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: _con.isDriverTrackingConnected ? Colors.blue : Colors.grey,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              _con.isDriverTrackingConnected ? Icons.wifi : Icons.wifi_off,
+                              color: Colors.white,
+                              size: 12,
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              _con.isDriverTrackingConnected ? "Live" : "Tap to reconnect",
+                              style: TextStyle(color: Colors.white, fontSize: 10),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    child: Text(
-                      "Active",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                  ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -355,25 +451,6 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
                 // Apply custom map style
                 final mapStyle = await DefaultAssetBundle.of(context).loadString('assets/cfg/map_style.json');
                 controller.setMapStyle(mapStyle);
-                
-                // Fit bounds to show both markers if restaurant exists
-                if (hasRestaurantCoords) {
-                  controller.animateCamera(
-                    CameraUpdate.newLatLngBounds(
-                      LatLngBounds(
-                        southwest: LatLng(
-                          [deliveryLat, restaurantLat].reduce((a, b) => a < b ? a : b),
-                          [deliveryLng, restaurantLng].reduce((a, b) => a < b ? a : b),
-                        ),
-                        northeast: LatLng(
-                          [deliveryLat, restaurantLat].reduce((a, b) => a > b ? a : b),
-                          [deliveryLng, restaurantLng].reduce((a, b) => a > b ? a : b),
-                        ),
-                      ),
-                      100.0, // padding
-                    ),
-                  );
-                }
               },
             ),
           ),
@@ -382,32 +459,103 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
             Container(
               padding: EdgeInsets.all(16),
               color: Theme.of(context).primaryColor,
-              child: Row(
+              child: Column(
                 children: [
-                  Icon(Icons.location_on, color: Colors.green),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Delivery Address",
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
+                  // معلومات العنوان
+                  Row(
+                    children: [
+                      Icon(Icons.location_on, color: Colors.green),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Delivery Address",
+                              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              _con.order.deliveryAddress.address!,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  // معلومات السائق إذا كان التراكنج المباشر متصل
+                  if (_con.isDriverTrackingConnected &&
+                      _con.driverLocation.latitude != 0.0 &&
+                      _con.driverLocation.longitude != 0.0)
+                    Padding(
+                      padding: EdgeInsets.only(top: 12),
+                      child: Row(
+                        children: [
+                          Icon(Icons.delivery_dining, color: Colors.blue),
+                          SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Driver Location",
+                                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  "Live tracking active",
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Text(
-                          _con.order.deliveryAddress.address!,
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              "LIVE",
+                              style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  else if (!_con.isDriverTrackingConnected)
+                    Padding(
+                      padding: EdgeInsets.only(top: 12),
+                      child: Row(
+                        children: [
+                          Icon(Icons.wifi_off, color: Colors.grey),
+                          SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Live Tracking",
+                                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  "Tap to reconnect",
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    onPressed: _openInExternalMap,
-                    icon: Icon(Icons.open_in_new),
-                    tooltip: "Open in Maps",
-                  ),
                 ],
               ),
             ),

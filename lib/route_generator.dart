@@ -290,10 +290,10 @@ class RouteGenerator {
             ),
           );
         } else {
-          final String address = args as String;
-          return MaterialPageRoute(
-            builder: (_) => AddressDetailsPage(address: address),
-          );
+        final String address = args as String;
+        return MaterialPageRoute(
+          builder: (_) => AddressDetailsPage(address: address),
+        );
         }
       case '/DeliveryPickup':
         return MaterialPageRoute(
