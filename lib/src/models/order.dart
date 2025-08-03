@@ -23,7 +23,6 @@ class Order {
   Payment payment;
   Address deliveryAddress;
   String orderType;
-  Restaurant? restaurant; // إضافة بيانات المطعم
 
   Order({
     this.id = '',
@@ -38,7 +37,6 @@ class Order {
     User? user,
     Payment? payment,
     Address? deliveryAddress,
-    this.restaurant, // إضافة بيانات المطعم
   }) : orderStatus = orderStatus ?? OrderStatus.fromJSON({}),
        dateTime = dateTime ?? DateTime(0),
        user = user ?? User.fromJSON({}),
@@ -56,18 +54,6 @@ class Order {
       print('   - food_orders: ${jsonMap?['food_orders']}');
       print('   - food_orders type: ${jsonMap?['food_orders']?.runtimeType}');
       print('   - food_orders length: ${jsonMap?['food_orders'] is List ? (jsonMap?['food_orders'] as List).length : 'N/A'}');
-      
-      // تحليل بيانات المطعم
-      print('🏪 تحليل بيانات المطعم:');
-      print('   - restaurant raw: ${jsonMap?['restaurant']}');
-      Restaurant? restaurant;
-      if (jsonMap?['restaurant'] != null) {
-        restaurant = Restaurant.fromJSON(jsonMap!['restaurant']);
-        print('   - اسم المطعم: ${restaurant.name}');
-        print('   - إحداثيات المطعم: ${restaurant.latitude}, ${restaurant.longitude}');
-      } else {
-        print('   - ⚠️ بيانات المطعم غير موجودة');
-      }
       
       List<FoodOrder> foodOrders = [];
       if (jsonMap?['food_orders'] != null && jsonMap!['food_orders'] is List && (jsonMap!['food_orders'] as List).isNotEmpty) {
@@ -92,7 +78,7 @@ class Order {
                 description: 'Order items',
                 image: null,
                 category: null,
-                restaurant: restaurant ?? Restaurant(id: '0', name: ''),
+                restaurant: Restaurant(id: '0', name: ''),
               ),
             )
           ];
@@ -141,7 +127,6 @@ class Order {
         deliveryAddress: jsonMap?['delivery_address'] != null ? Address.fromJSON(jsonMap!['delivery_address']) : Address.fromJSON({}),
         payment: jsonMap?['payment'] != null ? Payment.fromJSON(jsonMap!['payment']) : Payment.fromJSON({}),
         foodOrders: foodOrders,
-        restaurant: restaurant, // إضافة بيانات المطعم
       );
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: e.toString()));
@@ -265,45 +250,5 @@ class Order {
       print('   - address object: $addressObject');
       print('   - address JSON string: ${json.encode(addressObject)}');
     }
-  }
-
-  // دالة للحصول على إحداثيات المطعم
-  Map<String, double>? getRestaurantLocation() {
-    if (restaurant != null && 
-        restaurant!.latitude.isNotEmpty && 
-        restaurant!.longitude.isNotEmpty &&
-        restaurant!.latitude != '0' && 
-        restaurant!.longitude != '0') {
-      
-      double lat = double.tryParse(restaurant!.latitude) ?? 0.0;
-      double lng = double.tryParse(restaurant!.longitude) ?? 0.0;
-      
-      if (lat != 0.0 && lng != 0.0) {
-        print('📍 إحداثيات المطعم: $lat, $lng');
-        return {
-          'latitude': lat,
-          'longitude': lng,
-        };
-      }
-    }
-    print('⚠️ إحداثيات المطعم غير متوفرة أو غير صحيحة');
-    return null;
-  }
-
-  // دالة للتحقق من وجود بيانات المطعم
-  bool hasRestaurantData() {
-    return restaurant != null && 
-           restaurant!.id.isNotEmpty && 
-           restaurant!.name.isNotEmpty;
-  }
-
-  // دالة للحصول على اسم المطعم
-  String getRestaurantName() {
-    return restaurant?.name ?? 'مطعم غير محدد';
-  }
-
-  // دالة للحصول على عنوان المطعم
-  String getRestaurantAddress() {
-    return restaurant?.address ?? 'عنوان غير محدد';
   }
 }

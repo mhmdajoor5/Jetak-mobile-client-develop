@@ -11,7 +11,6 @@ import '../elements/ShoppingCartButtonWidget.dart';
 import '../helpers/helper.dart';
 import '../models/order_status.dart';
 import '../models/route_argument.dart';
-import 'restaurant_location_page.dart';
 
 class TrackingWidget extends StatefulWidget {
   final RouteArgument? routeArgument;
@@ -485,55 +484,6 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
                       ),
                     ],
                   ),
-                  // زر عرض موقع المطعم
-                  if (_con.order.hasRestaurantData())
-                    Padding(
-                      padding: EdgeInsets.only(top: 12),
-                      child: Row(
-                        children: [
-                          Icon(Icons.restaurant, color: Colors.red),
-                          SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Restaurant Location",
-                                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  _con.order.getRestaurantName(),
-                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: Colors.grey[600],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => RestaurantLocationPage(
-                                    order: _con.order,
-                                  ),
-                                ),
-                              );
-                            },
-                            icon: Icon(Icons.map, size: 16),
-                            label: Text("View"),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              foregroundColor: Colors.white,
-                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                              minimumSize: Size(0, 32),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   // معلومات السائق إذا كان التراكنج المباشر متصل
                   if (_con.isDriverTrackingConnected &&
                       _con.driverLocation.latitude != 0.0 &&
