@@ -62,8 +62,25 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       double? clientLng;
 
       try {
-        if (_con.order.foodOrders.isNotEmpty) {
-          print("First food order restaurant data:");
+        // البحث عن إحداثيات المطعم في المستوى الصحيح من API
+        print("🔍 Searching for restaurant coordinates...");
+        
+        // أولاً: البحث في restaurant مباشرة (المستوى الجديد)
+        if (_con.order.restaurant != null) {
+          print("✅ Found restaurant data at order level:");
+          print("  - Restaurant name: ${_con.order.restaurant!.name}");
+          print("  - Raw latitude: ${_con.order.restaurant!.latitude}");
+          print("  - Raw longitude: ${_con.order.restaurant!.longitude}");
+          
+          restaurantLat = double.tryParse(_con.order.restaurant!.latitude);
+          restaurantLng = double.tryParse(_con.order.restaurant!.longitude);
+          
+          print("  - Parsed latitude: $restaurantLat");
+          print("  - Parsed longitude: $restaurantLng");
+        }
+        // ثانياً: البحث في food_orders (المستوى القديم)
+        else if (_con.order.foodOrders.isNotEmpty) {
+          print("⚠️ Using fallback: restaurant data from food orders:");
           print("  - Restaurant name: ${_con.order.foodOrders[0].food?.restaurant.name}");
           print("  - Raw latitude: ${_con.order.foodOrders[0].food?.restaurant.latitude}");
           print("  - Raw longitude: ${_con.order.foodOrders[0].food?.restaurant.longitude}");
@@ -75,7 +92,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
             _con.order.foodOrders[0].food?.restaurant.longitude ?? '',
           );
         } else {
-          print("❌ No food orders available");
+          print("❌ No restaurant data available");
         }
         
         print("Delivery address data:");
@@ -94,6 +111,20 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
                                 restaurantLat != 0.0 && restaurantLng != 0.0;
       bool hasClientCoords = clientLat != null && clientLng != null && 
                             clientLat != 0.0 && clientLng != 0.0;
+
+      // ملاحظة: الباك إند يعيد إحداثيات المطعم الآن
+      // إذا لم تكن هناك إحداثيات متوفرة، تخطى حساب المسار
+      if (!hasRestaurantCoords) {
+        print("⚠️ Restaurant coordinates not available from API");
+        print("   - Restaurant coordinates available: $hasRestaurantCoords");
+        print("   - Client coordinates available: $hasClientCoords");
+        
+        setState(() {
+          _isLoadingRoute = false;
+          _routeError = "Restaurant location not available";
+        });
+        return;
+      }
 
       print("Restaurant: $restaurantLat, $restaurantLng (available: $hasRestaurantCoords)");
       print("Client: $clientLat, $clientLng (available: $hasClientCoords)");
@@ -412,8 +443,33 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       print("=== Updating Controller Coordinates ===");
       
       // استخراج إحداثيات المطعم من الطلب
-      if (_con.order.foodOrders.isNotEmpty) {
-        print("Processing restaurant coordinates...");
+      print("Processing restaurant coordinates...");
+      
+      // أولاً: البحث في restaurant مباشرة (المستوى الجديد)
+      if (_con.order.restaurant != null) {
+        print("✅ Found restaurant data at order level:");
+        print("  - Restaurant name: ${_con.order.restaurant!.name}");
+        print("  - Raw latitude: ${_con.order.restaurant!.latitude}");
+        print("  - Raw longitude: ${_con.order.restaurant!.longitude}");
+        
+        double? restaurantLat = double.tryParse(_con.order.restaurant!.latitude);
+        double? restaurantLng = double.tryParse(_con.order.restaurant!.longitude);
+        
+        print("  - Parsed latitude: $restaurantLat");
+        print("  - Parsed longitude: $restaurantLng");
+        
+        if (restaurantLat != null && restaurantLng != null && 
+            restaurantLat != 0.0 && restaurantLng != 0.0) {
+          _con.restaurantLocation = LatLng(restaurantLat, restaurantLng);
+          print("✅ Updated restaurant location: $_con.restaurantLocation");
+        } else {
+          print("⚠️ Restaurant coordinates invalid or zero");
+          print("   - API should return valid restaurant coordinates");
+        }
+      }
+      // ثانياً: البحث في food_orders (المستوى القديم)
+      else if (_con.order.foodOrders.isNotEmpty) {
+        print("⚠️ Using fallback: restaurant data from food orders:");
         print("  - Raw latitude: ${_con.order.foodOrders[0].food?.restaurant.latitude}");
         print("  - Raw longitude: ${_con.order.foodOrders[0].food?.restaurant.longitude}");
         
@@ -433,9 +489,10 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
           print("✅ Updated restaurant location: $_con.restaurantLocation");
         } else {
           print("⚠️ Restaurant coordinates invalid or zero");
+          print("   - API should return valid restaurant coordinates");
         }
       } else {
-        print("❌ No food orders available for restaurant coordinates");
+        print("❌ No restaurant data available");
       }
       
       // استخراج إحداثيات العميل من العنوان
@@ -582,12 +639,24 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     // Add restaurant marker if coordinates are available
     if (hasRestaurantCoords) {
       print("Adding restaurant marker at: $restaurantLat, $restaurantLng");
+      
+      // الحصول على اسم المطعم
+      String restaurantName = 'Restaurant';
+      if (_con.order.restaurant != null) {
+        restaurantName = _con.order.restaurant!.name;
+      } else if (_con.order.foodOrders.isNotEmpty) {
+        restaurantName = _con.order.foodOrders[0].food?.restaurant.name ?? 'Restaurant';
+      }
+      
       if (motorcycleIcon != null) {
         markers.add(
           Marker(
             markerId: MarkerId('restaurant'),
             position: LatLng(restaurantLat!, restaurantLng!),
-            infoWindow: InfoWindow(title: 'Restaurant'),
+            infoWindow: InfoWindow(
+              title: restaurantName,
+              snippet: 'Pickup location',
+            ),
             icon: motorcycleIcon!,
           ),
         );
@@ -596,8 +665,11 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
           Marker(
             markerId: MarkerId('restaurant'),
             position: LatLng(restaurantLat!, restaurantLng!),
-            infoWindow: InfoWindow(title: 'Restaurant'),
-            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+            infoWindow: InfoWindow(
+              title: restaurantName,
+              snippet: 'Pickup location',
+            ),
+            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
           ),
         );
       }
@@ -948,12 +1020,12 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
             ),
             Row(
               children: [
-                CircleAvatar(
-                  radius: 24,
-                  backgroundImage: AssetImage(
-                    "assets/images/image-removebg-preview.png",
-                  ),
-                ),
+                // CircleAvatar(
+                //   radius: 24,
+                //   backgroundImage: AssetImage(
+                //     "assets/images/image-removebg-preview.png",
+                //   ),
+                // ),
                 SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
