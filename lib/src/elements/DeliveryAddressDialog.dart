@@ -58,12 +58,7 @@ class DeliveryAddressDialog {
                         if (input == null || input.trim().isEmpty) {
                           return S.of(context).address_required;
                         }
-                        if (input.trim().length < 10) {
-                          return S.of(context).address_min_length;
-                        }
-                        if (input.trim().length > 200) {
-                          return S.of(context).address_max_length;
-                        }
+                        // تم إزالة الفالديشن عن عدد الحروف
                         return null;
                       },
                       onSaved: (input) => address.address = input ?? '',

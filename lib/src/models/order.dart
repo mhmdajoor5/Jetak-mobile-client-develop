@@ -92,6 +92,29 @@ class Order {
         print('   - اسم الطعام الأول: ${foodOrders.first.food?.name}');
       }
       
+      // تحقق من بيانات العنوان المستلمة
+      print('🔍 تحليل بيانات العنوان:');
+      print('   - address raw: ${jsonMap?['delivery_address']}');
+      if (jsonMap?['delivery_address'] != null) {
+        var addressData = jsonMap!['delivery_address'];
+        print('   - description: ${addressData['description']}');
+        print('   - type: ${addressData['type']}');
+        print('   - entryMethod: ${addressData['entry_method']}');
+        print('   - instructions: ${addressData['instructions']}');
+        print('   - label: ${addressData['label']}');
+      }
+      print('   - العنوان النهائي: ${jsonMap?['delivery_address'] != null ? Address.fromJSON(jsonMap!['delivery_address']).address : 'null'}');
+      
+      // تحقق من بيانات المستخدم
+      print('👤 تحليل بيانات المستخدم:');
+      print('   - user raw: ${jsonMap?['user']}');
+      if (jsonMap?['user'] != null) {
+        var userData = jsonMap!['user'];
+        print('   - name: ${userData['name']}');
+        print('   - email: ${userData['email']}');
+        print('   - phone: ${userData['phone']}');
+      }
+      
       return Order(
         id: jsonMap?['id']?.toString() ?? '',
         tax: (jsonMap?['tax'] as num?)?.toDouble() ?? 0.0,

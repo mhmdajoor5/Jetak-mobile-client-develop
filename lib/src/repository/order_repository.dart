@@ -60,9 +60,9 @@ Future<Stream<Order>> getRecentOrders() async {
     // Build query parameters map
     final Map<String, String> queryParams = {
       'api_token': user.apiToken!,
-      // 'with': 'user;foodOrders;foodOrders.food;foodOrders.extras;orderStatus;payment',
-      // 'search': 'user.id:${user.id}',
-      // 'searchFields': 'user.id:=',
+      'with': 'user;foodOrders;foodOrders.food;foodOrders.extras;orderStatus;payment;deliveryAddress',
+      'search': 'user.id:${user.id}',
+      'searchFields': 'user.id:=',
       'orderBy': 'updated_at',
       'sortedBy': 'desc',
       // 'limit': '1',
@@ -192,7 +192,7 @@ Future<Stream<Order>> getRecentOrdersWithRecovery() async {
     // Build query parameters map
     final Map<String, String> queryParams = {
       'api_token': user.apiToken!,
-      'with': 'user;foodOrders;foodOrders.food;foodOrders.extras;orderStatus;payment',
+      'with': 'user;foodOrders;foodOrders.food;foodOrders.extras;orderStatus;payment;deliveryAddress',
       'search': 'user.id:${user.id}',
       'searchFields': 'user.id:=',
       'orderBy': 'updated_at',

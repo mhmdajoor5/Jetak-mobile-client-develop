@@ -68,7 +68,7 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
                         keyboardType: TextInputType.text,
                         decoration: getInputDecoration(hintText: S.of(context).your_address, labelText: S.of(context).address),
                         initialValue: widget.user.address,
-                        validator: (input) => input == null || input.trim().length < 3 ? S.of(context).not_a_valid_address : null,
+                        validator: (input) => input == null || input.trim().isEmpty ? S.of(context).not_a_valid_address : null,
                         onSaved: (input) => widget.user.address = input ?? '',
                       ),
                       TextFormField(
