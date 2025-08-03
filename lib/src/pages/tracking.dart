@@ -49,12 +49,12 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
     super.dispose();
   }
 
-  void dispose() {
-    _tabController.dispose();
-    // إغلاق اتصال التراكنج المباشر
-    _con.disconnectFromDriverTracking();
-    super.dispose();
-  }
+  // void dispose() {
+  //   _tabController.dispose();
+  //   // إغلاق اتصال التراكنج المباشر
+  //   _con.disconnectFromDriverTracking();
+  //   super.dispose();
+  // }
 
   _handleTabSelection() {
     if (_tabController.indexIsChanging) {
@@ -187,9 +187,9 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
                 SizedBox(height: 4),
                 Text("• Network connectivity issues"),
               ],
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.grey.shade600,
-              ),
+              // style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              //   color: Colors.grey.shade600,
+              // ),
             ),
           ),
           SizedBox(height: 20),

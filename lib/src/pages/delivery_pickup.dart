@@ -68,6 +68,9 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       _con.deliveryAddress = selectedAddress;
       _con.userDeliverAddress = selectedAddress.address ?? '';
       addressController.text = _con.userDeliverAddress;
+      print('[DEBUG] تم تعيين العنوان من routeArgument: ${selectedAddress.address}');
+    } else {
+      print('[DEBUG] لم يتم تمرير عنوان من routeArgument');
     }
 
     _loadSavedCards();
@@ -119,6 +122,18 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
     try {
       print('[DEBUG] إنشاء الطلب في النظام مع orderType: $orderType');
 
+      // تحقق من وجود عناصر في السلة
+      if (_con.carts.isEmpty) {
+        print('[DEBUG] ❌ لا يمكن إنشاء طلب بدون عناصر في السلة');
+        return;
+      }
+
+      // تحقق من صحة بيانات المطعم
+      if (_con.carts[0].food?.restaurant == null) {
+        print('[DEBUG] ❌ بيانات المطعم غير صحيحة');
+        return;
+      }
+
       // إنشاء كائن Order
       Order order = Order();
       order.foodOrders = <FoodOrder>[];
@@ -132,7 +147,18 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
 
       // إضافة عنوان التوصيل إذا كان للتوصيل
       if (selectedTap == 1 && _con.deliveryAddress != null) {
-        order.deliveryAddress = _con.deliveryAddress!;
+        // تحقق إضافي من صحة العنوان قبل إضافته
+        if (_con.deliveryAddress!.address != null && 
+            _con.deliveryAddress!.address!.trim().isNotEmpty &&
+            _con.deliveryAddress!.latitude != null &&
+            _con.deliveryAddress!.longitude != null &&
+            _con.deliveryAddress!.description != null &&
+            _con.deliveryAddress!.description!.trim().isNotEmpty) {
+          order.deliveryAddress = _con.deliveryAddress!;
+        } else {
+          print('[DEBUG] ❌ العنوان لا يحتوي على بيانات صحيحة كاملة');
+          return;
+        }
       }
 
       // إضافة الأطعمة
@@ -169,17 +195,117 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
 
   Future<void> completeSale() async {
     print('--- [DEBUG] بدء عملية الطلب ---');
+    
+    // تحقق من وجود عناصر في السلة
+    if (_con.carts.isEmpty) {
+      print('[DEBUG] السلة فارغة!');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('❌ السلة فارغة، يرجى إضافة منتجات أولاً'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+    
+    // تحقق شامل من العنوان للتوصيل
     if (selectedTap == 1) {
+      print('[DEBUG] التحقق من العنوان للتوصيل...');
+      print('[DEBUG] _con.deliveryAddress: ${_con.deliveryAddress}');
+      print('[DEBUG] addressController.text: "${addressController.text}"');
+      print('[DEBUG] _con.userDeliverAddress: "${_con.userDeliverAddress}"');
+      
+      // تحقق من وجود العنوان في الكنترولر
       if (_con.deliveryAddress == null) {
         print('[DEBUG] لم يتم اختيار عنوان!');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('الرجاء اختيار عنوان التوصيل'),
+            content: Text('❌ الرجاء اختيار عنوان التوصيل'),
             backgroundColor: Colors.red,
           ),
         );
         return;
       }
+
+      // تحقق من أن العنوان يحتوي على بيانات صحيحة
+      if (_con.deliveryAddress?.address == null || 
+          _con.deliveryAddress!.address!.trim().isEmpty) {
+        print('[DEBUG] العنوان فارغ أو غير صحيح!');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ العنوان المحدد غير صحيح، يرجى اختيار عنوان آخر'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      // تحقق إضافي من نص العنوان في الكنترولر
+      if (addressController.text.trim().isEmpty) {
+        print('[DEBUG] نص العنوان في الكنترولر فارغ!');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ يرجى اختيار عنوان التوصيل من القائمة'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      // تحقق من أن العنوان لا يحتوي على نص افتراضي
+      if (addressController.text.trim() == S.of(context).address) {
+        print('[DEBUG] العنوان يحتوي على نص افتراضي!');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ يرجى اختيار عنوان التوصيل من القائمة'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      // تحقق من أن العنوان تم اختياره من القائمة وليس مجرد نص مكتوب
+      if (_con.deliveryAddress == null || 
+          _con.deliveryAddress!.address != addressController.text.trim()) {
+        print('[DEBUG] العنوان لم يتم اختياره من القائمة!');
+        print('[DEBUG] _con.deliveryAddress?.address: ${_con.deliveryAddress?.address}');
+        print('[DEBUG] addressController.text.trim(): ${addressController.text.trim()}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ يرجى اختيار عنوان التوصيل من القائمة'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      // تحقق من وجود الإحداثيات
+      if (_con.deliveryAddress?.latitude == null || 
+          _con.deliveryAddress?.longitude == null) {
+        print('[DEBUG] العنوان لا يحتوي على إحداثيات صحيحة!');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ العنوان لا يحتوي على موقع صحيح، يرجى اختيار عنوان آخر'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      // تحقق من وجود وصف العنوان
+      if (_con.deliveryAddress?.description == null || 
+          _con.deliveryAddress!.description!.trim().isEmpty) {
+        print('[DEBUG] العنوان لا يحتوي على وصف صحيح!');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ العنوان لا يحتوي على وصف صحيح، يرجى اختيار عنوان آخر'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      print('[DEBUG] ✅ تم التحقق من العنوان بنجاح');
 
       final canDeliver = await _con.checkDeliveryArea();
       print('[DEBUG] نتيجة checkDeliveryArea: $canDeliver');
@@ -196,6 +322,18 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       }
     }
 
+    // تحقق من اختيار طريقة الدفع
+    if (selectedPaymentMethod.isEmpty) {
+      print('[DEBUG] لم يتم اختيار طريقة دفع!');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('❌ يرجى اختيار طريقة دفع'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
     print('[DEBUG] بعد التحقق من التوصيل، أكمل باقي خطوات الطلب');
     // استدعاء دالة الفالديشن والدفع الجديدة
     await _proceedWithPayment();
@@ -204,11 +342,116 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   Future<void> _proceedWithPayment() async {
     print('[DEBUG] بدء عملية الدفع - طريقة الدفع: $selectedPaymentMethod');
 
-    // تحقق من اختيار العنوان إذا كان الطلب توصيل
-    if (selectedTap == 1 && (_con.deliveryAddress == null || _con.deliveryAddress?.address == null || _con.deliveryAddress?.address?.isEmpty == true)) {
+    // تحقق من وجود عناصر في السلة
+    if (_con.carts.isEmpty) {
+      print('[DEBUG] السلة فارغة في _proceedWithPayment!');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('❌ يرجى اختيار عنوان التوصيل أولاً'),
+          content: Text('❌ السلة فارغة، يرجى إضافة منتجات أولاً'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    // تحقق شامل من العنوان إذا كان الطلب توصيل
+    if (selectedTap == 1) {
+      print('[DEBUG] التحقق من العنوان في _proceedWithPayment...');
+      print('[DEBUG] _con.deliveryAddress: ${_con.deliveryAddress}');
+      print('[DEBUG] addressController.text: "${addressController.text}"');
+      
+      if (_con.deliveryAddress == null) {
+        print('[DEBUG] لم يتم اختيار عنوان في _proceedWithPayment!');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ يرجى اختيار عنوان التوصيل أولاً'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      if (_con.deliveryAddress?.address == null || 
+          _con.deliveryAddress!.address!.trim().isEmpty) {
+        print('[DEBUG] العنوان فارغ في _proceedWithPayment!');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ العنوان المحدد غير صحيح، يرجى اختيار عنوان آخر'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      // تحقق إضافي من نص العنوان في الكنترولر
+      if (addressController.text.trim().isEmpty) {
+        print('[DEBUG] نص العنوان في الكنترولر فارغ في _proceedWithPayment!');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ يرجى اختيار عنوان التوصيل من القائمة'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      // تحقق من أن العنوان لا يحتوي على نص افتراضي
+      if (addressController.text.trim() == S.of(context).address) {
+        print('[DEBUG] العنوان يحتوي على نص افتراضي في _proceedWithPayment!');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ يرجى اختيار عنوان التوصيل من القائمة'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      // تحقق من أن العنوان تم اختياره من القائمة وليس مجرد نص مكتوب
+      if (_con.deliveryAddress == null || 
+          _con.deliveryAddress!.address != addressController.text.trim()) {
+        print('[DEBUG] العنوان لم يتم اختياره من القائمة في _proceedWithPayment!');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ يرجى اختيار عنوان التوصيل من القائمة'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      if (_con.deliveryAddress?.latitude == null || 
+          _con.deliveryAddress?.longitude == null) {
+        print('[DEBUG] العنوان لا يحتوي على إحداثيات في _proceedWithPayment!');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ العنوان لا يحتوي على موقع صحيح، يرجى اختيار عنوان آخر'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      if (_con.deliveryAddress?.description == null || 
+          _con.deliveryAddress!.description!.trim().isEmpty) {
+        print('[DEBUG] العنوان لا يحتوي على وصف في _proceedWithPayment!');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ العنوان لا يحتوي على وصف صحيح، يرجى اختيار عنوان آخر'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      print('[DEBUG] ✅ تم التحقق من العنوان في _proceedWithPayment بنجاح');
+    }
+
+    // تحقق من اختيار طريقة الدفع
+    if (selectedPaymentMethod.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('❌ يرجى اختيار طريقة دفع'),
           backgroundColor: Colors.red,
         ),
       );
@@ -220,10 +463,6 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       String orderType = selectedTap == 1 ? 'delivery' : 'pickup';
       print('Order type is: $orderType');
 
-      ICreditCreateSaleResponse saleResponse = await iCreditCreateSale(
-        fromList(_con.carts),
-        orderType,
-      );
       print('[DEBUG] تم اختيار الدفع بالبطاقة');
 
       // التحقق من اختيار بطاقة
@@ -258,8 +497,19 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
 
       final selectedCard = savedCards[selectedCardIndex];
       print('[DEBUG] بيانات البطاقة المختارة: cardNumber= {selectedCard.cardNumber}, holderName= {selectedCard.cardHolderName}');
-      // احذف شرط الفالديشن للبطاقة نهائياً
-      // ... لا يوجد أي تحقق من صحة البطاقة أو تاريخ الانتهاء أو CVV ...
+      
+      // تحقق من صحة بيانات البطاقة
+      if (selectedCard.cardNumber.isEmpty || 
+          selectedCard.cardHolderName.isEmpty ||
+          selectedCard.cardExpirationDate.isEmpty ||
+          selectedCard.cardCVV.isEmpty) {
+        print('[DEBUG] ❌ بيانات البطاقة غير مكتملة!');
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("❌ بيانات البطاقة غير مكتملة، يرجى اختيار بطاقة أخرى"),
+          backgroundColor: Colors.red,
+        ));
+        return;
+      }
 
       print('[DEBUG] ✅ تم التحقق من البطاقة بنجاح - بطاقة iCredit صحيحة');
 
@@ -446,6 +696,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
               const SizedBox(height: 24),
               if (selectedTap == 1) ...[
                 _buildAddressField(addressController, () async {
+                  print('[DEBUG] فتح قائمة العناوين...');
                   final result = await Navigator.of(context)
                       .pushNamed('/DeliveryAddresses', arguments: [true, _con]);
                   if (result != null && result is Address) {
@@ -453,6 +704,16 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                       _con.deliveryAddress       = result;
                       _con.userDeliverAddress    = result.address ?? '';
                       addressController.text     = _con.userDeliverAddress;  // مهم!
+                    });
+                    print('[DEBUG] تم اختيار العنوان: ${result.address}');
+                    print('[DEBUG] تم تعيين العنوان في الكنترولر: ${addressController.text}');
+                  } else {
+                    print('[DEBUG] لم يتم اختيار عنوان من القائمة');
+                    // إعادة تعيين العنوان إلى فارغ إذا لم يتم اختيار عنوان
+                    setState(() {
+                      _con.deliveryAddress = null;
+                      _con.userDeliverAddress = '';
+                      addressController.text = '';
                     });
                   }
                 }),
@@ -709,6 +970,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       lableText: controller.text.isEmpty
           ? S.of(context).address
           : controller.text,
+      // enabled: false, // منع التعديل اليدوي
       prefix: SvgPicture.asset(
         'assets/img/location.svg',
         width: 18,
