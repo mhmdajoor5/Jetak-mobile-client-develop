@@ -1250,7 +1250,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get locationPermissionDeniedForever =>
-      'Location permission denied permanently';
+      'Location permission denied forever';
 
   @override
   String get locationFetchError => 'Unable to determine location';
@@ -1491,6 +1491,44 @@ class AppLocalizationsEn extends AppLocalizations {
   String get address_max_length => 'Address must be less than 200 characters';
 
   @override
-  String get please_correct_form_errors =>
-      'Please correct the errors in the form';
+  String get please_correct_form_errors => 'Please correct the form errors';
+
+  @override
+  String get getCurrentLocation => 'Get My Current Location';
+
+  @override
+  String get locatingPosition => 'Locating your position...';
+
+  @override
+  String get locationDetected => 'Location detected';
+
+  @override
+  String get useThisLocation => 'Use this location';
+
+  @override
+  String get locationPermissionDenied => 'Location permission denied';
+
+  @override
+  String get locationDetectionFailed => 'Failed to detect location';
+
+  @override
+  String get myCurrentLocation => 'My current location';
+
+  @override
+  String get userInformation => 'User Information';
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get currentAddress => 'Current Address';
+
+  @override
+  String get loadingUserInfo => 'Loading user information...';
+
+  @override
+  String get useMyCurrentAddress => 'Use my current address';
+
+  @override
+  String get addressUsedSuccessfully => 'Your current address has been used';
 }

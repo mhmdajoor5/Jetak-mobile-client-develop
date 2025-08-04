@@ -1252,7 +1252,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get useThisAddress => 'استخدم هذا العنوان';
 
   @override
-  String get enterAnotherAddress => 'أدخل عنوانًا آخر';
+  String get enterAnotherAddress => 'إدخال عنوان آخر';
 
   @override
   String get locationType => 'نوع الموقع';
@@ -1470,4 +1470,43 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get please_correct_form_errors => 'يرجى تصحيح الأخطاء في النموذج';
+
+  @override
+  String get getCurrentLocation => 'تحديد موقعي الحالي';
+
+  @override
+  String get locatingPosition => 'جاري تحديد موقعك...';
+
+  @override
+  String get locationDetected => 'تم تحديد موقعك';
+
+  @override
+  String get useThisLocation => 'استخدام هذا الموقع';
+
+  @override
+  String get locationPermissionDenied => 'تم رفض صلاحيات الموقع';
+
+  @override
+  String get locationDetectionFailed => 'تعذر تحديد الموقع';
+
+  @override
+  String get myCurrentLocation => 'موقعي الحالي';
+
+  @override
+  String get userInformation => 'معلومات المستخدم';
+
+  @override
+  String get name => 'الاسم';
+
+  @override
+  String get currentAddress => 'العنوان الحالي';
+
+  @override
+  String get loadingUserInfo => 'جاري تحميل معلومات المستخدم...';
+
+  @override
+  String get useMyCurrentAddress => 'استخدام عنواني الحالي';
+
+  @override
+  String get addressUsedSuccessfully => 'تم استخدام عنوانك الحالي';
 }

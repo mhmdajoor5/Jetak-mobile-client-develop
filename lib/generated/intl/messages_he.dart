@@ -66,6 +66,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "addressDetails": MessageLookupByLibrary.simpleMessage("פרטי הכתובת"),
         "addressTypeAndLabel":
             MessageLookupByLibrary.simpleMessage("סוג הכתובת ותווית"),
+        "addressUsedSuccessfully":
+            MessageLookupByLibrary.simpleMessage("הכתובת הנוכחית שלך שומשה"),
         "address_max_length": MessageLookupByLibrary.simpleMessage(
             "הכתובת חייבת להיות פחות מ-200 תווים"),
         "address_min_length": MessageLookupByLibrary.simpleMessage(
@@ -171,6 +173,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "continueText": MessageLookupByLibrary.simpleMessage("המשך"),
         "continue_button": MessageLookupByLibrary.simpleMessage("המשך"),
         "cuisines": MessageLookupByLibrary.simpleMessage("סוגי מטבח"),
+        "currentAddress": MessageLookupByLibrary.simpleMessage("כתובת נוכחית"),
         "current_location": MessageLookupByLibrary.simpleMessage("מיקום נוכחי"),
         "cvc": MessageLookupByLibrary.simpleMessage("CVC"),
         "cvv": MessageLookupByLibrary.simpleMessage("קוד CVV"),
@@ -284,6 +287,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "full_address": MessageLookupByLibrary.simpleMessage("כתובת מלאה"),
         "full_name": MessageLookupByLibrary.simpleMessage("שם מלא"),
         "g": MessageLookupByLibrary.simpleMessage("גרם"),
+        "getCurrentLocation":
+            MessageLookupByLibrary.simpleMessage("קבל את המיקום הנוכחי שלי"),
         "goToNotificationsPage":
             MessageLookupByLibrary.simpleMessage("מעבר לעמוד ההתראות"),
         "go_back_checkout":
@@ -336,12 +341,21 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("בואו נתחיל עם הרשמה!"),
         "light_mode": MessageLookupByLibrary.simpleMessage("מצב אור"),
         "loadingRoute": MessageLookupByLibrary.simpleMessage("טוען מסלול..."),
+        "loadingUserInfo":
+            MessageLookupByLibrary.simpleMessage("טוען מידע משתמש..."),
+        "locatingPosition":
+            MessageLookupByLibrary.simpleMessage("מאתר את המיקום שלך..."),
         "locationBasedMessage": MessageLookupByLibrary.simpleMessage(
             "בהתבסס על מיקום הטלפון שלך, נראה שאתה כאן:"),
+        "locationDetected": MessageLookupByLibrary.simpleMessage("המיקום זוהה"),
+        "locationDetectionFailed":
+            MessageLookupByLibrary.simpleMessage("נכשל באיתור המיקום"),
         "locationFetchError":
             MessageLookupByLibrary.simpleMessage("לא ניתן לקבוע מיקום"),
+        "locationPermissionDenied":
+            MessageLookupByLibrary.simpleMessage("הרשאת מיקום נדחתה"),
         "locationPermissionDeniedForever":
-            MessageLookupByLibrary.simpleMessage("ההרשאה למיקום נדחתה לצמיתות"),
+            MessageLookupByLibrary.simpleMessage("הרשאת מיקום נדחתה לצמיתות"),
         "locationServiceDisabled":
             MessageLookupByLibrary.simpleMessage("שירות המיקום מושבת"),
         "locationType": MessageLookupByLibrary.simpleMessage("סוג מיקום"),
@@ -391,7 +405,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("הפופולריים ביותר"),
         "multirestaurants":
             MessageLookupByLibrary.simpleMessage("מסעדות מרובות"),
+        "myCurrentLocation":
+            MessageLookupByLibrary.simpleMessage("המיקום הנוכחי שלי"),
         "my_orders": MessageLookupByLibrary.simpleMessage("ההזמנות שלי"),
+        "name": MessageLookupByLibrary.simpleMessage("שם"),
         "near_to": MessageLookupByLibrary.simpleMessage("בקרבת"),
         "near_to_your_current_location":
             MessageLookupByLibrary.simpleMessage("בקרבת מיקום הנוכחי שלך"),
@@ -506,7 +523,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paypal": MessageLookupByLibrary.simpleMessage("PayPal"),
         "paypal_payment":
             MessageLookupByLibrary.simpleMessage("תשלום ב-PayPal"),
-        "pending_payment": MessageLookupByLibrary.simpleMessage("תשلום בהמתנה"),
+        "pending_payment": MessageLookupByLibrary.simpleMessage("תשלום בהמתנה"),
         "phone": MessageLookupByLibrary.simpleMessage("טלפון"),
         "phoneNumber": MessageLookupByLibrary.simpleMessage("מספר טלפון"),
         "pickup": MessageLookupByLibrary.simpleMessage("איסוף"),
@@ -686,8 +703,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "unknown": MessageLookupByLibrary.simpleMessage("לא ידוע"),
         "unreadNotifications":
             MessageLookupByLibrary.simpleMessage("התראות שלא נקראו"),
+        "useMyCurrentAddress":
+            MessageLookupByLibrary.simpleMessage("השתמש בכתובת הנוכחית שלי"),
         "useThisAddress":
             MessageLookupByLibrary.simpleMessage("השתמש בכתובת זו"),
+        "useThisLocation":
+            MessageLookupByLibrary.simpleMessage("השתמש במיקום זה"),
+        "userInformation": MessageLookupByLibrary.simpleMessage("מידע המשתמש"),
         "validCouponCode":
             MessageLookupByLibrary.simpleMessage("קוד קופון תקף"),
         "verification_failed":

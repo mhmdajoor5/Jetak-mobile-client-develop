@@ -3,6 +3,7 @@ import 'package:restaurantcustomer/src/pages/auth/signup/SignUpEmailPasswordScre
 import 'package:restaurantcustomer/src/pages/auth/signup/SignUpPhoneNumberScreen.dart';
 import 'package:restaurantcustomer/src/pages/auth/signup/SignUpVerificationScreen.dart';
 import 'package:restaurantcustomer/src/pages/auth/signup/sign_up_name_screen.dart';
+import 'src/pages/mobile_verification_2.dart';
 import 'src/controllers/delivery_pickup_controller.dart';
 import 'src/models/credit_card.dart';
 import 'src/pages/Home/OffersNearYouPage.dart' show OffersNearYouPage;
@@ -74,7 +75,7 @@ class RouteGenerator {
       // case '/MobileVerification2':
       //   return MaterialPageRoute(builder: (_) => SignUpWidget());
       case '/MobileVerification2':
-         return MaterialPageRoute(builder: (_) => SignUpNameScreen());
+         return MaterialPageRoute(builder: (_) => MobileVerification2());
       case '/SignUpEmailPassword':
         final args = settings.arguments as Map<String, String>;
         return MaterialPageRoute(

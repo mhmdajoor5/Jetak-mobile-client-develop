@@ -506,6 +506,25 @@
   "address_required": "Address is required",
   "address_min_length": "Address must be at least 10 characters",
   "address_max_length": "Address must be less than 200 characters",
-  "please_correct_form_errors": "Please correct the errors in the form"
+  "please_correct_form_errors": "Please correct the form errors",
+  "getCurrentLocation": "Get My Current Location",
+  "locatingPosition": "Locating your position...",
+  "locationDetected": "Location detected",
+  "useThisLocation": "Use this location",
+  "enterAnotherAddress": "Enter another address",
+  "pleaseWait": "Please wait...",
+  "locationServiceDisabled": "Location service is disabled",
+  "locationPermissionDenied": "Location permission denied",
+  "locationPermissionDeniedForever": "Location permission denied forever",
+  "locationDetectionFailed": "Failed to detect location",
+  "myCurrentLocation": "My current location",
+  "userInformation": "User Information",
+  "name": "Name",
+  "phoneNumber": "Phone Number",
+  "email": "Email",
+  "currentAddress": "Current Address",
+  "loadingUserInfo": "Loading user information...",
+  "useMyCurrentAddress": "Use my current address",
+  "addressUsedSuccessfully": "Your current address has been used"
 
 }

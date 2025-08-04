@@ -74,6 +74,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Address Details"),
         "addressTypeAndLabel":
             MessageLookupByLibrary.simpleMessage("Address Type and Label"),
+        "addressUsedSuccessfully": MessageLookupByLibrary.simpleMessage(
+            "Your current address has been used"),
         "address_max_length": MessageLookupByLibrary.simpleMessage(
             "Address must be less than 200 characters"),
         "address_min_length": MessageLookupByLibrary.simpleMessage(
@@ -191,6 +193,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "continue_button": MessageLookupByLibrary.simpleMessage("Continue"),
         "credit_card": MessageLookupByLibrary.simpleMessage("Credit card"),
         "cuisines": MessageLookupByLibrary.simpleMessage("Cuisines"),
+        "currentAddress":
+            MessageLookupByLibrary.simpleMessage("Current Address"),
         "current_location":
             MessageLookupByLibrary.simpleMessage("Current location"),
         "cvc": MessageLookupByLibrary.simpleMessage("CVC"),
@@ -316,6 +320,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "full_address": MessageLookupByLibrary.simpleMessage("Full Address"),
         "full_name": MessageLookupByLibrary.simpleMessage("Full name"),
         "g": MessageLookupByLibrary.simpleMessage("g"),
+        "getCurrentLocation":
+            MessageLookupByLibrary.simpleMessage("Get My Current Location"),
         "goToNotificationsPage":
             MessageLookupByLibrary.simpleMessage("Go to Notifications Page"),
         "go_back_checkout":
@@ -378,12 +384,22 @@ class MessageLookup extends MessageLookupByLibrary {
         "light_mode": MessageLookupByLibrary.simpleMessage("Light Mode"),
         "loadingRoute":
             MessageLookupByLibrary.simpleMessage("Loading route..."),
+        "loadingUserInfo":
+            MessageLookupByLibrary.simpleMessage("Loading user information..."),
+        "locatingPosition":
+            MessageLookupByLibrary.simpleMessage("Locating your position..."),
         "locationBasedMessage": MessageLookupByLibrary.simpleMessage(
             "Based on your phone\'s location, it looks like you\'re here:"),
+        "locationDetected":
+            MessageLookupByLibrary.simpleMessage("Location detected"),
+        "locationDetectionFailed":
+            MessageLookupByLibrary.simpleMessage("Failed to detect location"),
         "locationFetchError": MessageLookupByLibrary.simpleMessage(
             "Unable to determine location"),
+        "locationPermissionDenied":
+            MessageLookupByLibrary.simpleMessage("Location permission denied"),
         "locationPermissionDeniedForever": MessageLookupByLibrary.simpleMessage(
-            "Location permission denied permanently"),
+            "Location permission denied forever"),
         "locationServiceDisabled": MessageLookupByLibrary.simpleMessage(
             "Location service is disabled"),
         "locationType": MessageLookupByLibrary.simpleMessage("Location Type"),
@@ -432,7 +448,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "most_popular": MessageLookupByLibrary.simpleMessage("Most Popular"),
         "multirestaurants":
             MessageLookupByLibrary.simpleMessage("Multi-Restaurants"),
+        "myCurrentLocation":
+            MessageLookupByLibrary.simpleMessage("My current location"),
         "my_orders": MessageLookupByLibrary.simpleMessage("My Orders"),
+        "name": MessageLookupByLibrary.simpleMessage("Name"),
         "near_to": MessageLookupByLibrary.simpleMessage("Near to"),
         "near_to_your_current_location": MessageLookupByLibrary.simpleMessage(
             "Near to your current location"),
@@ -575,7 +594,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please enter or select an address"),
         "pleaseWait": MessageLookupByLibrary.simpleMessage("Please wait..."),
         "please_correct_form_errors": MessageLookupByLibrary.simpleMessage(
-            "Please correct the errors in the form"),
+            "Please correct the form errors"),
         "please_enter_phone_number": MessageLookupByLibrary.simpleMessage(
             "Please enter your phone number"),
         "please_fill_all_fields": MessageLookupByLibrary.simpleMessage(
@@ -758,8 +777,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
         "unreadNotifications":
             MessageLookupByLibrary.simpleMessage("Unread Notifications"),
+        "useMyCurrentAddress":
+            MessageLookupByLibrary.simpleMessage("Use my current address"),
         "useThisAddress":
             MessageLookupByLibrary.simpleMessage("Use this address"),
+        "useThisLocation":
+            MessageLookupByLibrary.simpleMessage("Use this location"),
+        "userInformation":
+            MessageLookupByLibrary.simpleMessage("User Information"),
         "validCouponCode": MessageLookupByLibrary.simpleMessage("Valid Coupon"),
         "verification_failed":
             MessageLookupByLibrary.simpleMessage("Verification failed"),

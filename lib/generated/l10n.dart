@@ -3920,10 +3920,10 @@ class S {
     );
   }
 
-  /// `Location permission denied permanently`
+  /// `Location permission denied forever`
   String get locationPermissionDeniedForever {
     return Intl.message(
-      'Location permission denied permanently',
+      'Location permission denied forever',
       name: 'locationPermissionDeniedForever',
       desc: '',
       args: [],
@@ -4670,11 +4670,141 @@ class S {
     );
   }
 
-  /// `Please correct the errors in the form`
+  /// `Please correct the form errors`
   String get please_correct_form_errors {
     return Intl.message(
-      'Please correct the errors in the form',
+      'Please correct the form errors',
       name: 'please_correct_form_errors',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get My Current Location`
+  String get getCurrentLocation {
+    return Intl.message(
+      'Get My Current Location',
+      name: 'getCurrentLocation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Locating your position...`
+  String get locatingPosition {
+    return Intl.message(
+      'Locating your position...',
+      name: 'locatingPosition',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location detected`
+  String get locationDetected {
+    return Intl.message(
+      'Location detected',
+      name: 'locationDetected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use this location`
+  String get useThisLocation {
+    return Intl.message(
+      'Use this location',
+      name: 'useThisLocation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location permission denied`
+  String get locationPermissionDenied {
+    return Intl.message(
+      'Location permission denied',
+      name: 'locationPermissionDenied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to detect location`
+  String get locationDetectionFailed {
+    return Intl.message(
+      'Failed to detect location',
+      name: 'locationDetectionFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My current location`
+  String get myCurrentLocation {
+    return Intl.message(
+      'My current location',
+      name: 'myCurrentLocation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User Information`
+  String get userInformation {
+    return Intl.message(
+      'User Information',
+      name: 'userInformation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name`
+  String get name {
+    return Intl.message(
+      'Name',
+      name: 'name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Current Address`
+  String get currentAddress {
+    return Intl.message(
+      'Current Address',
+      name: 'currentAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading user information...`
+  String get loadingUserInfo {
+    return Intl.message(
+      'Loading user information...',
+      name: 'loadingUserInfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use my current address`
+  String get useMyCurrentAddress {
+    return Intl.message(
+      'Use my current address',
+      name: 'useMyCurrentAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your current address has been used`
+  String get addressUsedSuccessfully {
+    return Intl.message(
+      'Your current address has been used',
+      name: 'addressUsedSuccessfully',
       desc: '',
       args: [],
     );

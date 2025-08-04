@@ -300,7 +300,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get help__support => 'עזרה ותמיכה';
 
   @override
-  String get pending_payment => 'תשلום בהמתנה';
+  String get pending_payment => 'תשלום בהמתנה';
 
   @override
   String get light_mode => 'מצב אור';
@@ -1228,7 +1228,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get locationServiceDisabled => 'שירות המיקום מושבת';
 
   @override
-  String get locationPermissionDeniedForever => 'ההרשאה למיקום נדחתה לצמיתות';
+  String get locationPermissionDeniedForever => 'הרשאת מיקום נדחתה לצמיתות';
 
   @override
   String get locationFetchError => 'לא ניתן לקבוע מיקום';
@@ -1464,4 +1464,43 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get please_correct_form_errors => 'אנא תקן את השגיאות בטופס';
+
+  @override
+  String get getCurrentLocation => 'קבל את המיקום הנוכחי שלי';
+
+  @override
+  String get locatingPosition => 'מאתר את המיקום שלך...';
+
+  @override
+  String get locationDetected => 'המיקום זוהה';
+
+  @override
+  String get useThisLocation => 'השתמש במיקום זה';
+
+  @override
+  String get locationPermissionDenied => 'הרשאת מיקום נדחתה';
+
+  @override
+  String get locationDetectionFailed => 'נכשל באיתור המיקום';
+
+  @override
+  String get myCurrentLocation => 'המיקום הנוכחי שלי';
+
+  @override
+  String get userInformation => 'מידע המשתמש';
+
+  @override
+  String get name => 'שם';
+
+  @override
+  String get currentAddress => 'כתובת נוכחית';
+
+  @override
+  String get loadingUserInfo => 'טוען מידע משתמש...';
+
+  @override
+  String get useMyCurrentAddress => 'השתמש בכתובת הנוכחית שלי';
+
+  @override
+  String get addressUsedSuccessfully => 'הכתובת הנוכחית שלך שומשה';
 }

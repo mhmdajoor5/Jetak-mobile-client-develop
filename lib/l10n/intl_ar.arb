@@ -435,6 +435,26 @@
   "address_required": "العنوان مطلوب",
   "address_min_length": "العنوان يجب أن يكون 10 أحرف على الأقل",
   "address_max_length": "العنوان يجب أن يكون أقل من 200 حرف",
-  "please_correct_form_errors": "يرجى تصحيح الأخطاء في النموذج"
+  "please_correct_form_errors": "يرجى تصحيح الأخطاء في النموذج",
+  "help__support": "المساعدة",
+  "getCurrentLocation": "تحديد موقعي الحالي",
+  "locatingPosition": "جاري تحديد موقعك...",
+  "locationDetected": "تم تحديد موقعك",
+  "useThisLocation": "استخدام هذا الموقع",
+  "enterAnotherAddress": "إدخال عنوان آخر",
+  "pleaseWait": "يرجى الانتظار...",
+  "locationServiceDisabled": "خدمة الموقع معطلة",
+  "locationPermissionDenied": "تم رفض صلاحيات الموقع",
+  "locationPermissionDeniedForever": "تم رفض صلاحيات الموقع نهائياً",
+  "locationDetectionFailed": "تعذر تحديد الموقع",
+  "myCurrentLocation": "موقعي الحالي",
+  "userInformation": "معلومات المستخدم",
+  "name": "الاسم",
+  "phoneNumber": "رقم الهاتف",
+  "email": "البريد الإلكتروني",
+  "currentAddress": "العنوان الحالي",
+  "loadingUserInfo": "جاري تحميل معلومات المستخدم...",
+  "useMyCurrentAddress": "استخدام عنواني الحالي",
+  "addressUsedSuccessfully": "تم استخدام عنوانك الحالي"
 
 }

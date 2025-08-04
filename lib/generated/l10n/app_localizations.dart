@@ -2425,7 +2425,7 @@ abstract class AppLocalizations {
   /// No description provided for @locationPermissionDeniedForever.
   ///
   /// In en, this message translates to:
-  /// **'Location permission denied permanently'**
+  /// **'Location permission denied forever'**
   String get locationPermissionDeniedForever;
 
   /// No description provided for @locationFetchError.
@@ -2875,8 +2875,86 @@ abstract class AppLocalizations {
   /// No description provided for @please_correct_form_errors.
   ///
   /// In en, this message translates to:
-  /// **'Please correct the errors in the form'**
+  /// **'Please correct the form errors'**
   String get please_correct_form_errors;
+
+  /// No description provided for @getCurrentLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Get My Current Location'**
+  String get getCurrentLocation;
+
+  /// No description provided for @locatingPosition.
+  ///
+  /// In en, this message translates to:
+  /// **'Locating your position...'**
+  String get locatingPosition;
+
+  /// No description provided for @locationDetected.
+  ///
+  /// In en, this message translates to:
+  /// **'Location detected'**
+  String get locationDetected;
+
+  /// No description provided for @useThisLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this location'**
+  String get useThisLocation;
+
+  /// No description provided for @locationPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission denied'**
+  String get locationPermissionDenied;
+
+  /// No description provided for @locationDetectionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to detect location'**
+  String get locationDetectionFailed;
+
+  /// No description provided for @myCurrentLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'My current location'**
+  String get myCurrentLocation;
+
+  /// No description provided for @userInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'User Information'**
+  String get userInformation;
+
+  /// No description provided for @name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
+
+  /// No description provided for @currentAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Address'**
+  String get currentAddress;
+
+  /// No description provided for @loadingUserInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading user information...'**
+  String get loadingUserInfo;
+
+  /// No description provided for @useMyCurrentAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Use my current address'**
+  String get useMyCurrentAddress;
+
+  /// No description provided for @addressUsedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Your current address has been used'**
+  String get addressUsedSuccessfully;
 }
 
 class _AppLocalizationsDelegate

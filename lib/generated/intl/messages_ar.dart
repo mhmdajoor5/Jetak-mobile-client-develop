@@ -68,6 +68,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تفاصيل العنوان"),
         "addressTypeAndLabel":
             MessageLookupByLibrary.simpleMessage("نوع العنوان والوسم"),
+        "addressUsedSuccessfully":
+            MessageLookupByLibrary.simpleMessage("تم استخدام عنوانك الحالي"),
         "address_max_length": MessageLookupByLibrary.simpleMessage(
             "العنوان يجب أن يكون أقل من 200 حرف"),
         "address_min_length": MessageLookupByLibrary.simpleMessage(
@@ -142,6 +144,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "continue_button": MessageLookupByLibrary.simpleMessage("استمرار"),
         "credit_card": MessageLookupByLibrary.simpleMessage("بطاقة ائتمان"),
         "cuisines": MessageLookupByLibrary.simpleMessage("المطابخ"),
+        "currentAddress":
+            MessageLookupByLibrary.simpleMessage("العنوان الحالي"),
         "dark_mode": MessageLookupByLibrary.simpleMessage("الوضع الداكن"),
         "dateTimeFormatDdMmYyyyHhMm":
             MessageLookupByLibrary.simpleMessage("dd/MM/yyyy HH:mm"),
@@ -189,7 +193,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "استعادة كلمة المرور بالبريد الالكتروني"),
         "english": MessageLookupByLibrary.simpleMessage("الإنجليزية"),
         "enterAnotherAddress":
-            MessageLookupByLibrary.simpleMessage("أدخل عنوانًا آخر"),
+            MessageLookupByLibrary.simpleMessage("إدخال عنوان آخر"),
         "enterPassword":
             MessageLookupByLibrary.simpleMessage("أدخل كلمة المرور"),
         "enterThe4DigitCodeSentTo": m3,
@@ -235,6 +239,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "full_address": MessageLookupByLibrary.simpleMessage("العنوان بالكامل"),
         "full_name": MessageLookupByLibrary.simpleMessage("الاسم الكامل"),
         "g": MessageLookupByLibrary.simpleMessage("جم"),
+        "getCurrentLocation":
+            MessageLookupByLibrary.simpleMessage("تحديد موقعي الحالي"),
         "goToNotificationsPage":
             MessageLookupByLibrary.simpleMessage("الذهاب لصفحة الإشعارات"),
         "go_back_checkout":
@@ -286,10 +292,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "light_mode": MessageLookupByLibrary.simpleMessage("الوضع الفاتح"),
         "loadingRoute":
             MessageLookupByLibrary.simpleMessage("جاري تحميل المسار..."),
+        "loadingUserInfo": MessageLookupByLibrary.simpleMessage(
+            "جاري تحميل معلومات المستخدم..."),
+        "locatingPosition":
+            MessageLookupByLibrary.simpleMessage("جاري تحديد موقعك..."),
         "locationBasedMessage": MessageLookupByLibrary.simpleMessage(
             "بناءً على موقع هاتفك، يبدو أنك هنا:"),
+        "locationDetected":
+            MessageLookupByLibrary.simpleMessage("تم تحديد موقعك"),
+        "locationDetectionFailed":
+            MessageLookupByLibrary.simpleMessage("تعذر تحديد الموقع"),
         "locationFetchError":
             MessageLookupByLibrary.simpleMessage("تعذر تحديد الموقع"),
+        "locationPermissionDenied":
+            MessageLookupByLibrary.simpleMessage("تم رفض صلاحيات الموقع"),
         "locationPermissionDeniedForever": MessageLookupByLibrary.simpleMessage(
             "تم رفض صلاحيات الموقع نهائياً"),
         "locationServiceDisabled":
@@ -332,7 +348,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "most_ordered": MessageLookupByLibrary.simpleMessage("الأكثر طلبًا"),
         "most_popular": MessageLookupByLibrary.simpleMessage("الأكثر شهرة"),
         "multirestaurants": MessageLookupByLibrary.simpleMessage("عدة مطابخ"),
+        "myCurrentLocation":
+            MessageLookupByLibrary.simpleMessage("موقعي الحالي"),
         "my_orders": MessageLookupByLibrary.simpleMessage("طلباتي"),
+        "name": MessageLookupByLibrary.simpleMessage("الاسم"),
         "newMessageFrom":
             MessageLookupByLibrary.simpleMessage("رسالة جديدة من"),
         "new_address_added_successfully": MessageLookupByLibrary.simpleMessage(
@@ -577,8 +596,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "unknown": MessageLookupByLibrary.simpleMessage("غير معروف"),
         "unreadNotifications":
             MessageLookupByLibrary.simpleMessage("إشعارات غير مقروءة"),
+        "useMyCurrentAddress":
+            MessageLookupByLibrary.simpleMessage("استخدام عنواني الحالي"),
         "useThisAddress":
             MessageLookupByLibrary.simpleMessage("استخدم هذا العنوان"),
+        "useThisLocation":
+            MessageLookupByLibrary.simpleMessage("استخدام هذا الموقع"),
+        "userInformation":
+            MessageLookupByLibrary.simpleMessage("معلومات المستخدم"),
         "validCouponCode":
             MessageLookupByLibrary.simpleMessage("رمز القسيمة صالح"),
         "verification_failed":

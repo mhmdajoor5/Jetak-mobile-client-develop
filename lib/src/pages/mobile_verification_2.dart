@@ -17,7 +17,13 @@ class MobileVerification2 extends StatefulWidget {
 }
 
 class _MobileVerification2State extends State<MobileVerification2> {
-  late String smsSent;
+  String smsSent = '';
+
+  @override
+  void initState() {
+    super.initState();
+    smsSent = '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,12 +85,12 @@ class _MobileVerification2State extends State<MobileVerification2> {
                 User? user = FirebaseAuth.instance.currentUser;
                 print(user.toString());
                 if (user != null) {
-                  widget.onVerified;
+                  widget.onVerified?.call(null);
                 } else {
                   final AuthCredential credential = PhoneAuthProvider.credential(verificationId: currentUser.value.verificationId!, smsCode: smsSent);
 
                   await FirebaseAuth.instance.signInWithCredential(credential).then((user) {
-                    widget.onVerified;
+                    widget.onVerified?.call(null);
                   }).catchError((e) {
                     if (widget.scaffoldKey.currentContext != null)
                     ScaffoldMessenger.of(widget.scaffoldKey.currentContext!).showSnackBar(SnackBar(
