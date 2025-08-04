@@ -91,6 +91,9 @@ class UserController extends ControllerMVC {
       _hideLoader();
 
       if (user.apiToken != null) {
+        // تعيين auth = true صراحة بعد تسجيل الدخول الناجح
+        repository.currentUser.value.auth = true;
+        
         ScaffoldMessenger.of(context!).showSnackBar(
           SnackBar(
             content: Text(S.of(context!).login_successful),
@@ -98,12 +101,30 @@ class UserController extends ControllerMVC {
           ),
         );
 
-        if (!user.verifiedPhone) {
+        // تشخيص حالة verifiedPhone
+        print('=== Login Debug Info ===');
+        print('User ID: ${user.id}');
+        print('User phone: ${user.phone}');
+        print('User verifiedPhone: ${user.verifiedPhone}');
+        print('CustomFields phone: ${user.customFields?.phone?.value}');
+        print('CustomFields verifiedPhone: ${user.customFields?.verifiedPhone?.value}');
+        print('========================');
+
+        // فحص مؤقت - إذا كان لديه رقم هاتف، تجاهل فحص التحقق وادخل مباشرة
+        if (user.phone != null && user.phone!.isNotEmpty) {
+          print('User has phone number, navigating to Pages directly');
+          Navigator.of(context!).pushReplacementNamed(
+            '/Pages',
+            arguments: 0,
+          );
+        } else if (!user.verifiedPhone) {
+          print('User phone not verified, navigating to VerifyCode');
           Navigator.of(context!).pushReplacementNamed(
             '/VerifyCode',
             arguments: {'phone': user.phone},
           );
         } else {
+          print('User phone verified, navigating to Pages');
           Navigator.of(context!).pushReplacementNamed(
             '/Pages',
             arguments: 0,
@@ -292,7 +313,8 @@ class UserController extends ControllerMVC {
         model.User userData = model.User.fromJSON(responseData['data']);
         repository.currentUser.value = userData;
         repository.currentUser.value.auth = true;
-       // await repository.setCurrentUser(userData);
+        // حفظ البيانات في SharedPreferences أيضاً
+        await repository.setCurrentUser(response.body);
 
         _hideLoader();
         _showSnackBar(S.of(context!).login_successful);

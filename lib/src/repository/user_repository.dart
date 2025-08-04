@@ -159,7 +159,7 @@ Future<void> logout() async {
   Helper.clearSavedCards();
 }
 
-void setCurrentUser(String jsonString) async {
+Future<void> setCurrentUser(String jsonString) async {
   if (json.decode(jsonString)['data'] != null) {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(
@@ -182,12 +182,12 @@ Future<void> setCreditCard(CreditCard creditCard) async {
 
 Future<userModel.User> getCurrentUser() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  if (currentUser.value.auth == null && prefs.containsKey('current_user')) {
+  if ((currentUser.value.auth == null || currentUser.value.auth == false) && prefs.containsKey('current_user')) {
     String storedCurrentUser = prefs.getString('current_user')!;
     currentUser.value =
         userModel.User.fromJSON(json.decode(storedCurrentUser));
     currentUser.value.auth = true;
-  } else {
+  } else if (!prefs.containsKey('current_user')) {
     currentUser.value.auth = false;
   }
   currentUser.notifyListeners();

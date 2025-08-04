@@ -68,16 +68,53 @@ class _PagesWidgetState extends State<PagesWidget> {
     final token = user.apiToken ?? '';
     final phone = user.phone ?? '';
 
-    if (token.isNotEmpty && phone.isNotEmpty && !user.verifiedPhone) {
-      await Future.delayed(const Duration(seconds: 2));
+    print('=== Pages Debug Info ===');
+    print('User auth: ${user.auth}');
+    print('User token: ${token}');
+    print('User phone: ${phone}');
+    print('User verifiedPhone: ${user.verifiedPhone}');
+    print('========================');
 
-      if (!mounted) return;
-      Navigator.of(context).pushReplacementNamed(
-        '/VerifyCode',
-        arguments: {'phone': phone},
-      );
+    // إذا لم يكن هناك توكن، فلا حاجة للتحقق
+    if (token.isEmpty) {
+      print('No token found, staying on current page');
+      if (mounted) {
+        _selectTab(widget.currentTab as int);
+      }
       return;
     }
+
+    // حل مؤقت: تجاهل فحص OTP والدخول مباشرة للصفحة الرئيسية
+    // إذا كان المستخدم مسجل دخول مع توكن صالح
+    if (token.isNotEmpty && user.auth == true) {
+      print('User is authenticated, proceeding to main app');
+      if (mounted) {
+        _selectTab(widget.currentTab as int);
+      }
+      return;
+    }
+
+    // الكود الأصلي للتحقق من OTP (معطل مؤقتاً)
+    /*
+    if (phone.isNotEmpty && !user.verifiedPhone) {
+      try {
+        bool isVerified = await _userController.checkPhoneVerification(token, phone, context);
+        
+        if (!isVerified) {
+          await Future.delayed(const Duration(seconds: 1));
+          if (!mounted) return;
+          Navigator.of(context).pushReplacementNamed(
+            '/VerifyCode',
+            arguments: {'phone': phone},
+          );
+          return;
+        }
+      } catch (e) {
+        print('Error checking phone verification: $e');
+      }
+    }
+    */
+    
     if (mounted) {
       _selectTab(widget.currentTab as int);
     }
