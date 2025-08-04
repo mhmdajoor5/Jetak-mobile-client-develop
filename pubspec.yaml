@@ -91,7 +91,7 @@ dependencies:
   geolocator: ^14.0.1 # Updated
   # geocoding: ^3.0.0  # Temporarily disabled due to iOS build issues
   web_socket_channel: ^2.4.0 # للتراكنج المباشر
-  pusher_client: ^2.0.0 # للاتصال بـ Pusher
+  # pusher_client: ^2.0.0 # للاتصال بـ Pusher - مؤقتاً معطل بسبب مشاكل في البناء
 
 
 dev_dependencies:

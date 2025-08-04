@@ -8,7 +8,7 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:pusher_client/pusher_client.dart' hide PusherEvent;
+// import 'package:pusher_client/pusher_client.dart' hide PusherEvent; // مؤقتاً معطل
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -174,8 +174,8 @@ class TrackingController extends ControllerMVC with ChangeNotifier {
   LatLng driverLocation = LatLng(0.0, 0.0); // إضافة موقع السائق
 
   // Pusher للتراكنج المباشر
-  PusherClient? _pusherClient;
-  Channel? _trackingChannel;
+  // PusherClient? _pusherClient; // مؤقتاً معطل
+  // Channel? _trackingChannel; // مؤقتاً معطل
   bool _isPusherConnected = false;
   Timer? _reconnectTimer;
   int _reconnectAttempts = 0;
@@ -193,6 +193,8 @@ class TrackingController extends ControllerMVC with ChangeNotifier {
   void connectToDriverTracking(String orderId) {
     _initPusher(orderId);
     return;
+    // مؤقتاً معطل - سيتم إعادة تفعيله لاحقاً
+    /*
     try {
       print("🚀 بدء الاتصال بـ Pusher للتراكنج المباشر");
       print("📡 Channel: order-tracking.$orderId");
@@ -205,17 +207,17 @@ class TrackingController extends ControllerMVC with ChangeNotifier {
       _reconnectTimer?.cancel();
       
       // إنشاء اتصال Pusher جديد
-      _pusherClient = PusherClient(
-        _pusherKey,
-        PusherOptions(
-          cluster: _pusherCluster,
-          encrypted: true,
-          activityTimeout: 30000, // 30 seconds
-          pongTimeout: 6000, // 6 seconds
-          maxReconnectionAttempts: 6,
-          maxReconnectGapInSeconds: 30,
-        ),
-      );
+      // _pusherClient = PusherClient(
+      //   _pusherKey,
+      //   PusherOptions(
+      //     cluster: _pusherCluster,
+      //     encrypted: true,
+      //     activityTimeout: 30000, // 30 seconds
+      //     pongTimeout: 6000, // 6 seconds
+      //     maxReconnectionAttempts: 6,
+      //     maxReconnectGapInSeconds: 30,
+      //   ),
+      // );
       
       print("✅ تم إنشاء اتصال Pusher");
       
@@ -228,6 +230,8 @@ class TrackingController extends ControllerMVC with ChangeNotifier {
       });
       
       // الاستماع لأحداث الاتصال
+      // مؤقتاً معطل
+      /*
       _pusherClient!.onConnectionStateChange((state) {
         print("🔄 حالة الاتصال بـ Pusher:");
         print("  - Current State: ${state?.currentState}");
@@ -302,6 +306,7 @@ class TrackingController extends ControllerMVC with ChangeNotifier {
       // بدء الاتصال
       print("🚀 Starting Pusher connection...");
       _pusherClient!.connect();
+      */
       
     } catch (e) {
       print("❌ خطأ في الاتصال بـ Pusher: $e");
@@ -313,6 +318,9 @@ class TrackingController extends ControllerMVC with ChangeNotifier {
 
   // دالة للاشتراك في channel التراكنج
   void _subscribeToDriverTracking(String orderId) {
+    // مؤقتاً معطل
+    return;
+    /*
     try {
       // التحقق من صحة orderId
       if (orderId.isEmpty) {
@@ -329,37 +337,38 @@ class TrackingController extends ControllerMVC with ChangeNotifier {
       print("   - Order ID الأصلي: $orderId");
       
       // الاشتراك في channel
-      _trackingChannel = _pusherClient!.subscribe(channelName);
+      // _trackingChannel = _pusherClient!.subscribe(channelName);
       
       // الاستماع للأحداث
-      _trackingChannel!.bind('driver-location-update', (event) {
-        print("📨 حدث تحديث موقع السائق: $event");
-        if (event != null) {
-          //_handleDriverLocationUpdate(event, orderId);
-        }
-      });
+      // _trackingChannel!.bind('driver-location-update', (event) {
+      //   print("📨 حدث تحديث موقع السائق: $event");
+      //   if (event != null) {
+      //     //_handleDriverLocationUpdate(event, orderId);
+      //   }
+      // });
       
-      _trackingChannel!.bind('order-status-update', (event) {
-        print("📨 حدث تحديث حالة الطلب: $event");
-        if (event != null) {
-        //  _handleOrderStatusUpdate(event, orderId);
-        }
-      });
+      // _trackingChannel!.bind('order-status-update', (event) {
+      //   print("📨 حدث تحديث حالة الطلب: $event");
+      //   if (event != null) {
+      //   //  _handleOrderStatusUpdate(event, orderId);
+      //   }
+      // });
       
-      _trackingChannel!.bind('pusher:subscription_succeeded', (event) {
-        print("✅ تم الاشتراك بنجاح في channel: $channelName");
-      });
+      // _trackingChannel!.bind('pusher:subscription_succeeded', (event) {
+      //   print("✅ تم الاشتراك بنجاح في channel: $channelName");
+      // });
       
-      _trackingChannel!.bind('pusher:subscription_error', (event) {
-        print("❌ خطأ في الاشتراك في channel: $event");
-      });
+      // _trackingChannel!.bind('pusher:subscription_error', (event) {
+      //   print("❌ خطأ في الاشتراك في channel: $event");
+      // });
       
-      print("📡 تم الاشتراك في channel: $channelName");
+      // print("📡 تم الاشتراك في channel: $channelName");
       
-    } catch (e) {
-      print("❌ خطأ في الاشتراك: $e");
-      print("❌ نوع الخطأ: ${e.runtimeType}");
-    }
+    // } catch (e) {
+    //   print("❌ خطأ في الاشتراك: $e");
+    //   print("❌ نوع الخطأ: ${e.runtimeType}");
+    // }
+    */
   }
 
   // دالة لمعالجة تحديث موقع السائق
