@@ -57,6 +57,18 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
     _con = controller as DeliveryPickupController;
   }
 
+  // دالة مساعدة لاستخراج الكلمة الأولى فقط من العنوان
+  String _getFirstWordOfAddress(String address) {
+    if (address.isEmpty) return '';
+    // استخراج الكلمة الأولى فقط قبل أي مسافة أو علامات ترقيم
+    String cleanAddress = address.trim();
+    int spaceIndex = cleanAddress.indexOf(' ');
+    if (spaceIndex != -1) {
+      return cleanAddress.substring(0, spaceIndex);
+    }
+    return cleanAddress;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -67,7 +79,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       Address selectedAddress = widget.routeArgument!.param as Address;
       _con.deliveryAddress = selectedAddress;
       _con.userDeliverAddress = selectedAddress.address ?? '';
-      addressController.text = _con.userDeliverAddress;
+      addressController.text = _getFirstWordOfAddress(_con.userDeliverAddress);
       print('[DEBUG] تم تعيين العنوان من routeArgument: ${selectedAddress.address}');
     } else {
       print('[DEBUG] لم يتم تمرير عنوان من routeArgument');
@@ -703,7 +715,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                     setState(() {
                       _con.deliveryAddress       = result;
                       _con.userDeliverAddress    = result.address ?? '';
-                      addressController.text     = _con.userDeliverAddress;  // مهم!
+                      addressController.text     = _getFirstWordOfAddress(_con.userDeliverAddress);  // عرض الكلمة الأولى فقط!
                     });
                     print('[DEBUG] تم اختيار العنوان: ${result.address}');
                     print('[DEBUG] تم تعيين العنوان في الكنترولر: ${addressController.text}');
@@ -967,9 +979,8 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       ) {
     return CustomTextField(
       controller: controller,
-      lableText: controller.text.isEmpty
-          ? S.of(context).address
-          : controller.text,
+      lableText: S.of(context).address,
+      hint: controller.text.isEmpty ? S.of(context).address : null,
       // enabled: false, // منع التعديل اليدوي
       prefix: SvgPicture.asset(
         'assets/img/location.svg',

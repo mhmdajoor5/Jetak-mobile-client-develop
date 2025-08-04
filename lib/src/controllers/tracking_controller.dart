@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' hide log;
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -24,7 +25,7 @@ import '../models/payment.dart';
 import '../repository/order/order_track_repo.dart';
 import '../repository/order_repository.dart';
 
-class TrackingController extends ControllerMVC {
+class TrackingController extends ControllerMVC with ChangeNotifier {
   Order order = Order();
   List<OrderStatus> orderStatus = <OrderStatus>[];
   late GlobalKey<ScaffoldState> scaffoldKey;
@@ -85,11 +86,22 @@ class TrackingController extends ControllerMVC {
             
                          if (latitude != null && longitude != null) {
                log("📍 Received driver location: $latitude, $longitude");
+               log("📍 Current driver location: ${driverLocation.latitude}, ${driverLocation.longitude}");
                
-               // التحقق من تغيير الموقع لتجنب التحديثات غير الضرورية
-               bool locationChanged = driverLocation.latitude != latitude || driverLocation.longitude != longitude;
+               // حساب المسافة بين الموقع الحالي والموقع الجديد
+               double distance = _calculateDistance(
+                 driverLocation.latitude, 
+                 driverLocation.longitude, 
+                 latitude, 
+                 longitude
+               );
                
-               if (locationChanged) {
+               log("📏 Distance difference: ${distance.toStringAsFixed(2)} meters");
+               
+               // تحديث الموقع إذا كان الفرق أكبر من 1 متر أو إذا كان الموقع الحالي (0,0)
+               bool shouldUpdate = distance > 1.0 || (driverLocation.latitude == 0.0 && driverLocation.longitude == 0.0);
+               
+               if (shouldUpdate) {
                  log("📍 Driver location changed, updating...");
                  
                  // تحديث موقع السائق
@@ -101,9 +113,9 @@ class TrackingController extends ControllerMVC {
                  // إرسال إشعار لتحديث الخريطة
                  notifyListeners();
                  
-                 log("✅ Driver location updated successfully");
+                 log("✅ Driver location updated successfully to: $driverLocation");
                } else {
-                 log("📍 Driver location unchanged, skipping update");
+                 log("📍 Driver location unchanged (distance < 1m), skipping update");
                }
              } else {
                log("❌ Invalid driver coordinates: latitude=$latitude, longitude=$longitude");
@@ -811,6 +823,27 @@ class TrackingController extends ControllerMVC {
     _reconnectTimer?.cancel();
     _reconnectAttempts = 0;
     setState(() {});
+  }
+
+  // دالة لحساب المسافة بين نقطتين جغرافيتين بالمتر
+  double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    const double earthRadius = 6371000; // نصف قطر الأرض بالمتر
+    
+    double dLat = _toRadians(lat2 - lat1);
+    double dLon = _toRadians(lon2 - lon1);
+    
+    double a = (sin(dLat / 2) * sin(dLat / 2)) +
+        cos(_toRadians(lat1)) * cos(_toRadians(lat2)) * 
+        (sin(dLon / 2) * sin(dLon / 2));
+    
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    
+    return earthRadius * c;
+  }
+  
+  // دالة لتحويل الدرجات إلى راديان
+  double _toRadians(double degrees) {
+    return degrees * (pi / 180);
   }
 
   // دالة لإعادة الاتصال بالتراكنج المباشر

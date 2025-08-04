@@ -24,6 +24,8 @@ class TrackingModernWidget extends StatefulWidget {
 class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
   late TrackingController _con;
   GoogleMapController? _mapController;
+  VoidCallback? _driverLocationListener;
+  Timer? _routeUpdateTimer;
 
   _TrackingModernWidgetState() : super(TrackingController()) {
     _con = controller as TrackingController;
@@ -489,6 +491,109 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     }
   }
 
+  // دالة جديدة لرسم خط بين السائق والعميل
+  void _drawDriverToClientLine(double driverLat, double driverLng, double clientLat, double clientLng) {
+    print("=== Drawing Driver to Client Line ===");
+    print("From Driver: $driverLat, $driverLng");
+    print("To Client: $clientLat, $clientLng");
+    
+    try {
+      // إنشاء خط مباشر من السائق للعميل
+      polylineCoordinates = [
+        LatLng(driverLat, driverLng),
+        LatLng(clientLat, clientLng),
+      ];
+      
+      print("✅ Created driver-to-client line with ${polylineCoordinates.length} points");
+      print("Distance: ${_calculateDistance(driverLat, driverLng, clientLat, clientLng).toStringAsFixed(2)} km");
+      
+      _addDriverClientPolyline();
+      
+    } catch (e) {
+      print("❌ Error drawing driver-to-client line: $e");
+    }
+  }
+
+  // دالة منفصلة لإضافة خط السائق-العميل مع لون مختلف
+  _addDriverClientPolyline() {
+    print("=== Adding Driver-Client Polyline to Map ===");
+    print("Polyline coordinates count: ${polylineCoordinates.length}");
+    
+    try {
+      if (polylineCoordinates.isEmpty) {
+        throw Exception("No coordinates to draw driver-client polyline");
+      }
+
+      // طباعة أول وآخر نقطة في المسار
+      if (polylineCoordinates.isNotEmpty) {
+        print("Driver position: ${polylineCoordinates.first}");
+        print("Client position: ${polylineCoordinates.last}");
+      }
+
+      final id = PolylineId("driver_to_client_${DateTime.now().millisecondsSinceEpoch}");
+      final polyline = Polyline(
+        polylineId: id,
+        color: Color(0xFF00C853), // لون أخضر مشرق للخط من السائق للعميل
+        points: polylineCoordinates,
+        width: 5,
+        geodesic: true,
+        patterns: [PatternItem.dash(20), PatternItem.gap(10)], // خط متقطع مميز
+      );
+
+      print("Created driver-client polyline with ID: $id");
+      print("Polyline points count: ${polyline.points.length}");
+
+      setState(() {
+        polylines = {id: polyline}; // استبدال الخط القديم بالخط الجديد
+        _isLoadingRoute = false;
+        _routeError = null;
+      });
+
+      print("✅ Driver-client polyline added successfully");
+      
+    } catch (e) {
+      print("❌ Error adding driver-client polyline: $e");
+      setState(() {
+        _routeError = "Failed to draw driver route: $e";
+        _isLoadingRoute = false;
+      });
+    }
+  }
+
+  // دالة لتحديد نوع الخط المطلوب رسمه
+  void _updateRouteBasedOnDriverLocation() {
+    print("=== Updating Route Based on Driver Location ===");
+    
+    // التحقق من وجود إحداثيات العميل
+    double? clientLat = _con.order.deliveryAddress.latitude;
+    double? clientLng = _con.order.deliveryAddress.longitude;
+    
+    if (clientLat == null || clientLng == null || clientLat == 0.0 || clientLng == 0.0) {
+      print("❌ Client coordinates not available");
+      return;
+    }
+
+    // التحقق من وجود موقع السائق
+    bool hasDriverLocation = _con.driverLocation.latitude != 0.0 && _con.driverLocation.longitude != 0.0;
+    
+    if (hasDriverLocation) {
+      // رسم خط من السائق للعميل
+      print("✅ Driver location available, drawing driver-to-client route");
+      print("🚗 Driver at: ${_con.driverLocation.latitude}, ${_con.driverLocation.longitude}");
+      print("🏠 Client at: $clientLat, $clientLng");
+      _drawDriverToClientLine(
+        _con.driverLocation.latitude, 
+        _con.driverLocation.longitude, 
+        clientLat, 
+        clientLng
+      );
+    } else {
+      // رسم خط من المطعم للعميل (الطريقة القديمة)
+      print("⚠️ Driver location not available, falling back to restaurant-to-client route");
+      _getPolyline(); // استخدام الطريقة الأصلية
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -500,13 +605,28 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       _con.listenForOrder(orderId: widget.routeArgument!.id!);
       _con.getOrderDetailsTracking(orderId: widget.routeArgument!.id!);
       
-             // إضافة listener لتحديث الخريطة عندما يتغير موقع السائق
-       // _con.addListener(() {
-       //   if (mounted) {
-       //     print("🔄 Driver location updated, rebuilding map...");
-       //     setState(() {});
-       //   }
-       // });
+      // إضافة listener لتحديث الخريطة عندما يتغير موقع السائق
+      _driverLocationListener = () {
+        if (mounted) {
+          print("🔄 Driver location updated, rebuilding map...");
+          print("🚗 New driver position: ${_con.driverLocation}");
+          
+          // إعادة رسم الخط بناءً على موقع السائق الجديد
+          print("🔄 Updating route line due to driver location change");
+          _updateRouteBasedOnDriverLocation();
+          
+          // تحديث موضع الكاميرا للتركيز على السائق إذا كان موجود
+          if (_mapController != null && _con.driverLocation.latitude != 0.0 && _con.driverLocation.longitude != 0.0) {
+            _mapController!.animateCamera(
+              CameraUpdate.newLatLng(_con.driverLocation),
+            );
+            print("📍 Camera animated to driver location");
+          }
+          
+          setState(() {});
+        }
+      };
+      _con.addListener(_driverLocationListener!);
       
       // إضافة retry mechanism لتحميل Order إذا فشل
       Timer.periodic(Duration(seconds: 3), (timer) {
@@ -534,7 +654,27 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         print("Order ID: ${_con.order.id}");
         print("Food Orders Count: ${_con.order.foodOrders.length}");
         _updateControllerCoordinates();
-        _getPolyline();
+        
+        // استخدام الدالة الجديدة التي تحدد نوع الخط بناءً على موقع السائق
+        _updateRouteBasedOnDriverLocation();
+        
+        // تحديث دوري للخط في حالة وصول موقع السائق متأخراً
+        _routeUpdateTimer = Timer.periodic(Duration(seconds: 5), (timer) {
+          if (mounted && timer.tick < 12) { // التحقق لمدة دقيقة واحدة كحد أقصى
+            bool hasDriverLocation = _con.driverLocation.latitude != 0.0 && _con.driverLocation.longitude != 0.0;
+            if (hasDriverLocation) {
+              print("🔄 Periodic check: Driver location found, updating route");
+              _updateRouteBasedOnDriverLocation();
+              timer.cancel(); // إيقاف التحقق الدوري بعد وجود السائق
+              _routeUpdateTimer = null;
+            } else {
+              print("⏰ Periodic check ${timer.tick}: Still waiting for driver location...");
+            }
+          } else {
+            timer.cancel();
+            _routeUpdateTimer = null;
+          }
+        });
       } else {
         print("Widget not mounted, skipping route calculation");
               }
@@ -548,12 +688,19 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       print("=== End Init State ===");
     }
     
-    // @override
-    // void dispose() {
-    //   // إزالة listener عند إزالة الـ widget
-    //   _con.removeListener(() {});
-    //   super.dispose();
-    // }
+    @override
+    void dispose() {
+      // إزالة listener عند إزالة الـ widget
+      if (_driverLocationListener != null) {
+        _con.removeListener(_driverLocationListener!);
+      }
+      
+      // إيقاف timer التحديث الدوري للخط
+      _routeUpdateTimer?.cancel();
+      
+      _con.dispose(); // تنظيف موارد الكنترولر
+      super.dispose();
+    }
     
 
 
@@ -797,7 +944,11 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     
     // Add driver marker if coordinates are available (only once)
     if (_con.driverLocation.latitude != 0.0 && _con.driverLocation.longitude != 0.0) {
-      print("Adding driver marker at: ${_con.driverLocation.latitude}, ${_con.driverLocation.longitude}");
+      print("✅ Adding driver marker at: ${_con.driverLocation.latitude}, ${_con.driverLocation.longitude}");
+      print("🚗 Driver marker details:");
+      print("   - Position: ${_con.driverLocation}");
+      print("   - Motorcycle icon loaded: ${motorcycleIcon != null}");
+      print("   - Order ID: ${_con.order.id}");
       
       // استخدام marker ID ثابت للسائق لضمان عدم التكرار
       markers.add(
@@ -805,14 +956,15 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
           markerId: MarkerId('driver_location'), // ID ثابت للسائق
           position: _con.driverLocation,
           infoWindow: InfoWindow(
-            title: '🛵 Driver Location (Motorcycle Icon)',
+            title: '🛵 Driver Location (Live)',
             snippet: 'Order ID: ${_con.order.id}\nLat: ${_con.driverLocation.latitude.toStringAsFixed(6)}\nLng: ${_con.driverLocation.longitude.toStringAsFixed(6)}\n🔄 Live tracking active',
           ),
-          icon: motorcycleIcon ?? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed), // صورة الدراجة للسائق
+          icon: motorcycleIcon ?? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen), // أخضر للسائق
         ),
       );
+      print("✅ Driver marker added successfully to markers set");
     } else {
-      print("❌ Driver coordinates not available for marker");
+      print("❌ Driver coordinates not available for marker: lat=${_con.driverLocation.latitude}, lng=${_con.driverLocation.longitude}");
     }
     
     print("Total markers created: ${markers.length}");
@@ -831,8 +983,31 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       double avgLat = (restaurantLat! + clientLat! + _con.driverLocation.latitude) / 3;
       double avgLng = (restaurantLng! + clientLng! + _con.driverLocation.longitude) / 3;
       cameraTarget = LatLng(avgLat, avgLng);
-      zoom = 10; // zoom out to show all points
+      zoom = 12; // zoom in a bit more to show all points clearly
       print("✅ Camera centered between restaurant, client, and driver");
+      print("📍 Camera target: $cameraTarget, zoom: $zoom");
+    } else if (hasDriverCoords && hasClientCoords) {
+      // Driver and client available - center between them
+      double avgLat = (clientLat! + _con.driverLocation.latitude) / 2;
+      double avgLng = (clientLng! + _con.driverLocation.longitude) / 2;
+      cameraTarget = LatLng(avgLat, avgLng);
+      zoom = 13;
+      print("✅ Camera centered between driver and client");
+      print("📍 Camera target: $cameraTarget, zoom: $zoom");
+    } else if (hasDriverCoords && hasRestaurantCoords) {
+      // Driver and restaurant available - center between them
+      double avgLat = (restaurantLat! + _con.driverLocation.latitude) / 2;
+      double avgLng = (restaurantLng! + _con.driverLocation.longitude) / 2;
+      cameraTarget = LatLng(avgLat, avgLng);
+      zoom = 13;
+      print("✅ Camera centered between driver and restaurant");
+      print("📍 Camera target: $cameraTarget, zoom: $zoom");
+    } else if (hasDriverCoords) {
+      // Only driver available - center on driver
+      cameraTarget = _con.driverLocation;
+      zoom = 15;
+      print("✅ Camera centered on driver location");
+      print("📍 Camera target: $cameraTarget, zoom: $zoom");
     } else if (hasRestaurantCoords && hasClientCoords) {
       // Both coordinates available - center between them
       cameraTarget = LatLng(
@@ -1025,8 +1200,8 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
               ),
             ),
           
-          // Bottom sheet
-          _buildBottomSheet(),
+          // Draggable Bottom sheet
+          _buildDraggableBottomSheet(),
         ],
       ),
     );
@@ -1166,152 +1341,177 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     );
   }
 
-  Widget _buildBottomSheet() {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 10,
-              spreadRadius: 2,
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Container(
-                width: 40,
-                height: 4,
-                margin: EdgeInsets.only(bottom: 20),
-                decoration: BoxDecoration(
-                  color: Color(0xFFEDEDED),
-                  borderRadius: BorderRadius.circular(999),
-                ),
+  Widget _buildDraggableBottomSheet() {
+    return DraggableScrollableSheet(
+      initialChildSize: 0.35, // البداية عند 35% من الشاشة
+      minChildSize: 0.12, // أقل حجم 12% من الشاشة (عرض معلومات السائق الأساسية فقط)
+      maxChildSize: 0.85, // أكبر حجم 85% من الشاشة (عرض كامل المعلومات)
+      snap: true, // التقاط لمواضع محددة
+      snapSizes: [0.15, 0.35, 0.85], // مواضع التقاط: مطوي، متوسط، مفتوح كاملاً
+      builder: (context, scrollController) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                blurRadius: 15,
+                spreadRadius: 3,
+                offset: Offset(0, -5),
               ),
-            ),
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 24,
-                  backgroundImage: AssetImage(
-                    "assets/images/image-removebg-preview.png",
+            ],
+          ),
+          child: Column(
+            children: [
+              // Handle للسحب - أكثر وضوحاً وسهولة في الاستخدام
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 12),
+                child: Center(
+                  child: Container(
+                    width: 50,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFBBBBBB),
+                      borderRadius: BorderRadius.circular(999),
+                    ),
                   ),
                 ),
-                SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _con.trackingOrderDetails?.data.driver?.name ?? "Driver",
-                      style: TextStyle(
-                        fontFamily: "Nunito",
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                        height: 1.0,
-                        letterSpacing: -0.02,
-                        color: Color(0xFF272727),
-                      ),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      "Courier",
-                      style: TextStyle(
-                        fontFamily: "Nunito",
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12,
-                        height: 1.4,
-                        letterSpacing: -0.02,
-                        color: Color(0xFF9D9FA4),
-                      ),
-                    ),
-                  ],
+              ),
+              // المحتوى القابل للتمرير
+              Expanded(
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 10),
+                      _buildBottomSheetContent(),
+                    ],
+                  ),
                 ),
-                Spacer(),
-                // _buildActionIconPhone(),
-                SizedBox(width: 10),
-                // Stack(
-                //   children: [
-                //     _buildActionIconMessage(),
-                //     Positioned(
-                //       right: 0,
-                //       top: 0,
-                //       child: CircleAvatar(
-                //         radius: 8,
-                //         backgroundColor: Colors.red,
-                //         child: Text(
-                //           "3",
-                //           style: TextStyle(
-                //             color: Colors.white,
-                //             fontSize: 10,
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildBottomSheetContent() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // معلومات السائق
+        Row(
+          children: [
+            CircleAvatar(
+              radius: 24,
+              backgroundImage: AssetImage(
+                "assets/images/image-removebg-preview.png",
+              ),
+            ),
+            SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _con.trackingOrderDetails?.data.driver?.name ?? "Driver",
+                  style: TextStyle(
+                    fontFamily: "Nunito",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    height: 1.0,
+                    letterSpacing: -0.02,
+                    color: Color(0xFF272727),
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  "Courier",
+                  style: TextStyle(
+                    fontFamily: "Nunito",
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12,
+                    height: 1.4,
+                    letterSpacing: -0.02,
+                    color: Color(0xFF9D9FA4),
+                  ),
+                ),
               ],
             ),
-            SizedBox(height: 20),
-            LayoutBuilder(
-              builder: (context, constraints) => Row(
-                children: List.generate(
-                  (constraints.maxWidth / 10).floor(),
-                  (index) {
-                    return Container(
-                      width: 6,
-                      height: 1,
-                      margin: EdgeInsets.symmetric(horizontal: 2),
-                      color: Color(0xFFE7E7E9),
-                    );
-                  },
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: _buildStepProgress(_con.order.orderStatus.id),
-            ),
-            SizedBox(height: 20),
-            _buildInfoTile(
-              "Delivery time",
-              "assets/img/clock.svg",
-              _con.trackingOrderDetails?.data.estimatedTime ?? "Calculating...",
-            ),
-            _buildInfoTile(
-              "Delivery address",
-              "assets/img/locationorder.svg",
-              _con.order.deliveryAddress.address ?? "Address not available",
-            ),
-            _buildInfoTile(
-              "Order ID",
-              "assets/img/bag.svg",
-              "#${_con.order.id}",
-            ),
-            if (_con.driverLocation.latitude != 0.0 && _con.driverLocation.longitude != 0.0)
-              _buildInfoTile(
-                "Driver Location",
-                "assets/img/location.svg",
-                "Lat: ${_con.driverLocation.latitude.toStringAsFixed(6)}\nLng: ${_con.driverLocation.longitude.toStringAsFixed(6)}\n🔄 Live updates active",
-              ),
-            _buildInfoTile(
-              "Live Tracking",
-              "assets/img/notification-bing.svg",
-              _con.driverLocation.latitude != 0.0 && _con.driverLocation.longitude != 0.0 
-                ? "✅ Connected - Driver location updated"
-                : "🔄 Connecting to driver...",
-            ),
+            Spacer(),
+            // يمكن إضافة أزرار الاتصال والرسائل هنا
           ],
         ),
-      ),
+        
+        SizedBox(height: 20),
+        
+        // خط فاصل
+        LayoutBuilder(
+          builder: (context, constraints) => Row(
+            children: List.generate(
+              (constraints.maxWidth / 10).floor(),
+              (index) {
+                return Container(
+                  width: 6,
+                  height: 1,
+                  margin: EdgeInsets.symmetric(horizontal: 2),
+                  color: Color(0xFFE7E7E9),
+                );
+              },
+            ),
+          ),
+        ),
+        
+        SizedBox(height: 20),
+        
+        // خطوات الطلب
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: _buildStepProgress(_con.order.orderStatus.id),
+        ),
+        
+        SizedBox(height: 20),
+        
+        // معلومات التوصيل
+        _buildInfoTile(
+          "Delivery time",
+          "assets/img/clock.svg",
+          _con.trackingOrderDetails?.data.estimatedTime ?? "Calculating...",
+        ),
+        _buildInfoTile(
+          "Delivery address",
+          "assets/img/locationorder.svg",
+          _con.order.deliveryAddress.address ?? "Address not available",
+        ),
+        _buildInfoTile(
+          "Order ID",
+          "assets/img/bag.svg",
+          "#${_con.order.id}",
+        ),
+        
+        // معلومات موقع السائق إذا كان متوفر
+        if (_con.driverLocation.latitude != 0.0 && _con.driverLocation.longitude != 0.0)
+          _buildInfoTile(
+            "Driver Location",
+            "assets/img/location.svg",
+            "Lat: ${_con.driverLocation.latitude.toStringAsFixed(6)}\nLng: ${_con.driverLocation.longitude.toStringAsFixed(6)}\n🔄 Live updates active",
+          ),
+        
+        // حالة التتبع المباشر
+        _buildInfoTile(
+          "Live Tracking",
+          "assets/img/notification-bing.svg",
+          _con.driverLocation.latitude != 0.0 && _con.driverLocation.longitude != 0.0 
+            ? "✅ Connected - Driver location updated"
+            : "🔄 Connecting to driver...",
+        ),
+        
+        SizedBox(height: 100), // مساحة إضافية في الأسفل
+      ],
     );
   }
 
