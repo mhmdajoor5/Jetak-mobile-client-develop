@@ -559,7 +559,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                           additionalInfo.forEach((info) => print('   - $info'));
                         }
 
-                        // try {
+                        try {
                           print("🚀 بدء إرسال العنوان إلى API...");
                           final addedAddress = await userRepo.addAddress(address);
                           print("✅ العنوان أُضيف بنجاح");
@@ -576,13 +576,25 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                               ),
                             ),
                           );
-                        // } catch (e) {
-                        //   print('❌ خطأ أثناء إضافة العنوان: $e');
-                        //   // رسالة الخطأ معطلة لأنها تظهر بلا سبب واضح
-                        //   // ScaffoldMessenger.of(context).showSnackBar(
-                        //   //   SnackBar(content: Text('فشل في إضافة العنوان')),
-                        //   // );
-                        // }
+                        } catch (e) {
+                          print('❌❌❌ ليش ما بيرضى يضيف عنوان - التفاصيل الكاملة:');
+                          print('❌ نوع الخطأ: ${e.runtimeType}');
+                          print('❌ رسالة الخطأ: $e');
+                          print('❌ بيانات العنوان المرسل:');
+                          print('   - العنوان: ${address.address}');
+                          print('   - latitude: ${address.latitude}');
+                          print('   - longitude: ${address.longitude}');
+                          print('   - الوصف: ${address.description}');
+                          print('   - النوع: ${address.type}');
+                          print('   - طريقة الدخول: ${address.entryMethod}');
+                          print('   - التعليمات: ${address.instructions}');
+                          print('   - التسمية: ${address.label}');
+                          print('❌ Stack trace:');
+                          print(StackTrace.current);
+                          print('❌❌❌ انتهت تفاصيل الخطأ');
+                          
+                          // لا نظهر رسالة للمستخدم، فقط نطبع التفاصيل للتشخيص
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,

@@ -18,10 +18,10 @@ String? validateAddress(Address address) {
     return 'العنوان مطلوب';
   }
   
-  // التحقق من طول العنوان
-  if (address.address!.trim().length < 10) {
-    return 'العنوان يجب أن يكون 10 أحرف على الأقل';
-  }
+  // validation طول العنوان محذوف - غير مطلوب
+  // if (address.address!.trim().length < 10) {
+  //   return 'العنوان يجب أن يكون 10 أحرف على الأقل';
+  // }
   
   // التحقق من وجود الإحداثيات
   if (address.latitude == null || address.longitude == null) {
