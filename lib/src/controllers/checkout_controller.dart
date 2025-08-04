@@ -23,7 +23,8 @@ class CheckoutController extends CartController {
   Payment? payment;
   CreditCard creditCard = CreditCard();
   bool loading = true;
-  final LatLng restaurantLocation = LatLng(31.532640, 35.098614);
+  // ❌ الموقع الافتراضي الثابت محذوف - سيتم الحصول على موقع المطعم ديناميكياً
+  LatLng? restaurantLocation; // ← سيتم تحديده من بيانات المطعم الحقيقية
   final LatLng clientLocation = LatLng(31.536833, 35.050363);
 
   CheckoutController() {

@@ -1146,10 +1146,24 @@ class TrackingController extends ControllerMVC with ChangeNotifier {
       print("✅ Order delivery address: ${order.deliveryAddress.address}");
       print("✅ Order coordinates: ${order.deliveryAddress.latitude}, ${order.deliveryAddress.longitude}");
       
-             // إضافة إحداثيات المطعم المؤقتة (من البيانات السابقة)
-       // TODO: الحصول على إحداثيات المطعم من API منفصل
-       restaurantLocation = LatLng(31.811115332221924, 35.23264194715977);
-       print("✅ Set temporary restaurant location: $restaurantLocation");
+                   // ❌ الموقع الافتراضي معطل - يجب استخدام موقع المطعم الحقيقي فقط
+      // استخراج إحداثيات المطعم الحقيقية من بيانات الطلب
+      if (order.foodOrders.isNotEmpty && order.foodOrders[0].food?.restaurant != null) {
+        double? restaurantLat = double.tryParse(order.foodOrders[0].food!.restaurant.latitude ?? '');
+        double? restaurantLng = double.tryParse(order.foodOrders[0].food!.restaurant.longitude ?? '');
+        
+        if (restaurantLat != null && restaurantLng != null && restaurantLat != 0.0 && restaurantLng != 0.0) {
+          restaurantLocation = LatLng(restaurantLat, restaurantLng);
+          print("✅ استخدام موقع المطعم الحقيقي: $restaurantLocation");
+          print("✅ المطعم: ${order.foodOrders[0].food!.restaurant.name}");
+        } else {
+          print("❌ لا توجد إحداثيات صحيحة للمطعم - لن يتم عرض علامة المطعم");
+          restaurantLocation = null; // لا نستخدم موقع افتراضي
+        }
+      } else {
+        print("❌ لا توجد بيانات مطعم في الطلب");
+        restaurantLocation = null;
+      }
       
       setState(() {});
       

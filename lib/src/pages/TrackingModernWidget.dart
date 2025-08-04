@@ -712,9 +712,12 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       
       // استخراج إحداثيات المطعم من الطلب
       if (_con.order.foodOrders.isNotEmpty) {
-        print("Processing restaurant coordinates...");
-        print("  - Raw latitude: ${_con.order.foodOrders[0].food?.restaurant.latitude}");
-        print("  - Raw longitude: ${_con.order.foodOrders[0].food?.restaurant.longitude}");
+        print("🔍🔍🔍 تشخيص مشكلة موقع المطعم:");
+        print("  - اسم المطعم: ${_con.order.foodOrders[0].food?.restaurant.name}");
+        print("  - ID المطعم: ${_con.order.foodOrders[0].food?.restaurant.id}");
+        print("  - Raw latitude: '${_con.order.foodOrders[0].food?.restaurant.latitude}'");
+        print("  - Raw longitude: '${_con.order.foodOrders[0].food?.restaurant.longitude}'");
+        print("  - عنوان المطعم: ${_con.order.foodOrders[0].food?.restaurant.address}");
         
         double? restaurantLat = double.tryParse(
           _con.order.foodOrders[0].food?.restaurant.latitude ?? '',
@@ -729,9 +732,12 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         if (restaurantLat != null && restaurantLng != null && 
             restaurantLat != 0.0 && restaurantLng != 0.0) {
           _con.restaurantLocation = LatLng(restaurantLat, restaurantLng);
-          print("✅ Updated restaurant location: $_con.restaurantLocation");
+          print("✅ استخدام موقع المطعم الحقيقي: $_con.restaurantLocation");
         } else {
-          print("⚠️ Restaurant coordinates invalid or zero");
+          print("❌ إحداثيات المطعم غير صحيحة! لن يتم عرض علامة المطعم");
+          print("❌ هذا يعني أن المطعم لم يحدد موقعه الصحيح في النظام");
+          print("❌ البيانات الواردة: lat='${_con.order.foodOrders[0].food?.restaurant.latitude}' lng='${_con.order.foodOrders[0].food?.restaurant.longitude}'");
+          _con.restaurantLocation = null; // لا نعرض علامة مطعم خاطئة
         }
       } else {
         print("❌ No food orders available for restaurant coordinates");
@@ -904,22 +910,22 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     
     // Add restaurant marker if coordinates are available
     if (hasRestaurantCoords) {
-      print("Adding restaurant marker at: $restaurantLat, $restaurantLng");
+      print("✅ Adding restaurant marker at: $restaurantLat, $restaurantLng");
+      print("✅ Restaurant name: ${_con.order.foodOrders.isNotEmpty ? _con.order.foodOrders[0].food?.restaurant.name : 'Unknown'}");
       markers.add(
         Marker(
           markerId: MarkerId('restaurant'),
           position: LatLng(restaurantLat!, restaurantLng!),
           infoWindow: InfoWindow(
-            title: '🏪 Restaurant (Red Marker)',
-            snippet: _con.order.foodOrders.isNotEmpty 
-              ? _con.order.foodOrders[0].food?.restaurant.name ?? 'Restaurant'
-              : 'Restaurant',
+            title: '🏪 ${_con.order.foodOrders.isNotEmpty ? _con.order.foodOrders[0].food?.restaurant.name ?? 'Restaurant' : 'Restaurant'}',
+            snippet: 'Restaurant location (verified coordinates)',
           ),
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed), // marker أحمر للمطعم
         ),
       );
     } else {
-      print("❌ Restaurant coordinates not available for marker");
+      print("❌ Restaurant marker NOT added - no valid coordinates available");
+      print("❌ This means the restaurant hasn't set its location properly");
     }
 
     // Add client marker if coordinates are available
@@ -1049,10 +1055,11 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
       zoom = 14;
       print("⚠️ Camera centered on driver only");
     } else {
-      // No coordinates available - use default
-      cameraTarget = LatLng(37.785834, -122.406417); // San Francisco default
-      zoom = 10;
-      print("❌ No coordinates available, using default location");
+      // No coordinates available - center on a generic Middle East location
+      cameraTarget = LatLng(31.5, 35.0); // وسط المنطقة المحلية
+      zoom = 8;
+      print("❌ No valid coordinates available - using regional center");
+      print("❌ Neither restaurant nor client coordinates are properly set");
     }
     
     print("Camera target: $cameraTarget, zoom: $zoom");
