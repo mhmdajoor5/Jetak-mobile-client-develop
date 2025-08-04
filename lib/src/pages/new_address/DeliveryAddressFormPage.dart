@@ -1,6 +1,9 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:ui';
 import 'package:flutter/material.dart';
-// import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../generated/l10n.dart';
 import '../../models/address.dart';
@@ -66,6 +69,52 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
     isDefault = _address.isDefault ?? false;
 
     _fetchCurrentLocation();
+    
+    // Timer احتياطي لإخفاء رسالة التحميل بعد 15 ثانية
+    Timer(Duration(seconds: 15), () {
+      if (!locationLoaded) {
+        setState(() {
+          currentAddress = 'لم يتم تحديد الموقع. يمكنك كتابة العنوان يدوياً.';
+          locationLoaded = true;
+          showOverlay = true;
+        });
+      }
+    });
+  }
+
+  // دالة للحصول على اسم المكان من الإحداثيات
+  Future<String?> getLocationNameFromCoordinates(double lat, double lng) async {
+    try {
+      String languageCode = window.locale.languageCode;
+      
+      final url = Uri.https(
+        'maps.googleapis.com',
+        '/maps/api/geocode/json',
+        {
+          'latlng': '$lat,$lng',
+          'language': languageCode,
+          'key': 'AIzaSyDa5865xd383IlBX694cl6zPeCtzXQ6XPs', // نفس المفتاح من home_controller
+        },
+      );
+
+      print('📡 جاري الحصول على اسم المكان من: $url');
+
+      final response = await http.get(url).timeout(Duration(seconds: 8));
+
+      print('📥 استجابة الخادم: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['results'] != null && data['results'].length > 0) {
+          String fullAddress = data['results'][0]['formatted_address'];
+          print('✅ تم الحصول على اسم المكان: $fullAddress');
+          return fullAddress;
+        }
+      }
+    } catch (e) {
+      print('❌ خطأ في الحصول على اسم المكان: $e');
+    }
+    return null;
   }
 
   Future<void> _fetchCurrentLocation() async {
@@ -93,19 +142,53 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
         }
       }
 
-      final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      // final placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
-      // final place = placemarks.first;
-
-      // setState(() {
-      //   currentAddress = '${place.street}, ${place.locality}, ${place.country}';
-      //   locationLoaded = true;
-      //   showOverlay = true;
-      // });
+      final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+        timeLimit: Duration(seconds: 10),
+      );
+      
+      print('📍 تم الحصول على الإحداثيات: lat=${position.latitude}, lng=${position.longitude}');
+      
+      // تحديث بيانات الموقع في العنوان
+      _address.latitude = position.latitude;
+      _address.longitude = position.longitude;
+      
+      // عرض مؤشر أثناء جلب اسم المكان
+      setState(() {
+        currentAddress = 'جاري تحديد اسم المكان...';
+        locationLoaded = true;
+        showOverlay = true;
+      });
+      
+      // محاولة الحصول على اسم المكان من Google Maps
+      String? locationName = await getLocationNameFromCoordinates(
+        position.latitude, 
+        position.longitude
+      );
+      
+      setState(() {
+        if (locationName != null && locationName.isNotEmpty) {
+          currentAddress = locationName;
+          print('✅ تم عرض اسم المكان: $currentAddress');
+        } else {
+          currentAddress = 'الموقع الحالي (${position.latitude.toStringAsFixed(4)}, ${position.longitude.toStringAsFixed(4)})';
+          print('⚠️ فشل في الحصول على اسم المكان، عرض الإحداثيات');
+        }
+      });
     } catch (e) {
       print('Error fetching location: $e');
+      String errorMessage = 'تعذر تحديد الموقع';
+      
+      if (e.toString().contains('TimeoutException')) {
+        errorMessage = 'انتهت مهلة تحديد الموقع. تأكد من تشغيل GPS.';
+      } else if (e.toString().contains('Location services are disabled')) {
+        errorMessage = 'خدمة الموقع معطلة. يرجى تفعيلها من الإعدادات.';
+      } else if (e.toString().contains('denied')) {
+        errorMessage = 'تم رفض صلاحيات الموقع. يرجى تفعيلها من الإعدادات.';
+      }
+      
       setState(() {
-        currentAddress = 'تعذر تحديد الموقع';
+        currentAddress = errorMessage;
         locationLoaded = true;
         showOverlay = true;
       });
@@ -174,7 +257,15 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                     decoration: InputDecoration(
                       label: Text(S.of(context).description),
                       hintText: 'Home Address',
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 2),
+                      ),
                       errorMaxLines: 2,
                     ),
                     validator: _validateDescription,
@@ -189,7 +280,15 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                     decoration: InputDecoration(
                       label: Text(S.of(context).fullAddress),
                       hintText: 'Street, City, Country',
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 2),
+                      ),
                       errorMaxLines: 2,
                     ),
                     validator: _validateAddress,
@@ -257,7 +356,7 @@ class _DeliveryAddressFormPageState extends State<DeliveryAddressFormPage> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      backgroundColor: Colors.blue,
                       minimumSize: Size(double.infinity, 45),
                     ),
                     child: Text(S.of(context).continueBtn, style: TextStyle(fontSize: 16, color: Colors.white)),
