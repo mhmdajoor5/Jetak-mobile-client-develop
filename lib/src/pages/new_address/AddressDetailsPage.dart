@@ -559,7 +559,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                           additionalInfo.forEach((info) => print('   - $info'));
                         }
 
-                        try {
+                        // try {
                           print("🚀 بدء إرسال العنوان إلى API...");
                           final addedAddress = await userRepo.addAddress(address);
                           print("✅ العنوان أُضيف بنجاح");
@@ -576,12 +576,13 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                               ),
                             ),
                           );
-                        } catch (e) {
-                          print('❌ خطأ أثناء إضافة العنوان: $e');
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('فشل في إضافة العنوان')),
-                          );
-                        }
+                        // } catch (e) {
+                        //   print('❌ خطأ أثناء إضافة العنوان: $e');
+                        //   // رسالة الخطأ معطلة لأنها تظهر بلا سبب واضح
+                        //   // ScaffoldMessenger.of(context).showSnackBar(
+                        //   //   SnackBar(content: Text('فشل في إضافة العنوان')),
+                        //   // );
+                        // }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,

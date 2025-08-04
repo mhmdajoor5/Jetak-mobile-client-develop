@@ -71,9 +71,8 @@ class RouteGenerator {
       case '/RecentOrders':
         return MaterialPageRoute(builder: (_) => RecentOrdersWidget());
       case '/SignUp':
+        return MaterialPageRoute(builder: (_) => SignUpNameScreen());
       case '/MobileVerification':
-      // case '/MobileVerification2':
-      //   return MaterialPageRoute(builder: (_) => SignUpWidget());
       case '/MobileVerification2':
          return MaterialPageRoute(builder: (_) => MobileVerification2());
       case '/SignUpEmailPassword':

@@ -214,9 +214,10 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
           _currentClientLat != null && _currentClientLng != null) {
         print("🔄 Drawing straight line as fallback for ZERO_RESULTS");
         _drawStraightLine(_currentRestaurantLat!, _currentRestaurantLng!, _currentClientLat!, _currentClientLng!);
-        setState(() {
-          _routeError = "No road route found. Showing straight line distance.";
-        });
+        // رسالة الـ straight line معطلة لأنها غير مرغوب فيها
+        // setState(() {
+        //   _routeError = "No road route found. Showing straight line distance.";
+        // });
       } else {
         setState(() {
           _routeError = e.toString();
@@ -1134,7 +1135,7 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
             ),
           
           // Error/Info overlay
-          if (_routeError != null)
+          if (_routeError != null && !_routeError!.contains("straight line"))
             Positioned(
               top: 20,
               left: 20,
