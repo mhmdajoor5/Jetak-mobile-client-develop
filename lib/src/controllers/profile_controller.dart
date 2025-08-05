@@ -20,27 +20,66 @@ class ProfileController extends ControllerMVC {
     setState(() {
       recentOrders.clear();
     });
-    final Stream<Order> stream = await getRecentOrders();
-    stream.listen((Order _order) {
-      print("Order User Name :"+_order.user.firstName.toString());
-      setState(() {
-        recentOrders.add(_order);
+    
+    try {
+      // Try the main method first
+      final Stream<Order> stream = await getRecentOrders();
+      stream.listen((Order _order) {
+        print("Order User Name :"+_order.user.firstName.toString());
+        setState(() {
+          recentOrders.add(_order);
+        });
+      },
+      onError: (error) {
+        print("❌ Error with main method: $error");
+        print("🔄 Trying fallback method...");
+        // Try the fallback method
+        _tryFallbackMethod(message);
+      },
+      onDone: () {
+        print("✅ تم جلب ${recentOrders.length} طلب بنجاح");
+        if (message != null) {
+          ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
+            content: Text(message),
+          ));
+        }
       });
-    },
-    //     onError: (a) {
-    //   print(a);
-    //   ScaffoldMessenger.of(scaffoldKey.currentState!.context).showSnackBar(SnackBar(
-    //     content: Text(S.of(state!.context).verify_your_internet_connection),
-    //   ));
-    // },
-        onDone: () {
-      print("✅ تم جلب ${recentOrders.length} طلب بنجاح");
-      if (message != null) {
+    } catch (e) {
+      print("❌ Main method failed: $e");
+      print("🔄 Trying fallback method...");
+      _tryFallbackMethod(message);
+    }
+  }
+  
+  void _tryFallbackMethod(String? message) async {
+    try {
+      final Stream<Order> stream = await getRecentOrdersSimple();
+      stream.listen((Order _order) {
+        print("Order User Name (fallback): "+_order.user.firstName.toString());
+        setState(() {
+          recentOrders.add(_order);
+        });
+      },
+      onError: (error) {
+        print("❌ Fallback method also failed: $error");
         ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
-          content: Text(message),
+          content: Text(S.of(state!.context).verify_your_internet_connection),
         ));
-      }
-    });
+      },
+      onDone: () {
+        print("✅ تم جلب ${recentOrders.length} طلب بنجاح (fallback)");
+        if (message != null) {
+          ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
+            content: Text(message),
+          ));
+        }
+      });
+    } catch (e) {
+      print("❌ Fallback method failed: $e");
+      ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(SnackBar(
+        content: Text(S.of(state!.context).verify_your_internet_connection),
+      ));
+    }
   }
 
   Future<void> refreshProfile() async {

@@ -98,15 +98,15 @@ Future<Stream<Order>> getRecentOrders() async {
     // Build base endpoint URL
     final String endpointUrl = '${baseUrl}orders';
     
-    // Build query parameters map
+    // Build query parameters map with reduced data to avoid large responses
     final Map<String, String> queryParams = {
       'api_token': user.apiToken!,
-      'with': 'user;foodOrders;foodOrders.food;foodOrders.extras;orderStatus;payment;deliveryAddress',
+      'with': 'user;orderStatus;payment', // Reduced includes to avoid large responses
       'search': 'user.id:${user.id}',
       'searchFields': 'user.id:=',
       'orderBy': 'updated_at',
       'sortedBy': 'desc',
-      'limit': '20',
+      'limit': '10', // Reduced limit to avoid large responses
     };
     
     // Build URI with query parameters
@@ -115,7 +115,6 @@ Future<Stream<Order>> getRecentOrders() async {
     
     print("🌐 Request URL: $url");
     print("📋 Query parameters: $queryParams");
-    print("✅ تم إزالة limit - سيتم جلب جميع الطلبات");
 
     // Create HTTP client with timeout
     final client = http.Client();
@@ -133,7 +132,7 @@ Future<Stream<Order>> getRecentOrders() async {
       
       // Send request with timeout
       final streamedResponse = await client.send(request)
-          .timeout(Duration(seconds: 100));
+          .timeout(Duration(seconds: 30)); // Reduced timeout
 
       print("📊 Response status: ${streamedResponse.statusCode}");
       print("📋 Response headers: ${streamedResponse.headers}");
@@ -154,51 +153,60 @@ Future<Stream<Order>> getRecentOrders() async {
 
       print("✅ Response received successfully");
 
-      // Transform stream with error handling
+      // Transform stream with better error handling
       return streamedResponse.stream
           .transform(utf8.decoder)
           .handleError((error) {
             print("❌ UTF8 decode error: $error");
-            throw Exception('Failed to decode response: $error');
+            // Return empty list instead of throwing
+            return '';
           })
           .transform(json.decoder)
           .handleError((error) {
             print("❌ JSON decode error: $error");
-            throw Exception('Invalid JSON response: $error');
+            // Return empty map instead of throwing
+            return <String, dynamic>{};
           })
           .map((data) {
             print("📦 Raw response data type: ${data.runtimeType}");
-            print("📦 Raw response: $data");
             
             try {
-              return Helper.getData(data as Map<String, dynamic>?);
+              if (data is Map<String, dynamic>) {
+                return Helper.getData(data);
+              } else {
+                print("❌ Unexpected data type: ${data.runtimeType}");
+                return <dynamic>[];
+              }
             } catch (e) {
               print("❌ Helper.getData error: $e");
-              throw Exception('Failed to process response data: $e');
+              return <dynamic>[];
             }
           })
           .expand((data) {
             print("📋 Expanded data type: ${data.runtimeType}");
             if (data is! List) {
               print("❌ Expected List but got: ${data.runtimeType}");
-              throw Exception('Expected list of orders but got: ${data.runtimeType}');
+              return <dynamic>[]; // Return empty list instead of throwing
             }
             print("📋 Orders count: ${data.length}");
             return data;
           })
           .map((orderData) {
-            print("🍽️ Processing order: ${orderData.toString().substring(0, 100)}...");
-            
             try {
+              print("🍽️ Processing order: ${orderData.toString().substring(0, 100)}...");
+              
               final order = Order.fromJSON(orderData);
               print("✅ Order parsed successfully: ${order.id ?? 'unknown'}");
               return order;
             } catch (e) {
               print("❌ Order parsing error: $e");
               print("❌ Problematic data: $orderData");
-              throw Exception('Failed to parse order: $e');
+              // Skip this order instead of throwing
+              return null;
             }
-          });
+          })
+          .where((order) => order != null) // Filter out null orders
+          .cast<Order>(); // Cast to Order type
 
     } finally {
       // Always close the client
@@ -212,91 +220,64 @@ Future<Stream<Order>> getRecentOrders() async {
   }
 }
 
-// Alternative version with better error recovery
-Future<Stream<Order>> getRecentOrdersWithRecovery() async {
+// Simple fallback method for when the main method fails
+Future<Stream<Order>> getRecentOrdersSimple() async {
   try {
-    // Same validation and setup as above...
     User? user = userRepo.currentUser.value;
     if (user == null || user.apiToken == null || user.apiToken!.isEmpty) {
       throw Exception('User not authenticated or missing API token');
     }
 
-    final String apiToken = 'api_token=${user.apiToken}&';
     final String? baseUrl = GlobalConfiguration().getValue('api_base_url');
     if (baseUrl == null || baseUrl.isEmpty) {
       throw Exception('API base URL not configured');
     }
 
-    // Build base endpoint URL
-    final String endpointUrl = '${baseUrl}orders';
+    // Very simple request with minimal data
+    final String url = '${baseUrl}orders?api_token=${user.apiToken}&with=orderStatus&search=user.id:${user.id}&searchFields=user.id:=&orderBy=updated_at&sortedBy=desc&limit=5';
     
-    // Build query parameters map
-    final Map<String, String> queryParams = {
-      'api_token': user.apiToken!,
-      'with': 'user;foodOrders;foodOrders.food;foodOrders.extras;orderStatus;payment;deliveryAddress',
-      'search': 'user.id:${user.id}',
-      'searchFields': 'user.id:=',
-      'orderBy': 'updated_at',
-      'sortedBy': 'desc',
-      // تم إزالة limit لجلب جميع الطلبات
-    };
-    
-    // Build URI with query parameters
-    final Uri uri = Uri.parse(endpointUrl).replace(queryParameters: queryParams);
-    final String url = uri.toString();
-    
-    print("🌐 Request URL (Recovery): $url");
-    print("📋 Query parameters (Recovery): $queryParams");
-    print("✅ تم إزالة limit - سيتم جلب جميع الطلبات");
+    print("🌐 Simple Request URL: $url");
 
-    final client = http.Client();
-    
-    try {
-      final request = http.Request('GET', Uri.parse(url));
-      request.headers.addAll({
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-      });
+      },
+    ).timeout(Duration(seconds: 15));
 
-      final streamedResponse = await client.send(request)
-          .timeout(Duration(seconds: 30));
+    print("📊 Response status: ${response.statusCode}");
 
-      if (streamedResponse.statusCode != 200) {
-        final errorBody = await streamedResponse.stream
-            .transform(utf8.decoder)
-            .join();
-        throw HttpException(
-          'HTTP ${streamedResponse.statusCode}: $errorBody',
-          uri: Uri.parse(url),
-        );
-      }
-
-      // Enhanced stream processing with individual error handling
-      return streamedResponse.stream
-          .transform(utf8.decoder)
-          .transform(json.decoder)
-          .map((data) => Helper.getData(data as Map<String, dynamic>?))
-          .expand((data) => (data as List))
-          .map((orderData) {
-            try {
-              return Order.fromJSON(orderData);
-            } catch (e) {
-              // Log the error but don't stop the stream
-              print("⚠️ Skipping invalid order: $e");
-              return null;
-            }
-          })
-          .where((order) => order != null) // Filter out null orders
-          .cast<Order>(); // Cast to non-nullable Order
-
-    } finally {
-      client.close();
+    if (response.statusCode != 200) {
+      print("❌ Error response: ${response.body}");
+      throw HttpException(
+        'HTTP ${response.statusCode}: ${response.body}',
+        uri: Uri.parse(url),
+      );
     }
 
-  } catch (e, stackTrace) {
-    print("💥 Error in getRecentOrdersWithRecovery: $e");
-    print("📍 Stack trace: $stackTrace");
-    rethrow;
+    // Parse response manually to handle errors gracefully
+    try {
+      final Map<String, dynamic> jsonData = json.decode(response.body);
+      final List<dynamic> ordersData = Helper.getData(jsonData) as List<dynamic>;
+      
+      return Stream.fromIterable(ordersData.map((orderData) {
+        try {
+          return Order.fromJSON(orderData);
+        } catch (e) {
+          print("❌ Failed to parse order: $e");
+          return null;
+        }
+      }).where((order) => order != null).cast<Order>());
+      
+    } catch (e) {
+      print("❌ JSON parsing error: $e");
+      return Stream.empty();
+    }
+
+  } catch (e) {
+    print("💥 Error in getRecentOrdersSimple: $e");
+    return Stream.empty();
   }
 }
 

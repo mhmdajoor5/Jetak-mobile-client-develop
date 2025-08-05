@@ -192,128 +192,6 @@ class TrackingController extends ControllerMVC with ChangeNotifier {
   // دالة للاتصال بـ Pusher للتراكنج المباشر
   void connectToDriverTracking(String orderId) {
     _initPusher(orderId);
-    return;
-    // مؤقتاً معطل - سيتم إعادة تفعيله لاحقاً
-    /*
-    try {
-      print("🚀 بدء الاتصال بـ Pusher للتراكنج المباشر");
-      print("📡 Channel: order-tracking.$orderId");
-      print("🔑 Pusher App ID: $_pusherAppId");
-      print("🔑 Pusher Key: $_pusherKey");
-      print("🌐 Pusher Cluster: $_pusherCluster");
-      
-      // إغلاق الاتصال السابق إذا كان موجود
-      _disconnectPusher();
-      _reconnectTimer?.cancel();
-      
-      // إنشاء اتصال Pusher جديد
-      // _pusherClient = PusherClient(
-      //   _pusherKey,
-      //   PusherOptions(
-      //     cluster: _pusherCluster,
-      //     encrypted: true,
-      //     activityTimeout: 30000, // 30 seconds
-      //     pongTimeout: 6000, // 6 seconds
-      //     maxReconnectionAttempts: 6,
-      //     maxReconnectGapInSeconds: 30,
-      //   ),
-      // );
-      
-      print("✅ تم إنشاء اتصال Pusher");
-      
-      // إضافة timeout للاتصال
-      Timer(Duration(seconds: 15), () {
-        if (!_isPusherConnected) {
-          print("⏰ Pusher connection timeout after 15 seconds");
-          _handleConnectionError('Connection timeout', orderId);
-        }
-      });
-      
-      // الاستماع لأحداث الاتصال
-      // مؤقتاً معطل
-      /*
-      _pusherClient!.onConnectionStateChange((state) {
-        print("🔄 حالة الاتصال بـ Pusher:");
-        print("  - Current State: ${state?.currentState}");
-        print("  - Previous State: ${state?.previousState}");
-        
-        // محاولة الحصول على Socket ID من الـ client مباشرة
-        try {
-          print("  - Socket ID: ${_pusherClient?.getSocketId()}");
-        } catch (e) {
-          print("  - Socket ID: غير متوفر");
-        }
-        
-        if (state?.currentState == 'CONNECTED') {
-          print("✅ تم الاتصال بـ Pusher بنجاح");
-          _isPusherConnected = true;
-          _reconnectAttempts = 0;
-          setState(() {});
-          
-          // الاشتراك في channel
-          _subscribeToDriverTracking(orderId);
-          
-          // إظهار رسالة نجاح الاتصال
-          if (scaffoldKey.currentContext != null) {
-            ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
-              SnackBar(
-                content: Text('Live tracking connected successfully!'),
-                backgroundColor: Colors.green,
-                duration: Duration(seconds: 2),
-              ),
-            );
-          }
-        } else if (state?.currentState == 'CONNECTING') {
-          print("🔄 جاري الاتصال بـ Pusher...");
-          _isPusherConnected = false;
-        } else if (state?.currentState == 'RECONNECTING') {
-          print("🔄 جاري إعادة الاتصال بـ Pusher...");
-          _isPusherConnected = false;
-        } else if (state?.currentState == 'DISCONNECTED') {
-          print("❌ تم قطع الاتصال بـ Pusher");
-          _isPusherConnected = false;
-          setState(() {});
-          
-          // إظهار رسالة انقطاع الاتصال
-          if (scaffoldKey.currentContext != null) {
-            ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
-              SnackBar(
-                content: Text('Live tracking connection lost.'),
-                backgroundColor: Colors.orange,
-                duration: Duration(seconds: 2),
-              ),
-            );
-          }
-        } else if (state?.currentState == 'FAILED') {
-          print("💥 فشل الاتصال بـ Pusher");
-          _isPusherConnected = false;
-          _handleConnectionError('Pusher connection failed', orderId);
-        } else {
-          print("🔄 حالة Pusher غير معروفة: ${state?.currentState}");
-        }
-      });
-      
-      // الاستماع لأحداث الأخطاء
-      _pusherClient!.onConnectionError((error) {
-        print("❌ خطأ في اتصال Pusher:");
-        print("  - Message: ${error?.message}");
-        print("  - Code: ${error?.code}");
-        print("  - Exception: ${error?.exception}");
-        _isPusherConnected = false;
-        _handleConnectionError('Pusher connection error: ${error?.message}', orderId);
-      });
-      
-      // بدء الاتصال
-      print("🚀 Starting Pusher connection...");
-      _pusherClient!.connect();
-      */
-      
-    } catch (e) {
-      print("❌ خطأ في الاتصال بـ Pusher: $e");
-      print("❌ نوع الخطأ: ${e.runtimeType}");
-      print("❌ تفاصيل الخطأ: ${e.toString()}");
-      _handleConnectionError(e.toString(), orderId);
-    }
   }
 
   // دالة للاشتراك في channel التراكنج
@@ -451,9 +329,7 @@ class TrackingController extends ControllerMVC with ChangeNotifier {
   // دالة لإغلاق اتصال Pusher
   void _disconnectPusher() {
     try {
-      _trackingChannel = null;
-      _pusherClient?.disconnect();
-      _pusherClient = null;
+      _pusher.disconnect();
       _isPusherConnected = false;
       print("✅ تم إغلاق اتصال Pusher");
     } catch (e) {
@@ -635,15 +511,8 @@ class TrackingController extends ControllerMVC with ChangeNotifier {
   void checkWebSocketStatus() {
     print("🔍 فحص حالة WebSocket:");
     print("   - متصل: $_isPusherConnected");
-    print("   - القناة موجودة: ${_trackingChannel != null}");
     print("   - عدد محاولات إعادة الاتصال: $_reconnectAttempts");
     print("   - الحد الأقصى للمحاولات: $_maxReconnectAttempts");
-    
-    if (_trackingChannel != null) {
-      print("   - ✅ اتصال Pusher موجود");
-    } else {
-      print("   - ❌ لا يوجد اتصال Pusher");
-    }
     
     if (_isPusherConnected) {
       print("   - ✅ الاتصال نشط");
@@ -1016,44 +885,18 @@ class TrackingController extends ControllerMVC with ChangeNotifier {
       print("   - Cluster: $_pusherCluster");
       
       // إنشاء اتصال Pusher للاختبار
-      final testPusher = PusherClient(
-        _pusherKey,
-        PusherOptions(
-          cluster: _pusherCluster,
-          encrypted: true,
-        ),
-      );
+      final testPusher = PusherChannelsFlutter.getInstance();
       
       print("✅ تم إنشاء اتصال Pusher للاختبار");
       
-      // الاستماع لحالة الاتصال
-      testPusher.onConnectionStateChange((state) {
-        print("🔄 حالة الاتصال: $state");
-        
-        if (state?.currentState == 'CONNECTED') {
-          print("✅ تم الاتصال بـ Pusher بنجاح");
-          
-          // اختبار الاشتراك في channel
-          final testChannel = testPusher.subscribe('order-tracking.$orderId');
-          
-          testChannel.bind('pusher:subscription_succeeded', (event) {
-            print("✅ تم الاشتراك بنجاح في channel: order-tracking.$orderId");
-          });
-          
-          testChannel.bind('pusher:subscription_error', (event) {
-            print("❌ خطأ في الاشتراك: $event");
-          });
-          
-          // إغلاق الاتصال بعد 5 ثوان
-          Timer(Duration(seconds: 5), () {
-            testPusher.disconnect();
-            print("✅ تم إغلاق اتصال الاختبار");
-          });
-        }
-      });
-      
       // بدء الاتصال
       testPusher.connect();
+      
+      // إغلاق الاتصال بعد 5 ثوان
+      Timer(Duration(seconds: 5), () {
+        testPusher.disconnect();
+        print("✅ تم إغلاق اتصال الاختبار");
+      });
       
     } catch (e) {
       print("❌ خطأ في اختبار Pusher: $e");
@@ -1315,32 +1158,35 @@ class TrackingController extends ControllerMVC with ChangeNotifier {
     }
   }
 
-  // دالة لإغلاق جميع الاتصالات عند إغلاق الصفحة
-  void dispose() {
-    print("🧹 تنظيف موارد التراكنج");
-    
-    // إغلاق اتصال Pusher
-    try {
-      _disconnectPusher();
-      print("✅ تم إغلاق اتصال Pusher");
-    } catch (e) {
-      print("❌ خطأ في إغلاق Pusher: $e");
-    }
-    
-    // إلغاء timer إعادة الاتصال
-    try {
-      _reconnectTimer?.cancel();
-      print("✅ تم إلغاء timer إعادة الاتصال");
-    } catch (e) {
-      print("❌ خطأ في إلغاء timer: $e");
-    }
-    
-    // إعادة تعيين الحالة
-    _isPusherConnected = false;
-    _reconnectAttempts = 0;
-    
-    print("✅ تم تنظيف جميع موارد التراكنج");
-    super.dispose();
+  void doCancelOrder() {
+    print("mElkerm Tracking Controller ▶ Starting cancel order");
+    cancelOrder(this.order)
+        .then((value) {
+          setState(() {
+            print("mElkerm Tracking Controller ✅ Order marked as inactive");
+            this.order.active = false;
+          });
+        })
+        .catchError((e) {
+          print("mElkerm Tracking Controller ❌ Error cancelling order: $e");
+          ScaffoldMessenger.of(
+            scaffoldKey.currentContext!,
+          ).showSnackBar(SnackBar(content: Text(e)));
+        })
+        .whenComplete(() {
+          print("mElkerm Tracking Controller ✅ Cancel order flow complete");
+          orderStatus = [];
+          listenForOrderStatus();
+          ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+            SnackBar(
+              content: Text(
+                S
+                    .of(state!.context)
+                    .orderThisorderidHasBeenCanceled(this.order.id),
+              ),
+            ),
+          );
+        });
   }
 
   List<Step> getTrackingSteps(BuildContext context, int currentOrderStatus) {
@@ -1387,55 +1233,6 @@ class TrackingController extends ControllerMVC with ChangeNotifier {
 
     print("mElkerm Tracking Controller ✅ Finished building steps");
     return _orderStatusSteps;
-  }
-
-  Future<void> refreshOrder() async {
-    print("mElkerm Tracking Controller ▶ Refreshing order");
-    order = new Order();
-    listenForOrder(
-      orderId: order.id,
-      message: S.of(state!.context).tracking_refreshed_successfuly,
-    );
-    getOrderDetailsTracking(
-      orderId: order.id,
-      message: S.of(state!.context).tracking_refreshed_successfuly,
-    );
-  }
-
-  void doCancelOrder() {
-    print("mElkerm Tracking Controller ▶ Starting cancel order");
-    cancelOrder(this.order)
-        .then((value) {
-          setState(() {
-            print("mElkerm Tracking Controller ✅ Order marked as inactive");
-            this.order.active = false;
-          });
-        })
-        .catchError((e) {
-          print("mElkerm Tracking Controller ❌ Error cancelling order: $e");
-          ScaffoldMessenger.of(
-            scaffoldKey.currentContext!,
-          ).showSnackBar(SnackBar(content: Text(e)));
-        })
-        .whenComplete(() {
-          print("mElkerm Tracking Controller ✅ Cancel order flow complete");
-          orderStatus = [];
-          listenForOrderStatus();
-          ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
-            SnackBar(
-              content: Text(
-                S
-                    .of(state!.context)
-                    .orderThisorderidHasBeenCanceled(this.order.id),
-              ),
-            ),
-          );
-        });
-  }
-
-  bool canCancelOrder(Order order) {
-    print("mElkerm Tracking Controller ▶ Checking if order can be cancelled");
-    return order.active == true && order.orderStatus.id == 1;
   }
 }
 
