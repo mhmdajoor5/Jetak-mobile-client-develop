@@ -96,6 +96,69 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                           children: List.generate(widget.order.foodOrders.length, (indexFood) {
                             return FoodOrderItemWidget(heroTag: 'mywidget.orders', order: widget.order, foodOrder: widget.order.foodOrders.elementAt(indexFood));
                           }),
+                        )
+                      else
+                        // عرض placeholder عندما لا توجد تفاصيل المنتجات
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[50],
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.grey[200]!),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Icon(
+                                  Icons.fastfood,
+                                  color: Colors.grey[400],
+                                  size: 30,
+                                ),
+                              ),
+                              SizedBox(width: 15),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Food Items',
+                                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      'Order details not available',
+                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                        color: Colors.grey[600],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Helper.getPrice(
+                                    Helper.getFoodTotalPrice(widget.order),
+                                    context,
+                                    style: Theme.of(context).textTheme.titleMedium,
+                                  ),
+                                  Text(
+                                    "x 1",
+                                    style: Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 2, horizontal: 20),

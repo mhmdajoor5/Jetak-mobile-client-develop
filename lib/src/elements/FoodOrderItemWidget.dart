@@ -38,10 +38,47 @@ class FoodOrderItemWidget extends StatelessWidget {
                         width: 60,
                         fit: BoxFit.cover,
                         imageUrl: foodOrder.food!.image!.thumb!,
-                        placeholder: (context, url) => Image.asset('assets/img/loading.gif', fit: BoxFit.cover, height: 60, width: 60),
-                        errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, height: 60, width: 60),
+                        placeholder: (context, url) => Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Icon(
+                            Icons.fastfood,
+                            color: Colors.grey[400],
+                            size: 30,
+                          ),
+                        ),
                       )
-                    : Image.asset('assets/img/logo.png', fit: BoxFit.fill, height: 60, width: 60),
+                    : Container(
+                        height: 60,
+                        width: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Icon(
+                          Icons.fastfood,
+                          color: Colors.grey[400],
+                          size: 30,
+                        ),
+                      ),
               ),
             ),
             SizedBox(width: 15),
@@ -53,13 +90,35 @@ class FoodOrderItemWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(foodOrder.food?.name ?? '', overflow: TextOverflow.ellipsis, maxLines: 2, style: Theme.of(context).textTheme.titleMedium),
-                        Wrap(
-                          children: List.generate(foodOrder.extras.length, (index) {
-                            return Text(foodOrder.extras.elementAt(index).name + ', ', style: Theme.of(context).textTheme.bodySmall);
-                          }),
+                        Text(
+                          foodOrder.food?.name ?? 'Food Item',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                        Text(foodOrder.food?.restaurant.name ?? '', overflow: TextOverflow.ellipsis, maxLines: 2, style: Theme.of(context).textTheme.bodySmall),
+                        if (foodOrder.extras.isNotEmpty)
+                          Wrap(
+                            children: List.generate(foodOrder.extras.length, (index) {
+                              return Text(
+                                foodOrder.extras.elementAt(index).name + (index < foodOrder.extras.length - 1 ? ', ' : ''),
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: Colors.grey[600],
+                                ),
+                              );
+                            }),
+                          ),
+                        if (foodOrder.food?.restaurant.name?.isNotEmpty == true)
+                          Text(
+                            foodOrder.food!.restaurant.name,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -68,8 +127,28 @@ class FoodOrderItemWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      Helper.getPrice(Helper.getOrderPrice(foodOrder), context, style: Theme.of(context).textTheme.titleMedium),
-                      Text(" x " + foodOrder.quantity.toString(), style: Theme.of(context).textTheme.bodySmall),
+                      Helper.getPrice(
+                        Helper.getOrderPrice(foodOrder),
+                        context,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          "x ${foodOrder.quantity}",
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ],

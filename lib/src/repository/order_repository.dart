@@ -17,7 +17,7 @@ Future<Stream<Order>> getOrders() async {
   User _user = userRepo.currentUser.value;
   final String _apiToken = 'api_token=${_user.apiToken}&';
   final String url =
-      '${GlobalConfiguration().getValue('api_base_url')}orders?${_apiToken}with=user;foodOrders;foodOrders.food;foodOrders.extras;orderStatus;payment&search=user.id:${_user.id}&searchFields=user.id:=&orderBy=id&sortedBy=desc';
+      '${GlobalConfiguration().getValue('api_base_url')}orders?${_apiToken}with=user;foodOrders;foodOrders.food;foodOrders.food.media;foodOrders.food.restaurant;foodOrders.extras;orderStatus;payment&search=user.id:${_user.id}&searchFields=user.id:=&orderBy=id&sortedBy=desc';
 
   final client = new http.Client();
   final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
@@ -39,7 +39,7 @@ Future<Stream<Order>> getOrder(orderId) async {
   
   final String _apiToken = 'api_token=${_user.apiToken}&';
   final String url =
-      '${GlobalConfiguration().getValue('api_base_url')}orders/$orderId?${_apiToken}with=driver%3Buser%3BfoodOrders%3BfoodOrders.food%3BfoodOrders.food.restaurant.users%3BfoodOrders.extras%3BorderStatus%3BdeliveryAddress%3Bpayment';
+      '${GlobalConfiguration().getValue('api_base_url')}orders/$orderId?${_apiToken}with=driver%3Buser%3BfoodOrders%3BfoodOrders.food%3BfoodOrders.food.media%3BfoodOrders.food.restaurant%3BfoodOrders.food.restaurant.users%3BfoodOrders.extras%3BorderStatus%3BdeliveryAddress%3Bpayment';
   
   print("🌐 Request URL: $url");
   print("🔧 API Token: ${_apiToken.substring(0, 20)}...");
@@ -130,15 +130,15 @@ Future<Stream<Order>> getRecentOrders() async {
     // Build base endpoint URL
     final String endpointUrl = '${baseUrl}orders';
     
-    // Build query parameters map with reduced data to avoid large responses
+    // Build query parameters map with food details and images
     final Map<String, String> queryParams = {
       'api_token': user.apiToken!,
-      'with': 'user;orderStatus;payment', // Reduced includes to avoid large responses
+      'with': 'user;orderStatus;payment;foodOrders;foodOrders.food;foodOrders.food.media;foodOrders.food.restaurant;foodOrders.extras',
       'search': 'user.id:${user.id}',
       'searchFields': 'user.id:=',
       'orderBy': 'updated_at',
       'sortedBy': 'desc',
-      'limit': '10', // Reduced limit to avoid large responses
+      'limit': '10',
     };
     
     // Build URI with query parameters
