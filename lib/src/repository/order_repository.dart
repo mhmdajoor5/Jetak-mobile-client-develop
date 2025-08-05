@@ -39,9 +39,12 @@ Future<Stream<Order>> getOrder(orderId) async {
   
   final String _apiToken = 'api_token=${_user.apiToken}&';
   final String url =
-      '${GlobalConfiguration().getValue('api_base_url')}orders/$orderId?${_apiToken}with=user;foodOrders;foodOrders.food;foodOrders.extras;orderStatus;deliveryAddress;payment;restaurant';
+      '${GlobalConfiguration().getValue('api_base_url')}orders/$orderId?${_apiToken}with=driver%3Buser%3BfoodOrders%3BfoodOrders.food%3BfoodOrders.food.restaurant.users%3BfoodOrders.extras%3BorderStatus%3BdeliveryAddress%3Bpayment';
   
   print("🌐 Request URL: $url");
+  print("🔧 API Token: ${_apiToken.substring(0, 20)}...");
+  print("🆔 Order ID: $orderId");
+  print("📋 With parameters: user;foodOrders;foodOrders.food;foodOrders.extras;orderStatus;deliveryAddress;payment;restaurant");
   
   try {
     final client = http.Client();
@@ -68,10 +71,39 @@ Future<Stream<Order>> getOrder(orderId) async {
         .transform(json.decoder)
         .map((data) {
           print("🔍 Raw API Response: $data");
+          print("🔍 Raw API Response Type: ${data.runtimeType}");
+          
+          // فحص محتوى الـ response
+          if (data is Map<String, dynamic>) {
+            print("🔍 Response keys: ${data.keys.toList()}");
+            print("🔍 Success field: ${data['success']}");
+            
+            if (data['data'] != null) {
+              var orderData = data['data'];
+              print("🔍 Order data keys: ${orderData.keys.toList()}");
+              print("🔍 Order ID from response: ${orderData['id']}");
+              print("🔍 Restaurant field exists: ${orderData.containsKey('restaurant')}");
+              print("🔍 Restaurant value: ${orderData['restaurant']}");
+              print("🔍 Food orders field exists: ${orderData.containsKey('food_orders')}");
+              print("🔍 Food orders value: ${orderData['food_orders']}");
+              print("🔍 Food orders type: ${orderData['food_orders']?.runtimeType}");
+              if (orderData['food_orders'] is List) {
+                print("🔍 Food orders length: ${(orderData['food_orders'] as List).length}");
+              }
+            }
+          }
+          
           final orderData = Helper.getData(data as Map<String, dynamic>?);
           print("🔍 Helper processed data: $orderData");
           final order = Order.fromJSON(orderData);
-          print("✅ Order created: ID=${order.id}, Restaurant=${order.restaurant}");
+          print("✅ Order created successfully:");
+          print("  - Order ID: ${order.id}");
+          print("  - Restaurant from order.restaurant: ${order.restaurant?.name ?? 'null'}");
+          if (order.restaurant != null) {
+            print("    ├─ Restaurant coordinates: (${order.restaurant!.latitude}, ${order.restaurant!.longitude})");
+            print("    └─ Restaurant address: ${order.restaurant!.address}");
+          }
+          print("  - Restaurant from foodOrders: ${order.foodOrders.isNotEmpty && order.foodOrders[0].food?.restaurant != null ? order.foodOrders[0].food!.restaurant.name : 'null'}");
           return order;
         });
         

@@ -710,21 +710,15 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     try {
       print("=== Updating Controller Coordinates ===");
       
-      // استخراج إحداثيات المطعم من الطلب
-      if (_con.order.foodOrders.isNotEmpty) {
-        print("🔍🔍🔍 تشخيص مشكلة موقع المطعم:");
-        print("  - اسم المطعم: ${_con.order.foodOrders[0].food?.restaurant.name}");
-        print("  - ID المطعم: ${_con.order.foodOrders[0].food?.restaurant.id}");
-        print("  - Raw latitude: '${_con.order.foodOrders[0].food?.restaurant.latitude}'");
-        print("  - Raw longitude: '${_con.order.foodOrders[0].food?.restaurant.longitude}'");
-        print("  - عنوان المطعم: ${_con.order.foodOrders[0].food?.restaurant.address}");
+      // استخراج إحداثيات المطعم من order.restaurant (تم اختيار أفضل مصدر مسبقاً)
+      if (_con.order.restaurant != null) {
+        print("✅ Controller: استخدام order.restaurant (تم اختيار أفضل مصدر مسبقاً)");
+        print("  - Restaurant name: ${_con.order.restaurant!.name}");
+        print("  - Raw latitude: '${_con.order.restaurant!.latitude}'");
+        print("  - Raw longitude: '${_con.order.restaurant!.longitude}'");
         
-        double? restaurantLat = double.tryParse(
-          _con.order.foodOrders[0].food?.restaurant.latitude ?? '',
-        );
-        double? restaurantLng = double.tryParse(
-          _con.order.foodOrders[0].food?.restaurant.longitude ?? '',
-        );
+        double? restaurantLat = double.tryParse(_con.order.restaurant!.latitude);
+        double? restaurantLng = double.tryParse(_con.order.restaurant!.longitude);
         
         print("  - Parsed latitude: $restaurantLat");
         print("  - Parsed longitude: $restaurantLng");
@@ -732,21 +726,14 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
         if (restaurantLat != null && restaurantLng != null && 
             restaurantLat != 0.0 && restaurantLng != 0.0) {
           _con.restaurantLocation = LatLng(restaurantLat, restaurantLng);
-          print("✅ استخدام موقع المطعم الحقيقي: $_con.restaurantLocation");
+          print("✅ Controller: تم تعيين موقع المطعم: $_con.restaurantLocation");
         } else {
-          print("❌ إحداثيات المطعم غير صحيحة! لن يتم عرض علامة المطعم");
-          print("❌ هذا يعني أن المطعم لم يحدد موقعه الصحيح في النظام");
-          print("❌ البيانات الواردة: lat='${_con.order.foodOrders[0].food?.restaurant.latitude}' lng='${_con.order.foodOrders[0].food?.restaurant.longitude}'");
-          _con.restaurantLocation = null; // لا نعرض علامة مطعم خاطئة
+          print("❌ Controller: إحداثيات المطعم غير صحيحة");
+          _con.restaurantLocation = null;
         }
       } else {
-        print("❌ No food orders available for restaurant coordinates");
-        // التحقق من وجود إحداثيات المطعم في الـ controller
-        if (_con.restaurantLocation != null) {
-          print("✅ Restaurant location already available in controller: $_con.restaurantLocation");
-        } else {
-          print("⚠️ No restaurant location in controller either");
-        }
+        print("❌ Controller: order.restaurant is null - لا توجد بيانات مطعم");
+        _con.restaurantLocation = null;
       }
       
       // استخراج إحداثيات العميل من العنوان
@@ -859,15 +846,30 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     double? clientLng;
 
     try {
-      if (_con.order.foodOrders.isNotEmpty) {
-        restaurantLat = double.tryParse(
-          _con.order.foodOrders[0].food?.restaurant.latitude ?? '',
-        );
-        restaurantLng = double.tryParse(
-          _con.order.foodOrders[0].food?.restaurant.longitude ?? '',
-        );
-      } else if (_con.restaurantLocation != null) {
-        // استخدام إحداثيات المطعم من الـ controller
+      // 🎯 استخدام order.restaurant (تم اختيار أفضل مصدر بالفعل في Order model)
+      if (_con.order.restaurant != null) {
+        print("✅ Build: استخدام order.restaurant (تم اختيار أفضل مصدر مسبقاً)");
+        print("  - Restaurant name: ${_con.order.restaurant!.name}");
+        print("  - Raw latitude: '${_con.order.restaurant!.latitude}'");
+        print("  - Raw longitude: '${_con.order.restaurant!.longitude}'");
+        
+        restaurantLat = double.tryParse(_con.order.restaurant!.latitude);
+        restaurantLng = double.tryParse(_con.order.restaurant!.longitude);
+        
+        if (restaurantLat != null && restaurantLng != null && restaurantLat != 0.0 && restaurantLng != 0.0) {
+          print("✅ Build: إحداثيات المطعم صحيحة");
+        } else {
+          print("❌ Build: إحداثيات المطعم غير صحيحة");
+          restaurantLat = null;
+          restaurantLng = null;
+        }
+      } else {
+        print("❌ Build: order.restaurant is null - لا توجد بيانات مطعم");
+      }
+      
+      // 🎮 المصدر الثالث: controller (آخر خيار)
+      if ((restaurantLat == null || restaurantLng == null) && _con.restaurantLocation != null) {
+        print("🎮 Build: استخدام controller coordinates");
         restaurantLat = _con.restaurantLocation!.latitude;
         restaurantLng = _con.restaurantLocation!.longitude;
         print("Using restaurant coordinates from controller: $restaurantLat, $restaurantLng");
@@ -911,13 +913,19 @@ class _TrackingModernWidgetState extends StateMVC<TrackingModernWidget> {
     // Add restaurant marker if coordinates are available
     if (hasRestaurantCoords) {
       print("✅ Adding restaurant marker at: $restaurantLat, $restaurantLng");
-      print("✅ Restaurant name: ${_con.order.foodOrders.isNotEmpty ? _con.order.foodOrders[0].food?.restaurant.name : 'Unknown'}");
+      // تحديد اسم المطعم من order.restaurant
+      String restaurantDisplayName = 'Restaurant';
+      if (_con.order.restaurant != null && _con.order.restaurant!.name.isNotEmpty) {
+        restaurantDisplayName = _con.order.restaurant!.name;
+      }
+      
+      print("✅ Restaurant name: $restaurantDisplayName");
       markers.add(
         Marker(
           markerId: MarkerId('restaurant'),
           position: LatLng(restaurantLat!, restaurantLng!),
           infoWindow: InfoWindow(
-            title: '🏪 ${_con.order.foodOrders.isNotEmpty ? _con.order.foodOrders[0].food?.restaurant.name ?? 'Restaurant' : 'Restaurant'}',
+            title: '🏪 $restaurantDisplayName',
             snippet: 'Restaurant location (verified coordinates)',
           ),
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed), // marker أحمر للمطعم

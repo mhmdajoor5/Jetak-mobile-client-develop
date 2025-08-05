@@ -169,7 +169,7 @@ class TrackingController extends ControllerMVC with ChangeNotifier {
     }
   }
   /// TODO make it dynamic
-  LatLng restaurantLocation = LatLng(0.0, 0.0);
+  LatLng? restaurantLocation;
   LatLng clientLocation = LatLng(0.0, 0.0);
   LatLng driverLocation = LatLng(0.0, 0.0); // إضافة موقع السائق
 
@@ -1067,22 +1067,29 @@ class TrackingController extends ControllerMVC with ChangeNotifier {
   // دالة لتحديث إحداثيات المطعم والمستخدم بناءً على بيانات الطلب
   void _updateOrderCoordinates(Order _order) {
     try {
-      // تحديث إحداثيات المطعم
-      if (_order.foodOrders.isNotEmpty) {
-        double? restaurantLat = double.tryParse(
-          _order.foodOrders[0].food?.restaurant.latitude ?? '',
-        );
-        double? restaurantLng = double.tryParse(
-          _order.foodOrders[0].food?.restaurant.longitude ?? '',
-        );
+      print("=== تحديث إحداثيات المطعم - استخدام أفضل مصدر ===");
+      
+      // استخدام order.restaurant (تم اختيار أفضل مصدر مسبقاً في Order model)
+      if (_order.restaurant != null) {
+        print("✅ Controller: استخدام order.restaurant (تم اختيار أفضل مصدر مسبقاً)");
+        print("  - Restaurant name: ${_order.restaurant!.name}");
+        print("  - Latitude: '${_order.restaurant!.latitude}'");
+        print("  - Longitude: '${_order.restaurant!.longitude}'");
+        
+        double? restaurantLat = double.tryParse(_order.restaurant!.latitude);
+        double? restaurantLng = double.tryParse(_order.restaurant!.longitude);
         
         if (restaurantLat != null && restaurantLng != null && 
             restaurantLat != 0.0 && restaurantLng != 0.0) {
           restaurantLocation = LatLng(restaurantLat, restaurantLng);
-          print("✅ Updated restaurant location: $restaurantLocation");
+          print("✅ Controller: تم تعيين موقع المطعم: $restaurantLocation");
         } else {
-          print("⚠️ Restaurant coordinates not available or invalid");
+          print("❌ Controller: إحداثيات المطعم غير صحيحة: lat=$restaurantLat, lng=$restaurantLng");
+          restaurantLocation = null;
         }
+      } else {
+        print("❌ Controller: order.restaurant is null - لا توجد بيانات مطعم");
+        restaurantLocation = null;
       }
       
       // تحديث إحداثيات العميل

@@ -117,6 +117,75 @@ class Order {
         print('   - phone: ${userData['phone']}');
       }
       
+      // 🏪 تحليل مصادر بيانات المطعم
+      print('🏪 فحص مصادر بيانات المطعم:');
+      print('   - restaurant raw: ${jsonMap?['restaurant']}');
+      print('   - restaurant exists: ${jsonMap?['restaurant'] != null}');
+      
+      // فحص المصدر المباشر
+      Restaurant? restaurantFromDirect = null;
+      if (jsonMap?['restaurant'] != null) {
+        var restaurantData = jsonMap!['restaurant'];
+        print('   🎯 المصدر المباشر (restaurant):');
+        print('     - keys: ${restaurantData.keys}');
+        print('     - latitude: ${restaurantData['latitude']}');
+        print('     - longitude: ${restaurantData['longitude']}');
+        print('     - name: ${restaurantData['name']}');
+        print('     - id: ${restaurantData['id']}');
+        
+        try {
+          restaurantFromDirect = Restaurant.fromJSON(restaurantData);
+          print('     ✅ تم تحليل restaurant مباشر بنجاح');
+          print('     - parsed name: ${restaurantFromDirect.name}');
+          print('     - parsed lat: ${restaurantFromDirect.latitude}');
+          print('     - parsed lng: ${restaurantFromDirect.longitude}');
+        } catch (e) {
+          print('     ❌ خطأ في تحليل restaurant المباشر: $e');
+        }
+      } else {
+        print('   ❌ المصدر المباشر: restaurant data not found');
+      }
+      
+      // فحص المصدر البديل من food_orders
+      Restaurant? restaurantFromFood = null;
+      if (foodOrders.isNotEmpty && foodOrders[0].food?.restaurant != null) {
+        restaurantFromFood = foodOrders[0].food!.restaurant;
+        print('   🔄 المصدر البديل (food_orders[0].food.restaurant):');
+        print('     - name: ${restaurantFromFood.name}');
+        print('     - latitude: ${restaurantFromFood.latitude}');
+        print('     - longitude: ${restaurantFromFood.longitude}');
+        print('     - id: ${restaurantFromFood.id}');
+      } else {
+        print('   ❌ المصدر البديل: لا توجد بيانات مطعم في food_orders');
+      }
+      
+      // اختيار أفضل مصدر للمطعم
+      Restaurant? finalRestaurant = null;
+      if (restaurantFromDirect != null && 
+          restaurantFromDirect.latitude != '0' && 
+          restaurantFromDirect.longitude != '0' &&
+          restaurantFromDirect.latitude.isNotEmpty && 
+          restaurantFromDirect.longitude.isNotEmpty) {
+        finalRestaurant = restaurantFromDirect;
+        print('   ✅ استخدام المصدر المباشر للمطعم');
+      } else if (restaurantFromFood != null && 
+                 restaurantFromFood.latitude != '0' && 
+                 restaurantFromFood.longitude != '0' &&
+                 restaurantFromFood.latitude.isNotEmpty && 
+                 restaurantFromFood.longitude.isNotEmpty) {
+        finalRestaurant = restaurantFromFood;
+        print('   ✅ استخدام المصدر البديل للمطعم');
+      } else {
+        print('   ❌ لا توجد بيانات مطعم صحيحة في أي مصدر');
+      }
+      
+      if (finalRestaurant != null) {
+        print('   🎯 المطعم النهائي المختار:');
+        print('     - name: ${finalRestaurant.name}');
+        print('     - latitude: ${finalRestaurant.latitude}');
+        print('     - longitude: ${finalRestaurant.longitude}');
+      }
+      
       return Order(
         id: jsonMap?['id']?.toString() ?? '',
         tax: (jsonMap?['tax'] as num?)?.toDouble() ?? 0.0,
@@ -128,7 +197,7 @@ class Order {
         user: jsonMap?['user'] != null ? User.fromJSON(jsonMap!['user']) : User.fromJSON({}),
         deliveryAddress: jsonMap?['delivery_address'] != null ? Address.fromJSON(jsonMap!['delivery_address']) : Address.fromJSON({}),
         payment: jsonMap?['payment'] != null ? Payment.fromJSON(jsonMap!['payment']) : Payment.fromJSON({}),
-        restaurant: jsonMap?['restaurant'] != null ? Restaurant.fromJSON(jsonMap!['restaurant']) : null,
+        restaurant: finalRestaurant, // استخدام أفضل مصدر للمطعم
         foodOrders: foodOrders,
       );
     } catch (e) {
