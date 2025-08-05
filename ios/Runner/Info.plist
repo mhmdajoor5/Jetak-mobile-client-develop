@@ -89,11 +89,11 @@
 		<key>NSContactsUsageDescription</key>
 		<string>Contacts access not used but required by permissions API.</string>
 		<key>NSLocationAlwaysUsageDescription</key>
-		<string>LocationAlways access not used but required by permissions API.</string>
+		<string>This app does not require background location access. Location is only used when the app is active to show your current location for address selection and delivery tracking.</string>
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-		<string>LocationAlwaysAndWhenInUse access is used to update delivery boy location while delivering the order</string>
+		<string>This app uses location access to track delivery drivers in real-time, show your current location for address selection, and provide accurate delivery estimates. For example, when you place an order, we use your location to find nearby restaurants and calculate delivery times.</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>LocationWhenInUse access not used but required by permissions API.</string>
+		<string>This app uses location access to show your current location for address selection, find nearby restaurants, and provide accurate delivery estimates. For example, when you place an order, we use your location to calculate delivery times and show relevant restaurants.</string>
 		<key>NSMotionUsageDescription</key>
 		<string>Motion access not used but required by permissions API.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
