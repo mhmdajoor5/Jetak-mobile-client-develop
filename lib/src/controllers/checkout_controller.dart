@@ -148,8 +148,8 @@ class CheckoutController extends CartController {
     
     // تحديد نوع الطلب بناءً على طريقة الدفع
     String orderType = 'delivery'; // القيمة الافتراضية
-    if (payment?.method == 'Pay on Pickup' || 
-        payment?.method == 'Cash on Pickup') {
+    if (payment?.method == 'Pay on Pickup') {
+      // Cash on Pickup disabled - only Pay on Pickup allowed
       orderType = 'pickup';
     }
     

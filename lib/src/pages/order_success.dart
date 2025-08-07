@@ -35,16 +35,14 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
 
   // دالة للتحقق من أن الطلب للاستلام (pickup)
   bool _isPickupOrder() {
-    // التحقق من طريقة الدفع
-    if (_con.payment?.method == 'Pay on Pickup' || 
-        _con.payment?.method == 'Cash on Pickup') {
+    // التحقق من طريقة الدفع - Cash on Pickup disabled
+    if (_con.payment?.method == 'Pay on Pickup') {
       return true;
     }
     
-    // التحقق من نوع الطلب من routeArgument
+    // التحقق من نوع الطلب من routeArgument - Cash on Pickup disabled
     String? orderType = widget.routeArgument?.param;
     if (orderType == 'Pay on Pickup' || 
-        orderType == 'Cash on Pickup' ||
         orderType == 'iCredit Pickup') {
       return true;
     }

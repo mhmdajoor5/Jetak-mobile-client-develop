@@ -175,9 +175,11 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       Payment payment = Payment();
       if (selectedPaymentMethod == 'credit') {
         payment.method = selectedTap == 1 ? 'iCredit Delivery' : 'iCredit Pickup';
-      } else if (selectedPaymentMethod == 'cash') {
-        payment.method = selectedTap == 1 ? 'Cash on Delivery' : 'Cash on Pickup';
-      }
+      } 
+      // Cash payment disabled
+      // else if (selectedPaymentMethod == 'cash') {
+      //   payment.method = selectedTap == 1 ? 'Cash on Delivery' : 'Cash on Pickup';
+      // }
       order.payment = payment;
 
       print('[DEBUG] بيانات الطلب:');
@@ -579,58 +581,11 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         ));
       }
     }
-    else if (selectedPaymentMethod == 'cash') {
-      print('[DEBUG] ✅ تم اختيار الدفع نقداً');
-
-      // تحديد نوع الطلب للدفع النقدي
-      String orderType = selectedTap == 1 ? 'delivery' : 'pickup';
-      print('[DEBUG] Order type for cash payment: $orderType');
-
-      // إرسال الطلب إلى API مع orderType الصحيح
-      try {
-        print('[DEBUG] بدء إنشاء عملية البيع للدفع النقدي');
-        ICreditCreateSaleResponse saleResponse = await iCreditCreateSale(
-          fromList(_con.carts),
-          orderType,
-        );
-        print('[DEBUG] رد iCreditCreateSale للدفع النقدي:');
-        print('Status: ${saleResponse.status}');
-        print('SaleToken: ${saleResponse.saleToken}');
-        print('TotalAmount: ${saleResponse.totalAmount}');
-
-        if (saleResponse.status == 0) {
-          print('[DEBUG] ✅ تم إنشاء الطلب بنجاح للدفع النقدي');
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(S.of(context).payment_will_be_cash_on_delivery),
-            backgroundColor: Colors.green,
-          ));
-
-          // الانتقال لصفحة النجاح مع نوع الطلب الصحيح
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => OrderSuccessWidget(
-                routeArgument: RouteArgument(
-                  param: selectedTap == 1 ? 'Cash on Delivery' : 'Cash on Pickup'
-                ),
-              ),
-            ),
-          );
-        } else {
-          print('[DEBUG] ❌ فشل في إنشاء الطلب للدفع النقدي');
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("❌ فشل في إنشاء الطلب. حاول مرة أخرى"),
-            backgroundColor: Colors.red,
-          ));
-        }
-      } catch (e) {
-        print('[DEBUG] ❌ خطأ في إنشاء الطلب للدفع النقدي: $e');
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("❌ حدث خطأ في إنشاء الطلب"),
-          backgroundColor: Colors.red,
-        ));
-      }
-    }
+    // Cash payment disabled - no longer supported
+    // else if (selectedPaymentMethod == 'cash') {
+    //   print('[DEBUG] ✅ تم اختيار الدفع نقداً');
+    //   // Cash payment logic removed
+    // }
     else {
       print('[DEBUG] ❌ لم يتم اختيار طريقة دفع');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -914,17 +869,18 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                       ),
                   ],
                 ),
-              const SizedBox(height: 8),
-              PaymentMethodCard(
-                title: S.of(context).cash,
-                image: 'assets/img/empty-wallet.svg',
-                isSelected: selectedPaymentMethod.contains('cash'),
-                onTap: () => setState(() {
-                      selectedPaymentMethod = 'cash';
-                      selectedCardIndex = -1;
-                      showCards = false;
-                    }),
-              ),
+              // Cash payment option disabled
+              // const SizedBox(height: 8),
+              // PaymentMethodCard(
+              //   title: S.of(context).cash,
+              //   image: 'assets/img/empty-wallet.svg',
+              //   isSelected: selectedPaymentMethod.contains('cash'),
+              //   onTap: () => setState(() {
+              //         selectedPaymentMethod = 'cash';
+              //         selectedCardIndex = -1;
+              //         showCards = false;
+              //       }),
+              // ),
               const SizedBox(height: 16),
               _buildPromoCodeField(TextEditingController()),
               const SizedBox(height: 24),
