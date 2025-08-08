@@ -21,7 +21,7 @@ class MobileVerificationBottomSheetWidget extends StatefulWidget {
 }
 
 class _MobileVerificationBottomSheetWidgetState extends State<MobileVerificationBottomSheetWidget> {
-  final bool skipOTP = true; // ✅ تجاوز التحقق دائماً
+  final bool skipOTP = false; // ❌ تعطيل تجاوز التحقق للاختبار
 
   bool isLoading = false;
   String smsSent = '';
@@ -45,11 +45,28 @@ class _MobileVerificationBottomSheetWidgetState extends State<MobileVerification
   }
 
   Future<void> verifyPhone() async {
+    print('📱 === بدء عملية التحقق من الهاتف ===');
+    print('📱 رقم الهاتف: ${currentUser.value.phone}');
+    print('📱 API Token: ${currentUser.value.apiToken}');
+    print('📱 skipOTP: $skipOTP');
+    
     currentUser.value.verificationId = '';
     smsSent = '';
     if (!skipOTP) {
-      await sendOTP(currentUser.value.phone ?? '');
+      try {
+        print('📤 إرسال OTP...');
+        await sendOTP(currentUser.value.phone ?? '');
+        print('✅ تم إرسال OTP بنجاح');
+      } catch (e) {
+        print('❌ خطأ في إرسال OTP: $e');
+        setState(() {
+          errorMessage = 'خطأ في إرسال رمز التحقق: $e';
+        });
+      }
+    } else {
+      print('⏭️ تم تجاوز إرسال OTP');
     }
+    print('📱 === انتهت عملية التحقق من الهاتف ===');
   }
 
   @override
@@ -103,6 +120,7 @@ class _MobileVerificationBottomSheetWidgetState extends State<MobileVerification
                       debugPrint("Completed");
                     },
                     onChanged: (value) {
+                      print('📝 تغيير الكود: "$value"');
                       debugPrint(value);
                       setState(() {
                         smsSent = value;
@@ -120,32 +138,115 @@ class _MobileVerificationBottomSheetWidgetState extends State<MobileVerification
                     ? const CupertinoActivityIndicator()
                     : BlockButtonWidget(
                   onPressed: () async {
+                    print('🔘 === بدء عملية التحقق من الكود ===');
+                    print('🔘 الكود المدخل: "$smsSent"');
+                    print('🔘 طول الكود: ${smsSent.length}');
+                    print('🔘 skipOTP: $skipOTP');
+                    print('🔘 isLoading: $isLoading');
+                    
                     setState(() => isLoading = true);
 
                     if (skipOTP) {
+                      print('⏭️ === تجاوز OTP مفعل ===');
                       currentUser.value.updatePhoneVerification(true); // ✅ التفعيل اليدوي
+                      
+                      // ✅ إضافة منطق ذكي للتوجيه
+                      print('🏠 بدء التوجيه بعد تجاوز OTP');
+                      
+                      // استدعاء callback إذا كان موجوداً
                       widget.valueChangedCallback?.call(true);
+                      print('✅ تم استدعاء callback');
+                      
+                      // إغلاق الـ bottom sheet إذا كان مفتوحاً
+                      if (Navigator.canPop(context)) {
+                        print('📱 إغلاق الـ bottom sheet');
+                        Navigator.pop(context);
+                      } else {
+                        print('⚠️ لا يمكن إغلاق الـ bottom sheet');
+                      }
+                      
+                      // التوجيه إلى الصفحة الرئيسية بعد تأخير قصير
+                      print('⏳ انتظار 500ms قبل التوجيه...');
+                      Future.delayed(const Duration(milliseconds: 500), () {
+                        if (mounted) {
+                          print('🏠 التوجيه إلى الصفحة الرئيسية');
+                          Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
+                        } else {
+                          print('❌ Widget غير mounted');
+                        }
+                      });
+                      
                       setState(() => isLoading = false);
+                      print('⏭️ === انتهت عملية تجاوز OTP ===');
                       return;
                     }
 
                     try {
+                      print('🔐 === بدء التحقق من الكود ===');
+                      print('🔐 الكود: "$smsSent"');
                       bool isVerified = await verifyOTP(smsSent);
+                      print('🔐 نتيجة التحقق: $isVerified');
+                      
                       if (!isVerified) {
+                        print('❌ الكود غير صحيح');
                         ScaffoldMessenger.of(widget.scaffoldKey?.currentContext ?? context).showSnackBar(
-                          const SnackBar(behavior: SnackBarBehavior.floating, content: Text("Code doesn't match")),
+                          const SnackBar(
+                            behavior: SnackBarBehavior.floating, 
+                            content: Text("الكود غير صحيح، يرجى المحاولة مرة أخرى"),
+                            backgroundColor: Colors.red,
+                          ),
                         );
                       } else {
+                        print('✅ الكود صحيح - بدء التوجيه');
+                        ScaffoldMessenger.of(widget.scaffoldKey?.currentContext ?? context).showSnackBar(
+                          const SnackBar(
+                            behavior: SnackBarBehavior.floating, 
+                            content: Text("تم التحقق من الهاتف بنجاح"),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                        
+                        // ✅ إضافة منطق ذكي للتوجيه
+                        print('🏠 بدء التوجيه بعد التحقق من OTP');
+                        
+                        // استدعاء callback إذا كان موجوداً
                         widget.valueChangedCallback?.call(true);
+                        print('✅ تم استدعاء callback');
+                        
+                        // إغلاق الـ bottom sheet إذا كان مفتوحاً
+                        if (Navigator.canPop(context)) {
+                          print('📱 إغلاق الـ bottom sheet');
+                          Navigator.pop(context);
+                        } else {
+                          print('⚠️ لا يمكن إغلاق الـ bottom sheet');
+                        }
+                        
+                        // التوجيه إلى الصفحة الرئيسية بعد تأخير قصير
+                        print('⏳ انتظار 500ms قبل التوجيه...');
+                        Future.delayed(const Duration(milliseconds: 500), () {
+                          if (mounted) {
+                            print('🏠 التوجيه إلى الصفحة الرئيسية');
+                            Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
+                          } else {
+                            print('❌ Widget غير mounted');
+                          }
+                        });
                       }
                     } catch (e) {
-                      print(e);
+                      print('❌ === خطأ في التحقق ===');
+                      print('❌ نوع الخطأ: ${e.runtimeType}');
+                      print('❌ رسالة الخطأ: $e');
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(behavior: SnackBarBehavior.fixed, content: Text("Code doesn't match")),
+                        SnackBar(
+                          behavior: SnackBarBehavior.fixed, 
+                          content: Text("خطأ في التحقق: $e"),
+                          backgroundColor: Colors.red,
+                        ),
                       );
                     }
 
                     setState(() => isLoading = false);
+                    print('🔘 === انتهت عملية التحقق من الكود ===');
                   },
                   color: Theme.of(context).colorScheme.secondary,
                   text: Text(

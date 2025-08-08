@@ -52,16 +52,13 @@ class _SplashScreenState extends StateMVC<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _con.scaffoldKey,
-      body: Stack(
-        children: [
-          // Background animated GIF
-          SizedBox.expand(
-            child: Image.asset(
-              'assets/img/new.gif',
-              fit: BoxFit.cover,
-            ),
-          ),
-        ],
+      body: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Image.asset(
+          'assets/img/new.gif',
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

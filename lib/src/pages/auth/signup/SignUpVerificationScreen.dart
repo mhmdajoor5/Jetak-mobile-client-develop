@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:firebase_auth/firebase_auth.dart' as userModel;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -40,32 +39,49 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
   }
 
   Future<void> sendOtp() async {
+    print('📤 === بدء إرسال OTP في SignUpVerificationScreen ===');
+    print('📱 رقم الهاتف: ${widget.phoneNumber}');
+    print('🔑 API Token: ${userRepo.currentUser.value.apiToken}');
+    
     try {
       final response = await http.post(
-        Uri.parse('https://carrytechnologies.co/api/send-otp'),
+        Uri.parse('https://carrytechnologies.co/api/send-sms'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          "api_token": "fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv",
+          "api_token": userRepo.currentUser.value.apiToken,
           "phone": widget.phoneNumber,
         }),
       );
 
+      print('📥 استجابة إرسال OTP: ${response.statusCode}');
+      print('📥 محتوى الاستجابة: ${response.body}');
+
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        if (data['success'] == true || data['status'] == 'success') {
+        try {
+          final data = jsonDecode(response.body);
+          print('✅ تم إرسال OTP بنجاح');
+          print('📋 بيانات الاستجابة: $data');
+          
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(S.of(context).otp_sent_success)),
+            SnackBar(content: Text('تم إرسال رمز التحقق بنجاح')),
           );
-        } else {
+        } catch (e) {
+          print('❌ خطأ في تحليل JSON: $e');
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(S.of(context).otp_sent_error)),
+            SnackBar(content: Text('خطأ في استجابة الخادم')),
           );
         }
+      } else {
+        print('❌ فشل إرسال OTP: ${response.statusCode}');
+        print('📥 محتوى الخطأ: ${response.body}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('فشل في إرسال رمز التحقق')),
+        );
       }
     } catch (e) {
-      print('Send OTP Error: $e');
+      print('❌ خطأ في إرسال OTP: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(S.of(context).otp_send_error)),
+        SnackBar(content: Text('خطأ في الاتصال')),
       );
     }
   }
@@ -89,6 +105,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
   }
 
   void resendCode() {
+    print('🔄 إعادة إرسال الكود');
     sendOtp();
     startResendCooldown();
   }
@@ -96,6 +113,11 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
   void verifyOTP() async {
     String smsCode = controllers.map((c) => c.text).join();
     if (smsCode.length < codeLength) return;
+
+    print('🔐 === بدء التحقق من OTP في SignUpVerificationScreen ===');
+    print('🔐 الكود المدخل: "$smsCode"');
+    print('🔐 طول الكود: ${smsCode.length}');
+    print('🔑 API Token: ${userRepo.currentUser.value.apiToken}');
 
     setState(() {
       isVerifying = true;
@@ -107,46 +129,111 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
         Uri.parse('https://carrytechnologies.co/api/submit-otp'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          "api_token": "fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv",
+          "api_token": userRepo.currentUser.value.apiToken,
           "code": smsCode,
         }),
       );
 
+      print('📥 استجابة التحقق: ${response.statusCode}');
+      print('📥 محتوى الاستجابة: ${response.body}');
+
       setState(() => isVerifying = false);
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        if (data['success'] == true || data['status'] == 'success') {
-          print('OTP verified successfully');
-          userRepo.currentUser.value.updatePhoneVerification(true);
+        try {
+          final data = jsonDecode(response.body);
+          print('✅ تم التحقق من OTP بنجاح');
+          print('📋 بيانات الاستجابة: $data');
+          
+          // تحسين منطق التحقق من النجاح
+          bool isSuccess = false;
+          if (data['success'] == true || 
+              data['status'] == 'success' || 
+              data['status'] == 'available' ||
+              data['data'] != null) {
+            isSuccess = true;
+          }
+          
+          if (isSuccess) {
+            print('✅ OTP verified successfully');
+            
+            // تحديث بيانات المستخدم
+            if (data['data'] != null) {
+              // userRepo.currentUser.value = userRepo.User.fromJSON(data['data']);
+            }
+            
+            // تحديث حالة التحقق من الهاتف
+            userRepo.currentUser.value.updatePhoneVerification(true);
+            print('📱 تم تحديث حالة التحقق من الهاتف');
 
-          await userRepo.saveCurrentUser(json.encode(userRepo.currentUser.value.toMap()));
+            // حفظ بيانات المستخدم
+            await userRepo.saveCurrentUser(json.encode(userRepo.currentUser.value.toMap()));
+            print('💾 تم حفظ بيانات المستخدم');
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(S.of(context).otp_verification_success)),
-          );
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('تم التحقق من الهاتف بنجاح'),
+                backgroundColor: Colors.green,
+              ),
+            );
 
-          Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
-
-      } else {
+            print('🏠 === بدء التوجيه إلى الصفحة الرئيسية ===');
+            print('🏠 المسار: /Pages');
+            print('🏠 Arguments: 0');
+            
+            // تأخير قصير قبل التوجيه
+            await Future.delayed(const Duration(milliseconds: 500));
+            
+            if (mounted) {
+              Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
+              print('✅ تم التوجيه بنجاح');
+            } else {
+              print('❌ Widget غير mounted');
+            }
+          } else {
+            print('❌ الكود غير صحيح');
+            setState(() {
+              errorMessage = 'الكود غير صحيح';
+            });
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('الكود غير صحيح'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        } catch (e) {
+          print('❌ خطأ في تحليل JSON للتحقق: $e');
           setState(() {
-            errorMessage = S.of(context).otp_verification_invalid;
+            errorMessage = 'خطأ في استجابة الخادم';
           });
         }
       } else {
+        print('❌ فشل التحقق من OTP: ${response.statusCode}');
         setState(() {
-          errorMessage = "❌ ${S.of(context).verification_failed}: ${response.statusCode}";
+          errorMessage = "فشل التحقق: ${response.statusCode}";
         });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("فشل التحقق: ${response.statusCode}"),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     } catch (e) {
+      print('❌ خطأ في التحقق من OTP: $e');
       setState(() {
         isVerifying = false;
-        errorMessage = S.of(context).otp_verification_error;
+        errorMessage = 'خطأ في التحقق';
       });
-      print('OTP Verify Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('خطأ في التحقق'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
-
 
   @override
   void dispose() {
@@ -160,7 +247,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).verification_title),
+        title: Text('رمز التحقق'),
         centerTitle: true,
       ),
       body: Padding(
@@ -169,8 +256,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              S.of(context).codeSent,
-              //S.of(context).verification_instruction(widget.phoneNumber),
+              'لقد أرسلنا لك رمز التحقق',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
             ),
@@ -204,6 +290,8 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
                       ),
                     ),
                     onChanged: (value) {
+                      print('📝 تغيير الكود في الحقل $index: "$value"');
+                      
                       if (value.length > 1) {
                         controllers[index].text = value.substring(0, 1);
                       }
@@ -221,6 +309,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
                       }
 
                       if (controllers.every((c) => c.text.isNotEmpty)) {
+                        print('🔐 جميع الحقول مملوءة - بدء التحقق التلقائي');
                         verifyOTP();
                       }
                     },
@@ -228,14 +317,14 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
                 );
               }),
             ),
-            // if (errorMessage.isNotEmpty)
-            //   Padding(
-            //     padding: const EdgeInsets.only(top: 20),
-            //     child: Text(
-            //       errorMessage,
-            //       style: TextStyle(color: Colors.red.shade700, fontWeight: FontWeight.bold),
-            //     ),
-            //   ),
+            if (errorMessage.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Text(
+                  errorMessage,
+                  style: TextStyle(color: Colors.red.shade700, fontWeight: FontWeight.bold),
+                ),
+              ),
             SizedBox(height: 30),
             SizedBox(
               width: 200,
@@ -253,7 +342,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
                   child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3),
                 )
                     : Text(
-                    S.of(context).verify,
+                    'تحقق',
                   style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -266,7 +355,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
                     : TextButton(
                   onPressed: canResend ? resendCode : null,
                   child: Text(
-                    S.of(context).resend_code,
+                    'إعادة إرسال',
                     style: TextStyle(
                       color: canResend ? Colors.blue.shade700 : Colors.grey,
                       fontWeight: FontWeight.bold,
@@ -275,7 +364,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
                 ),
                 if (!canResend)
                   Text(
-                  S.of(context).resend_available_in(resendCooldown),
+                    'يمكن إعادة الإرسال خلال $resendCooldown ثانية',
                     style: TextStyle(
                       color: Colors.grey.shade600,
                       fontSize: 13,
@@ -289,7 +378,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
                 Navigator.pop(context);
               },
               child: Text(
-                S.of(context).back_to_edit_number,
+                'العودة لتعديل الرقم',
                 style: TextStyle(color: Colors.blue),
               ),
             ),

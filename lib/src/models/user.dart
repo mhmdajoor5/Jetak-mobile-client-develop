@@ -98,5 +98,20 @@ class User {
     if (customFields?.phone != null) {
       customFields!.phone!.value = value ? "1" : "0";
     }
+    
+    // إنشاء verifiedPhone إذا لم يكن موجوداً
+    if (customFields?.verifiedPhone == null) {
+      customFields ??= CustomFields();
+      customFields!.verifiedPhone = CustomFieldValue(
+        value: value ? "1" : "0",
+        view: value ? "مفعل" : "غير مفعل",
+        name: "verifiedPhone"
+      );
+    } else {
+      customFields!.verifiedPhone!.value = value ? "1" : "0";
+      customFields!.verifiedPhone!.view = value ? "مفعل" : "غير مفعل";
+    }
+    
+    print('📱 تم تحديث حالة التحقق من الهاتف: $value');
   }
 }

@@ -75,47 +75,105 @@ Future<userModel.User> sendOTP(String phone) async {
 
   final String url = '${GlobalConfiguration().getValue('api_base_url')}send-sms';
   final client = http.Client();
+  
+  print('📱 بدء إرسال OTP إلى: $phone');
+  print('📤 إرسال طلب إلى: $url');
+  print('🔑 API Token: ${currentUser.value.apiToken}');
+  
+  final requestBody = json.encode({
+    "api_token": currentUser.value.apiToken,
+    "phone": phone,
+  });
+  
+  print('📤 البيانات المرسلة: $requestBody');
+  
   final response = await client.post(
     Uri.parse(url),
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    body: json.encode({
-      "api_token": currentUser.value.apiToken,
-      "phone": phone,
-    }),
+    body: requestBody,
   );
+  
+  print('📥 استجابة الخادم: ${response.statusCode}');
+  print('📥 محتوى الاستجابة: ${response.body}');
+  
   if (response.statusCode == 200) {
+    final responseData = json.decode(response.body);
     setCurrentUser(response.body);
-    currentUser.value =
-        userModel.User.fromJSON(json.decode(response.body)['data']);
+    currentUser.value = userModel.User.fromJSON(responseData['data']);
+    print('✅ تم إرسال OTP بنجاح');
+    return currentUser.value;
   } else {
+    print('❌ فشل إرسال OTP: ${response.body}');
     throw Exception(response.body);
   }
-  return currentUser.value;
 }
 
 Future<bool> verifyOTP(String otp) async {
+  print('🔐 === بدء دالة verifyOTP ===');
+  print('🔐 الكود المرسل: "$otp"');
+  print('🔐 طول الكود: ${otp.length}');
+  
   if (currentUser.value.apiToken == null) {
+    print('❌ API Token غير موجود');
     throw Exception("User not authenticated");
   }
 
+  print('🔑 API Token موجود: ${currentUser.value.apiToken}');
   final String url = '${GlobalConfiguration().getValue('api_base_url')}submit-otp';
+  print('🌐 URL: $url');
   final client = http.Client();
+  
+  print('🔐 بدء التحقق من OTP: $otp');
+  print('📤 إرسال طلب إلى: $url');
+  
+  final requestBody = json.encode({
+    "api_token": currentUser.value.apiToken,
+    "code": otp
+  });
+  print('📤 البيانات المرسلة: $requestBody');
+  
   final response = await client.post(
     Uri.parse(url),
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    body: json.encode({
-      "api_token": currentUser.value.apiToken,
-      "code": otp
-    }),
+    body: requestBody,
   );
+  
+  print('📥 استجابة الخادم: ${response.statusCode}');
+  print('📥 محتوى الاستجابة: ${response.body}');
+  
   if (response.statusCode == 200) {
+    print('✅ استجابة ناجحة من الخادم');
+    final responseData = json.decode(response.body);
+    print('📋 بيانات الاستجابة: $responseData');
+    
     setCurrentUser(response.body);
-    currentUser.value =
-        userModel.User.fromJSON(json.decode(response.body)['data']);
+    currentUser.value = userModel.User.fromJSON(responseData['data']);
+    
+    print('👤 بيانات المستخدم المحدثة:');
+    print('- ID: ${currentUser.value.id}');
+    print('- Name: ${currentUser.value.name}');
+    print('- Phone: ${currentUser.value.phone}');
+    print('- verifiedPhone: ${currentUser.value.verifiedPhone}');
+    
+    // تحديث حالة التحقق من الهاتف
+    if (currentUser.value.customFields?.phone != null) {
+      currentUser.value.customFields!.phone!.value = "1";
+      print('📱 تم تحديث حالة الهاتف إلى: 1');
+    } else {
+      print('⚠️ customFields.phone غير موجود');
+    }
+    
+    print('✅ تم التحقق من OTP بنجاح');
+    print('📱 حالة التحقق من الهاتف: ${currentUser.value.verifiedPhone}');
+    print('🔐 === انتهت دالة verifyOTP بنجاح ===');
+    
+    return true; // ✅ إرجاع true عند النجاح
   } else {
+    print('❌ استجابة فاشلة من الخادم');
+    print('❌ فشل التحقق من OTP: ${response.body}');
+    print('🔐 === انتهت دالة verifyOTP بالفشل ===');
     throw Exception(response.body);
   }
-  return currentUser.value.verifiedPhone ?? false;
 }
 
 Future<userModel.User> register(userModel.User user) async {
