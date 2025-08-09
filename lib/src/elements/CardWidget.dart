@@ -35,6 +35,7 @@ class CardWidget extends StatelessWidget {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min, // إضافة هذا لتقليل المساحة المستخدمة
           children: <Widget>[
             Stack(
               fit: StackFit.loose,
@@ -48,17 +49,17 @@ class CardWidget extends StatelessWidget {
                       topRight: Radius.circular(10),
                     ),
                     child: CachedNetworkImage(
-                      height: 150,
+                      height: 140, // تقليل الارتفاع من 120 إلى 110 لتعويض التقييمات
                       width: double.infinity,
                       fit: BoxFit.cover,
                       imageUrl: restaurant.image.url,
-                      placeholder:
-                          (context, url) => Image.asset(
-                            'assets/img/loading.gif',
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: 150,
-                          ),
+                                                placeholder:
+                              (context, url) => Image.asset(
+                                'assets/img/loading.gif',
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: 110, // تقليل الارتفاع من 120 إلى 110 لتعويض التقييمات
+                              ),
                       errorWidget: (context, url, error) => Image.asset('assets/img/logo.png', fit: BoxFit.fill, ),
                     ),
                   ),
@@ -136,7 +137,7 @@ class CardWidget extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8), // تقليل vertical padding من 10 إلى 8
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -145,6 +146,7 @@ class CardWidget extends StatelessWidget {
                     flex: 3,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min, // إضافة هذا لتقليل المساحة المستخدمة
                       children: <Widget>[
                         Text(
                           restaurant.name,
@@ -158,7 +160,7 @@ class CardWidget extends StatelessWidget {
                             height: 1.3,
                           ),
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(height: 6), // تقليل المسافة من 10 إلى 6
                         Text(
                           Helper.skipHtml(restaurant.description),
                           overflow: TextOverflow.fade,
@@ -172,14 +174,7 @@ class CardWidget extends StatelessWidget {
                           ),
                         ),
 
-                        Visibility(
-                          visible: false,
-                          child: Row(
-                            children: Helper.getStarsList(
-                              double.parse(restaurant.rate),
-                            ),
-                          ),
-                        ),
+
                       ],
                     ),
                   ),
@@ -234,7 +229,7 @@ class CardWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Divider(
-                height: 20,
+                height: 15, // تقليل الارتفاع من 20 إلى 15
                 thickness: 1.5,
                 color: Color(0xFFEDEFF1), // or use Theme.of(context).dividerColor
               ),
@@ -247,19 +242,6 @@ class CardWidget extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.star, color: Colors.orange, size: 16),
-                      SizedBox(width: 4),
-                      Text(
-                        restaurant.rate.toString(),
-                        style: TextStyle(
-                          //fontFamily: 'Nunito',
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          height: 1.6,
-                          color: Color(0xFF9D9FA4),
-                        ),
-                      ),
-                      SizedBox(width: 10),
                       Icon(Icons.access_time, size: 16),
                       SizedBox(width: 4),
                       Text(
@@ -272,12 +254,30 @@ class CardWidget extends StatelessWidget {
                           color: Color(0xFF9D9FA4),
                         ),
                       ),
+                      SizedBox(width: 10),
+                      SizedBox(width: 10),
+                      Row(
+                        children: [
+                          Icon(Icons.star, color: Colors.orange, size: 16),
+                          SizedBox(width: 4),
+                          Text(
+                            restaurant.rate.toString(),
+                            style: TextStyle(
+                              //fontFamily: 'Nunito',
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              height: 1.6,
+                              color: Color(0xFF9D9FA4),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 5), // تقليل المسافة من 8 إلى 5
           ],
         ),
       ),

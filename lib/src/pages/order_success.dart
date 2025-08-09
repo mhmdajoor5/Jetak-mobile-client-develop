@@ -259,23 +259,24 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                     ],
                                   ),
                               SizedBox(height: 3),
-                              Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Text(
-                                      "${S.of(context).tax} (${_con.carts[0].food?.restaurant.defaultTax}%)",
-                                      style:
-                                          Theme.of(context).textTheme.bodyLarge,
-                                    ),
-                                  ),
-                                  Helper.getPrice(
-                                    _con.taxAmount,
-                                    context,
-                                    style:
-                                        Theme.of(context).textTheme.titleMedium,
-                                  ),
-                                ],
-                              ),
+                              // تم إزالة عرض الضريبة لأن الأسعار تدخل مع الضريبة مسبقاً
+                              // Row(
+                              //   children: <Widget>[
+                              //     Expanded(
+                              //       child: Text(
+                              //         "${S.of(context).tax} (${_con.carts[0].food?.restaurant.defaultTax}%)",
+                              //         style:
+                              //             Theme.of(context).textTheme.bodyLarge,
+                              //       ),
+                              //     ),
+                              //     Helper.getPrice(
+                              //       _con.taxAmount,
+                              //       context,
+                              //       style:
+                              //           Theme.of(context).textTheme.titleMedium,
+                              //     ),
+                              //   ],
+                              // ),
                               Divider(height: 30),
                               Row(
                                 children: <Widget>[

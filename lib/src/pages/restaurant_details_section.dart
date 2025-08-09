@@ -47,6 +47,33 @@ class RestaurantDetailsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // التحقق من وجود المطعم
+    if (con.restaurant == null || con.restaurant!.id.isEmpty) {
+      return Container(
+        color: Colors.white,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.restaurant,
+                size: 64,
+                color: Colors.grey[400],
+              ),
+              SizedBox(height: 16),
+              Text(
+                'لا توجد بيانات للمطعم',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[600],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     final restLat = double.tryParse(con.restaurant?.latitude ?? '0') ?? 0.0;
     final restLon = double.tryParse(con.restaurant?.longitude ?? '0') ?? 0.0;
     final distance = calculateDistance(userLat, userLon, restLat, restLon);
@@ -83,20 +110,23 @@ class RestaurantDetailsSection extends StatelessWidget {
               spacing: 8,
               runSpacing: 8,
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SvgPicture.asset('assets/img/star.svg'),
-                    SizedBox(width: 6),
-                    Text(
-                      con.restaurant!.rate ?? '0.0',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey.shade500,
+                Visibility(
+                  visible: false,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset('assets/img/star.svg'),
+                      SizedBox(width: 6),
+                      Text(
+                        con.restaurant!.rate ?? '0.0',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey.shade500,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 Container(height: 16, width: 1, color: Colors.grey.shade300),
                 Row(

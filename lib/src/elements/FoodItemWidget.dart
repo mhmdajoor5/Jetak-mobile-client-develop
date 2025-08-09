@@ -27,6 +27,17 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
     // أو تمرير controller من الـ parent widget
     widget.onAdd();
   }
+
+  String _fixImageUrl(String url) {
+    if (url.contains('carrytechnologies.coimages')) {
+      return url.replaceFirst('carrytechnologies.coimages', 'carrytechnologies.co/images');
+    }
+    // إذا كان الرابط يحتوي على صور غير موجودة، استخدم صورة افتراضية
+    if (url.contains('restaurant.png') || url.contains('icons/avif.png')) {
+      return 'https://carrytechnologies.co/storage/app/public/3856/SLIDES-01.png';
+    }
+    return url;
+  }
   // int cartCount = 0;
   // double totalPrice = 0.0;
   // List<Food> cartItems = [];
@@ -79,7 +90,7 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
                 height: 80,
                 width: 80,
                 fit: BoxFit.cover,
-                imageUrl: widget.food.image!.thumb!,
+                imageUrl: _fixImageUrl(widget.food.image!.thumb!),
                 placeholder: (context, url) => Image.asset(
                   'assets/img/loading.gif',
                   height: 80,
@@ -88,6 +99,11 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
                 ),
                 errorWidget: (context, url, error) {
                   print("Error loading image: $url - $error");
+                  // محاولة إصلاح URL إذا كان مفقود فيه /
+                  if (url.contains('carrytechnologies.coimages')) {
+                    final fixedUrl = url.replaceFirst('carrytechnologies.coimages', 'carrytechnologies.co/images');
+                    print("Attempting to fix URL: $fixedUrl");
+                  }
                   return Image.asset(
                     'assets/img/logo.png',
                     fit: BoxFit.fill,

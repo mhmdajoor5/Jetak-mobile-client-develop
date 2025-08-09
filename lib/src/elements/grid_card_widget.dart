@@ -11,6 +11,17 @@ class GridCardWidget extends StatelessWidget {
 
   const GridCardWidget({Key? key, required this.restaurant}) : super(key: key);
 
+  String _fixImageUrl(String url) {
+    if (url.contains('carrytechnologies.coimages')) {
+      return url.replaceFirst('carrytechnologies.coimages', 'carrytechnologies.co/images');
+    }
+    // إذا كان الرابط يحتوي على صور غير موجودة، استخدم صورة افتراضية
+    if (url.contains('restaurant.png') || url.contains('icons/avif.png')) {
+      return 'https://carrytechnologies.co/storage/app/public/3856/SLIDES-01.png';
+    }
+    return url;
+  }
+
   String _getDiscountText() {
     print("Entered _getDiscountText");
 
@@ -72,17 +83,25 @@ class GridCardWidget extends StatelessWidget {
                     height: 150,
                     width: double.infinity,
                     fit: BoxFit.cover,
-                    imageUrl: restaurant.image.url,
+                    imageUrl: _fixImageUrl(restaurant.image.url),
                     placeholder: (context, url) => Image.asset(
                       'assets/img/loading.gif',
                       fit: BoxFit.cover,
                       height: 150,
                     ),
-                    errorWidget: (context, url, error) => Image.asset(
-                      'assets/img/logo.png',
-                      fit: BoxFit.cover,
-                      height: 150,
-                    ),
+                    errorWidget: (context, url, error) {
+                      print("Error loading restaurant image: $url - $error");
+                      // محاولة إصلاح URL إذا كان مفقود فيه /
+                      if (url.contains('carrytechnologies.coimages')) {
+                        final fixedUrl = url.replaceFirst('carrytechnologies.coimages', 'carrytechnologies.co/images');
+                        print("Attempting to fix restaurant image URL: $fixedUrl");
+                      }
+                      return Image.asset(
+                        'assets/img/logo.png',
+                        fit: BoxFit.cover,
+                        height: 150,
+                      );
+                    },
                   ),
                 ),
                 if (_hasValidDiscount())
@@ -161,15 +180,22 @@ class GridCardWidget extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: 10),
-                      Icon(Icons.star, color: Colors.orange, size: 16),
-                      SizedBox(width: 4),
-                      Text(
-                        restaurant.rate.toString(),
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          height: 1.6,
-                          color: Color(0xFF9D9FA4),
+                      Visibility(
+                        visible: false,
+                        child: Row(
+                          children: [
+                            Icon(Icons.star, color: Colors.orange, size: 16),
+                            SizedBox(width: 4),
+                            Text(
+                              restaurant.rate.toString(),
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                height: 1.6,
+                                color: Color(0xFF9D9FA4),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],

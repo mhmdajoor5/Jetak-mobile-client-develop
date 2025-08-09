@@ -109,7 +109,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Column(
-                  children: [S.of(context).apartment,S.of(context).house,S.of(context).office,S.of(context).other].map((type) {
+                  children: ['Apartment','House','Office','Other'].map((type) {
                     final isLast = type == 'Other';
                     IconData iconData;
                     switch (type) {
@@ -129,7 +129,7 @@ class _AddressDetailsPageState extends State<AddressDetailsPage> {
                         iconData = Icons.location_on;
                     }
 
-                    final isOpen = dropdownVisibility[type]!;
+                    final isOpen = dropdownVisibility[type] ?? false;
 
                     return Column(
                       children: [

@@ -30,7 +30,18 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
     _con.listenForFood(context, foodId: widget.routeArgument.id!);
     _con.listenForCart();
     _con.listenForFavorite(foodId: widget.routeArgument.id!);
+    // تهيئة selectedExtras
+    selectedExtras = [];
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // تحديث selectedExtras عند تحميل الطعام
+    if (_con.food.id.isNotEmpty) {
+      selectedExtras = _con.food.extras.where((e) => e.checked).map((e) => e.id).toList();
+    }
   }
 
   Widget _buildCircleButton({
@@ -209,24 +220,27 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                         ),
                                       ),
                                       SizedBox(height: 5),
-                                      Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.end,
-                                        children: [
-                                          Icon(
-                                            Icons.star,
-                                            color: Colors.amber,
-                                            size: 16,
-                                          ),
-                                          SizedBox(width: 4),
-                                          Text(
-                                            _con.food.restaurant.rate.toString(),
-                                            style: TextStyle(
-                                              fontSize: 12, // reduced from 14
-                                              color: Colors.grey[600],
+                                      Visibility(
+                                        visible: false,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.end,
+                                          children: [
+                                            Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
+                                              size: 16,
                                             ),
-                                          ),
-                                        ],
+                                            SizedBox(width: 4),
+                                            Text(
+                                              _con.food.restaurant.rate.toString(),
+                                              style: TextStyle(
+                                                fontSize: 12, // reduced from 14
+                                                color: Colors.grey[600],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -246,7 +260,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              Helper.skipHtmlTags(_con.food.description),
+                              Helper.skipHtml(_con.food.description),
                               style: TextStyle(
                                 fontSize: 14, // reduced from 16
                                 color: Colors.grey[700],
@@ -268,7 +282,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                   ),
                                   SizedBox(height: 10),
                                   Text(
-                                    _con.food.ingredients.toString(),
+                                    Helper.skipHtml(_con.food.ingredients),
                                     style: TextStyle(
                                       fontSize: 14, // reduced from 16
                                       color: Colors.grey[700],
@@ -383,9 +397,13 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                                   setState(() {
                                                     if (value == true) {
                                                       selectedExtras.add(extra.id);
+                                                      extra.checked = true;
                                                     } else {
                                                       selectedExtras.remove(extra.id);
+                                                      extra.checked = false;
                                                     }
+                                                    // تحديث السعر الإجمالي
+                                                    _con.calculateTotal();
                                                   });
                                                 },
                                                 controlAffinity: ListTileControlAffinity.leading,
@@ -433,6 +451,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                   ],
                 ),
               ),
+
               // الشريط السفلي للـ Add to Cart
               Container(
                 padding: EdgeInsets.all(20),
@@ -546,7 +565,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                           ),
                         ),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          padding: EdgeInsets.symmetric(horizontal: 12),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -554,20 +573,21 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                 child: Text(
                                   S.of(context).add_to_cart,
                                   style: TextStyle(
-                                    fontSize: 14, // reduced from 16
+                                    fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
                                   ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              SizedBox(width: 16),
+                              SizedBox(width: 8),
                               Helper.getPrice(
                                 _con.total,
                                 context,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 14, // reduced from 16
+                                  fontSize: 14,
                                 ),
                               ),
                             ],

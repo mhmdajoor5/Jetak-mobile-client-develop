@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/cart_controller.dart';
@@ -24,6 +25,17 @@ class _CartWidgetState extends StateMVC<CartWidget> {
 
   _CartWidgetState() : super(CartController()) {
     _con = controller as CartController;
+  }
+
+  String _fixImageUrl(String url) {
+    if (url.contains('carrytechnologies.coimages')) {
+      return url.replaceFirst('carrytechnologies.coimages', 'carrytechnologies.co/images');
+    }
+    // إذا كان الرابط يحتوي على صور غير موجودة، استخدم صورة افتراضية
+    if (url.contains('restaurant.png') || url.contains('icons/avif.png')) {
+      return 'https://carrytechnologies.co/storage/app/public/3856/SLIDES-01.png';
+    }
+    return url;
   }
 
   @override
@@ -122,17 +134,43 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(12),
-                                      child: Image.network(
-                                        cart.food?.image?.thumb ?? '',
+                                      child: CachedNetworkImage(
+                                        imageUrl: _fixImageUrl(cart.food?.image?.thumb ?? ''),
                                         width: 70,
                                         height: 70,
                                         fit: BoxFit.cover,
-                                        errorBuilder: (context, error, stackTrace) => Container(
+                                        placeholder: (context, url) => Container(
                                           width: 70,
                                           height: 70,
                                           color: Colors.grey[200],
-                                          child: Icon(Icons.image, color: Colors.grey),
+                                          child: Center(
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              valueColor: AlwaysStoppedAnimation<Color>(Colors.grey[400]!),
+                                            ),
+                                          ),
                                         ),
+                                        errorWidget: (context, url, error) {
+                                          print("Error loading cart item image: $url - $error");
+                                          // محاولة إصلاح URL إذا كان مفقود فيه /
+                                          if (url.contains('carrytechnologies.coimages')) {
+                                            final fixedUrl = url.replaceFirst('carrytechnologies.coimages', 'carrytechnologies.co/images');
+                                            print("Attempting to fix cart image URL: $fixedUrl");
+                                          }
+                                          // إذا كانت الصورة غير صالحة، استخدم صورة افتراضية
+                                          if (url.contains('restaurant.png') || url.contains('icons/avif.png')) {
+                                            print("Using fallback image for invalid URL: $url");
+                                          }
+                                          return Container(
+                                            width: 70,
+                                            height: 70,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[200],
+                                              borderRadius: BorderRadius.circular(8),
+                                            ),
+                                            child: Icon(Icons.fastfood, color: Colors.grey[400], size: 30),
+                                          );
+                                        },
                                       ),
                                     ),
                                     SizedBox(width: 16),
@@ -151,11 +189,9 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                           ),
                                           SizedBox(height: 4),
                                           Text(
-                                            cart.food?.description?.replaceAll(
-                                              RegExp(r'<[^>]*>|&[^;]+;'),
-                                              '',
-                                            ) ??
-                                                '',
+                                            cart.food?.description != null 
+                                                ? Helper.skipHtml(cart.food!.description)
+                                                : '',
                                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                               color: Color(0xFF9098B1),
                                               fontWeight: FontWeight.w400,
@@ -165,14 +201,43 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           SizedBox(height: 8),
-                                          Helper.getPrice(
-                                            cart.food?.price ?? 0,
-                                            context,
-                                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                              fontWeight: FontWeight.bold,
-                                              color: Color(0xFF223263),
-                                              fontSize: 18,
+                                          // عرض الإضافات المحددة
+                                          if (cart.extras.isNotEmpty)
+                                            Container(
+                                              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                              decoration: BoxDecoration(
+                                                color: Colors.blue[50],
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              child: Text(
+                                                '${cart.extras.length} ${S.of(context).additions}',
+                                                style: TextStyle(
+                                                  fontSize: 11,
+                                                  color: Colors.blue[700],
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
                                             ),
+                                          SizedBox(height: 8),
+                                          // حساب السعر الإجمالي للعنصر (المنتج + الإضافات)
+                                          Builder(
+                                            builder: (context) {
+                                              double itemPrice = cart.food?.price ?? 0;
+                                              for (var extra in cart.extras) {
+                                                itemPrice += extra.price;
+                                              }
+                                              itemPrice *= cart.quantity ?? 1;
+                                              
+                                              return Helper.getPrice(
+                                                itemPrice,
+                                                context,
+                                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xFF223263),
+                                                  fontSize: 18,
+                                                ),
+                                              );
+                                            },
                                           ),
                                         ],
                                       ),
@@ -255,11 +320,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                     numOfItems: _con.carts.length,
                     onSwipe:
                         _con.isLoading ? null : () => _con.goCheckout(context),
-                    totalPrice: (() {
-                      final subTotal = _con.subTotal;
-                      final taxAmount = subTotal * (_con.carts.isNotEmpty ? _con.carts[0].food!.restaurant.defaultTax : 0) / 100;
-                      return subTotal + taxAmount;
-                    })(),
+                    totalPrice: _con.subTotal, // تم إزالة الضريبة لأن الأسعار تدخل مع الضريبة مسبقاً
                   ),
                 ),
       ),

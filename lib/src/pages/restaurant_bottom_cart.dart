@@ -71,7 +71,7 @@ class _RestaurantBottomCartState extends StateMVC<RestaurantBottomCart> {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        '${_con.cartCount} Cart',
+                        '${_con.cartCount} ${S.of(context).cart}',
                         style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,

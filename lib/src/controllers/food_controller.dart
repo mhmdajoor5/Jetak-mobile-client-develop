@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
+import '../helpers/helper.dart';
 import '../models/cart.dart';
 import '../models/favorite.dart';
 import '../models/food.dart';
@@ -145,7 +146,9 @@ class FoodController extends ControllerMVC {
 
     setState(() => loadCart = true);
 
-    final Cart newCart = Cart(food: food, extras: food.extras.where((e) => e.checked).toList(), quantity: quantity);
+    // استخدام الإضافات المحددة فقط
+    final selectedExtras = food.extras.where((e) => e.checked).toList();
+    final Cart newCart = Cart(food: food, extras: selectedExtras, quantity: quantity);
     final Cart? oldCart = isExistInCart(newCart);
 
     if (oldCart != null) {
@@ -200,7 +203,17 @@ class FoodController extends ControllerMVC {
   }
 
   void calculateTotal() {
-    total = (food.price ?? 0) + food.extras.where((e) => e.checked).fold(0.0, (sum, e) => sum + e.price);
+    total = food.price ?? 0;
+    
+    // استخدام الدالة الجديدة لحساب سعر الإضافات مع مراعاة max_allowed و extra_charge
+    if (food.extraGroups.isNotEmpty) {
+      final selectedExtras = food.extras.where((e) => e.checked).toList();
+      total += Helper.calculateExtrasPrice(selectedExtras, food.extraGroups);
+    } else {
+      // الحساب القديم إذا لم تكن هناك مجموعات إضافات
+      total += food.extras.where((e) => e.checked).fold(0.0, (sum, e) => sum + e.price);
+    }
+    
     total *= quantity;
     setState(() {});
   }

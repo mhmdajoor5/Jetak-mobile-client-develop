@@ -20,6 +20,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../generated/l10n.dart';
 import '../elements/CircularLoadingWidget.dart';
 import '../models/cart.dart';
+import '../models/extra.dart';
+import '../models/extra_group.dart';
 import '../models/food_order.dart';
 import '../models/order.dart';
 import '../models/restaurant.dart';
@@ -281,46 +283,45 @@ class Helper {
 
   static double getTotalOrderPrice(FoodOrder foodOrder) {
     double total = foodOrder.price;
-    if (foodOrder.extras.isNotEmpty) {
-      foodOrder.extras.forEach((extra) {
-        total += extra.price != null ? extra.price : 0;
-      });
+    
+    // استخدام الدالة الجديدة لحساب سعر الإضافات مع مراعاة max_allowed و extra_charge
+    if (foodOrder.food != null && foodOrder.food!.extraGroups.isNotEmpty) {
+      total += calculateExtrasPrice(foodOrder.extras, foodOrder.food!.extraGroups);
+    } else {
+      // الحساب القديم إذا لم تكن هناك مجموعات إضافات
+      if (foodOrder.extras.isNotEmpty) {
+        foodOrder.extras.forEach((extra) {
+          total += extra.price;
+        });
+      }
     }
+    
     total *= foodOrder.quantity;
     return total;
   }
 
   static double getOrderPrice(FoodOrder foodOrder) {
     double total = foodOrder.price;
-    if (foodOrder.extras.isNotEmpty) {
-      foodOrder.extras.forEach((extra) {
-        total += extra.price != null ? extra.price : 0;
-      });
+    
+    // استخدام الدالة الجديدة لحساب سعر الإضافات مع مراعاة max_allowed و extra_charge
+    if (foodOrder.food != null && foodOrder.food!.extraGroups.isNotEmpty) {
+      total += calculateExtrasPrice(foodOrder.extras, foodOrder.food!.extraGroups);
+    } else {
+      // الحساب القديم إذا لم تكن هناك مجموعات إضافات
+      if (foodOrder.extras.isNotEmpty) {
+        foodOrder.extras.forEach((extra) {
+          total += extra.price;
+        });
+      }
     }
+    
     return total;
   }
 
   static double getTaxOrder(Order order) {
-    print('🔍 حساب الضريبة للطلب ${order.id}:');
-    print('   - عدد الأطعمة: ${order.foodOrders.length}');
-    print('   - نسبة الضريبة: ${order.tax}%');
-    
-    double foodTotal = 0;
-    if (order.foodOrders.isNotEmpty) {
-      order.foodOrders.forEach((foodOrder) {
-        double foodPrice = getTotalOrderPrice(foodOrder);
-        foodTotal += foodPrice;
-        print('   - سعر الطعام: $foodPrice');
-      });
-    } else {
-      print('   - ⚠️ لا توجد أطعمة في الطلب');
-    }
-    
-    double taxAmount = order.tax * foodTotal / 100;
-    print('   - إجمالي الطعام: $foodTotal');
-    print('   - مبلغ الضريبة: $taxAmount');
-    
-    return taxAmount;
+    // تم إزالة حساب الضريبة لأن الأسعار تدخل مع الضريبة مسبقاً
+    print('🔍 تم إزالة حساب الضريبة للطلب ${order.id} لأن الأسعار تدخل مع الضريبة مسبقاً');
+    return 0.0;
   }
 
   static double getFoodTotalPrice(Order order) {
@@ -345,7 +346,6 @@ class Helper {
   static double getTotalOrdersPrice(Order order) {
     print('🔍 حساب المجموع الكلي للطلب ${order.id}:');
     print('   - عدد الأطعمة: ${order.foodOrders.length}');
-    print('   - نسبة الضريبة: ${order.tax}%');
     print('   - رسوم التوصيل: ${order.deliveryFee}');
     
     double foodTotal = 0;
@@ -359,14 +359,11 @@ class Helper {
       print('   - ⚠️ لا توجد أطعمة في الطلب');
     }
     
-    // حساب الضريبة على سعر الطعام فقط
-    double taxAmount = order.tax * foodTotal / 100;
-    
-    // المجموع الكلي = سعر الطعام + الضريبة + رسوم التوصيل
-    double total = foodTotal + taxAmount + order.deliveryFee;
+    // تم إزالة حساب الضريبة لأن الأسعار تدخل مع الضريبة مسبقاً
+    // المجموع الكلي = سعر الطعام + رسوم التوصيل
+    double total = foodTotal + order.deliveryFee;
     
     print('   - إجمالي الطعام: $foodTotal');
-    print('   - مبلغ الضريبة: $taxAmount');
     print('   - المجموع الكلي: $total');
     
     return total;
@@ -635,5 +632,65 @@ class Helper {
       default:
         return text.split('\\').last.replaceAll('_', ' ');
     }
+  }
+
+  /// حساب سعر الإضافات مع مراعاة max_allowed و max_charge
+  static double calculateExtrasPrice(List<Extra> extras, List<ExtraGroup> extraGroups) {
+    if (extras.isEmpty) {
+      return 0.0;
+    }
+
+    double totalPrice = 0.0;
+
+    // تجميع الإضافات حسب المجموعة
+    Map<String, List<Extra>> extrasByGroup = {};
+    for (var extra in extras) {
+      if (!extrasByGroup.containsKey(extra.extraGroupId)) {
+        extrasByGroup[extra.extraGroupId] = [];
+      }
+      extrasByGroup[extra.extraGroupId]!.add(extra);
+    }
+
+    // حساب السعر لكل مجموعة إضافات
+    for (var groupId in extrasByGroup.keys) {
+      List<Extra> groupExtras = extrasByGroup[groupId]!;
+      
+      // البحث عن ExtraGroup المقابل
+      ExtraGroup? extraGroup = extraGroups.firstWhere(
+        (group) => group.id == groupId,
+        orElse: () => ExtraGroup(),
+      );
+
+      if (extraGroup.id.isEmpty) {
+        // إذا لم نجد المجموعة، نستخدم السعر العادي
+        for (var extra in groupExtras) {
+          totalPrice += extra.price;
+        }
+        continue;
+      }
+
+      // تطبيق منطق max_allowed و max_charge
+      if (extraGroup.maxAllowed != null && groupExtras.length > extraGroup.maxAllowed!) {
+        // عدد الإضافات يتجاوز الحد المسموح
+        int allowedCount = extraGroup.maxAllowed!;
+        
+        // حساب سعر الإضافات المسموحة
+        for (int i = 0; i < allowedCount && i < groupExtras.length; i++) {
+          totalPrice += groupExtras[i].price;
+        }
+        
+        // إضافة الرسوم الإضافية للإضافات التي تتجاوز الحد
+        for (int i = allowedCount; i < groupExtras.length; i++) {
+          totalPrice += groupExtras[i].price + extraGroup.maxCharge;
+        }
+      } else {
+        // عدد الإضافات ضمن الحد المسموح أو لا يوجد حد
+        for (var extra in groupExtras) {
+          totalPrice += extra.price;
+        }
+      }
+    }
+
+    return totalPrice;
   }
 }

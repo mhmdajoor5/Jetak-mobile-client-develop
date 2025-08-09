@@ -48,7 +48,10 @@ class GridItemWidget extends StatelessWidget {
                 children: <Widget>[
                   Text(restaurant.name, style: Theme.of(context).textTheme.bodyMedium, softWrap: false, maxLines: 3, overflow: TextOverflow.ellipsis),
                   SizedBox(height: 2),
-                  Row(children: Helper.getStarsList(double.parse(restaurant.rate))),
+                  Visibility(
+                    visible: false,
+                    child: Row(children: Helper.getStarsList(double.parse(restaurant.rate))),
+                  ),
                   SizedBox(height: 2),
                   Row(children: [Text(restaurant.information)]),
                 ],

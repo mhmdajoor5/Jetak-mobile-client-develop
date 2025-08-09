@@ -184,14 +184,15 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                     ],
                   ),
                   SizedBox(height: 3),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                          child: Text(
-                              "${S.of(context).tax} (${_con.carts[0].food?.restaurant.defaultTax}%)")),
-                      Helper.getPrice(_con.taxAmount, context),
-                    ],
-                  ),
+                  // تم إزالة عرض الضريبة لأن الأسعار تدخل مع الضريبة مسبقاً
+                  // Row(
+                  //   children: <Widget>[
+                  //     Expanded(
+                  //         child: Text(
+                  //             "${S.of(context).tax} (${_con.carts[0].food?.restaurant.defaultTax}%)")),
+                  //     Helper.getPrice(_con.taxAmount, context),
+                  //   ],
+                  // ),
                   Divider(height: 30),
                   Row(
                     children: <Widget>[

@@ -12,7 +12,8 @@ import '../repository/coupon_repository.dart';
 
 class CartController extends ControllerMVC {
   List<Cart> carts = <Cart>[];
-  double taxAmount = 0.0;
+  // تم إزالة الضريبة لأن الأسعار تدخل مع الضريبة مسبقاً
+  // double taxAmount = 0.0;
   double deliveryFee = 0.0;
   int cartCount = 0;
   double subTotal = 0.0;
@@ -101,13 +102,13 @@ class CartController extends ControllerMVC {
       });
       ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
         SnackBar(
-          content: Text('تم حذف المنتج من السلة'),
+          content: Text(S.of(scaffoldKey.currentContext!).productRemovedFromCart),
         ),
       );
     } else {
       ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
         SnackBar(
-          content: Text('حدث خطأ أثناء حذف المنتج'),
+          content: Text(S.of(scaffoldKey.currentContext!).errorRemovingProduct),
         ),
       );
     }
@@ -117,10 +118,8 @@ class CartController extends ControllerMVC {
     if (carts.isNotEmpty) {
       subTotal = 0;
       carts.forEach((cart) {
-        double cartPrice = cart.food!.price;
-        for (var extra in cart.extras) {
-          cartPrice += extra.price;
-        }
+        // استخدام الدالة المحدثة في نموذج Cart
+        double cartPrice = cart.getFoodPrice();
         cartPrice *= cart.quantity;
         subTotal += cartPrice;
       });
@@ -131,8 +130,9 @@ class CartController extends ControllerMVC {
               ? carts[0].food!.restaurant.deliveryFee
               : 0;
 
-      taxAmount = subTotal * carts[0].food!.restaurant.defaultTax / 100;
-      total = subTotal + taxAmount + deliveryFee;
+      // تم إزالة الضريبة لأن الأسعار تدخل مع الضريبة مسبقاً
+      // taxAmount = subTotal * carts[0].food!.restaurant.defaultTax / 100;
+      total = subTotal + deliveryFee;
       setState(() {});
     }
   }

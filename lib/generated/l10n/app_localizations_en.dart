@@ -191,7 +191,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_settings => 'Profile Settings';
 
   @override
-  String get full_name => 'Full name';
+  String get full_name => 'Full Name';
 
   @override
   String get email => 'Email';
@@ -258,7 +258,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'You can discover restaurants & fastfood arround you and choose you best meal after few minutes we prepare and delivere it for you';
 
   @override
-  String get reset_cart => 'Reset Cart?';
+  String get reset_cart => 'Reset Cart';
 
   @override
   String get cart => 'Cart';
@@ -279,15 +279,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get you_must_add_foods_of_the_same_restaurants_choose_one =>
-      'You must add foods of the same restaurants choose one restaurants only!';
+      'You must add foods from the same restaurant';
 
   @override
   String get reset_your_cart_and_order_meals_form_this_restaurant =>
-      'Reset your cart and order meals form this restaurant';
+      'Reset your cart and order meals from this restaurant';
 
   @override
   String get keep_your_old_meals_of_this_restaurant =>
-      'Keep your old meals of this restaurant';
+      'Keep your old meals from this restaurant';
 
   @override
   String get reset => 'Reset';
@@ -299,7 +299,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get application_preferences => 'Application Preferences';
 
   @override
-  String get help__support => 'Help & Support';
+  String get help__support => 'Help & Supports';
 
   @override
   String get pending_payment => 'Pending Payment';
@@ -318,14 +318,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dont_have_any_item_in_your_cart =>
-      'D\'ont have any item in your cart';
+      'Don\'t have any item in your cart';
 
   @override
   String get start_exploring => 'Start Exploring';
 
   @override
   String get dont_have_any_item_in_the_notification_list =>
-      'D\'ont have any item in the notification list';
+      'Don\'t have any item in the notification list';
 
   @override
   String get payment_settings => 'Payment Settings';
@@ -455,7 +455,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get description => 'Description';
 
   @override
-  String get hint_full_address => '12 Street, City 21663, Country';
+  String get hint_full_address => 'Enter your full address';
 
   @override
   String get full_address => 'Full Address';
@@ -482,14 +482,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get you_must_signin_to_access_to_this_section =>
-      'You must sign-in to access to this section';
+      'You must sign in to access this section';
 
   @override
   String get tell_us_about_this_restaurant => 'Tell us about this restaurant';
 
   @override
   String get how_would_you_rate_this_restaurant_ =>
-      'How would you rate this restaurant ?';
+      'How would you rate this restaurant?';
 
   @override
   String get tell_us_about_this_food => 'Tell us about this food';
@@ -550,7 +550,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get delivery_address => 'Delivery Address';
 
   @override
-  String get current_location => 'Current location';
+  String get current_location => 'Current Location';
 
   @override
   String get delivery_address_removed_successfully =>
@@ -610,7 +610,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get all => 'All';
 
   @override
-  String get this_restaurant_is_closed_ => 'This restaurant is closed !';
+  String get this_restaurant_is_closed_ => 'This restaurant is closed';
 
   @override
   String get unknown => 'Unknown';
@@ -723,7 +723,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cannot_add_from_different_restaurant =>
-      'Cannot add products from different restaurants in the same order. Do you want to clear the cart and add products from this restaurant?';
+      'Cannot add from different restaurant';
 
   @override
   String get foodRefreshedSuccessfuly => 'Food refreshed successfully';
@@ -747,7 +747,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get viewDetails => 'View Details';
 
   @override
-  String get youDontHaveAnyOrder => 'You don\'t  have any order';
+  String get youDontHaveAnyOrder => 'You don\'t have any order';
 
   @override
   String get orderDetails => 'Order Details';
@@ -784,7 +784,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Click on the food to get more details about it';
 
   @override
-  String get razorpayPayment => 'RazorPay Payment';
+  String get razorpayPayment => 'Razorpay Payment';
 
   @override
   String get razorpay => 'RazorPay';
@@ -853,7 +853,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get weAreSendingOtpToValidateYourMobileNumberHang =>
-      'We are sending OTP to validate your mobile number. Hang on!';
+      'We are sending OTP to validate your mobile number';
 
   @override
   String get verifyPhoneNumber => 'Verify Phone Number';
@@ -895,13 +895,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get order_summary => 'Order Summary';
 
   @override
-  String get include_tax => 'Include tax ( if applicable )';
+  String get include_tax => 'Include tax';
 
   @override
-  String get item_subtotal => 'Item subtotal';
+  String get item_subtotal => 'Item Subtotal';
 
   @override
-  String get service_fee => 'Service fee';
+  String get service_fee => 'Service Fee';
 
   @override
   String get promo => 'Promo';
@@ -1030,7 +1030,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get no_saved_cards => 'No saved cards';
 
   @override
-  String get select_extras => 'Select extras to add them on the food';
+  String get select_extras => 'Select Extras';
 
   @override
   String added_to_cart(Object foodName) {
@@ -1082,16 +1082,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get testNotification => 'Test Notification';
 
   @override
-  String get testNotificationBody => 'This is a test notification!';
+  String get testNotificationBody => 'This is a test notification';
 
   @override
-  String get testNotificationSent => 'Test notification sent!';
+  String get testNotificationSent => 'Test notification sent successfully';
 
   @override
   String get unreadNotifications => 'Unread Notifications';
 
   @override
-  String get notificationsTestTitle => '🧪 Notification Test';
+  String get notificationsTestTitle => 'Notifications Test';
 
   @override
   String get refreshNotificationCount => 'Refresh Notification Count';
@@ -1113,12 +1113,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String apiConnectionSuccess(Object count) {
-    return '✅ Success! Notification count: $count';
+    return 'API connection successful. Found $count notifications';
   }
 
   @override
   String apiConnectionFailed(Object error) {
-    return '❌ Connection failed: $error';
+    return 'API connection failed: $error';
   }
 
   @override
@@ -1127,15 +1127,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get apiInfoTitle => 'API Info';
+  String get apiInfoTitle => 'API Information';
 
   @override
-  String get apiEndpoint =>
-      'Endpoint: https://carrytechnologies.co/api/notifications';
+  String get apiEndpoint => 'API Endpoint';
 
   @override
-  String get apiToken =>
-      'Token: fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv';
+  String get apiToken => 'API Token';
 
   @override
   String get tracking => 'Tracking';
@@ -1147,25 +1145,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notAvailableNow => 'Not available now';
 
   @override
-  String get twentyToThirtyMin => '20–30 min';
+  String get twentyToThirtyMin => '20-30 min';
 
   @override
   String get discount => 'Discount';
 
   @override
-  String get payNow => 'Pay now';
+  String get payNow => 'Pay Now';
 
   @override
   String get timeFormatHhMm => 'HH:mm';
 
   @override
-  String get ddMMyyyy => 'dd-MM-yyyy';
+  String get ddMMyyyy => 'dd/MM/yyyy';
 
   @override
-  String get dateTimeFormatMmmDdYyyyHhMm => 'MMM dd, yyyy HH:mm';
+  String get dateTimeFormatMmmDdYyyyHhMm => 'MMM dd, yyyy • HH:mm';
 
   @override
-  String get dateTimeFormatDdMmYyyyHhMm => 'dd/MM/yyyy HH:mm';
+  String get dateTimeFormatDdMmYyyyHhMm => 'dd-MM-yyyy | HH:mm';
 
   @override
   String get addressDetails => 'Address Details';
@@ -1202,10 +1200,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get doorbellIntercom => 'Doorbell / Intercom';
 
   @override
-  String get doorCode => 'Door Code';
+  String get doorCode => 'Door code';
 
   @override
-  String get doorIsOpen => 'Door is Open';
+  String get doorIsOpen => 'Door is open';
 
   @override
   String get otherTellUsHow => 'Other (tell us how)';
@@ -1215,11 +1213,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Other instructions for the courier';
 
   @override
-  String get addressTypeAndLabel => 'Address Type and Label';
+  String get addressTypeAndLabel => 'Address type and label';
 
   @override
   String get addOrCreateAddressLabelsToEasilyChooseBetweenDeliveryAddresses =>
-      'Add or create address labels to easily choose between delivery addresses.';
+      'Add or create address labels to easily choose between delivery addresses';
 
   @override
   String get work => 'Work';
@@ -1250,7 +1248,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get locationPermissionDeniedForever =>
-      'Location permission denied forever';
+      'Location permission denied permanently';
 
   @override
   String get locationFetchError => 'Unable to determine location';
@@ -1355,14 +1353,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get see_all => 'See all';
 
   @override
-  String get location_type_hint =>
-      'The location type helps us to find you better, house, office';
+  String get location_type_hint => 'Select location type';
 
   @override
   String get cartIsEmpty => 'Cart is empty';
 
   @override
-  String get chooseOrderType => 'Choose order type';
+  String get chooseOrderType => 'Choose Order Type';
 
   @override
   String get hi => 'Hi 👋';
@@ -1374,40 +1371,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get providePhoneNumber => 'Provide us with your phone number 🙅‍♂️';
 
   @override
-  String get codeSent => 'We have sent you a code 🧏‍♂️';
+  String get codeSent => 'We sent you a code 🧏‍♂️';
 
   @override
   String get enterTheDoorCode => 'Enter the door code';
 
   @override
-  String get otherInstructionsForCourier =>
-      'Other instructions for the courier';
+  String get otherInstructionsForCourier => 'Other instructions for courier';
 
   @override
-  String get verify_your_internet_connection =>
-      'Verify your internet connection';
+  String get additions => 'Additions';
 
   @override
-  String get carts_refreshed_successfuly => 'Carts refreshed successfully';
+  String get itemsInCart => 'Items in Cart';
 
   @override
-  String get category_refreshed_successfuly =>
-      'Category refreshed successfully';
-
-  @override
-  String get card_number => 'Card number';
-
-  @override
-  String get expiry_date => 'Expiry date';
-
-  @override
-  String get favorite_foods => 'Favorite foods';
-
-  @override
-  String get order_id => 'Order ID';
-
-  @override
-  String get i_dont_have_an_account => 'I don\'t have an account';
+  String get pay => 'Pay';
 
   @override
   String get search_for_restaurants_or_foods =>
@@ -1417,7 +1396,56 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ordered_by_nearby_first => 'Ordered by nearby first';
 
   @override
-  String get maps_explorer => 'Maps Explorer';
+  String get card_number => 'Card Number';
+
+  @override
+  String get expiry_date => 'Expiry Date';
+
+  @override
+  String get description_required => 'Description is required';
+
+  @override
+  String get description_min_length =>
+      'Description must be at least 3 characters';
+
+  @override
+  String get description_max_length =>
+      'Description must be less than 50 characters';
+
+  @override
+  String get address_required => 'Address is required';
+
+  @override
+  String get add_to_cart => 'Add to Cart';
+
+  @override
+  String get please_correct_form_errors => 'Please correct the form errors';
+
+  @override
+  String get verify_your_internet_connection =>
+      'Verify your internet connection';
+
+  @override
+  String get carts_refreshed_successfuly => 'Carts refreshed successfully';
+
+  @override
+  String get productRemovedFromCart => 'Product removed from cart';
+
+  @override
+  String get errorRemovingProduct => 'Error removing product';
+
+  @override
+  String get category_refreshed_successfuly =>
+      'Category refreshed successfully';
+
+  @override
+  String get favorite_foods => 'Favorite Foods';
+
+  @override
+  String get order_id => 'Order ID';
+
+  @override
+  String get i_dont_have_an_account => 'I don\'t have an account';
 
   @override
   String get top_restaurants => 'Top Restaurants';
@@ -1426,10 +1454,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get most_popular => 'Most Popular';
 
   @override
-  String get trending_this_week => 'Trending this week';
+  String get trending_this_week => 'Trending This Week';
 
   @override
-  String get payment_mode => 'Payment mode';
+  String get sign => 'Sign';
+
+  @override
+  String get maps_explorer => 'Maps Explorer';
+
+  @override
+  String get payment_mode => 'Payment Mode';
 
   @override
   String get select_your_preferred_payment_mode =>
@@ -1448,10 +1482,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirm_payment => 'Confirm Payment';
 
   @override
-  String get add_to_cart => 'Add to cart';
-
-  @override
-  String get help_supports => 'Help & Supports';
+  String get help_supports => 'Help & Support';
 
   @override
   String get your_order_has_been_successfully_submitted =>
@@ -1461,74 +1492,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get featured_foods => 'Featured Foods';
 
   @override
-  String get what_they_say => 'What they say';
-
-  @override
-  String get sign => 'Sign';
-
-  @override
-  String get payment_will_be_cash_on_delivery =>
-      'Payment will be made in cash upon delivery';
-
-  @override
-  String get description_required => 'Description is required';
-
-  @override
-  String get description_min_length =>
-      'Description must be at least 3 characters';
-
-  @override
-  String get description_max_length =>
-      'Description must be less than 50 characters';
-
-  @override
-  String get address_required => 'Address is required';
-
-  @override
-  String get address_min_length => 'Address must be at least 10 characters';
-
-  @override
-  String get address_max_length => 'Address must be less than 200 characters';
-
-  @override
-  String get please_correct_form_errors => 'Please correct the form errors';
-
-  @override
-  String get getCurrentLocation => 'Get My Current Location';
-
-  @override
-  String get locatingPosition => 'Locating your position...';
-
-  @override
-  String get locationDetected => 'Location detected';
-
-  @override
-  String get useThisLocation => 'Use this location';
-
-  @override
-  String get locationPermissionDenied => 'Location permission denied';
-
-  @override
-  String get locationDetectionFailed => 'Failed to detect location';
-
-  @override
-  String get myCurrentLocation => 'My current location';
-
-  @override
-  String get userInformation => 'User Information';
-
-  @override
-  String get name => 'Name';
-
-  @override
-  String get currentAddress => 'Current Address';
-
-  @override
-  String get loadingUserInfo => 'Loading user information...';
-
-  @override
-  String get useMyCurrentAddress => 'Use my current address';
-
-  @override
-  String get addressUsedSuccessfully => 'Your current address has been used';
+  String get what_they_say => 'What They Say';
 }

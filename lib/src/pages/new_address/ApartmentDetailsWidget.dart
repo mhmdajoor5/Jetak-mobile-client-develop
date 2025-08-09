@@ -80,7 +80,7 @@ class _ApartmentDetailsWidgetState extends State<ApartmentDetailsWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Address details', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          Text(S.of(context).addressDetails, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           SizedBox(height: 6),
           Text(
             'Adding exact address details helps us find you faster',

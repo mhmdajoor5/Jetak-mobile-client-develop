@@ -688,7 +688,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
                                         initiallyExpanded: true,
                                         title: Column(
                                           children: <Widget>[
-                                            Text('${S.of(context).order_id}: #${_con.order.id}'),
+                                            Text('${S.of(context).orderId}: #${_con.order.id}'),
                                             Text(DateFormat('dd-MM-yyyy | HH:mm').format(_con.order.dateTime), style: Theme.of(context).textTheme.bodySmall),
                                           ],
                                           crossAxisAlignment: CrossAxisAlignment.start,

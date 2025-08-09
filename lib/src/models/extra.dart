@@ -6,11 +6,21 @@ class Extra {
   String extraGroupId;
   String name;
   double price;
+  double extraCharge; // الرسوم الإضافية للعنصر
   Media image;
   String description;
   bool checked;
 
-  Extra({this.id = '', this.extraGroupId = '0', this.name = '', this.price = 0.0, Media? image, this.description = '', this.checked = false}) : image = image ?? Media();
+  Extra({
+    this.id = '', 
+    this.extraGroupId = '0', 
+    this.name = '', 
+    this.price = 0.0, 
+    this.extraCharge = 0.0,
+    Media? image, 
+    this.description = '', 
+    this.checked = false
+  }) : image = image ?? Media();
 
   factory Extra.fromJSON(Map<String, dynamic>? jsonMap) {
     try {
@@ -19,6 +29,7 @@ class Extra {
         extraGroupId: jsonMap?['extra_group_id']?.toString() ?? '0',
         name: jsonMap?['name']?.toString() ?? '',
         price: (jsonMap?['price'] as num?)?.toDouble() ?? 0.0,
+        extraCharge: (jsonMap?['extra_charge'] as num?)?.toDouble() ?? 0.0,
         description: jsonMap?['description']?.toString() ?? '',
         image: (jsonMap?['media'] != null && (jsonMap!['media'] as List).isNotEmpty) ? Media.fromJSON(jsonMap['media'][0]) : Media(),
       );
@@ -29,7 +40,13 @@ class Extra {
   }
 
   Map<String, dynamic> toMap() {
-    return {"id": id, "name": name, "price": price, "description": description};
+    return {
+      "id": id, 
+      "name": name, 
+      "price": price, 
+      "extra_charge": extraCharge,
+      "description": description
+    };
   }
 
   @override

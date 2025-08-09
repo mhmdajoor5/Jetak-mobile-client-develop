@@ -96,7 +96,7 @@ class _MyAppState extends State<MyApp> {
           initialRoute: '/Splash',
           onGenerateRoute: RouteGenerator.generateRoute,
           debugShowCheckedModeBanner: false,
-          supportedLocales: S.delegate.supportedLocales,
+          supportedLocales: S.supportedLocales,
           localizationsDelegates: const [
             S.delegate,
             GlobalMaterialLocalizations.delegate,

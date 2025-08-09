@@ -1,6 +1,8 @@
 import '../helpers/custom_trace.dart';
+import '../helpers/helper.dart';
 import '../models/extra.dart';
 import '../models/food.dart';
+import 'extra_group.dart';
 
 class Cart {
   String? id;
@@ -36,9 +38,61 @@ class Cart {
 
   double getFoodPrice() {
     double result = food?.price ?? 0.0;
-    for (var extra in extras) {
-      result += extra.price;
+    
+    if (extras.isEmpty) {
+      return result;
     }
+
+    // تجميع الإضافات حسب المجموعة
+    Map<String, List<Extra>> extrasByGroup = {};
+    for (var extra in extras) {
+      if (!extrasByGroup.containsKey(extra.extraGroupId)) {
+        extrasByGroup[extra.extraGroupId] = [];
+      }
+      extrasByGroup[extra.extraGroupId]!.add(extra);
+    }
+
+    // حساب السعر لكل مجموعة إضافات
+    for (var groupId in extrasByGroup.keys) {
+      List<Extra> groupExtras = extrasByGroup[groupId]!;
+      
+      // البحث عن ExtraGroup المقابل
+      ExtraGroup? extraGroup = food?.extraGroups.firstWhere(
+        (group) => group.id == groupId,
+        orElse: () => ExtraGroup(),
+      );
+
+      if (extraGroup!.id.isEmpty) {
+        // إذا لم نجد المجموعة، نستخدم السعر العادي
+        for (var extra in groupExtras) {
+          result += extra.price;
+        }
+        continue;
+      }
+
+      // تطبيق منطق max_allowed و max_charge
+      if (extraGroup!.maxAllowed != null && groupExtras.length > extraGroup.maxAllowed!) {
+        // عدد الإضافات يتجاوز الحد المسموح
+        int allowedCount = extraGroup!.maxAllowed!;
+        int extraCount = groupExtras.length - allowedCount;
+        
+        // حساب سعر الإضافات المسموحة
+        for (int i = 0; i < allowedCount && i < groupExtras.length; i++) {
+          result += groupExtras[i].price;
+        }
+        
+        // إضافة الرسوم الإضافية للإضافات التي تتجاوز الحد
+        for (int i = allowedCount; i < groupExtras.length; i++) {
+          result += groupExtras[i].price + extraGroup.maxCharge;
+        }
+      } else {
+        // عدد الإضافات ضمن الحد المسموح أو لا يوجد حد
+        for (var extra in groupExtras) {
+          result += extra.price;
+        }
+      }
+    }
+
     return result;
   }
 

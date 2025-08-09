@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swipe_button/flutter_swipe_button.dart';
 import '../repository/settings_repository.dart';
 import 'app_colors.dart';
+import '../../generated/l10n.dart';
 
 class SwipeButtonWidget extends StatelessWidget {
   const SwipeButtonWidget({
@@ -30,7 +31,7 @@ class SwipeButtonWidget extends StatelessWidget {
           children: [
             SizedBox(width: 80),
             Text(
-              "${numOfItems.toString()} items in Cart",
+              "${numOfItems.toString()} ${S.of(context).itemsInCart}",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
@@ -41,7 +42,7 @@ class SwipeButtonWidget extends StatelessWidget {
             // SizedBox(width: 8),
 
             Text(
-              "Pay ${totalPrice.toStringAsFixed(2)} ",
+              "${S.of(context).pay} ${totalPrice.toStringAsFixed(2)} ",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,

@@ -46,7 +46,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get submit => 'ارسال';
 
   @override
-  String get verify => 'التحقق';
+  String get verify => 'تحقق';
 
   @override
   String get selectYourPreferredLanguages => 'Select your preferred languages';
@@ -148,7 +148,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'Longpress on the food to add suplements';
 
   @override
-  String get notifications => 'إشعارات';
+  String get notifications => 'الإشعارات';
 
   @override
   String get confirmation => 'التأكيد';
@@ -170,7 +170,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get favorites => 'المفضلة';
 
   @override
-  String get home => 'المنزل';
+  String get home => 'الرئيسية';
 
   @override
   String get payment_options => 'خيارات الدفع';
@@ -197,7 +197,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get email => 'البريد الإلكتروني';
 
   @override
-  String get phone => 'رقم الجوال';
+  String get phone => 'رقم الهاتف';
 
   @override
   String get address => 'العنوان';
@@ -218,7 +218,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get english => 'الإنجليزية';
 
   @override
-  String get help_support => 'المساعدة';
+  String get help_support => 'المساعدة والدعم';
 
   @override
   String get register => 'تسجيل';
@@ -258,7 +258,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'يمكنك استكتشاف المطابخ المحيطة بك واختيار أفضل وجبة لك';
 
   @override
-  String get reset_cart => 'إعادة تعيين سلة التسوق';
+  String get reset_cart => 'إعادة تعيين السلة';
 
   @override
   String get cart => 'سلة التسوق';
@@ -278,21 +278,21 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get you_must_add_foods_of_the_same_restaurants_choose_one =>
-      'فضلا اختيار الاصناف من مطبخ واحد في كل طلب';
+      'يجب إضافة أطعمة من نفس المطعم';
 
   @override
   String get reset_your_cart_and_order_meals_form_this_restaurant =>
-      'افرغ سلة التسوق واضف اختياراتي من هذا المطبخ';
+      'إعادة تعيين السلة وطلب وجبات من هذا المطعم';
 
   @override
   String get keep_your_old_meals_of_this_restaurant =>
-      'لا تفرغ السلة واحتفظ باختياراتي السابقة';
+      'الاحتفاظ بالوجبات القديمة من هذا المطعم';
 
   @override
   String get reset => 'إعادة تعيين';
 
   @override
-  String get close => 'اغلاق';
+  String get close => 'إغلاق';
 
   @override
   String get application_preferences => 'تفضيلات التطبيق';
@@ -301,7 +301,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get help__support => 'المساعدة';
 
   @override
-  String get pending_payment => 'في انتظار الدفع';
+  String get pending_payment => 'الدفع معلق';
 
   @override
   String get light_mode => 'الوضع الفاتح';
@@ -316,14 +316,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get version => 'الإصدار';
 
   @override
-  String get dont_have_any_item_in_your_cart => 'سلة التسوق فارغة';
+  String get dont_have_any_item_in_your_cart => 'لا توجد عناصر في سلة التسوق';
 
   @override
-  String get start_exploring => 'استكشف الآن';
+  String get start_exploring => 'ابدأ الاستكشاف';
 
   @override
   String get dont_have_any_item_in_the_notification_list =>
-      'قائمة الاشعارات فارغة';
+      'لا توجد عناصر في قائمة الإشعارات';
 
   @override
   String get payment_settings => 'إعدادات الدفع';
@@ -347,13 +347,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get edit => 'تعديل';
 
   @override
-  String get not_a_valid_full_name => 'اسم غير صالح';
+  String get not_a_valid_full_name => 'الاسم الكامل غير صالح';
 
   @override
-  String get email_address => 'البريد الإلكتروني';
+  String get email_address => 'عنوان البريد الإلكتروني';
 
   @override
-  String get not_a_valid_email => 'بريد الكتروني غير صالح';
+  String get not_a_valid_email => 'البريد الإلكتروني غير صالح';
 
   @override
   String get not_a_valid_phone => 'رقم الجوال غير صالح';
@@ -371,7 +371,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get your_address => 'عنوانك';
 
   @override
-  String get search => 'بحث';
+  String get search => 'البحث';
 
   @override
   String get recentsSearch => 'Recents Search';
@@ -439,20 +439,19 @@ class AppLocalizationsAr extends AppLocalizations {
       'اضغط مطولا لتحرير العنصر، اسحب الى الجنب لحذفه';
 
   @override
-  String get add_delivery_address => 'اضافة عنوان للتوصيل';
+  String get add_delivery_address => 'إضافة عنوان التوصيل';
 
   @override
-  String get home_address => 'المنزل';
+  String get home_address => 'عنوان المنزل';
 
   @override
   String get description => 'الوصف';
 
   @override
-  String get hint_full_address =>
-      'المدينة المنورة ، حي الازهري ، الشارع العام ، خلف مكتبة الحرمين';
+  String get hint_full_address => 'أدخل عنوانك الكامل';
 
   @override
-  String get full_address => 'العنوان بالكامل';
+  String get full_address => 'العنوان الكامل';
 
   @override
   String get email_to_reset_password =>
@@ -477,13 +476,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get you_must_signin_to_access_to_this_section =>
-      'يجب تسجيل الدخول لمشاهدة هذه الصفحة';
+      'يجب تسجيل الدخول للوصول إلى هذا القسم';
 
   @override
-  String get tell_us_about_this_restaurant => 'Tell us about this restaurant';
+  String get tell_us_about_this_restaurant => 'أخبرنا عن هذا المطعم';
 
   @override
-  String get how_would_you_rate_this_restaurant_ => 'كيف تقيّم هذا المطعم؟';
+  String get how_would_you_rate_this_restaurant_ => 'كيف تقيم هذا المطعم؟';
 
   @override
   String get tell_us_about_this_food => 'أخبرنا عن هذا الطعام';
@@ -502,10 +501,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get delivery_fee => 'رسوم التوصيل';
 
   @override
-  String get order_status_changed => 'تم تغيير حالة الطلب';
+  String get order_status_changed => 'تغيرت حالة الطلب';
 
   @override
-  String get new_order_from_client => 'طلب جديد من عميل';
+  String get new_order_from_client => 'طلب جديد من العميل';
 
   @override
   String get shopping => 'Shopping';
@@ -539,10 +538,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mi => 'ميل';
 
   @override
-  String get delivery_address => 'Delivery Address';
+  String get delivery_address => 'عنوان التوصيل';
 
   @override
-  String get current_location => 'Current location';
+  String get current_location => 'الموقع الحالي';
 
   @override
   String get delivery_address_removed_successfully =>
@@ -587,22 +586,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get fields => 'Fields';
 
   @override
-  String get this_food_was_added_to_cart => 'تم إضافة المنتج إلى السلة';
+  String get this_food_was_added_to_cart => 'تم إضافة هذا الطعام إلى السلة';
 
   @override
   String get foods_result => 'Foods result';
 
   @override
-  String get foods_results => 'Foods Results';
+  String get foods_results => 'نتائج الأطعمة';
 
   @override
-  String get restaurants_results => 'Restaurants Results';
+  String get restaurants_results => 'نتائج المطاعم';
 
   @override
   String get all => 'All';
 
   @override
-  String get this_restaurant_is_closed_ => 'This restaurant is closed !';
+  String get this_restaurant_is_closed_ => 'هذا المطعم مغلق';
 
   @override
   String get unknown => 'غير معروف';
@@ -678,7 +677,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get orderingFromAnotherRestaurantWillClearYourCart =>
-      'Ordering from another restaurant will clear your current cart. Do you want to continue?';
+      'الطلب من مطعم آخر سيؤدي إلى إفراغ سلة التسوق. هل تريد المتابعة؟';
 
   @override
   String get continueText => 'متابعة';
@@ -714,7 +713,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cannot_add_from_different_restaurant =>
-      'لا يمكن إضافة منتجات من مطاعم مختلفة في نفس الطلب. هل تريد إفراغ السلة وإضافة منتجات من هذا المطعم؟';
+      'لا يمكن إضافة من مطعم مختلف';
 
   @override
   String get foodRefreshedSuccessfuly => 'تم تحديث الطعام بنجاح';
@@ -738,7 +737,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get viewDetails => 'View Details';
 
   @override
-  String get youDontHaveAnyOrder => 'You don\'t  have any order';
+  String get youDontHaveAnyOrder => 'ليس لديك أي طلبات';
 
   @override
   String get orderDetails => 'Order Details';
@@ -775,7 +774,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'Click on the food to get more details about it';
 
   @override
-  String get razorpayPayment => 'دفع RazorPay';
+  String get razorpayPayment => 'الدفع عبر Razorpay';
 
   @override
   String get razorpay => 'RazorPay';
@@ -785,7 +784,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'انقر للدفع باستخدام طريقة RazorPay';
 
   @override
-  String get tapAgainToLeave => 'Tap again to leave';
+  String get tapAgainToLeave => 'انقر مرة أخرى للمغادرة';
 
   @override
   String get validCouponCode => 'رمز القسيمة صالح';
@@ -800,7 +799,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get messages => 'الرسائل';
 
   @override
-  String get youDontHaveAnyConversations => 'لا توجد أي محادثات لديك';
+  String get youDontHaveAnyConversations => 'ليس لديك أي محادثات';
 
   @override
   String get newMessageFrom => 'رسالة جديدة من';
@@ -817,7 +816,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get typeToStartChat => 'اكتب لبدء المحادثة';
 
   @override
-  String get makeItDefault => 'اجعله الافتراضي';
+  String get makeItDefault => 'اجعله افتراضياً';
 
   @override
   String get notValidAddress => 'العنوان غير صالح';
@@ -840,14 +839,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get phoneNumber => 'رقم الهاتف';
 
   @override
-  String get smsHasBeenSentTo => 'SMS has been sent to';
+  String get smsHasBeenSentTo => 'تم إرسال الرسالة النصية إلى';
 
   @override
   String get weAreSendingOtpToValidateYourMobileNumberHang =>
-      'We are sending OTP to validate your mobile number. Hang on!';
+      'نرسل رمز OTP للتحقق من رقم هاتفك';
 
   @override
-  String get verifyPhoneNumber => 'Verify Phone Number';
+  String get verifyPhoneNumber => 'التحقق من رقم الهاتف';
 
   @override
   String get check_on_waze => 'افحص الموقع على تطبيق Waze:';
@@ -886,16 +885,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get order_summary => 'ملخص الطلب';
 
   @override
-  String get include_tax => 'اضف الضريبة (ان وجدت)';
+  String get include_tax => 'يشمل الضريبة';
 
   @override
-  String get item_subtotal => 'المجموع الفرعي للعنصر';
+  String get item_subtotal => 'مجموع العناصر';
 
   @override
-  String get service_fee => 'ضريبة الخدمة';
+  String get service_fee => 'رسوم الخدمة';
 
   @override
-  String get promo => 'الخصم';
+  String get promo => 'العروض الترويجية';
 
   @override
   String get pay_now => 'ادفع الان';
@@ -904,10 +903,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get enter_here => 'ادخل هنا';
 
   @override
-  String get delivery => 'توصيل';
+  String get delivery => 'التوصيل';
 
   @override
-  String get pickup => 'استلام';
+  String get pickup => 'الاستلام';
 
   @override
   String open_until(Object time) {
@@ -1020,7 +1019,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get no_saved_cards => 'لا توجد بطاقات محفوظة';
 
   @override
-  String get select_extras => 'اختر الإضافات لإضافتها على الطعام';
+  String get select_extras => 'اختر الإضافات';
 
   @override
   String added_to_cart(Object foodName) {
@@ -1071,28 +1070,28 @@ class AppLocalizationsAr extends AppLocalizations {
   String get testNotification => 'إشعار تجريبي';
 
   @override
-  String get testNotificationBody => 'هذا إشعار تجريبي!';
+  String get testNotificationBody => 'هذا إشعار تجريبي';
 
   @override
-  String get testNotificationSent => 'تم إرسال الإشعار التجريبي!';
+  String get testNotificationSent => 'تم إرسال الإشعار التجريبي بنجاح';
 
   @override
-  String get unreadNotifications => 'إشعارات غير مقروءة';
+  String get unreadNotifications => 'الإشعارات غير المقروءة';
 
   @override
-  String get notificationsTestTitle => '🧪 اختبار الإشعارات';
+  String get notificationsTestTitle => 'اختبار الإشعارات';
 
   @override
   String get refreshNotificationCount => 'تحديث عدد الإشعارات';
 
   @override
-  String get testLocalNotification => 'اختبار إشعار محلي';
+  String get testLocalNotification => 'اختبار الإشعار المحلي';
 
   @override
   String get fetchAllNotifications => 'جلب جميع الإشعارات';
 
   @override
-  String get goToNotificationsPage => 'الذهاب لصفحة الإشعارات';
+  String get goToNotificationsPage => 'الذهاب إلى صفحة الإشعارات';
 
   @override
   String get testApiConnection => 'اختبار الاتصال بالـ API';
@@ -1102,12 +1101,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String apiConnectionSuccess(Object count) {
-    return '✅ تم بنجاح! عدد الإشعارات: $count';
+    return 'نجح الاتصال بالـ API. تم العثور على $count إشعار';
   }
 
   @override
   String apiConnectionFailed(Object error) {
-    return '❌ فشل في الاتصال: $error';
+    return 'فشل الاتصال بالـ API: $error';
   }
 
   @override
@@ -1119,12 +1118,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get apiInfoTitle => 'معلومات الـ API';
 
   @override
-  String get apiEndpoint =>
-      'النقطة الطرفية: https://carrytechnologies.co/api/notifications';
+  String get apiEndpoint => 'نقطة نهاية الـ API';
 
   @override
-  String get apiToken =>
-      'التوكن: fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv';
+  String get apiToken => 'رمز الـ API';
 
   @override
   String get tracking => 'تتبع';
@@ -1136,7 +1133,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get notAvailableNow => 'غير متوفر الآن';
 
   @override
-  String get twentyToThirtyMin => '20–30 دقيقة';
+  String get twentyToThirtyMin => '20-30 دقيقة';
 
   @override
   String get discount => 'خصم';
@@ -1148,7 +1145,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get timeFormatHhMm => 'HH:mm';
 
   @override
-  String get ddMMyyyy => 'dd-MM-yyyy';
+  String get ddMMyyyy => 'dd/MM/yyyy';
 
   @override
   String get dateTimeFormatMmmDdYyyyHhMm => 'MMM dd, yyyy HH:mm';
@@ -1161,7 +1158,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get addingExactAddressDetailsHelpsUsFindYouFaster =>
-      'إضافة تفاصيل دقيقة للعنوان تساعدنا في العثور عليك بشكل أسرع';
+      'إضافة تفاصيل العنوان الدقيقة تساعدنا في العثور عليك بشكل أسرع';
 
   @override
   String get buildingName => 'اسم المبنى';
@@ -1197,17 +1194,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get doorIsOpen => 'الباب مفتوح';
 
   @override
-  String get otherTellUsHow => 'آخر (أخبرنا كيف)';
+  String get otherTellUsHow => 'أخرى (أخبرنا كيف)';
 
   @override
   String get otherInstructionsForTheCourier => 'تعليمات أخرى للساعي';
 
   @override
-  String get addressTypeAndLabel => 'نوع العنوان والوسم';
+  String get addressTypeAndLabel => 'نوع العنوان والتسمية';
 
   @override
   String get addOrCreateAddressLabelsToEasilyChooseBetweenDeliveryAddresses =>
-      'أضف أو أنشئ وسمًا للعناوين لتسهيل اختيار عنوان التوصيل.';
+      'أضف أو أنشئ تسميات للعناوين لاختيار عنوان التوصيل بسهولة';
 
   @override
   String get work => 'العمل';
@@ -1340,33 +1337,71 @@ class AppLocalizationsAr extends AppLocalizations {
   String get see_all => 'عرض الكل';
 
   @override
-  String get location_type_hint =>
-      'نوع الموقع يساعدنا في الوصول إليك بشكل أفضل، مثل: المنزل، المكتب';
+  String get location_type_hint => 'اختر نوع الموقع';
 
   @override
   String get cartIsEmpty => 'السلة فارغة';
 
   @override
-  String get chooseOrderType => 'اختيار نوع الطلب';
+  String get chooseOrderType => 'اختر نوع الطلب';
 
   @override
-  String get hi => 'مرحبًا 👋';
+  String get hi => 'مرحباً 👋';
 
   @override
   String get writeEmailAndPassword =>
-      ' اكتب بريدك الإلكتروني وكلمة المرور 💁‍♂️';
+      'اكتب بريدك الإلكتروني وكلمة المرور 💁‍♂️';
 
   @override
-  String get providePhoneNumber => 'زوّدنا برقم هاتفك 🙅‍♂️';
+  String get providePhoneNumber => 'أعطنا رقم هاتفك 🙅‍♂️';
 
   @override
-  String get codeSent => 'لقد أرسلنا لك رمزًا 🧏‍♂️';
+  String get codeSent => 'أرسلنا لك رمزاً 🧏‍♂️';
 
   @override
-  String get enterTheDoorCode => 'اكتب لنا كود الباب';
+  String get enterTheDoorCode => 'أدخل رمز الباب';
 
   @override
-  String get otherInstructionsForCourier => 'تعليمات أخرى لمندوب التوصيل';
+  String get otherInstructionsForCourier => 'تعليمات أخرى للرسول';
+
+  @override
+  String get additions => 'إضافات';
+
+  @override
+  String get itemsInCart => 'العناصر في السلة';
+
+  @override
+  String get pay => 'ادفع';
+
+  @override
+  String get search_for_restaurants_or_foods => 'البحث في المطاعم والأطعمة';
+
+  @override
+  String get ordered_by_nearby_first => 'مرتبة حسب الأقرب أولاً';
+
+  @override
+  String get card_number => 'رقم البطاقة';
+
+  @override
+  String get expiry_date => 'تاريخ الانتهاء';
+
+  @override
+  String get description_required => 'الوصف مطلوب';
+
+  @override
+  String get description_min_length => 'الوصف يجب أن يكون 3 أحرف على الأقل';
+
+  @override
+  String get description_max_length => 'الوصف يجب أن يكون أقل من 50 حرف';
+
+  @override
+  String get address_required => 'العنوان مطلوب';
+
+  @override
+  String get add_to_cart => 'أضف إلى السلة';
+
+  @override
+  String get please_correct_form_errors => 'يرجى تصحيح الأخطاء في النموذج';
 
   @override
   String get verify_your_internet_connection => 'تحقق من اتصال الإنترنت';
@@ -1375,13 +1410,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get carts_refreshed_successfuly => 'تم تحديث السلة بنجاح';
 
   @override
+  String get productRemovedFromCart => 'تم حذف المنتج من السلة';
+
+  @override
+  String get errorRemovingProduct => 'حدث خطأ أثناء حذف المنتج';
+
+  @override
   String get category_refreshed_successfuly => 'تم تحديث التصنيف بنجاح';
-
-  @override
-  String get card_number => 'رقم البطاقة';
-
-  @override
-  String get expiry_date => 'تاريخ الانتهاء';
 
   @override
   String get favorite_foods => 'الأطعمة المفضلة';
@@ -1393,15 +1428,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get i_dont_have_an_account => 'لا أملك حسابًا';
 
   @override
-  String get search_for_restaurants_or_foods => 'ابحث عن مطاعم أو أطعمة';
-
-  @override
-  String get ordered_by_nearby_first => 'مرتبة حسب الأقرب أولاً';
-
-  @override
-  String get maps_explorer => 'مستكشف الخرائط';
-
-  @override
   String get top_restaurants => 'أفضل المطاعم';
 
   @override
@@ -1409,6 +1435,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get trending_this_week => 'الشائع هذا الأسبوع';
+
+  @override
+  String get sign => 'تسجيل دخول';
+
+  @override
+  String get maps_explorer => 'مستكشف الخرائط';
 
   @override
   String get payment_mode => 'طريقة الدفع';
@@ -1429,9 +1461,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get confirm_payment => 'تأكيد الدفع';
 
   @override
-  String get add_to_cart => 'أضف إلى السلة';
-
-  @override
   String get help_supports => 'المساعدة والدعم';
 
   @override
@@ -1443,70 +1472,4 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get what_they_say => 'آراء العملاء';
-
-  @override
-  String get sign => 'تسجيل دخول';
-
-  @override
-  String get payment_will_be_cash_on_delivery => 'سيتم الدفع نقداً عند التسليم';
-
-  @override
-  String get description_required => 'الوصف مطلوب';
-
-  @override
-  String get description_min_length => 'الوصف يجب أن يكون 3 أحرف على الأقل';
-
-  @override
-  String get description_max_length => 'الوصف يجب أن يكون أقل من 50 حرف';
-
-  @override
-  String get address_required => 'العنوان مطلوب';
-
-  @override
-  String get address_min_length => 'العنوان يجب أن يكون 10 أحرف على الأقل';
-
-  @override
-  String get address_max_length => 'العنوان يجب أن يكون أقل من 200 حرف';
-
-  @override
-  String get please_correct_form_errors => 'يرجى تصحيح الأخطاء في النموذج';
-
-  @override
-  String get getCurrentLocation => 'تحديد موقعي الحالي';
-
-  @override
-  String get locatingPosition => 'جاري تحديد موقعك...';
-
-  @override
-  String get locationDetected => 'تم تحديد موقعك';
-
-  @override
-  String get useThisLocation => 'استخدام هذا الموقع';
-
-  @override
-  String get locationPermissionDenied => 'تم رفض صلاحيات الموقع';
-
-  @override
-  String get locationDetectionFailed => 'تعذر تحديد الموقع';
-
-  @override
-  String get myCurrentLocation => 'موقعي الحالي';
-
-  @override
-  String get userInformation => 'معلومات المستخدم';
-
-  @override
-  String get name => 'الاسم';
-
-  @override
-  String get currentAddress => 'العنوان الحالي';
-
-  @override
-  String get loadingUserInfo => 'جاري تحميل معلومات المستخدم...';
-
-  @override
-  String get useMyCurrentAddress => 'استخدام عنواني الحالي';
-
-  @override
-  String get addressUsedSuccessfully => 'تم استخدام عنوانك الحالي';
 }

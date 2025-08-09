@@ -457,7 +457,7 @@ abstract class AppLocalizations {
   /// No description provided for @full_name.
   ///
   /// In en, this message translates to:
-  /// **'Full name'**
+  /// **'Full Name'**
   String get full_name;
 
   /// No description provided for @email.
@@ -589,7 +589,7 @@ abstract class AppLocalizations {
   /// No description provided for @reset_cart.
   ///
   /// In en, this message translates to:
-  /// **'Reset Cart?'**
+  /// **'Reset Cart'**
   String get reset_cart;
 
   /// No description provided for @cart.
@@ -625,19 +625,19 @@ abstract class AppLocalizations {
   /// No description provided for @you_must_add_foods_of_the_same_restaurants_choose_one.
   ///
   /// In en, this message translates to:
-  /// **'You must add foods of the same restaurants choose one restaurants only!'**
+  /// **'You must add foods from the same restaurant'**
   String get you_must_add_foods_of_the_same_restaurants_choose_one;
 
   /// No description provided for @reset_your_cart_and_order_meals_form_this_restaurant.
   ///
   /// In en, this message translates to:
-  /// **'Reset your cart and order meals form this restaurant'**
+  /// **'Reset your cart and order meals from this restaurant'**
   String get reset_your_cart_and_order_meals_form_this_restaurant;
 
   /// No description provided for @keep_your_old_meals_of_this_restaurant.
   ///
   /// In en, this message translates to:
-  /// **'Keep your old meals of this restaurant'**
+  /// **'Keep your old meals from this restaurant'**
   String get keep_your_old_meals_of_this_restaurant;
 
   /// No description provided for @reset.
@@ -661,7 +661,7 @@ abstract class AppLocalizations {
   /// No description provided for @help__support.
   ///
   /// In en, this message translates to:
-  /// **'Help & Support'**
+  /// **'Help & Supports'**
   String get help__support;
 
   /// No description provided for @pending_payment.
@@ -697,7 +697,7 @@ abstract class AppLocalizations {
   /// No description provided for @dont_have_any_item_in_your_cart.
   ///
   /// In en, this message translates to:
-  /// **'D\'ont have any item in your cart'**
+  /// **'Don\'t have any item in your cart'**
   String get dont_have_any_item_in_your_cart;
 
   /// No description provided for @start_exploring.
@@ -709,7 +709,7 @@ abstract class AppLocalizations {
   /// No description provided for @dont_have_any_item_in_the_notification_list.
   ///
   /// In en, this message translates to:
-  /// **'D\'ont have any item in the notification list'**
+  /// **'Don\'t have any item in the notification list'**
   String get dont_have_any_item_in_the_notification_list;
 
   /// No description provided for @payment_settings.
@@ -949,7 +949,7 @@ abstract class AppLocalizations {
   /// No description provided for @hint_full_address.
   ///
   /// In en, this message translates to:
-  /// **'12 Street, City 21663, Country'**
+  /// **'Enter your full address'**
   String get hint_full_address;
 
   /// No description provided for @full_address.
@@ -997,7 +997,7 @@ abstract class AppLocalizations {
   /// No description provided for @you_must_signin_to_access_to_this_section.
   ///
   /// In en, this message translates to:
-  /// **'You must sign-in to access to this section'**
+  /// **'You must sign in to access this section'**
   String get you_must_signin_to_access_to_this_section;
 
   /// No description provided for @tell_us_about_this_restaurant.
@@ -1009,7 +1009,7 @@ abstract class AppLocalizations {
   /// No description provided for @how_would_you_rate_this_restaurant_.
   ///
   /// In en, this message translates to:
-  /// **'How would you rate this restaurant ?'**
+  /// **'How would you rate this restaurant?'**
   String get how_would_you_rate_this_restaurant_;
 
   /// No description provided for @tell_us_about_this_food.
@@ -1123,7 +1123,7 @@ abstract class AppLocalizations {
   /// No description provided for @current_location.
   ///
   /// In en, this message translates to:
-  /// **'Current location'**
+  /// **'Current Location'**
   String get current_location;
 
   /// No description provided for @delivery_address_removed_successfully.
@@ -1237,7 +1237,7 @@ abstract class AppLocalizations {
   /// No description provided for @this_restaurant_is_closed_.
   ///
   /// In en, this message translates to:
-  /// **'This restaurant is closed !'**
+  /// **'This restaurant is closed'**
   String get this_restaurant_is_closed_;
 
   /// No description provided for @unknown.
@@ -1441,7 +1441,7 @@ abstract class AppLocalizations {
   /// No description provided for @cannot_add_from_different_restaurant.
   ///
   /// In en, this message translates to:
-  /// **'Cannot add products from different restaurants in the same order. Do you want to clear the cart and add products from this restaurant?'**
+  /// **'Cannot add from different restaurant'**
   String get cannot_add_from_different_restaurant;
 
   /// No description provided for @foodRefreshedSuccessfuly.
@@ -1483,7 +1483,7 @@ abstract class AppLocalizations {
   /// No description provided for @youDontHaveAnyOrder.
   ///
   /// In en, this message translates to:
-  /// **'You don\'t  have any order'**
+  /// **'You don\'t have any order'**
   String get youDontHaveAnyOrder;
 
   /// No description provided for @orderDetails.
@@ -1549,7 +1549,7 @@ abstract class AppLocalizations {
   /// No description provided for @razorpayPayment.
   ///
   /// In en, this message translates to:
-  /// **'RazorPay Payment'**
+  /// **'Razorpay Payment'**
   String get razorpayPayment;
 
   /// No description provided for @razorpay.
@@ -1675,7 +1675,7 @@ abstract class AppLocalizations {
   /// No description provided for @weAreSendingOtpToValidateYourMobileNumberHang.
   ///
   /// In en, this message translates to:
-  /// **'We are sending OTP to validate your mobile number. Hang on!'**
+  /// **'We are sending OTP to validate your mobile number'**
   String get weAreSendingOtpToValidateYourMobileNumberHang;
 
   /// No description provided for @verifyPhoneNumber.
@@ -1759,19 +1759,19 @@ abstract class AppLocalizations {
   /// No description provided for @include_tax.
   ///
   /// In en, this message translates to:
-  /// **'Include tax ( if applicable )'**
+  /// **'Include tax'**
   String get include_tax;
 
   /// No description provided for @item_subtotal.
   ///
   /// In en, this message translates to:
-  /// **'Item subtotal'**
+  /// **'Item Subtotal'**
   String get item_subtotal;
 
   /// No description provided for @service_fee.
   ///
   /// In en, this message translates to:
-  /// **'Service fee'**
+  /// **'Service Fee'**
   String get service_fee;
 
   /// No description provided for @promo.
@@ -2017,7 +2017,7 @@ abstract class AppLocalizations {
   /// No description provided for @select_extras.
   ///
   /// In en, this message translates to:
-  /// **'Select extras to add them on the food'**
+  /// **'Select Extras'**
   String get select_extras;
 
   /// No description provided for @added_to_cart.
@@ -2113,13 +2113,13 @@ abstract class AppLocalizations {
   /// No description provided for @testNotificationBody.
   ///
   /// In en, this message translates to:
-  /// **'This is a test notification!'**
+  /// **'This is a test notification'**
   String get testNotificationBody;
 
   /// No description provided for @testNotificationSent.
   ///
   /// In en, this message translates to:
-  /// **'Test notification sent!'**
+  /// **'Test notification sent successfully'**
   String get testNotificationSent;
 
   /// No description provided for @unreadNotifications.
@@ -2131,7 +2131,7 @@ abstract class AppLocalizations {
   /// No description provided for @notificationsTestTitle.
   ///
   /// In en, this message translates to:
-  /// **'🧪 Notification Test'**
+  /// **'Notifications Test'**
   String get notificationsTestTitle;
 
   /// No description provided for @refreshNotificationCount.
@@ -2173,13 +2173,13 @@ abstract class AppLocalizations {
   /// No description provided for @apiConnectionSuccess.
   ///
   /// In en, this message translates to:
-  /// **'✅ Success! Notification count: {count}'**
+  /// **'API connection successful. Found {count} notifications'**
   String apiConnectionSuccess(Object count);
 
   /// No description provided for @apiConnectionFailed.
   ///
   /// In en, this message translates to:
-  /// **'❌ Connection failed: {error}'**
+  /// **'API connection failed: {error}'**
   String apiConnectionFailed(Object error);
 
   /// No description provided for @errorFetchingNotifications.
@@ -2191,19 +2191,19 @@ abstract class AppLocalizations {
   /// No description provided for @apiInfoTitle.
   ///
   /// In en, this message translates to:
-  /// **'API Info'**
+  /// **'API Information'**
   String get apiInfoTitle;
 
   /// No description provided for @apiEndpoint.
   ///
   /// In en, this message translates to:
-  /// **'Endpoint: https://carrytechnologies.co/api/notifications'**
+  /// **'API Endpoint'**
   String get apiEndpoint;
 
   /// No description provided for @apiToken.
   ///
   /// In en, this message translates to:
-  /// **'Token: fXLu7VeYgXDu82SkMxlLPG1mCAXc4EBIx6O5isgYVIKFQiHah0xiOHmzNsBv'**
+  /// **'API Token'**
   String get apiToken;
 
   /// No description provided for @tracking.
@@ -2227,7 +2227,7 @@ abstract class AppLocalizations {
   /// No description provided for @twentyToThirtyMin.
   ///
   /// In en, this message translates to:
-  /// **'20–30 min'**
+  /// **'20-30 min'**
   String get twentyToThirtyMin;
 
   /// No description provided for @discount.
@@ -2239,7 +2239,7 @@ abstract class AppLocalizations {
   /// No description provided for @payNow.
   ///
   /// In en, this message translates to:
-  /// **'Pay now'**
+  /// **'Pay Now'**
   String get payNow;
 
   /// No description provided for @timeFormatHhMm.
@@ -2251,19 +2251,19 @@ abstract class AppLocalizations {
   /// No description provided for @ddMMyyyy.
   ///
   /// In en, this message translates to:
-  /// **'dd-MM-yyyy'**
+  /// **'dd/MM/yyyy'**
   String get ddMMyyyy;
 
   /// No description provided for @dateTimeFormatMmmDdYyyyHhMm.
   ///
   /// In en, this message translates to:
-  /// **'MMM dd, yyyy HH:mm'**
+  /// **'MMM dd, yyyy • HH:mm'**
   String get dateTimeFormatMmmDdYyyyHhMm;
 
   /// No description provided for @dateTimeFormatDdMmYyyyHhMm.
   ///
   /// In en, this message translates to:
-  /// **'dd/MM/yyyy HH:mm'**
+  /// **'dd-MM-yyyy | HH:mm'**
   String get dateTimeFormatDdMmYyyyHhMm;
 
   /// No description provided for @addressDetails.
@@ -2335,13 +2335,13 @@ abstract class AppLocalizations {
   /// No description provided for @doorCode.
   ///
   /// In en, this message translates to:
-  /// **'Door Code'**
+  /// **'Door code'**
   String get doorCode;
 
   /// No description provided for @doorIsOpen.
   ///
   /// In en, this message translates to:
-  /// **'Door is Open'**
+  /// **'Door is open'**
   String get doorIsOpen;
 
   /// No description provided for @otherTellUsHow.
@@ -2359,13 +2359,13 @@ abstract class AppLocalizations {
   /// No description provided for @addressTypeAndLabel.
   ///
   /// In en, this message translates to:
-  /// **'Address Type and Label'**
+  /// **'Address type and label'**
   String get addressTypeAndLabel;
 
   /// No description provided for @addOrCreateAddressLabelsToEasilyChooseBetweenDeliveryAddresses.
   ///
   /// In en, this message translates to:
-  /// **'Add or create address labels to easily choose between delivery addresses.'**
+  /// **'Add or create address labels to easily choose between delivery addresses'**
   String get addOrCreateAddressLabelsToEasilyChooseBetweenDeliveryAddresses;
 
   /// No description provided for @work.
@@ -2425,7 +2425,7 @@ abstract class AppLocalizations {
   /// No description provided for @locationPermissionDeniedForever.
   ///
   /// In en, this message translates to:
-  /// **'Location permission denied forever'**
+  /// **'Location permission denied permanently'**
   String get locationPermissionDeniedForever;
 
   /// No description provided for @locationFetchError.
@@ -2623,7 +2623,7 @@ abstract class AppLocalizations {
   /// No description provided for @location_type_hint.
   ///
   /// In en, this message translates to:
-  /// **'The location type helps us to find you better, house, office'**
+  /// **'Select location type'**
   String get location_type_hint;
 
   /// No description provided for @cartIsEmpty.
@@ -2635,7 +2635,7 @@ abstract class AppLocalizations {
   /// No description provided for @chooseOrderType.
   ///
   /// In en, this message translates to:
-  /// **'Choose order type'**
+  /// **'Choose Order Type'**
   String get chooseOrderType;
 
   /// No description provided for @hi.
@@ -2659,7 +2659,7 @@ abstract class AppLocalizations {
   /// No description provided for @codeSent.
   ///
   /// In en, this message translates to:
-  /// **'We have sent you a code 🧏‍♂️'**
+  /// **'We sent you a code 🧏‍♂️'**
   String get codeSent;
 
   /// No description provided for @enterTheDoorCode.
@@ -2671,56 +2671,26 @@ abstract class AppLocalizations {
   /// No description provided for @otherInstructionsForCourier.
   ///
   /// In en, this message translates to:
-  /// **'Other instructions for the courier'**
+  /// **'Other instructions for courier'**
   String get otherInstructionsForCourier;
 
-  /// No description provided for @verify_your_internet_connection.
+  /// No description provided for @additions.
   ///
   /// In en, this message translates to:
-  /// **'Verify your internet connection'**
-  String get verify_your_internet_connection;
+  /// **'Additions'**
+  String get additions;
 
-  /// No description provided for @carts_refreshed_successfuly.
+  /// No description provided for @itemsInCart.
   ///
   /// In en, this message translates to:
-  /// **'Carts refreshed successfully'**
-  String get carts_refreshed_successfuly;
+  /// **'Items in Cart'**
+  String get itemsInCart;
 
-  /// No description provided for @category_refreshed_successfuly.
+  /// No description provided for @pay.
   ///
   /// In en, this message translates to:
-  /// **'Category refreshed successfully'**
-  String get category_refreshed_successfuly;
-
-  /// No description provided for @card_number.
-  ///
-  /// In en, this message translates to:
-  /// **'Card number'**
-  String get card_number;
-
-  /// No description provided for @expiry_date.
-  ///
-  /// In en, this message translates to:
-  /// **'Expiry date'**
-  String get expiry_date;
-
-  /// No description provided for @favorite_foods.
-  ///
-  /// In en, this message translates to:
-  /// **'Favorite foods'**
-  String get favorite_foods;
-
-  /// No description provided for @order_id.
-  ///
-  /// In en, this message translates to:
-  /// **'Order ID'**
-  String get order_id;
-
-  /// No description provided for @i_dont_have_an_account.
-  ///
-  /// In en, this message translates to:
-  /// **'I don\'t have an account'**
-  String get i_dont_have_an_account;
+  /// **'Pay'**
+  String get pay;
 
   /// No description provided for @search_for_restaurants_or_foods.
   ///
@@ -2734,11 +2704,101 @@ abstract class AppLocalizations {
   /// **'Ordered by nearby first'**
   String get ordered_by_nearby_first;
 
-  /// No description provided for @maps_explorer.
+  /// No description provided for @card_number.
   ///
   /// In en, this message translates to:
-  /// **'Maps Explorer'**
-  String get maps_explorer;
+  /// **'Card Number'**
+  String get card_number;
+
+  /// No description provided for @expiry_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry Date'**
+  String get expiry_date;
+
+  /// No description provided for @description_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Description is required'**
+  String get description_required;
+
+  /// No description provided for @description_min_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Description must be at least 3 characters'**
+  String get description_min_length;
+
+  /// No description provided for @description_max_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Description must be less than 50 characters'**
+  String get description_max_length;
+
+  /// No description provided for @address_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Address is required'**
+  String get address_required;
+
+  /// No description provided for @add_to_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Cart'**
+  String get add_to_cart;
+
+  /// No description provided for @please_correct_form_errors.
+  ///
+  /// In en, this message translates to:
+  /// **'Please correct the form errors'**
+  String get please_correct_form_errors;
+
+  /// No description provided for @verify_your_internet_connection.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your internet connection'**
+  String get verify_your_internet_connection;
+
+  /// No description provided for @carts_refreshed_successfuly.
+  ///
+  /// In en, this message translates to:
+  /// **'Carts refreshed successfully'**
+  String get carts_refreshed_successfuly;
+
+  /// No description provided for @productRemovedFromCart.
+  ///
+  /// In en, this message translates to:
+  /// **'Product removed from cart'**
+  String get productRemovedFromCart;
+
+  /// No description provided for @errorRemovingProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Error removing product'**
+  String get errorRemovingProduct;
+
+  /// No description provided for @category_refreshed_successfuly.
+  ///
+  /// In en, this message translates to:
+  /// **'Category refreshed successfully'**
+  String get category_refreshed_successfuly;
+
+  /// No description provided for @favorite_foods.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite Foods'**
+  String get favorite_foods;
+
+  /// No description provided for @order_id.
+  ///
+  /// In en, this message translates to:
+  /// **'Order ID'**
+  String get order_id;
+
+  /// No description provided for @i_dont_have_an_account.
+  ///
+  /// In en, this message translates to:
+  /// **'I don\'t have an account'**
+  String get i_dont_have_an_account;
 
   /// No description provided for @top_restaurants.
   ///
@@ -2755,13 +2815,25 @@ abstract class AppLocalizations {
   /// No description provided for @trending_this_week.
   ///
   /// In en, this message translates to:
-  /// **'Trending this week'**
+  /// **'Trending This Week'**
   String get trending_this_week;
+
+  /// No description provided for @sign.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign'**
+  String get sign;
+
+  /// No description provided for @maps_explorer.
+  ///
+  /// In en, this message translates to:
+  /// **'Maps Explorer'**
+  String get maps_explorer;
 
   /// No description provided for @payment_mode.
   ///
   /// In en, this message translates to:
-  /// **'Payment mode'**
+  /// **'Payment Mode'**
   String get payment_mode;
 
   /// No description provided for @select_your_preferred_payment_mode.
@@ -2794,16 +2866,10 @@ abstract class AppLocalizations {
   /// **'Confirm Payment'**
   String get confirm_payment;
 
-  /// No description provided for @add_to_cart.
-  ///
-  /// In en, this message translates to:
-  /// **'Add to cart'**
-  String get add_to_cart;
-
   /// No description provided for @help_supports.
   ///
   /// In en, this message translates to:
-  /// **'Help & Supports'**
+  /// **'Help & Support'**
   String get help_supports;
 
   /// No description provided for @your_order_has_been_successfully_submitted.
@@ -2821,140 +2887,8 @@ abstract class AppLocalizations {
   /// No description provided for @what_they_say.
   ///
   /// In en, this message translates to:
-  /// **'What they say'**
+  /// **'What They Say'**
   String get what_they_say;
-
-  /// No description provided for @sign.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign'**
-  String get sign;
-
-  /// No description provided for @payment_will_be_cash_on_delivery.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment will be made in cash upon delivery'**
-  String get payment_will_be_cash_on_delivery;
-
-  /// No description provided for @description_required.
-  ///
-  /// In en, this message translates to:
-  /// **'Description is required'**
-  String get description_required;
-
-  /// No description provided for @description_min_length.
-  ///
-  /// In en, this message translates to:
-  /// **'Description must be at least 3 characters'**
-  String get description_min_length;
-
-  /// No description provided for @description_max_length.
-  ///
-  /// In en, this message translates to:
-  /// **'Description must be less than 50 characters'**
-  String get description_max_length;
-
-  /// No description provided for @address_required.
-  ///
-  /// In en, this message translates to:
-  /// **'Address is required'**
-  String get address_required;
-
-  /// No description provided for @address_min_length.
-  ///
-  /// In en, this message translates to:
-  /// **'Address must be at least 10 characters'**
-  String get address_min_length;
-
-  /// No description provided for @address_max_length.
-  ///
-  /// In en, this message translates to:
-  /// **'Address must be less than 200 characters'**
-  String get address_max_length;
-
-  /// No description provided for @please_correct_form_errors.
-  ///
-  /// In en, this message translates to:
-  /// **'Please correct the form errors'**
-  String get please_correct_form_errors;
-
-  /// No description provided for @getCurrentLocation.
-  ///
-  /// In en, this message translates to:
-  /// **'Get My Current Location'**
-  String get getCurrentLocation;
-
-  /// No description provided for @locatingPosition.
-  ///
-  /// In en, this message translates to:
-  /// **'Locating your position...'**
-  String get locatingPosition;
-
-  /// No description provided for @locationDetected.
-  ///
-  /// In en, this message translates to:
-  /// **'Location detected'**
-  String get locationDetected;
-
-  /// No description provided for @useThisLocation.
-  ///
-  /// In en, this message translates to:
-  /// **'Use this location'**
-  String get useThisLocation;
-
-  /// No description provided for @locationPermissionDenied.
-  ///
-  /// In en, this message translates to:
-  /// **'Location permission denied'**
-  String get locationPermissionDenied;
-
-  /// No description provided for @locationDetectionFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to detect location'**
-  String get locationDetectionFailed;
-
-  /// No description provided for @myCurrentLocation.
-  ///
-  /// In en, this message translates to:
-  /// **'My current location'**
-  String get myCurrentLocation;
-
-  /// No description provided for @userInformation.
-  ///
-  /// In en, this message translates to:
-  /// **'User Information'**
-  String get userInformation;
-
-  /// No description provided for @name.
-  ///
-  /// In en, this message translates to:
-  /// **'Name'**
-  String get name;
-
-  /// No description provided for @currentAddress.
-  ///
-  /// In en, this message translates to:
-  /// **'Current Address'**
-  String get currentAddress;
-
-  /// No description provided for @loadingUserInfo.
-  ///
-  /// In en, this message translates to:
-  /// **'Loading user information...'**
-  String get loadingUserInfo;
-
-  /// No description provided for @useMyCurrentAddress.
-  ///
-  /// In en, this message translates to:
-  /// **'Use my current address'**
-  String get useMyCurrentAddress;
-
-  /// No description provided for @addressUsedSuccessfully.
-  ///
-  /// In en, this message translates to:
-  /// **'Your current address has been used'**
-  String get addressUsedSuccessfully;
 }
 
 class _AppLocalizationsDelegate

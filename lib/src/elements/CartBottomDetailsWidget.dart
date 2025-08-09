@@ -107,33 +107,34 @@ class CartBottomDetailsWidget extends StatelessWidget {
                 ],
               ),
 
+            // تم إزالة عرض الضريبة لأن الأسعار تدخل مع الضريبة مسبقاً
             // Tax
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    '${S.of(context).tax} (${_con.carts[0].food!.restaurant!.defaultTax}%)',
-                    style: TextStyle(
-                      //fontFamily: 'Nunito',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xFF9D9FA4),
-                    ),
-                  ),
-                ),
-                Helper.getPrice(
-                  _con.taxAmount,
-                  context,
-                  style: TextStyle(
-                    //fontFamily: 'Nunito',
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF272727),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
+            // Row(
+            //   children: <Widget>[
+            //     Expanded(
+            //       child: Text(
+            //         '${S.of(context).tax} (${_con.carts[0].food!.restaurant!.defaultTax}%)',
+            //         style: TextStyle(
+            //           //fontFamily: 'Nunito',
+            //           fontSize: 12,
+            //           fontWeight: FontWeight.w400,
+            //           color: Color(0xFF9D9FA4),
+            //         ),
+            //       ),
+            //     ),
+            //     Helper.getPrice(
+            //       _con.taxAmount,
+            //       context,
+            //       style: TextStyle(
+            //         //fontFamily: 'Nunito',
+            //         fontSize: 12,
+            //         fontWeight: FontWeight.w400,
+            //         color: Color(0xFF272727),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            // SizedBox(height: 10),
             Divider(color: AppColors.colorF1F1F1),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

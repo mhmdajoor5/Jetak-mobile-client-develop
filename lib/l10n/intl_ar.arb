@@ -114,9 +114,9 @@
   "cancel": "إلغاء",
   "save": "حفظ",
   "edit": "تعديل",
-  "not_a_valid_full_name": "اسم غير صالح",
-  "email_address": "البريد الإلكتروني",
-  "not_a_valid_email": "بريد الكتروني غير صالح",
+  "not_a_valid_full_name": "الاسم الكامل غير صالح",
+  "email_address": "عنوان البريد الإلكتروني",
+  "not_a_valid_email": "البريد الإلكتروني غير صالح",
   "not_a_valid_phone": "رقم الجوال غير صالح",
   "not_a_valid_address": "العنوان غير صالح",
   "not_a_valid_biography": "نبذة غير صالحة",
@@ -124,7 +124,6 @@
   "your_address": "عنوانك",
   "search": "بحث",
   "recents_search": "عمليات البحث الأخيرة",
-  "verify_your_internet_connection": "تحقق من asdf",
   "carts_refreshed_successfuly": "تم تحديث العربة بنجاح",
   "the_food_was_removed_from_your_cart": "تمت إزالة {foodname} من سلة التسوق",
   "category_refreshed_successfuly": "تم تحديث الفئة بنجاح",
@@ -455,6 +454,344 @@
   "currentAddress": "العنوان الحالي",
   "loadingUserInfo": "جاري تحميل معلومات المستخدم...",
   "useMyCurrentAddress": "استخدام عنواني الحالي",
-  "addressUsedSuccessfully": "تم استخدام عنوانك الحالي"
+  "addressUsedSuccessfully": "تم استخدام عنوانك الحالي",
+  "productRemovedFromCart": "تم حذف المنتج من السلة",
+  "errorRemovingProduct": "حدث خطأ أثناء حذف المنتج",
+  "addressDetails": "تفاصيل العنوان",
+  "optional": "اختياري",
+  "howDoWeGetIn": "كيف ندخل؟",
+  "doorbellIntercom": "جرس الباب / الاتصال الداخلي",
+  "doorCode": "رمز الباب",
+  "doorIsOpen": "الباب مفتوح",
+  "otherTellUsHow": "أخرى (أخبرنا كيف)",
+  "addressTypeAndLabel": "نوع العنوان والتسمية",
+  "errorFetchingAddresses": "خطأ في جلب العناوين",
+  "routeError": "خطأ في المسار",
+  "retry": "إعادة المحاولة",
+  "goBack": "العودة",
+  "pleaseSelectCard": "يرجى اختيار بطاقة",
+  "loadingDeliveryMap": "جاري تحميل خريطة التوصيل...",
+  "openInMaps": "فتح في الخرائط",
+  "reconnectingToLiveTracking": "إعادة الاتصال بالتتبع المباشر...",
+  "externalMapNotImplemented": "فتح الخريطة الخارجية غير مطبق بعد",
+  "liveMap": "الخريطة المباشرة",
+  "driverLocationUpdated": "تم تحديث موقع السائق",
+  "orderStatusUpdated": "تم تحديث حالة الطلب",
+  "liveTrackingConnectionLost": "فقد الاتصال بالتتبع المباشر. محاولة إعادة الاتصال...",
+  "liveTrackingUnavailable": "التتبع المباشر غير متاح. التطبيق يستمر في الوضع غير المتصل.",
+  "failedToLoadOrderData": "فشل في تحميل بيانات الطلب",
+  "payUsingCard": "الدفع باستخدام البطاقة XXXX-XXXX-XXXX-{lastFourDigits}",
+  "@payUsingCard": {
+    "placeholders": {
+      "lastFourDigits": {}
+    }
+  },
+  "conversationDismissed": "تم إغلاق المحادثة مع {name}",
+  "@conversationDismissed": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "delivery_fee": "رسوم التوصيل",
+  "not_a_valid_full_name": "الاسم الكامل غير صالح",
+  "email_address": "عنوان البريد الإلكتروني",
+  "not_a_valid_email": "البريد الإلكتروني غير صالح",
+  "your_address": "عنوانك",
+  "not_a_valid_address": "العنوان غير صالح",
+  "delivery_addresses": "عناوين التوصيل",
+  "testNotification": "إشعار تجريبي",
+  "testNotificationBody": "هذا إشعار تجريبي",
+  "testNotificationSent": "تم إرسال الإشعار التجريبي بنجاح",
+  "testingApiConnection": "جاري اختبار الاتصال بالـ API...",
+  "apiConnectionSuccess": "نجح الاتصال بالـ API. تم العثور على {count} إشعار",
+  "@apiConnectionSuccess": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "apiConnectionFailed": "فشل الاتصال بالـ API: {error}",
+  "@apiConnectionFailed": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "errorFetchingNotifications": "خطأ في جلب الإشعارات: {error}",
+  "@errorFetchingNotifications": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "testNotifications": "اختبار الإشعارات",
+  "unreadNotifications": "الإشعارات غير المقروءة",
+  "notificationsTestTitle": "اختبار الإشعارات",
+  "refreshNotificationCount": "تحديث عدد الإشعارات",
+  "testLocalNotification": "اختبار الإشعار المحلي",
+  "fetchAllNotifications": "جلب جميع الإشعارات",
+  "goToNotificationsPage": "الذهاب إلى صفحة الإشعارات",
+  "testApiConnection": "اختبار الاتصال بالـ API",
+  "apiInfoTitle": "معلومات الـ API",
+  "apiEndpoint": "نقطة نهاية الـ API",
+  "apiToken": "رمز الـ API",
+  "razorpayPayment": "الدفع عبر Razorpay",
+  "how_would_you_rate_this_restaurant_": "كيف تقيم هذا المطعم؟",
+  "tell_us_about_this_restaurant": "أخبرنا عن هذا المطعم",
+  "tell_us_about_this_food": "أخبرنا عن هذا الطعام",
+  "cartIsEmpty": "السلة فارغة",
+  "description": "الوصف",
+  "select_extras": "اختر الإضافات",
+  "typeToStartChat": "اكتب لبدء المحادثة",
+  "debug": "تصحيح الأخطاء",
+  "addNewAddress": "إضافة عنوان جديد",
+  "fullAddress": "العنوان الكامل",
+  "continueBtn": "متابعة",
+  "makeItDefault": "اجعله افتراضياً",
+  "useThisAddress": "استخدم هذا العنوان",
+  "messages": "الرسائل",
+  "locationType": "نوع الموقع",
+  "location_type_hint": "اختر نوع الموقع",
+  "addingExactAddressDetailsHelpsUsFindYouFaster": "إضافة تفاصيل العنوان الدقيقة تساعدنا في العثور عليك بشكل أسرع",
+  "addOrCreateAddressLabelsToEasilyChooseBetweenDeliveryAddresses": "أضف أو أنشئ تسميات للعناوين لاختيار عنوان التوصيل بسهولة",
+  "work": "العمل",
+  "other": "أخرى",
+  "save": "حفظ",
+  "cancel": "إلغاء",
+  "youDontHaveAnyConversations": "ليس لديك أي محادثات",
+  "start_exploring": "ابدأ الاستكشاف",
+  "dont_have_any_item_in_the_notification_list": "لا توجد عناصر في قائمة الإشعارات",
+  "order_summary": "ملخص الطلب",
+  "include_tax": "يشمل الضريبة",
+  "item_subtotal": "مجموع العناصر",
+  "service_fee": "رسوم الخدمة",
+  "delivery": "التوصيل",
+  "promo": "العروض الترويجية",
+  "youDontHaveAnyOrder": "ليس لديك أي طلبات",
+  "search": "البحث",
+  "tapAgainToLeave": "انقر مرة أخرى للمغادرة",
+  "order_status_changed": "تغيرت حالة الطلب",
+  "new_order_from_client": "طلب جديد من العميل",
+  "newMessageFrom": "رسالة جديدة من",
+  "delivery_address": "عنوان التوصيل",
+  "pickup": "الاستلام",
+  "light_mode": "الوضع الفاتح",
+  "dark_mode": "الوضع الداكن",
+  "log_out": "تسجيل الخروج",
+  "version": "الإصدار",
+  "dont_have_any_item_in_your_cart": "لا توجد عناصر في سلة التسوق",
+  "warning": "تحذير",
+  "orderingFromAnotherRestaurantWillClearYourCart": "الطلب من مطعم آخر سيؤدي إلى إفراغ سلة التسوق. هل تريد المتابعة؟",
+  "continueText": "متابعة",
+  "pending_payment": "الدفع معلق",
+  "otp_verification_failed": "فشل التحقق من رمز OTP بالحالة: {status}",
+  "@otp_verification_failed": {
+    "placeholders": {
+      "status": {}
+    }
+  },
+  "otp_verification_error": "حدث خطأ أثناء التحقق",
+  "chooseOrderType": "اختر نوع الطلب",
+  "hi": "مرحباً 👋",
+  "writeEmailAndPassword": "اكتب بريدك الإلكتروني وكلمة المرور 💁‍♂️",
+  "providePhoneNumber": "أعطنا رقم هاتفك 🙅‍♂️",
+  "codeSent": "أرسلنا لك رمزاً 🧏‍♂️",
+  "enterTheDoorCode": "أدخل رمز الباب",
+  "otherInstructionsForCourier": "تعليمات أخرى للرسول",
+  "additions": "إضافات",
+  "itemsInCart": "العناصر في السلة",
+  "pay": "ادفع",
+  "this_restaurant_is_closed_": "هذا المطعم مغلق",
+  "cannot_add_from_different_restaurant": "لا يمكن إضافة من مطعم مختلف",
+  "this_food_was_added_to_cart": "تم إضافة هذا الطعام إلى السلة",
+  "order_status_changed": "تغيرت حالة الطلب",
+  "new_order_from_client": "طلب جديد من العميل",
+  "newMessageFrom": "رسالة جديدة من",
+  "km": "كم",
+  "mi": "ميل",
+  "search_for_restaurants_or_foods": "البحث في المطاعم والأطعمة",
+  "you_must_signin_to_access_to_this_section": "يجب تسجيل الدخول للوصول إلى هذا القسم",
+  "category": "الفئة",
+  "order_summary": "ملخص الطلب",
+  "include_tax": "يشمل الضريبة",
+  "item_subtotal": "مجموع العناصر",
+  "service_fee": "رسوم الخدمة",
+  "delivery": "التوصيل",
+  "promo": "العروض الترويجية",
+  "total": "المجموع",
+  "reset_cart": "إعادة تعيين السلة",
+  "you_must_add_foods_of_the_same_restaurants_choose_one": "يجب إضافة أطعمة من نفس المطعم",
+  "reset": "إعادة تعيين",
+  "close": "إغلاق",
+  "reset_your_cart_and_order_meals_form_this_restaurant": "إعادة تعيين السلة وطلب وجبات من هذا المطعم",
+  "keep_your_old_meals_of_this_restaurant": "الاحتفاظ بالوجبات القديمة من هذا المطعم",
+  "payNow": "ادفع الآن",
+  "youDontHaveAnyOrder": "ليس لديك أي طلبات",
+  "delivery_fee": "رسوم التوصيل",
+  "discount": "خصم",
+  "twentyToThirtyMin": "20-30 دقيقة",
+  "unknown": "غير معروف",
+  "search": "البحث",
+  "ordered_by_nearby_first": "مرتبة حسب الأقرب أولاً",
+  "foods_results": "نتائج الأطعمة",
+  "restaurants_results": "نتائج المطاعم",
+  "current_location": "الموقع الحالي",
+  "dont_have_any_item_in_your_cart": "لا توجد عناصر في سلة التسوق",
+  "start_exploring": "ابدأ الاستكشاف",
+  "card_number": "رقم البطاقة",
+  "expiry_date": "تاريخ الانتهاء",
+  "cvv": "CVV",
+  "edit": "تعديل",
+  "verifyPhoneNumber": "التحقق من رقم الهاتف",
+  "weAreSendingOtpToValidateYourMobileNumberHang": "نرسل رمز OTP للتحقق من رقم هاتفك",
+  "smsHasBeenSentTo": "تم إرسال الرسالة النصية إلى",
+  "verify": "تحقق",
+  "add_delivery_address": "إضافة عنوان التوصيل",
+  "home_address": "عنوان المنزل",
+  "description": "الوصف",
+  "description_required": "الوصف مطلوب",
+  "description_min_length": "الوصف يجب أن يكون 3 أحرف على الأقل",
+  "description_max_length": "الوصف يجب أن يكون أقل من 50 حرف",
+  "hint_full_address": "أدخل عنوانك الكامل",
+  "full_address": "العنوان الكامل",
+  "address_required": "العنوان مطلوب",
+  "makeItDefault": "اجعله افتراضياً",
+  "save": "حفظ",
+  "cancel": "إلغاء",
+  "ddMMyyyy": "dd/MM/yyyy",
+  "youDontHaveAnyConversations": "ليس لديك أي محادثات",
+  "dont_have_any_item_in_the_notification_list": "لا توجد عناصر في قائمة الإشعارات",
+  "guest": "زائر",
+  "home": "الرئيسية",
+  "notifications": "الإشعارات",
+  "settings": "الإعدادات",
+  "profile_settings": "إعدادات الملف الشخصي",
+  "full_name": "الاسم الكامل",
+  "john_doe": "فلان الفلاني",
+  "not_a_valid_full_name": "الاسم الكامل غير صالح",
+  "email": "البريد الإلكتروني",
+  "email_address": "عنوان البريد الإلكتروني",
+  "not_a_valid_email": "البريد الإلكتروني غير صالح",
+  "phone": "رقم الهاتف",
+  "address": "العنوان",
+  "your_address": "عنوانك",
+  "not_a_valid_address": "العنوان غير صالح",
+  "payments_settings": "إعدادات الدفع",
+  "default_credit_card": "بطاقة الائتمان الافتراضية",
+  "app_settings": "إعدادات التطبيق",
+  "recent_orders": "الطلبات الأخيرة",
+  "delivery_addresses": "عناوين التوصيل",
+  "help_support": "المساعدة والدعم",
+  "cart": "سلة التسوق",
+  "cartIsEmpty": "السلة فارغة",
+  "typeToStartChat": "اكتب لبدء المحادثة",
+  "testNotification": "إشعار تجريبي",
+  "testNotificationBody": "هذا إشعار تجريبي",
+  "testNotificationSent": "تم إرسال الإشعار التجريبي بنجاح",
+  "testingApiConnection": "جاري اختبار الاتصال بالـ API...",
+  "apiConnectionSuccess": "نجح الاتصال بالـ API. تم العثور على {count} إشعار",
+  "@apiConnectionSuccess": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "apiConnectionFailed": "فشل الاتصال بالـ API: {error}",
+  "@apiConnectionFailed": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "errorFetchingNotifications": "خطأ في جلب الإشعارات: {error}",
+  "@errorFetchingNotifications": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "testNotifications": "اختبار الإشعارات",
+  "unreadNotifications": "الإشعارات غير المقروءة",
+  "notificationsTestTitle": "اختبار الإشعارات",
+  "refreshNotificationCount": "تحديث عدد الإشعارات",
+  "testLocalNotification": "اختبار الإشعار المحلي",
+  "fetchAllNotifications": "جلب جميع الإشعارات",
+  "goToNotificationsPage": "الذهاب إلى صفحة الإشعارات",
+  "testApiConnection": "اختبار الاتصال بالـ API",
+  "apiInfoTitle": "معلومات الـ API",
+  "apiEndpoint": "نقطة نهاية الـ API",
+  "apiToken": "رمز الـ API",
+  "razorpayPayment": "الدفع عبر Razorpay",
+  "how_would_you_rate_this_restaurant_": "كيف تقيم هذا المطعم؟",
+  "tell_us_about_this_restaurant": "أخبرنا عن هذا المطعم",
+  "tell_us_about_this_food": "أخبرنا عن هذا الطعام",
+  "cartIsEmpty": "السلة فارغة",
+  "description": "الوصف",
+  "select_extras": "اختر الإضافات",
+  "typeToStartChat": "اكتب لبدء المحادثة",
+  "debug": "تصحيح الأخطاء",
+  "addNewAddress": "إضافة عنوان جديد",
+  "fullAddress": "العنوان الكامل",
+  "continueBtn": "متابعة",
+  "makeItDefault": "اجعله افتراضياً",
+  "useThisAddress": "استخدم هذا العنوان",
+  "messages": "الرسائل",
+  "locationType": "نوع الموقع",
+  "location_type_hint": "اختر نوع الموقع",
+  "addingExactAddressDetailsHelpsUsFindYouFaster": "إضافة تفاصيل العنوان الدقيقة تساعدنا في العثور عليك بشكل أسرع",
+  "addOrCreateAddressLabelsToEasilyChooseBetweenDeliveryAddresses": "أضف أو أنشئ تسميات للعناوين لاختيار عنوان التوصيل بسهولة",
+  "work": "العمل",
+  "other": "أخرى",
+  "save": "حفظ",
+  "cancel": "إلغاء",
+  "youDontHaveAnyConversations": "ليس لديك أي محادثات",
+  "start_exploring": "ابدأ الاستكشاف",
+  "dont_have_any_item_in_the_notification_list": "لا توجد عناصر في قائمة الإشعارات",
+  "order_summary": "ملخص الطلب",
+  "include_tax": "يشمل الضريبة",
+  "item_subtotal": "مجموع العناصر",
+  "service_fee": "رسوم الخدمة",
+  "delivery": "التوصيل",
+  "promo": "العروض الترويجية",
+  "total": "المجموع",
+  "reset_cart": "إعادة تعيين السلة",
+  "you_must_add_foods_of_the_same_restaurants_choose_one": "يجب إضافة أطعمة من نفس المطعم",
+  "reset": "إعادة تعيين",
+  "close": "إغلاق",
+  "reset_your_cart_and_order_meals_form_this_restaurant": "إعادة تعيين السلة وطلب وجبات من هذا المطعم",
+  "keep_your_old_meals_of_this_restaurant": "الاحتفاظ بالوجبات القديمة من هذا المطعم",
+  "payNow": "ادفع الآن",
+  "youDontHaveAnyOrder": "ليس لديك أي طلبات",
+  "delivery_fee": "رسوم التوصيل",
+  "discount": "خصم",
+  "twentyToThirtyMin": "20-30 دقيقة",
+  "unknown": "غير معروف",
+  "search": "البحث",
+  "ordered_by_nearby_first": "مرتبة حسب الأقرب أولاً",
+  "foods_results": "نتائج الأطعمة",
+  "restaurants_results": "نتائج المطاعم",
+  "current_location": "الموقع الحالي",
+  "dont_have_any_item_in_your_cart": "لا توجد عناصر في سلة التسوق",
+  "start_exploring": "ابدأ الاستكشاف",
+  "card_number": "رقم البطاقة",
+  "expiry_date": "تاريخ الانتهاء",
+  "cvv": "CVV",
+  "edit": "تعديل",
+  "verifyPhoneNumber": "التحقق من رقم الهاتف",
+  "weAreSendingOtpToValidateYourMobileNumberHang": "نرسل رمز OTP للتحقق من رقم هاتفك",
+  "smsHasBeenSentTo": "تم إرسال الرسالة النصية إلى",
+  "verify": "تحقق",
+  "add_delivery_address": "إضافة عنوان التوصيل",
+  "home_address": "عنوان المنزل",
+  "description": "الوصف",
+  "description_required": "الوصف مطلوب",
+  "description_min_length": "الوصف يجب أن يكون 3 أحرف على الأقل",
+  "description_max_length": "الوصف يجب أن يكون أقل من 50 حرف",
+  "hint_full_address": "أدخل عنوانك الكامل",
+  "full_address": "العنوان الكامل",
+  "address_required": "العنوان مطلوب",
+  "makeItDefault": "اجعله افتراضياً",
+  "save": "حفظ",
+  "cancel": "إلغاء",
+  "ddMMyyyy": "dd/MM/yyyy",
+  "youDontHaveAnyConversations": "ليس لديك أي محادثات",
+  "dont_have_any_item_in_the_notification_list": "لا توجد عناصر في قائمة الإشعارات",
+  "guest": "زائر",
+  "home": "الرئيسية",
+  "notifications": "الإشعارات"
 
 }
