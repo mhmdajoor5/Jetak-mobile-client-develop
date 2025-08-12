@@ -9,6 +9,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 // import 'package:geocoding/geocoding.dart';
 
 import '../helpers/helper.dart';
+import '../models/address.dart';
 import '../models/category.dart';
 import '../models/cuisine.dart';
 import '../models/food.dart';
@@ -38,6 +39,10 @@ class HomeController extends ControllerMVC {
   List<Restaurant> popularRestaurants = <Restaurant>[];
   List<Review> recentReviews = <Review>[];
   List<Food> trendingFoods = <Food>[];
+  
+  // إضافة متغيرات للمطاعم القريبة
+  List<Restaurant> nearbyStores = <Restaurant>[];
+  bool isLoadingNearbyStores = false;
 
   // Loading states
   bool isLoadingSlides = false;
@@ -71,6 +76,7 @@ class HomeController extends ControllerMVC {
         getTopRestaurants(),
         fetchPopularRestaurants(),
         getTrendingFoods(),
+        getNearbyStores(), // إضافة جلب المطاعم القريبة
       ]);
 
       slides = results[0] as List<Slide>;
@@ -78,6 +84,7 @@ class HomeController extends ControllerMVC {
       topRestaurants = results[2] as List<Restaurant>;
       popularRestaurants = results[3] as List<Restaurant>;
       trendingFoods = results[4] as List<Food>;
+      nearbyStores = results[5] as List<Restaurant>; // إضافة المطاعم القريبة
       getPopularRestaurants = true;
 
       _isDataLoaded = true;
@@ -103,6 +110,7 @@ class HomeController extends ControllerMVC {
     popularRestaurants = [];
     recentReviews = [];
     trendingFoods = [];
+    nearbyStores = []; // إضافة مسح المطاعم القريبة
 
     await loadAllData();
   }
@@ -278,6 +286,66 @@ class HomeController extends ControllerMVC {
     }
   }
 
+  Future<List<Restaurant>> getNearbyStores() async {
+    setState(() {
+      isLoadingNearbyStores = true;
+    });
+
+    try {
+      // الحصول على موقع المستخدم الحالي
+      Position? currentPosition;
+      try {
+        currentPosition = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+        );
+      } catch (e) {
+        print('❌ Error getting current position: $e');
+      }
+
+      // إنشاء Address object لموقع المستخدم
+      Address userLocation = Address.fromJSON({
+        'latitude': currentPosition?.latitude ?? 0.0,
+        'longitude': currentPosition?.longitude ?? 0.0,
+      });
+
+      // جلب المطاعم القريبة
+      final restaurantStreamFuture = getNearRestaurants(
+        userLocation,
+        userLocation, // استخدام نفس الموقع للمنطقة
+      );
+      
+      final restaurantStream = await restaurantStreamFuture;
+      final allRestaurants = await restaurantStream.toList();
+
+      // تصفية المطاعم من نوع store
+      final storeRestaurants = allRestaurants.where((restaurant) {
+        return restaurant.restaurantType?.toLowerCase() == 'store' ||
+               restaurant.name.toLowerCase().contains('store') ||
+               restaurant.description.toLowerCase().contains('store');
+      }).toList();
+
+      // ترتيب المطاعم حسب القرب
+      storeRestaurants.sort((a, b) {
+        final distanceA = a.distance;
+        final distanceB = b.distance;
+        return distanceA.compareTo(distanceB);
+      });
+
+      setState(() {
+        nearbyStores = storeRestaurants;
+        isLoadingNearbyStores = false;
+      });
+
+      print("✅ تم جلب ${nearbyStores.length} مطعم قريب من نوع store");
+      return nearbyStores;
+    } catch (e) {
+      print('❌ Error loading nearby stores: $e');
+      setState(() {
+        isLoadingNearbyStores = false;
+      });
+      return [];
+    }
+  }
 
 
 }

@@ -15,113 +15,65 @@ class ChatbotMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Row(
-        mainAxisAlignment: message.isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (!message.isUser) ...[
-            _buildAvatar(context, false),
-            SizedBox(width: 8),
-          ],
-          
-          Flexible(
-            child: Column(
-              crossAxisAlignment: message.isUser 
-                  ? CrossAxisAlignment.end 
-                  : CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: message.isUser 
-                        ? Theme.of(context).primaryColor 
-                        : Colors.grey[100],
-                    borderRadius: BorderRadius.circular(18),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 5,
-                        offset: Offset(0, 2),
+      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: InkWell(
+        onTap: () {
+          // Handle tap if needed
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context).focusColor.withOpacity(0.1),
+                blurRadius: 15,
+                offset: Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Main content area
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Message text - centered
+                    Text(
+                      message.message,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        color: Color(0xFF272727),
+                        height: 1.3,
                       ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                                             Text(
-                         message.message,
-                         style: TextStyle(
-                           color: message.isUser ? Colors.white : Colors.black,
-                           fontSize: 14,
-                           height: 1.4,
-                           fontWeight: message.isUser ? FontWeight.w500 : FontWeight.w600,
-                         ),
-                         textDirection: TextDirection.rtl,
-                       ),
-                      
-                      // الأسئلة السريعة
-                      if (message.quickReplies != null && !message.isUser)
-                        Container(
-                          margin: EdgeInsets.only(top: 12),
-                          child: Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: message.quickReplies!.map((reply) {
-                              return _buildQuickReplyButton(context, reply);
-                            }).toList(),
-                          ),
+                    ),
+                    
+                    // Quick replies if available and not from user
+                    if (message.quickReplies != null && !message.isUser && message.quickReplies!.isNotEmpty)
+                      Container(
+                        margin: EdgeInsets.only(top: 10),
+                        child: Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          alignment: WrapAlignment.center,
+                          children: message.quickReplies!.map((reply) {
+                            return _buildQuickReplyButton(context, reply);
+                          }).toList(),
                         ),
-                    ],
-                  ),
+                      ),
+                  ],
                 ),
-                
-                // وقت الرسالة
-                Container(
-                  margin: EdgeInsets.only(top: 4, right: 4, left: 4),
-                                     child: Text(
-                     _formatTime(message.timestamp),
-                     style: TextStyle(
-                       color: Colors.black,
-                       fontSize: 11,
-                       fontWeight: FontWeight.w600,
-                     ),
-                   ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          
-          if (message.isUser) ...[
-            SizedBox(width: 8),
-            _buildAvatar(context, true),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAvatar(BuildContext context, bool isUser) {
-    return Container(
-      width: 32,
-      height: 32,
-      decoration: BoxDecoration(
-        color: isUser 
-            ? Colors.grey[300] 
-            : Theme.of(context).primaryColor,
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Icon(
-        isUser ? Icons.person : Icons.smart_toy,
-        color: isUser ? Colors.grey[600] : Colors.white,
-        size: 18,
+        ),
       ),
     );
   }
@@ -132,15 +84,15 @@ class ChatbotMessageWidget extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(
           horizontal: 12,
-          vertical: 8,
+          vertical: 6,
         ),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-                                         border: Border.all(
-                                 color: Colors.black.withOpacity(0.3),
-                                 width: 2,
-                               ),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
+            width: 1,
+          ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.05),
@@ -149,20 +101,16 @@ class ChatbotMessageWidget extends StatelessWidget {
             ),
           ],
         ),
-                                       child: Text(
-                                 reply,
-                                 style: TextStyle(
-                                   color: Colors.black,
-                                   fontSize: 12,
-                                   fontWeight: FontWeight.bold,
-                                 ),
-                                 textDirection: TextDirection.rtl,
-                               ),
+        child: Text(
+          reply,
+          style: TextStyle(
+            color: Color(0xFF272727),
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+          textDirection: TextDirection.rtl,
+        ),
       ),
     );
-  }
-
-  String _formatTime(DateTime timestamp) {
-    return ChatbotTranslations.getTimeText('ar', timestamp);
   }
 }
