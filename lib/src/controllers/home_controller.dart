@@ -10,12 +10,14 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../helpers/helper.dart';
 import '../models/category.dart';
+import '../models/cuisine.dart';
 import '../models/food.dart';
 import '../models/restaurant.dart';
 import '../models/review.dart';
 import '../models/slide.dart';
 // import '../repository/category_repository.dart';
 import '../repository/home/get_categorizes_repository.dart';
+import '../repository/home/get_cuisines_repository.dart';
 import '../repository/home/get_top_restorants_repo.dart';
 import '../repository/home/get_trending_foods_repo.dart';
 import '../repository/home/slider_repository.dart';
@@ -29,6 +31,7 @@ class HomeController extends ControllerMVC {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   List<Category> categories = <Category>[];
+  List<Cuisine> cuisines = <Cuisine>[];
   List<Slide> slides = <Slide>[];
   List<Restaurant> topRestaurants = <Restaurant>[];
   bool getPopularRestaurants = false;
@@ -39,6 +42,7 @@ class HomeController extends ControllerMVC {
   // Loading states
   bool isLoadingSlides = false;
   bool isLoadingCategories = false;
+  bool isLoadingCuisines = false;
   bool isLoadingTopRestaurants = false;
   bool isLoadingPopularRestaurants = false;
   bool isLoadingTrendingFoods = false;
@@ -63,14 +67,14 @@ class HomeController extends ControllerMVC {
     try {
       final results = await Future.wait([
         getSlides(),
-        getCategories(),
+        getCuisines(),
         getTopRestaurants(),
         fetchPopularRestaurants(),
         getTrendingFoods(),
       ]);
 
       slides = results[0] as List<Slide>;
-      categories = results[1] as List<Category>;
+      cuisines = results[1] as List<Cuisine>;
       topRestaurants = results[2] as List<Restaurant>;
       popularRestaurants = results[3] as List<Restaurant>;
       trendingFoods = results[4] as List<Food>;
@@ -94,6 +98,7 @@ class HomeController extends ControllerMVC {
     _isDataLoaded = false;
     slides = [];
     categories = [];
+    cuisines = [];
     topRestaurants = [];
     popularRestaurants = [];
     recentReviews = [];

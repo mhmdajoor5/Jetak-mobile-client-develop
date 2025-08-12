@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../../generated/l10n.dart';
-import '../../elements/CaregoriesCarouselWidget.dart';
+import '../../elements/CuisinesCarouselWidget.dart';
 import '../../elements/SearchBarWidget.dart';
-import '../../models/category.dart';
+import '../../models/cuisine.dart';
 import '../../models/restaurant.dart';
 import '../../elements/grid_card_widget.dart';
 import 'dart:convert';
@@ -29,7 +29,7 @@ class _RestaurantsWidgetState extends State<RestaurantsWidget> {
   final PagingController<int, Restaurant> _pagingController = PagingController(
     firstPageKey: 1,
   );
-  List<Category> categories = [];
+  List<Cuisine> cuisines = [];
 
   late final String _entityType;
 
@@ -37,28 +37,28 @@ class _RestaurantsWidgetState extends State<RestaurantsWidget> {
   void initState() {
     super.initState();
     _entityType = widget.restaurantType;
-    _loadCategories();
+    _loadCuisines();
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
   }
 
-  Future<void> _loadCategories() async {
+  Future<void> _loadCuisines() async {
     try {
       final response = await http.get(
-        Uri.parse('https://carrytechnologies.co/api/categories'),
+        Uri.parse('https://carrytechnologies.co/api/cuisines'),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final List list = data['data'];
         setState(() {
-          categories = list.map((e) => Category.fromJSON(e)).toList();
+          cuisines = list.map((e) => Cuisine.fromJSON(e)).toList();
         });
       } else {
-        print('Failed to load categories, status code: ${response.statusCode}');
+        print('Failed to load cuisines, status code: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error loading categories: $e');
+      print('Error loading cuisines: $e');
     }
   }
 
@@ -127,7 +127,7 @@ class _RestaurantsWidgetState extends State<RestaurantsWidget> {
       body: RefreshIndicator(
         onRefresh: () async {
           _pagingController.refresh();
-          await _loadCategories();
+          await _loadCuisines();
         },
         child: CustomScrollView(
           slivers: [
@@ -150,7 +150,7 @@ class _RestaurantsWidgetState extends State<RestaurantsWidget> {
                   horizontal: 20,
                   vertical: 10,
                 ),
-                child: CategoriesCarouselWidget(categories: categories),
+                child: CuisinesCarouselWidget(cuisines: cuisines),
               ),
             ),
             SliverPadding(

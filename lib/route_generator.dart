@@ -18,6 +18,7 @@ import 'src/pages/bottom_nav_bar_modules/profile.dart';
 import 'src/pages/cart.dart';
 import 'src/pages/category.dart';
 import 'src/pages/chat.dart';
+import 'src/pages/cuisine_details.dart';
 import 'src/pages/checkout.dart';
 import 'src/pages/debug.dart';
 import 'src/pages/delivery_addresses.dart';
@@ -232,6 +233,12 @@ class RouteGenerator {
       case '/Category':
         return MaterialPageRoute(
           builder: (_) => CategoryWidget(
+            routeArgument: args is RouteArgument ? args : RouteArgument(),
+          ),
+        );
+      case '/Cuisine':
+        return MaterialPageRoute(
+          builder: (_) => CuisineDetailsWidget(
             routeArgument: args is RouteArgument ? args : RouteArgument(),
           ),
         );
