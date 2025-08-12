@@ -17,7 +17,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.carryeats.customer"
+    namespace = "com.carryeats.hub"
     compileSdk = flutter.compileSdkVersion.toInt()
     ndkVersion = "27.0.12077973"
 
@@ -32,7 +32,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.carryeats.customer"
+        applicationId = "com.carryeats.hub"
         minSdk = maxOf(23, flutter.minSdkVersion.toInt())
         targetSdk = flutter.targetSdkVersion.toInt()
         versionCode = flutter.versionCode.toInt()

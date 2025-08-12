@@ -1,4 +1,4 @@
-package com.carryeats.customer
+package com.carryeats.hub
 
 import io.flutter.embedding.android.FlutterActivity
 
