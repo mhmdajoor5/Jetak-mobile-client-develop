@@ -101,8 +101,8 @@ class _SplashScreenState extends StateMVC<SplashScreen> {
     return Scaffold(
       key: _con.scaffoldKey,
       body: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+          // width: double.infinity,
+          height: double.infinity,
         child: AspectRatio(
           aspectRatio: _videoController!.value.aspectRatio,
           child: VideoPlayer(_videoController!),

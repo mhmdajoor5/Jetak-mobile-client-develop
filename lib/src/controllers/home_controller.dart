@@ -16,16 +16,18 @@ import '../models/food.dart';
 import '../models/restaurant.dart';
 import '../models/review.dart';
 import '../models/slide.dart';
-// import '../repository/category_repository.dart';
+import '../repository/category_repository.dart';
+import '../repository/cuisine_repository.dart' hide getCuisines;
+import '../repository/food_repository.dart' hide getTrendingFoods;
 import '../repository/home/get_categorizes_repository.dart';
 import '../repository/home/get_cuisines_repository.dart';
 import '../repository/home/get_top_restorants_repo.dart';
 import '../repository/home/get_trending_foods_repo.dart';
-import '../repository/home/slider_repository.dart';
-import '../repository/order/order_track_repo.dart';
 import '../repository/restaurant_repository.dart';
 import '../repository/resturant/popular_reatauran_repository.dart';
 import '../repository/settings_repository.dart';
+import '../repository/home/get_newly_added_restaurants_repo.dart';
+import '../repository/home/slider_repository.dart';
 
 class HomeController extends ControllerMVC {
   // Add scaffoldKey
@@ -43,6 +45,10 @@ class HomeController extends ControllerMVC {
   // إضافة متغيرات للمطاعم القريبة
   List<Restaurant> nearbyStores = <Restaurant>[];
   bool isLoadingNearbyStores = false;
+
+  // إضافة متغيرات للمطاعم الجديدة
+  List<Restaurant> newlyAddedRestaurants = <Restaurant>[];
+  bool isLoadingNewlyAddedRestaurants = false;
 
   // Loading states
   bool isLoadingSlides = false;
@@ -70,13 +76,13 @@ class HomeController extends ControllerMVC {
   Future<void> loadAllData() async {
     if (_isDataLoaded) return;
     try {
-      final results = await Future.wait([
+      final results = await Future.wait<dynamic>([
         getSlides(),
         getCuisines(),
         getTopRestaurants(),
         fetchPopularRestaurants(),
         getTrendingFoods(),
-        getNearbyStores(), // إضافة جلب المطاعم القريبة
+        getNewlyAddedRestaurants(), // إضافة جلب المطاعم الجديدة
       ]);
 
       slides = results[0] as List<Slide>;
@@ -84,7 +90,7 @@ class HomeController extends ControllerMVC {
       topRestaurants = results[2] as List<Restaurant>;
       popularRestaurants = results[3] as List<Restaurant>;
       trendingFoods = results[4] as List<Food>;
-      nearbyStores = results[5] as List<Restaurant>; // إضافة المطاعم القريبة
+      newlyAddedRestaurants = results[5] as List<Restaurant>; // إضافة المطاعم الجديدة
       getPopularRestaurants = true;
 
       _isDataLoaded = true;

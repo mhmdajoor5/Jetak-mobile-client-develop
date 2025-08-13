@@ -47,6 +47,8 @@ import 'src/controllers/home_controller.dart';
 import 'src/pages/new_address/AddressDetailsPage.dart';
 import 'src/pages/new_address/DeliveryAddressFormPage.dart';
 import 'src/models/address.dart';
+// Import restaurants page
+import 'src/pages/bottom_nav_bar_modules/restaurants.dart';
 
 class RouteGenerator {
   static final HomeController homeController = HomeController();
@@ -71,6 +73,20 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => NotificationsWidget());
       case '/RecentOrders':
         return MaterialPageRoute(builder: (_) => RecentOrdersWidget());
+      case '/Restaurants':
+        try {
+          final Map<String, dynamic> arguments = args as Map<String, dynamic>? ?? {};
+          final String type = arguments['type'] ?? 'restaurant';
+          print('🔄 Navigating to Restaurants with type: $type');
+          return MaterialPageRoute(
+            builder: (_) => RestaurantsWidget(restaurantType: type),
+          );
+        } catch (e) {
+          print('❌ Error in Restaurants route: $e');
+          return MaterialPageRoute(
+            builder: (_) => RestaurantsWidget(restaurantType: 'restaurant'),
+          );
+        }
       case '/SignUp':
         return MaterialPageRoute(builder: (_) => SignUpNameScreen());
       case '/MobileVerification':
@@ -142,20 +158,41 @@ class RouteGenerator {
       case '/Details':
         return MaterialPageRoute(
           builder: (_) {
-            // Handle case where args is already a RouteArgument
-            if (args is RouteArgument) {
-              return DetailsWidget(routeArgument: args);
-            }
-            // Handle case where args is a Restaurant
-            else if (args is Restaurant) {
-              return DetailsWidget(
-                routeArgument: RouteArgument(param: args),
-              );
-            }
-            // Fallback for other cases
-            else {
-              return DetailsWidget(
-                routeArgument: RouteArgument(param: null),
+            try {
+              // Handle case where args is already a RouteArgument
+              if (args is RouteArgument) {
+                print('🔄 Navigating to Details with RouteArgument: ${args.id}');
+                return DetailsWidget(routeArgument: args);
+              }
+              // Handle case where args is a Restaurant
+              else if (args is Restaurant) {
+                print('🔄 Navigating to Details with Restaurant: ${args.name}');
+                return DetailsWidget(
+                  routeArgument: RouteArgument(param: args),
+                );
+              }
+              // Fallback for other cases
+              else {
+                print('⚠️ Navigating to Details with fallback - args type: ${args.runtimeType}');
+                return DetailsWidget(
+                  routeArgument: RouteArgument(param: null),
+                );
+              }
+            } catch (e) {
+              print('❌ Error in Details route: $e');
+              return Scaffold(
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.error_outline, size: 64, color: Colors.red),
+                      SizedBox(height: 16),
+                      Text('خطأ في تحميل الصفحة'),
+                      SizedBox(height: 8),
+                      Text('$e'),
+                    ],
+                  ),
+                ),
               );
             }
           },
@@ -363,9 +400,41 @@ class RouteGenerator {
       case '/Settings':
         return MaterialPageRoute(builder: (_) => SettingsWidget());
       default:
+        print('❌ Route not found: ${settings.name}');
+        print('📋 Arguments: $args');
         return MaterialPageRoute(
           builder: (_) => Scaffold(
-            body: SafeArea(child: Text('Route Error')),
+            body: SafeArea(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.error_outline, size: 64, color: Colors.red),
+                    SizedBox(height: 16),
+                    Text(
+                      'صفحة غير موجودة',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'المسار: ${settings.name}',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    // ElevatedButton(
+                    //   onPressed: () => Navigator.of(_).pop(),
+                    //   child: Text('العودة'),
+                    // ),
+                  ],
+                ),
+              ),
+            ),
           ),
         );
     }

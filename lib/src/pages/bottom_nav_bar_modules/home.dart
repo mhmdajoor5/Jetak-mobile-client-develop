@@ -12,7 +12,9 @@ import '../Home/home_categories_section.dart' show HomeCategoriesSection;
 import '../Home/home_cuisines_section.dart' show HomeCuisinesSection;
 import '../Home/home_delivery_pickup_section.dart' show HomeDeliveryPickupSection;
 import '../Home/home_header_section.dart' show HomeHeaderSection;
+import '../Home/home_order_again_section.dart' show HomeOrderAgainSection;
 import '../Home/home_popular_section.dart' show HomePopularSection;
+import '../Home/home_newly_added_section.dart' show HomeNewlyAddedSection;
 import '../Home/home_search_section.dart' show HomeSearchSection;
 import '../Home/home_slider_section.dart' show HomeSliderSection;
 import '../Home/home_top_restaurants_section.dart' show HomeTopRestaurantsSection;
@@ -85,6 +87,10 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                           _buildCravingSection(),
                           // إضافة قسم "القريبة منك"
                           _buildNearbyStoresSection(),
+                          // إضافة قسم "إعادة الطلب"
+                          HomeOrderAgainSection(),
+                          // إضافة قسم "جديد في التطبيق"
+                          HomeNewlyAddedSection(),
                         ],
                       );
                     case 'trending_week':
@@ -102,6 +108,10 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                       return HomePopularSection(
                         restaurants: _con.popularRestaurants,
                       );
+                    case 'order_again':
+                      return HomeOrderAgainSection();
+                    case 'newly_added':
+                      return HomeNewlyAddedSection();
                     default:
                       return SizedBox.shrink();
                   }
