@@ -57,6 +57,13 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
     _con = controller as DeliveryPickupController;
   }
 
+  String _tr(BuildContext context, {required String en, required String ar, required String he}) {
+    final code = Localizations.localeOf(context).languageCode;
+    if (code == 'ar') return ar;
+    if (code == 'he') return he;
+    return en;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -203,7 +210,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       print('[DEBUG] السلة فارغة!');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('❌ السلة فارغة، يرجى إضافة منتجات أولاً'),
+          content: Text(_tr(context, en: 'The cart is empty, please add products first', ar: 'السلة فارغة، يرجى إضافة منتجات أولاً', he: 'העגלה ריקה, נא להוסיף מוצרים תחילה')),
           backgroundColor: Colors.red,
         ),
       );
@@ -247,7 +254,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         print('[DEBUG] نص العنوان في الكنترولر فارغ!');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('❌ يرجى اختيار عنوان التوصيل من القائمة'),
+            content: Text(_tr(context, en: 'Please select a delivery address from the list', ar: 'يرجى اختيار عنوان التوصيل من القائمة', he: 'נא לבחור כתובת משלוח מהרשימה')),
             backgroundColor: Colors.red,
           ),
         );
@@ -259,7 +266,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         print('[DEBUG] العنوان يحتوي على نص افتراضي!');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('❌ يرجى اختيار عنوان التوصيل من القائمة'),
+            content: Text(_tr(context, en: 'Please select a delivery address from the list', ar: 'يرجى اختيار عنوان التوصيل من القائمة', he: 'נא לבחור כתובת משלוח מהרשימה')),
             backgroundColor: Colors.red,
           ),
         );
@@ -274,7 +281,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         print('[DEBUG] addressController.text.trim(): ${addressController.text.trim()}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('❌ يرجى اختيار عنوان التوصيل من القائمة'),
+            content: Text(_tr(context, en: 'Please select a delivery address from the list', ar: 'يرجى اختيار عنوان التوصيل من القائمة', he: 'נא לבחור כתובת משלוח מהרשימה')),
             backgroundColor: Colors.red,
           ),
         );

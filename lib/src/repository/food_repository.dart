@@ -59,16 +59,21 @@ Future<Stream<Food>> getTrendingFoods(Address address) async {
 
 Future<Stream<Food>> getFood(String foodId) async {
   Uri uri = Helper.getUri('api/foods/$foodId');
-  uri = uri.replace(queryParameters: {'with': 'nutrition;restaurant;category;extras;extraGroups;foodReviews;foodReviews.user'});
+  uri = uri.replace(queryParameters: {
+    'with': 'nutrition;restaurant;category;extras;extraGroups;foodReviews;foodReviews.user'
+  });
   try {
-    final client = new http.Client();
+    final client = http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data as Map<String, dynamic>?)).map((data) {
-      return Food.fromJSON(data);
-    });
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        // Single-object responses should use getObjectData, not getData
+        .map((data) => Helper.getObjectData(data as Map<String, dynamic>?))
+        .map((data) => Food.fromJSON(data));
   } catch (e) {
     print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
-    return new Stream.value(new Food.fromJSON({}));
+    return Stream<Food>.value(Food.fromJSON({}));
   }
 }
 

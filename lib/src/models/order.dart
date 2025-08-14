@@ -9,6 +9,7 @@ import '../models/order_status.dart';
 import '../models/payment.dart';
 import '../models/user.dart';
 import 'food.dart';
+import 'media.dart';
 
 class Order {
   String id;
@@ -78,7 +79,7 @@ class Order {
                 name: 'Food Items',
                 price: foodTotal,
                 description: 'Order items',
-                image: null,
+                image: Media(), // ensure non-null image with default placeholder
                 category: null,
                 restaurant: Restaurant(id: '0', name: ''),
               ),

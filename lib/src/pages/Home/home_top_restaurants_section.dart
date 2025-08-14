@@ -32,18 +32,38 @@ class HomeTopRestaurantsSection extends StatelessWidget {
                   color: Colors.black,
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/OffersNearYou');
-                },
-                child: Text(
-                  S.of(context).see_all,
-                  style: TextStyle(
-                    //fontFamily: 'Nunito',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 18,
-                    height: 1.6,
-                    color: Color(0xFF26386A),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(12),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/OffersNearYou');
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Color(0xFF2196F3).withOpacity(0.1),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          S.of(context).see_all,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: Color(0xFF2196F3),
+                          ),
+                        ),
+                        SizedBox(width: 4),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 12,
+                          color: Color(0xFF2196F3),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

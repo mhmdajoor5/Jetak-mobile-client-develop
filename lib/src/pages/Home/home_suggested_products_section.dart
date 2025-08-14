@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:restaurantcustomer/generated/l10n.dart';
 import 'package:restaurantcustomer/src/elements/CardWidget.dart';
+import '../food.dart' show FoodWidget;
+import '../../models/route_argument.dart';
 
 import '../../models/food.dart';
 
@@ -90,10 +92,34 @@ class _HomeSuggestedProductsSectionState extends StateMVC<HomeSuggestedProductsS
               itemCount: widget.suggestedProducts.length,
               itemBuilder: (context, index) {
                 final food = widget.suggestedProducts[index];
-                return CardWidget(
-                  restaurant: food.restaurant,
-                  heroTag: 'suggested_food_${food.id}',
-                  food: food,
+                return GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (_) {
+                        return FractionallySizedBox(
+                          heightFactor: 0.9,
+                          child: Material(
+                            color: Colors.white,
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: FoodWidget(
+                                routeArgument: RouteArgument(id: food.id, param: food),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: CardWidget(
+                    restaurant: food.restaurant,
+                    heroTag: 'suggested_food_${food.id}',
+                    food: food,
+                  ),
                 );
               },
             ),

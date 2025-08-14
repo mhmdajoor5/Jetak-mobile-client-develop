@@ -61,6 +61,7 @@ class Restaurant {
     try {
       print('Raw restaurant JSON: $jsonMap');
       print('Distance value from JSON: ${jsonMap?['distance']}');
+      print('Closing time from JSON: ${jsonMap?['closing_time']}');
 
       return Restaurant(
         id: jsonMap?['id']?.toString() ?? '',

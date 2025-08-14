@@ -8,6 +8,7 @@ import '../elements/CircularLoadingWidget.dart';
 import '../elements/ReviewsListWidget.dart';
 import '../helpers/helper.dart';
 import '../models/route_argument.dart';
+import '../models/food.dart';
 
 class FoodWidget extends StatefulWidget {
   final RouteArgument routeArgument;
@@ -25,11 +26,27 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
     _con = controller as FoodController;
   }
 
+  String _tr(BuildContext context, {required String en, required String ar, required String he}) {
+    final code = Localizations.localeOf(context).languageCode;
+    if (code == 'ar') return ar;
+    if (code == 'he') return he;
+    return en;
+  }
+
   @override
   void initState() {
-    _con.listenForFood(context, foodId: widget.routeArgument.id!);
+    // If a full Food object was provided, use it directly to avoid fetching by id
+    if (widget.routeArgument.param is Food) {
+      final Food providedFood = widget.routeArgument.param as Food;
+      _con.food = providedFood;
+      if (providedFood.id.isNotEmpty) {
+        _con.listenForFavorite(foodId: providedFood.id);
+      }
+    } else if ((widget.routeArgument.id ?? '').isNotEmpty) {
+      _con.listenForFood(context, foodId: widget.routeArgument.id!);
+      _con.listenForFavorite(foodId: widget.routeArgument.id!);
+    }
     _con.listenForCart();
-    _con.listenForFavorite(foodId: widget.routeArgument.id!);
     // تهيئة selectedExtras
     selectedExtras = [];
     super.initState();
@@ -201,6 +218,21 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                           color: Colors.grey[600],
                                         ),
                                       ),
+                                      const SizedBox(height: 4),
+                                      if (_con.food.restaurant.closingTime.isNotEmpty)
+                                        Row(
+                                          children: [
+                                            Icon(Icons.schedule, size: 14, color: Colors.grey[600]),
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              '${_tr(context, en: 'Closes at', ar: 'يغلق الساعة', he: 'נסגר בשעה')} ${_con.food.restaurant.closingTime}',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.grey[600],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                     ],
                                   ),
                                 ),

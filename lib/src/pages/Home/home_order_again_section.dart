@@ -61,44 +61,37 @@ class _HomeOrderAgainSectionState extends StateMVC<HomeOrderAgainSection> {
                     color: Colors.black87,
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    // التنقل إلى صفحة آخر الطلبات
-                    Navigator.pushNamed(context, '/RecentOrders');
-                  },
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(12),
-                      onTap: () {
-                        // التنقل إلى صفحة آخر الطلبات
-                        Navigator.pushNamed(context, '/RecentOrders');
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.grey[100],
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              _tr(context, en: 'Order Again', ar: 'إعادة الطلب', he: 'הזמן שוב'),
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                                color: Colors.grey[700],
-                              ),
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/RecentOrders');
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Color(0xFF2196F3).withOpacity(0.1),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            _tr(context, en: 'See all', ar: 'عرض الكل', he: 'ראה הכל'),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                              color: Color(0xFF2196F3),
                             ),
-                            SizedBox(width: 4),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              size: 12,
-                              color: Colors.grey[600],
-                            ),
-                          ],
-                        ),
+                          ),
+                          SizedBox(width: 4),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: 12,
+                            color: Color(0xFF2196F3),
+                          ),
+                        ],
                       ),
                     ),
                   ),

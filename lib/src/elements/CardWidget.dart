@@ -251,12 +251,13 @@ class CardWidget extends StatelessWidget {
             ),
 
             /// add here divider
+            // Divider closer to the content above to reduce vertical gap
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Divider(
-                height: 15, // تقليل الارتفاع من 20 إلى 15
-                thickness: 1.5,
-                color: Color(0xFFEDEFF1), // or use Theme.of(context).dividerColor
+                height: 17,
+                thickness: 1.2,
+                color: Color(0xFFEDEFF1),
               ),
             ),
 
@@ -286,7 +287,7 @@ class CardWidget extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 5), // تقليل المسافة من 8 إلى 5
+            SizedBox(height: 12), // تقليل المسافة من 8 إلى 5
           ],
         ),
       ),

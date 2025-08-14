@@ -197,7 +197,29 @@ Future<Stream<Restaurant>> getRestaurant(String id, Address address) async {
     return streamedRest.stream
         .transform(utf8.decoder)
         .transform(json.decoder)
-        .map((data) => Helper.getData(data as Map<String, dynamic>?))
+        .map((data) {
+          // Normalize API payloads to a single restaurant object
+          dynamic payload;
+          if (data is Map<String, dynamic>) {
+            if (data.containsKey('data')) {
+              final inner = data['data'];
+              if (inner is Map<String, dynamic>) {
+                payload = inner;
+              } else if (inner is List && inner.isNotEmpty) {
+                payload = inner.first;
+              } else {
+                payload = <String, dynamic>{};
+              }
+            } else {
+              payload = data;
+            }
+          } else if (data is List && data.isNotEmpty) {
+            payload = data.first;
+          } else {
+            payload = <String, dynamic>{};
+          }
+          return payload as Map<String, dynamic>;
+        })
         .map((data) => Restaurant.fromJSON(data));
   } catch (e) {
     print(CustomTrace(StackTrace.current, message: uri.toString()).toString());

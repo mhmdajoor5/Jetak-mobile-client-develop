@@ -97,16 +97,14 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    // التنقل إلى صفحة جميع المطاعم الجديدة
-                    Navigator.pushNamed(context, '/Restaurants', arguments: {'type': 'new'});
+                    Navigator.pushNamed(context, '/NewlyAddedAll');
                   },
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(12),
                       onTap: () {
-                        // التنقل إلى صفحة جميع المطاعم الجديدة
-                        Navigator.pushNamed(context, '/Restaurants', arguments: {'type': 'new'});
+                        Navigator.pushNamed(context, '/NewlyAddedAll');
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -279,7 +277,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
 
   Widget _buildRestaurantsList() {
     return Container(
-      height: 280,
+      height: 350,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(horizontal: 20),
@@ -298,7 +296,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
                   '/Details',
                   arguments: RouteArgument(
                     id: restaurant.id,
-                    param: restaurant, // تمرير كائن المطعم مباشرة
+                    param: restaurant,
                     heroTag: 'home_newly_added_${restaurant.id}',
                   ),
                 );
@@ -311,8 +309,8 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
                   ),
                   // "New" badge
                   Positioned(
-                    top: 8,
-                    right: 8,
+                    top: 12,
+                    right: 12,
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(

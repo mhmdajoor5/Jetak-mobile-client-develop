@@ -49,6 +49,7 @@ import 'src/pages/new_address/DeliveryAddressFormPage.dart';
 import 'src/models/address.dart';
 // Import restaurants page
 import 'src/pages/bottom_nav_bar_modules/restaurants.dart';
+import 'src/pages/Home/home_newly_added_all_page.dart';
 
 class RouteGenerator {
   static final HomeController homeController = HomeController();
