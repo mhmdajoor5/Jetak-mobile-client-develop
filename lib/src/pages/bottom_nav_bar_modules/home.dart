@@ -88,7 +88,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                             HomeTopRestaurantsSection(
                               restaurants: _con.topRestaurants,
                             ),
-                          // إضافة قسم "ماذا ترغب اليوم؟" للمطاعم
+                          // إضافة قسم "ماذا ترغب اليوم؟" لمطابخ المتاجر (type=store)
                           if (_con.storeCuisines.isNotEmpty) _buildCravingSection(),
                           // // إضافة قسم المتاجر
                           // _buildStoresSection(),
@@ -149,8 +149,8 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
   }
 
   Widget _buildCravingSection() {
-    // استخدام البيانات من API بدلاً من القائمة الثابتة
-    final List<Cuisine> quickOptions = _con.restaurantCuisines.take(7).toList();
+    // استخدام مطابخ المتاجر القادمة من API (type=store)
+    final List<Cuisine> quickOptions = _con.storeCuisines.take(7).toList();
 
     // إذا لم توجد بيانات من API، إخفاء القسم تماماً
     if (quickOptions.isEmpty) {

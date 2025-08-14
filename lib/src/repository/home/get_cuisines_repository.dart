@@ -8,57 +8,54 @@ import '../../models/cuisine.dart';
 Future<List<Cuisine>> getCuisines({String? type}) async {
   print("mElkerm Start to fetch the cuisines in the repository");
   try {
-    String url = '${GlobalConfiguration().getValue('api_base_url')}cuisines';
+    String base = '${GlobalConfiguration().getValue('api_base_url')}cuisines';
+    final uri = Uri.parse(base).replace(queryParameters: {
+      if (type != null) 'type': type,
+    });
 
-    if (type != null) {
-      url += '?type=$type';
-    }
+    print("mElkerm Cuisines URL: $uri");
 
     final response = await http.get(
-      Uri.parse(url),
+      uri,
       headers: {'Content-Type': 'application/json'},
     );
 
     if (response.statusCode == 200) {
       print("mElkerm 00 : get the Cuisines in the repository: ${response.body}");
       final decoded = json.decode(response.body);
-      
-      // التحقق من وجود البيانات - إصلاح المنطق
+      print("mElkerm Cuisines raw keys: ${decoded is Map ? (decoded as Map).keys : decoded.runtimeType}");
+
+      // التحقق من وجود البيانات - لا نقوم بأي fallback عند عدم وجود بيانات
       if (decoded['data'] == null) {
-        print("mElkerm Warning: data is null for type=$type, trying without type parameter...");
-        // إذا كانت البيانات null وكان هناك معامل type، جرب بدون معامل type
-        if (type != null) {
-          return await getCuisines(); // استدعاء بدون معامل type
-        }
+        print("mElkerm Warning: data is null for type=$type – returning empty list");
         return [];
       }
       
-      final List<dynamic> data = decoded['data'];
-      print("mElkerm 11 : get the Cuisines in the repository: ${data.length} items found.");
-      print("mElkerm 22 : get the Cuisines in the repository: ${data.length} items found.");
+      // دعم كلا الشكلين: data: [] أو data: { data: [] }
+      List<dynamic> data;
+      final dynamic inner = decoded['data'];
+      if (inner is List) {
+        data = inner;
+      } else if (inner is Map && inner['data'] is List) {
+        data = inner['data'] as List;
+      } else {
+        data = <dynamic>[];
+      }
+
+      print("mElkerm Cuisines parsed count: ${data.length} (type=$type)");
+      if (data.isNotEmpty && data.first is Map) {
+        print("mElkerm Cuisines first item keys: ${(data.first as Map).keys}");
+      }
 
       print("mElkerm get the Cuisines in the repository");
       return data.map((item) => Cuisine.fromJSON(item)).toList();
 
     } else {
       print("mElkerm Error loading Cuisines: in repo ${response.statusCode}");
-
-      // إذا كان هناك خطأ مع type، جرب بدون type
-      if (type != null) {
-        print("mElkerm Trying without type parameter...");
-        return await getCuisines(); // استدعاء بدون معامل type
-      }
-
       throw Exception('Failed to load cuisines');
     }
   } catch (err) {
     print("mElkerm Exception in getCuisines: $err");
-
-    // إذا كان هناك خطأ مع type، جرب بدون type
-    if (type != null) {
-      print("mElkerm Trying without type parameter due to exception...");
-      return await getCuisines(); // استدعاء بدون معامل type
-    }
 
     throw Exception('Error: $err');
   }
