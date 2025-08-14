@@ -36,12 +36,12 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
 
   _HomeWidgetState() : super(HomeController()) {
     _con = controller as HomeController;
+  }
 
-    @override
-    void initState() {
-      super.initState();
-      _con.getCurrentLocation().then((_) => setState(() {}));
-    }
+  @override
+  void initState() {
+    super.initState();
+    _con.getCurrentLocation().then((_) => setState(() {}));
   }
 
   @override
@@ -73,34 +73,38 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                         },
                       );
                     case 'slider':
-                      return HomeSliderSection(slides: _con.slides);
+                      return _con.slides.isEmpty ? SizedBox.shrink() : HomeSliderSection(slides: _con.slides);
                     case 'top_restaurants_heading':
                       return HomeDeliveryPickupSection(
                         scaffoldKey: widget.parentScaffoldKey,
                         onRefresh: _con.refreshHome,
                       );
                     case 'top_restaurants':
-                      return Column(
+                      return _con.topRestaurants.isEmpty && _con.storeCuisines.isEmpty && _con.nearbyStores.isEmpty
+                          ? SizedBox.shrink()
+                          : Column(
                         children: [
-                          HomeTopRestaurantsSection(
-                            restaurants: _con.topRestaurants,
-                          ),
+                          if (_con.topRestaurants.isNotEmpty)
+                            HomeTopRestaurantsSection(
+                              restaurants: _con.topRestaurants,
+                            ),
                           // إضافة قسم "ماذا ترغب اليوم؟" للمطاعم
-                          Visibility(
-                            visible: _con.storeCuisines.isNotEmpty,
-                              child: _buildCravingSection()),
+                          if (_con.storeCuisines.isNotEmpty) _buildCravingSection(),
                           // // إضافة قسم المتاجر
                           // _buildStoresSection(),
                           // إضافة قسم "القريبة منك"
-                          _buildNearbyStoresSection(),
+                          if (_con.nearbyStores.isNotEmpty || _con.isLoadingNearbyStores)
+                            _buildNearbyStoresSection(),
                           // إضافة قسم "إعادة الطلب"
+                          // إظهار "إعادة الطلب" دائماً غير متعلق ببيانات
                           HomeOrderAgainSection(),
                           // إضافة قسم "جديد في التطبيق"
                           HomeNewlyAddedSection(),
                           // إضافة قسم "المنتجات المقترحة"
-                          HomeSuggestedProductsSection(
-                            suggestedProducts: _con.suggestedProducts,
-                          ),
+                          if (_con.suggestedProducts.isNotEmpty)
+                            HomeSuggestedProductsSection(
+                              suggestedProducts: _con.suggestedProducts,
+                            ),
                         ],
                       );
                     case 'trending_week':
@@ -123,9 +127,11 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                         ],
                       );
                     case 'popular':
-                      return HomePopularSection(
-                        restaurants: _con.popularRestaurants,
-                      );
+                      return _con.popularRestaurants.isEmpty
+                          ? SizedBox.shrink()
+                          : HomePopularSection(
+                              restaurants: _con.popularRestaurants,
+                            );
                     case 'order_again':
                       return HomeOrderAgainSection();
                     case 'newly_added':

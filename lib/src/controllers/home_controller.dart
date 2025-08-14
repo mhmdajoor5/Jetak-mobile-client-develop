@@ -111,11 +111,14 @@ class HomeController extends ControllerMVC {
 
       _isDataLoaded = true;
 
-      await getCurrentLocation();
-      print("Detected location: $currentLocationName");
-
-
+      // اعرض البيانات فوراً
       setState(() {});
+
+      // حدّث الموقع في الخلفية ثم أعد البناء
+      getCurrentLocation().then((_) {
+        print("Detected location: $currentLocationName");
+        setState(() {});
+      });
     } catch (e) {
       print('Error loading all data: $e');
       // في حالة الخطأ، استخدم البيانات الأساسية فقط
@@ -127,6 +130,7 @@ class HomeController extends ControllerMVC {
           fetchPopularRestaurants(),
           getTrendingFoods(),
           getNewlyAddedRestaurants(),
+          getSuggestedProducts(), // تضمين المنتجات المقترحة حتى في مسار fallback
         ]);
 
         slides = basicResults[0] as List<Slide>;
@@ -137,11 +141,14 @@ class HomeController extends ControllerMVC {
         popularRestaurants = basicResults[3] as List<Restaurant>;
         trendingFoods = basicResults[4] as List<Food>;
         newlyAddedRestaurants = basicResults[5] as List<Restaurant>;
+        suggestedProducts = basicResults[6] as List<Food>;
         getPopularRestaurants = true;
 
         _isDataLoaded = true;
-        await getCurrentLocation();
+        // اعرض البيانات فوراً
         setState(() {});
+        // حدّث الموقع في الخلفية ثم أعد البناء
+        getCurrentLocation().then((_) => setState(() {}));
       } catch (fallbackError) {
         print('Fallback error: $fallbackError');
         rethrow;
@@ -326,6 +333,15 @@ class HomeController extends ControllerMVC {
         });
 
         print("📌 Detected Address: $address");
+        // بعد تحديد الموقع، حدّث قسم العروض القريبة منك ليُرتّب حسب الأقرب
+        try {
+          final refreshedOffers = await getTopRestaurants();
+          setState(() {
+            topRestaurants = refreshedOffers;
+          });
+        } catch (e) {
+          print('❌ Error refreshing offers near you after location: $e');
+        }
         return address;
       } else {
         print("⚠️ No address returned from Google API");

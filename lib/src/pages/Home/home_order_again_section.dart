@@ -34,6 +34,7 @@ class _HomeOrderAgainSectionState extends StateMVC<HomeOrderAgainSection> {
 
   @override
   Widget build(BuildContext context) {
+    if (_con.recentOrders.isEmpty) return SizedBox.shrink();
     return Container(
       margin: EdgeInsets.only(top: 20),
       child: Column(

@@ -13,6 +13,7 @@ class HomePopularSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (restaurants.isEmpty) return SizedBox.shrink();
     return Column(
       children: [
         Padding(

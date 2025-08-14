@@ -20,41 +20,7 @@ class _HomeSuggestedProductsSectionState extends StateMVC<HomeSuggestedProductsS
 
   @override
   Widget build(BuildContext context) {
-    print("mElkerm Debug: HomeSuggestedProductsSection - Products count: ${widget.suggestedProducts.length}");
-    
-    if (widget.suggestedProducts.isEmpty) {
-      print("mElkerm Debug: No suggested products found, showing empty section for debugging");
-      return Container(
-        margin: EdgeInsets.only(top: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                '🟢 المنتجات المقترحة (لا توجد منتجات)',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                  color: Colors.red,
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                'Debug: القسم موجود لكن لا توجد منتجات',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[600],
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+    if (widget.suggestedProducts.isEmpty) return SizedBox.shrink();
 
     return Container(
       margin: EdgeInsets.only(top: 20),
