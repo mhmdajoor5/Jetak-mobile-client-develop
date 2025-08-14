@@ -162,6 +162,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
 
     return Container(
       margin: EdgeInsets.only(top: 20),
+      padding: EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -181,7 +182,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
             height: 90,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.symmetric(horizontal: 20),
               itemCount: quickOptions.length,
               itemBuilder: (context, index) {
                 final cuisine = quickOptions[index];
@@ -353,7 +354,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
               height: 200,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: 15),
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 itemCount: _con.nearbyStores.length,
                 itemBuilder: (context, index) {
                   final restaurant = _con.nearbyStores[index];
@@ -496,7 +497,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
             height: 90,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.symmetric(horizontal: 20),
               itemCount: storeOptions.length,
               itemBuilder: (context, index) {
                 final store = storeOptions[index];

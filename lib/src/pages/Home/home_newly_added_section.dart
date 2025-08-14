@@ -59,7 +59,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
         children: [
           // العنوان الرئيسي
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -130,7 +130,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
           
           // النص التوضيحي
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
               'مطاعم ومتاجر جديدة مضافة حديثاً',
               style: TextStyle(
@@ -256,7 +256,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
       height: 280,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: 26),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         itemCount: newlyAddedRestaurants.length,
         itemBuilder: (context, index) {
           final restaurant = newlyAddedRestaurants[index];

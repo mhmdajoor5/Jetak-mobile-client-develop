@@ -3,6 +3,8 @@ import '../helpers/custom_trace.dart';
 
 class Setting {
   String appName = '';
+  // Backend-controlled app availability status: '1' = available, '0' = maintenance/off
+  String appStatus = '1';
   double defaultTax = 0.0;
   String defaultCurrency = '';
   String distanceUnit = 'km';
@@ -34,6 +36,7 @@ class Setting {
     final setting = Setting();
     try {
       setting.appName = jsonMap?['app_name']?.toString() ?? '';
+      setting.appStatus = jsonMap?['app_status']?.toString() ?? '1';
       setting.mainColor = jsonMap?['main_color']?.toString() ?? '';
       setting.mainDarkColor = jsonMap?['main_dark_color']?.toString() ?? '';
       setting.secondColor = jsonMap?['second_color']?.toString() ?? '';
@@ -56,7 +59,7 @@ class Setting {
       setting.stripeEnabled = jsonMap?['enable_stripe'] == '1';
       setting.razorPayEnabled = jsonMap?['enable_razorpay'] == '1';
 
-      for (int i = 1; i <= 12; i++) {
+      for (int i = 1; i <= 14; i++) {
         final section = jsonMap?['home_section_$i']?.toString() ?? 'empty';
         setting.homeSections.add(section);
       }

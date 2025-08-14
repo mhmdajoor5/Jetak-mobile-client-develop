@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../generated/l10n.dart';
-import '../../elements/GridWidget.dart';
+import '../../elements/CardsCarouselWidget.dart';
 import '../../models/restaurant.dart';
 
 class HomePopularSection extends StatelessWidget {
@@ -31,12 +31,10 @@ class HomePopularSection extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: GridWidget(
-            restaurantsList: restaurants,
-            heroTag: 'home_restaurants',
-          ),
+        // استخدام نفس كرت المنتجات المقترحة (CardWidget) عبر CardsCarouselWidget
+        CardsCarouselWidget(
+          restaurantsList: restaurants,
+          heroTag: 'home_popular_restaurants',
         ),
       ],
     );

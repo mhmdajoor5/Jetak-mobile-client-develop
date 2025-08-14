@@ -226,6 +226,20 @@ class _MyAppState extends State<MyApp> {
                       focusColor: config.Colors().accentDarkColor(1),
                     );
 
+            // If backend turns app off (app_status != '1'), show maintenance screen
+            if (_setting.appStatus != '1') {
+              return Directionality(
+                textDirection: textDirection,
+                child: Theme(
+                  data: baseTheme,
+                  child: _AppUnavailableScreen(onRetry: () {
+                    // Try reloading settings on retry
+                    settingRepo.initSettings();
+                  }),
+                ),
+              );
+            }
+
             return Directionality(
               textDirection: textDirection,
               child: Theme(
@@ -248,5 +262,48 @@ TextDirection _getTextDirection(String languageCode) {
     return TextDirection.rtl;
   } else {
     return TextDirection.ltr;
+  }
+}
+
+// Simple maintenance screen shown when app_status != '1'
+class _AppUnavailableScreen extends StatelessWidget {
+  final VoidCallback onRetry;
+  const _AppUnavailableScreen({Key? key, required this.onRetry}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 38,
+                backgroundColor: Colors.white.withOpacity(0.2),
+                child: Icon(Icons.build_rounded, size: 42, color: Colors.white70),
+              ),
+              const SizedBox(height: 24),
+              Text('App Unavailable', style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white)),
+              const SizedBox(height: 8),
+              Text('التطبيق حالياً غير متاح، يرجى المحاولة لاحقاً.', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white70)),
+              const SizedBox(height: 32),
+              ElevatedButton.icon(
+                onPressed: onRetry,
+                icon: const Icon(Icons.refresh),
+                label: const Text('Retry'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black87,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text('The app will be back soon', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70)),
+            ],
+          ),
+        ),
+      ),
+      backgroundColor: Colors.black54,
+    );
   }
 }

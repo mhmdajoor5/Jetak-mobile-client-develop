@@ -168,30 +168,36 @@ class CardWidget extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 6), // تقليل المسافة من 10 إلى 6
-                        // عرض وصف المنتج مع دعم HTML إذا كان متوفراً
-                        if (food != null && food!.description.isNotEmpty)
-                          HtmlDescriptionWidget(
-                            htmlContent: food!.description,
-                            textStyle: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
-                              color: Color(0xFF9D9FA4),
-                              height: 1.3,
-                            ),
-                            maxHeight: 60,
-                          )
-                        else
-                          Text(
-                            Helper.skipHtml(restaurant.description),
-                            overflow: TextOverflow.fade,
-                            softWrap: false,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
-                              color: Color(0xFF9D9FA4),
-                              height: 1.3,
-                            ),
-                          ),
+                        // توحيد ارتفاع منطقة الوصف لضمان تساوي الكروت
+                        SizedBox(
+                          height: 34, // ارتفاع ثابت لمنطقة الوصف
+                          child: (food != null && food!.description.isNotEmpty)
+                              ? HtmlDescriptionWidget(
+                                  htmlContent: food!.description,
+                                  textStyle: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                    color: Color(0xFF9D9FA4),
+                                    height: 1.3,
+                                  ),
+                                  maxHeight: 34,
+                                )
+                              : Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    Helper.skipHtml(restaurant.description),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    softWrap: true,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12,
+                                      color: Color(0xFF9D9FA4),
+                                      height: 1.3,
+                                    ),
+                                  ),
+                                ),
+                        ),
 
 
                       ],
