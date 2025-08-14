@@ -36,7 +36,19 @@ Future<Stream<Food>> getTrendingFoods(Address address) async {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
 
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data as Map<String, dynamic>?)).expand((data) => (data as List)).map((data) {
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        .map((data) => Helper.getData(data as Map<String, dynamic>?))
+        .expand((data) {
+          if (data is List) {
+            return data;
+          } else if (data is Map<String, dynamic>) {
+            return [data];
+          } else {
+            return <dynamic>[];
+          }
+        }).map((data) {
       return Food.fromJSON(data);
     });
   } catch (e) {
@@ -77,7 +89,20 @@ Future<Stream<Food>> searchFoods(String search, Address address) async {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
 
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data as Map<String, dynamic>?)).expand((data) => (data as List)).map((data) {
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        .map((data) => Helper.getData(data as Map<String, dynamic>?))
+        .expand((data) {
+          if (data is List) {
+            return data;
+          } else if (data is Map<String, dynamic>) {
+            return [data];
+          } else {
+            return <dynamic>[];
+          }
+        })
+        .map((data) {
       return Food.fromJSON(data);
     });
   } catch (e) {

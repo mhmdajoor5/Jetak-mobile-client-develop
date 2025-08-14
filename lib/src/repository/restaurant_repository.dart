@@ -142,6 +142,7 @@ Future<Stream<Restaurant>> searchRestaurants(
   Map<String, dynamic> _queryParams = {};
   _queryParams['search'] = 'name:$search;description:$search';
   _queryParams['searchFields'] = 'name:like;description:like';
+  _queryParams['searchJoin'] = 'or';
   _queryParams['limit'] = '5';
   if (!address.isUnknown()) {
     _queryParams['myLon'] = address.longitude.toString();
@@ -150,6 +151,7 @@ Future<Stream<Restaurant>> searchRestaurants(
     _queryParams['areaLat'] = address.latitude.toString();
   }
   uri = uri.replace(queryParameters: _queryParams);
+  print('Search restaurants final URI: $uri');
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
@@ -158,7 +160,15 @@ Future<Stream<Restaurant>> searchRestaurants(
         .transform(utf8.decoder)
         .transform(json.decoder)
         .map((data) => Helper.getData(data as Map<String, dynamic>?))
-        .expand((data) => (data as List))
+        .expand((data) {
+          if (data is List) {
+            return data;
+          } else if (data is Map<String, dynamic>) {
+            return [data];
+          } else {
+            return <dynamic>[];
+          }
+        })
         .map((data) {
       return Restaurant.fromJSON(data);
     });

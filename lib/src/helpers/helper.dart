@@ -132,9 +132,21 @@ class Helper {
     return cards.isNotEmpty;
   }
 
-  // for mapping data retrieved form json array
+  // for mapping data retrieved from json array (handles both list and paginated map)
   static getData(Map<String, dynamic>? data) {
-    return data?['data'] ?? [];
+    if (data == null) return [];
+    final dynamic inner = data['data'];
+    if (inner is List) {
+      return inner;
+    }
+    if (inner is Map<String, dynamic>) {
+      // Common paginated shape: { data: { current_page, data: [ ... ] } }
+      final dynamic nested = inner['data'];
+      if (nested is List) return nested;
+    }
+    // Fallbacks: sometimes APIs return items directly without wrapping
+    if (data is List) return data;
+    return [];
   }
 
   static int getIntData(Map<String, dynamic>? data) {
