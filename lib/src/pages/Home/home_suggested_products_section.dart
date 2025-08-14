@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:restaurantcustomer/generated/l10n.dart';
 import 'package:restaurantcustomer/src/elements/CardWidget.dart';
 
 import '../../models/food.dart';
@@ -17,6 +18,12 @@ class HomeSuggestedProductsSection extends StatefulWidget {
 }
 
 class _HomeSuggestedProductsSectionState extends StateMVC<HomeSuggestedProductsSection> {
+  String _tr(BuildContext context, {required String en, required String ar, required String he}) {
+    final code = Localizations.localeOf(context).languageCode;
+    if (code == 'ar') return ar;
+    if (code == 'he') return he;
+    return en;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +41,10 @@ class _HomeSuggestedProductsSectionState extends StateMVC<HomeSuggestedProductsS
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '🟢 المنتجات المقترحة',
+                  _tr(context,
+                      en: 'Suggested products',
+                      ar: 'المنتجات المقترحة',
+                      he: 'מוצרים מומלצים'),
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 20,
@@ -42,7 +52,10 @@ class _HomeSuggestedProductsSectionState extends StateMVC<HomeSuggestedProductsS
                   ),
                 ),
                 Text(
-                  'طلب مباشر',
+                  _tr(context,
+                      en: 'Direct order',
+                      ar: 'طلب مباشر',
+                      he: 'הזמנה ישירה'),
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
@@ -57,7 +70,10 @@ class _HomeSuggestedProductsSectionState extends StateMVC<HomeSuggestedProductsS
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              'اطلب منتجك المفضل مباشرة بدون دخول متجر',
+              _tr(context,
+                  en: 'Order your favorite product directly without entering a store',
+                  ar: 'اطلب منتجك المفضل مباشرة بدون دخول متجر',
+                  he: 'הזמן את המוצר המועדף ישירות בלי להיכנס לחנות'),
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey[600],

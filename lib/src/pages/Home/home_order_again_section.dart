@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:restaurantcustomer/generated/l10n.dart';
 import 'package:restaurantcustomer/src/elements/CardWidget.dart';
 
 import '../../controllers/profile_controller.dart';
@@ -17,6 +18,13 @@ class HomeOrderAgainSection extends StatefulWidget {
 
 class _HomeOrderAgainSectionState extends StateMVC<HomeOrderAgainSection> {
   late ProfileController _con;
+
+  String _tr(BuildContext context, {required String en, required String ar, required String he}) {
+    final code = Localizations.localeOf(context).languageCode;
+    if (code == 'ar') return ar;
+    if (code == 'he') return he;
+    return en;
+  }
 
   _HomeOrderAgainSectionState() : super(ProfileController()) {
     _con = controller as ProfileController;
@@ -46,7 +54,7 @@ class _HomeOrderAgainSectionState extends StateMVC<HomeOrderAgainSection> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '🔹 إعادة الطلب',
+                  _tr(context, en: 'Order Again', ar: 'إعادة الطلب', he: 'הזמן שוב'),
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 20,
@@ -76,7 +84,7 @@ class _HomeOrderAgainSectionState extends StateMVC<HomeOrderAgainSection> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              'Order Again',
+                              _tr(context, en: 'Order Again', ar: 'إعادة الطلب', he: 'הזמן שוב'),
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
@@ -102,7 +110,10 @@ class _HomeOrderAgainSectionState extends StateMVC<HomeOrderAgainSection> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              'طلباتك السابقة من المطاعم والمتاجر',
+              _tr(context,
+                  en: 'Your previous orders from restaurants and stores',
+                  ar: 'طلباتك السابقة من المطاعم والمتاجر',
+                  he: 'ההזמנות הקודמות שלך ממסעדות וחנויות'),
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey[600],
@@ -118,7 +129,7 @@ class _HomeOrderAgainSectionState extends StateMVC<HomeOrderAgainSection> {
 
   Widget _buildOrdersList() {
     if (_con.recentOrders.isEmpty) {
-      return _buildEmptyState();
+        return _buildEmptyState();
     }
 
     Map<String, List<Order>> ordersByRestaurant = {};
@@ -195,7 +206,7 @@ class _HomeOrderAgainSectionState extends StateMVC<HomeOrderAgainSection> {
 
 
   Widget _buildEmptyState() {
-    return Container(
+      return Container(
       height: 150,
       child: Center(
         child: Column(
@@ -207,8 +218,8 @@ class _HomeOrderAgainSectionState extends StateMVC<HomeOrderAgainSection> {
               color: Colors.grey[400],
             ),
             SizedBox(height: 10),
-            Text(
-              'لا توجد طلبات سابقة',
+              Text(
+                _tr(context, en: 'No previous orders', ar: 'لا توجد طلبات سابقة', he: 'אין הזמנות קודמות'),
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 16,
@@ -216,8 +227,11 @@ class _HomeOrderAgainSectionState extends StateMVC<HomeOrderAgainSection> {
               ),
             ),
             SizedBox(height: 5),
-            Text(
-              'ابدأ بالطلب من المطاعم والمتاجر',
+              Text(
+                _tr(context,
+                    en: 'Start ordering from restaurants and stores',
+                    ar: 'ابدأ بالطلب من المطاعم والمتاجر',
+                    he: 'התחל להזמין ממסעדות וחנויות'),
               style: TextStyle(
                 color: Colors.grey[500],
                 fontSize: 14,

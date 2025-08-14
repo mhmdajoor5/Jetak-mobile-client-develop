@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:restaurantcustomer/generated/l10n.dart';
 
 import '../../models/restaurant.dart';
 import '../../models/media.dart';
@@ -19,6 +20,13 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
   bool isLoading = true;
   String? errorMessage;
 
+  String _tr(BuildContext context, {required String en, required String ar, required String he}) {
+    final code = Localizations.localeOf(context).languageCode;
+    if (code == 'ar') return ar;
+    if (code == 'he') return he;
+    return en;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -32,7 +40,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
     });
 
     try {
-      print("🆕 جاري تحميل المطاعم الجديدة...");
+      print("🆕 Loading newly added restaurants...");
       final restaurants = await getNewlyAddedRestaurants();
       
       setState(() {
@@ -40,11 +48,14 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
         isLoading = false;
       });
       
-      print("✅ تم تحميل ${restaurants.length} مطعم جديد");
+          print("✅ Loaded ${restaurants.length} newly added restaurants");
     } catch (e) {
-      print("❌ خطأ في تحميل المطاعم الجديدة: $e");
+      print("❌ Error loading newly added restaurants: $e");
       setState(() {
-        errorMessage = 'حدث خطأ في تحميل المطاعم الجديدة';
+        errorMessage = _tr(context,
+            en: 'Error loading newly added restaurants',
+            ar: 'حدث خطأ في تحميل المطاعم الجديدة',
+            he: 'שגיאה בטעינת המסעדות החדשות');
         isLoading = false;
       });
     }
@@ -57,7 +68,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // العنوان الرئيسي
+          // Title
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
@@ -72,7 +83,10 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
                     ),
                     SizedBox(width: 8),
                     Text(
-                      'جديد في التطبيق',
+                      _tr(context,
+                          en: 'New in the app',
+                          ar: 'جديد في التطبيق',
+                          he: 'חדש באפליקציה'),
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
@@ -104,7 +118,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              'يشمل الكل',
+                              S.of(context).see_all,
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
@@ -128,11 +142,14 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
           ),
           SizedBox(height: 8),
           
-          // النص التوضيحي
+          // Subtitle
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              'مطاعم ومتاجر جديدة مضافة حديثاً',
+              _tr(context,
+                  en: 'New restaurants and stores recently added',
+                  ar: 'مطاعم ومتاجر جديدة مضافة حديثاً',
+                  he: 'מסעדות וחנויות שנוספו לאחרונה'),
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
@@ -157,7 +174,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
   }
 
   Widget _buildLoadingState() {
-    return Container(
+      return Container(
       height: 280,
       child: Center(
         child: Column(
@@ -167,8 +184,11 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
               color: Color(0xFF2196F3),
             ),
             SizedBox(height: 16),
-            Text(
-              'جاري تحميل المطاعم الجديدة...',
+              Text(
+                _tr(context,
+                    en: 'Loading newly added restaurants...',
+                    ar: 'جاري تحميل المطاعم الجديدة...',
+                    he: 'טוען מסעדות חדשות...'),
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 14,
@@ -181,7 +201,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
   }
 
   Widget _buildErrorState() {
-    return Container(
+      return Container(
       height: 200,
       child: Center(
         child: Column(
@@ -193,8 +213,8 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
               color: Colors.red[400],
             ),
             SizedBox(height: 10),
-            Text(
-              errorMessage ?? 'حدث خطأ',
+              Text(
+                errorMessage ?? _tr(context, en: 'Error', ar: 'حدث خطأ', he: 'שגיאה'),
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 16,
@@ -208,7 +228,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
                 backgroundColor: Color(0xFF2196F3),
                 foregroundColor: Colors.white,
               ),
-              child: Text('إعادة المحاولة'),
+                child: Text(_tr(context, en: 'Retry', ar: 'إعادة المحاولة', he: 'נסה שוב')),
             ),
           ],
         ),
@@ -217,7 +237,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
   }
 
   Widget _buildEmptyState() {
-    return Container(
+      return Container(
       height: 200,
       child: Center(
         child: Column(
@@ -229,8 +249,11 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
               color: Colors.grey[400],
             ),
             SizedBox(height: 10),
-            Text(
-              'لا توجد مطاعم أو متاجر جديدة حالياً',
+              Text(
+                _tr(context,
+                    en: 'No new restaurants or stores for now',
+                    ar: 'لا توجد مطاعم أو متاجر جديدة حالياً',
+                    he: 'אין כרגע מסעדות או חנויות חדשות'),
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 16,
@@ -238,8 +261,11 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
               ),
             ),
             SizedBox(height: 5),
-            Text(
-              'سيتم إضافة مطاعم ومتاجر جديدة قريباً',
+              Text(
+                _tr(context,
+                    en: 'New restaurants and stores will be added soon',
+                    ar: 'سيتم إضافة مطاعم ومتاجر جديدة قريباً',
+                    he: 'מסעדות וחנויות חדשות יתווספו בקרוב'),
               style: TextStyle(
                 color: Colors.grey[500],
                 fontSize: 14,
@@ -283,7 +309,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
                     restaurant: restaurant,
                     heroTag: 'home_newly_added_',
                   ),
-                  // علامة "جديد" على المطاعم الجديدة
+                  // "New" badge
                   Positioned(
                     top: 8,
                     right: 8,
@@ -294,7 +320,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
-                        'جديد',
+                        _tr(context, en: 'New', ar: 'جديد', he: 'חדש'),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 10,
