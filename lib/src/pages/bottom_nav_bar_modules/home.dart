@@ -4,6 +4,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../../generated/l10n.dart';
 import '../../controllers/home_controller.dart';
 import '../../elements/FoodsCarouselWidget.dart' show FoodsCarouselWidget;
+import '../../models/cuisine.dart';
 import '../../models/route_argument.dart';
 import '../../repository/settings_repository.dart' as settingsRepo;
 
@@ -83,8 +84,10 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                           HomeTopRestaurantsSection(
                             restaurants: _con.topRestaurants,
                           ),
-                          // إضافة قسم "ماذا ترغب اليوم؟"
+                          // إضافة قسم "ماذا ترغب اليوم؟" للمطاعم
                           _buildCravingSection(),
+                          // // إضافة قسم المتاجر
+                          // _buildStoresSection(),
                           // إضافة قسم "القريبة منك"
                           _buildNearbyStoresSection(),
                           // إضافة قسم "إعادة الطلب"
@@ -125,16 +128,13 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
   }
 
   Widget _buildCravingSection() {
-    // قائمة الخيارات السريعة مع الأيقونات
-    final List<Map<String, dynamic>> quickOptions = [
-      {'name': 'وجبة سريعة', 'emoji': '🍔', 'cuisineType': 'fast_food'},
-      {'name': 'حلويات', 'emoji': '🍰', 'cuisineType': 'desserts'},
-      {'name': 'مشاوي', 'emoji': '🍗', 'cuisineType': 'grill'},
-      {'name': 'إيطالي', 'emoji': '🍝', 'cuisineType': 'italian'},
-      {'name': 'نباتي', 'emoji': '🥗', 'cuisineType': 'vegetarian'},
-      {'name': 'سوشي', 'emoji': '🍣', 'cuisineType': 'sushi'},
-      {'name': 'عصائر', 'emoji': '🥤', 'cuisineType': 'beverages'},
-    ];
+    // استخدام البيانات من API بدلاً من القائمة الثابتة
+    final List<Cuisine> quickOptions = _con.restaurantCuisines.take(7).toList();
+
+    // إذا لم توجد بيانات من API، استخدم قائمة احتياطية
+    if (quickOptions.isEmpty) {
+      return SizedBox.shrink(); // إخفاء القسم إذا لم توجد بيانات
+    }
 
     return Container(
       margin: EdgeInsets.only(top: 20),
@@ -160,13 +160,13 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
               padding: EdgeInsets.symmetric(horizontal: 15),
               itemCount: quickOptions.length,
               itemBuilder: (context, index) {
-                final option = quickOptions[index];
+                final cuisine = quickOptions[index];
                 return Container(
                   width: 70,
                   margin: EdgeInsets.only(right: 8),
                   child: GestureDetector(
                     onTap: () {
-                      _navigateToCuisineRestaurants(option['cuisineType'], option['name']);
+                      _navigateToCuisineRestaurants(cuisine);
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -191,15 +191,25 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  // Emoji icon
-                                  Text(
-                                    option['emoji'],
-                                    style: TextStyle(fontSize: 20),
-                                  ),
+                                  // صورة المطبخ أو أيقونة افتراضية
+                                  cuisine.image.url.isNotEmpty
+                                      ? ClipRRect(
+                                          borderRadius: BorderRadius.circular(8),
+                                          child: Image.network(
+                                            cuisine.image.url,
+                                            width: 24,
+                                            height: 24,
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (context, error, stackTrace) {
+                                              return _getDefaultEmoji(cuisine.name);
+                                            },
+                                          ),
+                                        )
+                                      : _getDefaultEmoji(cuisine.name),
                                   SizedBox(height: 3),
-                                  // Name text - centered
+                                  // اسم المطبخ
                                   Text(
-                                    option['name'],
+                                    cuisine.name,
                                     textAlign: TextAlign.center,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
@@ -224,6 +234,33 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
           ),
         ],
       ),
+    );
+  }
+
+  // دالة مساعدة لإرجاع أيقونة افتراضية بناءً على اسم المطبخ
+  Widget _getDefaultEmoji(String cuisineName) {
+    String emoji = '🍽️'; // أيقونة افتراضية
+    
+    // تحديد الأيقونة المناسبة بناءً على اسم المطبخ
+    if (cuisineName.toLowerCase().contains('fast') || cuisineName.toLowerCase().contains('سريع')) {
+      emoji = '🍔';
+    } else if (cuisineName.toLowerCase().contains('dessert') || cuisineName.toLowerCase().contains('حلو')) {
+      emoji = '🍰';
+    } else if (cuisineName.toLowerCase().contains('grill') || cuisineName.toLowerCase().contains('مشوي')) {
+      emoji = '🍗';
+    } else if (cuisineName.toLowerCase().contains('italian') || cuisineName.toLowerCase().contains('إيطالي')) {
+      emoji = '🍝';
+    } else if (cuisineName.toLowerCase().contains('vegetarian') || cuisineName.toLowerCase().contains('نباتي')) {
+      emoji = '🥗';
+    } else if (cuisineName.toLowerCase().contains('sushi') || cuisineName.toLowerCase().contains('سوشي')) {
+      emoji = '🍣';
+    } else if (cuisineName.toLowerCase().contains('beverage') || cuisineName.toLowerCase().contains('عصير')) {
+      emoji = '🥤';
+    }
+    
+    return Text(
+      emoji,
+      style: TextStyle(fontSize: 20),
     );
   }
 
@@ -434,24 +471,127 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
     );
   }
 
-  void _navigateToCuisineRestaurants(String cuisineType, String cuisineName) {
-    // البحث عن المطاعم المرتبطة بهذا النوع من المطبخ
-    final matchingCuisines = _con.cuisines.where((cuisine) => 
-      cuisine.name.toLowerCase().contains(cuisineType.toLowerCase()) ||
-      cuisine.description.toLowerCase().contains(cuisineType.toLowerCase())
-    ).toList();
+  // إضافة قسم منفصل للمتاجر
+  Widget _buildStoresSection() {
+    final List<Cuisine> storeOptions = _con.storeCuisines.take(7).toList();
 
-    if (matchingCuisines.isNotEmpty) {
-      // إذا وجد مطابخ مطابقة، انتقل إلى صفحة تفاصيل المطبخ
-      Navigator.pushNamed(
-        context, 
-        '/Cuisine',
-        arguments: RouteArgument(id: matchingCuisines.first.id, param: matchingCuisines.first),
-      );
-    } else {
-      // إذا لم يجد مطابخ مطابقة، انتقل إلى صفحة المطاعم عبر bottom navigation
-      // يمكن إضافة فلتر لاحقاً
-      Navigator.pushNamed(context, '/Pages', arguments: 1);
+    if (storeOptions.isEmpty) {
+      return SizedBox.shrink();
     }
+
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              '🔹 المتاجر القريبة',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 20,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+          SizedBox(height: 15),
+          Container(
+            height: 90,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              itemCount: storeOptions.length,
+              itemBuilder: (context, index) {
+                final store = storeOptions[index];
+                return Container(
+                  width: 70,
+                  margin: EdgeInsets.only(right: 8),
+                  child: GestureDetector(
+                    onTap: () {
+                      _navigateToStoreCuisine(store);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Theme.of(context).focusColor.withOpacity(0.1),
+                            blurRadius: 15,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  store.image.url.isNotEmpty
+                                      ? ClipRRect(
+                                          borderRadius: BorderRadius.circular(8),
+                                          child: Image.network(
+                                            store.image.url,
+                                            width: 24,
+                                            height: 24,
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (context, error, stackTrace) {
+                                              return Icon(Icons.store, size: 20);
+                                            },
+                                          ),
+                                        )
+                                      : Icon(Icons.store, size: 20),
+                                  SizedBox(height: 3),
+                                  Text(
+                                    store.name,
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 10,
+                                      color: Color(0xFF272727),
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // تحديث دالة التنقل
+  void _navigateToCuisineRestaurants(Cuisine cuisine) {
+    Navigator.pushNamed(
+      context, 
+      '/Cuisine',
+      arguments: RouteArgument(id: cuisine.id, param: cuisine),
+    );
+  }
+
+  void _navigateToStoreCuisine(Cuisine store) {
+    // يمكن تخصيص التنقل للمتاجر هنا
+    Navigator.pushNamed(
+      context, 
+      '/Cuisine',
+      arguments: RouteArgument(id: store.id, param: store),
+    );
   }
 }

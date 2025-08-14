@@ -35,6 +35,8 @@ class HomeController extends ControllerMVC {
 
   List<Category> categories = <Category>[];
   List<Cuisine> cuisines = <Cuisine>[];
+  List<Cuisine> restaurantCuisines = <Cuisine>[]; // للمطاعم
+  List<Cuisine> storeCuisines = <Cuisine>[]; // للمتاجر
   List<Slide> slides = <Slide>[];
   List<Restaurant> topRestaurants = <Restaurant>[];
   bool getPopularRestaurants = false;
@@ -78,7 +80,9 @@ class HomeController extends ControllerMVC {
     try {
       final results = await Future.wait<dynamic>([
         getSlides(),
-        getCuisines(),
+        getCuisines(), // جميع المطابخ
+        getCuisines(type: 'restaurant'), // مطابخ المطاعم
+        getCuisines(type: 'store'), // مطابخ المتاجر
         getTopRestaurants(),
         fetchPopularRestaurants(),
         getTrendingFoods(),
@@ -87,10 +91,12 @@ class HomeController extends ControllerMVC {
 
       slides = results[0] as List<Slide>;
       cuisines = results[1] as List<Cuisine>;
-      topRestaurants = results[2] as List<Restaurant>;
-      popularRestaurants = results[3] as List<Restaurant>;
-      trendingFoods = results[4] as List<Food>;
-      newlyAddedRestaurants = results[5] as List<Restaurant>; // إضافة المطاعم الجديدة
+      restaurantCuisines = results[2] as List<Cuisine>;
+      storeCuisines = results[3] as List<Cuisine>;
+      topRestaurants = results[4] as List<Restaurant>;
+      popularRestaurants = results[5] as List<Restaurant>;
+      trendingFoods = results[6] as List<Food>;
+      newlyAddedRestaurants = results[7] as List<Restaurant>; // إضافة المطاعم الجديدة
       getPopularRestaurants = true;
 
       _isDataLoaded = true;
@@ -102,7 +108,34 @@ class HomeController extends ControllerMVC {
       setState(() {});
     } catch (e) {
       print('Error loading all data: $e');
-      rethrow;
+      // في حالة الخطأ، استخدم البيانات الأساسية فقط
+      try {
+        final basicResults = await Future.wait<dynamic>([
+          getSlides(),
+          getCuisines(), // جميع المطابخ فقط
+          getTopRestaurants(),
+          fetchPopularRestaurants(),
+          getTrendingFoods(),
+          getNewlyAddedRestaurants(),
+        ]);
+
+        slides = basicResults[0] as List<Slide>;
+        cuisines = basicResults[1] as List<Cuisine>;
+        restaurantCuisines = basicResults[1] as List<Cuisine>; // استخدام نفس البيانات
+        storeCuisines = basicResults[1] as List<Cuisine>; // استخدام نفس البيانات
+        topRestaurants = basicResults[2] as List<Restaurant>;
+        popularRestaurants = basicResults[3] as List<Restaurant>;
+        trendingFoods = basicResults[4] as List<Food>;
+        newlyAddedRestaurants = basicResults[5] as List<Restaurant>;
+        getPopularRestaurants = true;
+
+        _isDataLoaded = true;
+        await getCurrentLocation();
+        setState(() {});
+      } catch (fallbackError) {
+        print('Fallback error: $fallbackError');
+        rethrow;
+      }
     }
   }
 
@@ -112,6 +145,8 @@ class HomeController extends ControllerMVC {
     slides = [];
     categories = [];
     cuisines = [];
+    restaurantCuisines = []; // مسح مطابخ المطاعم
+    storeCuisines = []; // مسح مطابخ المتاجر
     topRestaurants = [];
     popularRestaurants = [];
     recentReviews = [];

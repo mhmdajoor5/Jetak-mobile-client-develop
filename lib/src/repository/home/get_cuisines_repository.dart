@@ -5,11 +5,18 @@ import 'package:http/http.dart' as http;
 
 import '../../models/cuisine.dart';
 
-Future<List<Cuisine>> getCuisines() async {
+Future<List<Cuisine>> getCuisines({String? type}) async {
   print("mElkerm Start to fetch the cuisines in the repository");
   try {
+    String url = '${GlobalConfiguration().getValue('api_base_url')}cuisines';
+
+    // إضافة نوع المطعم إذا تم تمريره
+    if (type != null) {
+      url += '?type=$type';
+    }
+
     final response = await http.get(
-      Uri.parse('${GlobalConfiguration().getValue('api_base_url')}cuisines'),
+      Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -25,9 +32,24 @@ Future<List<Cuisine>> getCuisines() async {
 
     } else {
       print("mElkerm Error loading Cuisines: in repo ${response.statusCode}");
+
+      // إذا كان هناك خطأ مع type، جرب بدون type
+      if (type != null) {
+        print("mElkerm Trying without type parameter...");
+        return await getCuisines(); // استدعاء بدون معامل type
+      }
+
       throw Exception('Failed to load cuisines');
     }
   } catch (err) {
+    print("mElkerm Exception in getCuisines: $err");
+
+    // إذا كان هناك خطأ مع type، جرب بدون type
+    if (type != null) {
+      print("mElkerm Trying without type parameter due to exception...");
+      return await getCuisines(); // استدعاء بدون معامل type
+    }
+
     throw Exception('Error: $err');
   }
 } 
