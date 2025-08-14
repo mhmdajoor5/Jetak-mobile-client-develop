@@ -4699,6 +4699,56 @@ class S {
       args: [],
     );
   }
+
+  /// `🔹 What would you like today?`
+  String get what_would_you_like_today {
+    return Intl.message(
+      '🔹 What would you like today?',
+      name: 'what_would_you_like_today',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `🔹 Near you`
+  String get near_you {
+    return Intl.message(
+      '🔹 Near you',
+      name: 'near_you',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shops Near You`
+  String get shops_near_you {
+    return Intl.message(
+      'Shops Near You',
+      name: 'shops_near_you',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Searching for nearby stores...`
+  String get searching_for_nearby_stores {
+    return Intl.message(
+      'Searching for nearby stores...',
+      name: 'searching_for_nearby_stores',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `🔹 Nearby Stores`
+  String get nearby_stores {
+    return Intl.message(
+      '🔹 Nearby Stores',
+      name: 'nearby_stores',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

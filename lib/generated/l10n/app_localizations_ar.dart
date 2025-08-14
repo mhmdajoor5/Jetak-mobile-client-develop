@@ -1472,4 +1472,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get what_they_say => 'آراء العملاء';
+
+  @override
+  String get what_would_you_like_today => '🔹 ماذا ترغب اليوم؟';
+
+  @override
+  String get near_you => '🔹 القريبة منك';
+
+  @override
+  String get shops_near_you => 'المتاجر القريبة';
+
+  @override
+  String get searching_for_nearby_stores => 'جاري البحث عن المتاجر القريبة...';
+
+  @override
+  String get nearby_stores => '🔹 المتاجر القريبة';
 }

@@ -399,6 +399,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "near_to": MessageLookupByLibrary.simpleMessage("בקרבת"),
         "near_to_your_current_location":
             MessageLookupByLibrary.simpleMessage("בקרבת מיקום הנוכחי שלך"),
+        "near_you": MessageLookupByLibrary.simpleMessage("🔹 לידך"),
+        "nearby_stores":
+            MessageLookupByLibrary.simpleMessage("🔹 חנויות קרובות"),
         "newMessageFrom": MessageLookupByLibrary.simpleMessage("הודעה חדשה מ"),
         "new_address_added_successfully":
             MessageLookupByLibrary.simpleMessage("כתובת חדשה התווספה בהצלחה"),
@@ -576,6 +579,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("חפש מסעדות או מזונות"),
         "search_for_restaurants_or_foods":
             MessageLookupByLibrary.simpleMessage("חפש מסעדות או מזונות"),
+        "searching_for_nearby_stores":
+            MessageLookupByLibrary.simpleMessage("מחפש חנויות קרובות..."),
         "see_all": MessageLookupByLibrary.simpleMessage("הצג הכל"),
         "select": MessageLookupByLibrary.simpleMessage("בחר"),
         "selectExtrasToAddThemOnTheFood":
@@ -596,6 +601,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("הגדרות"),
         "shopping": MessageLookupByLibrary.simpleMessage("קניות"),
         "shopping_cart": MessageLookupByLibrary.simpleMessage("עגלת קניות"),
+        "shops_near_you": MessageLookupByLibrary.simpleMessage("חנויות לידך"),
         "should_be_a_valid_email":
             MessageLookupByLibrary.simpleMessage("כתובת אימייל לא תקינה"),
         "should_be_more_than_3_characters":
@@ -722,6 +728,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "welcome": MessageLookupByLibrary.simpleMessage("ברוך הבא"),
         "whatTheySay": MessageLookupByLibrary.simpleMessage("מה הם אומרים?"),
         "what_they_say": MessageLookupByLibrary.simpleMessage("מה הם אומרים"),
+        "what_would_you_like_today":
+            MessageLookupByLibrary.simpleMessage("🔹 מה תרצה היום?"),
         "work": MessageLookupByLibrary.simpleMessage("עבודה"),
         "writeEmailAndPassword": MessageLookupByLibrary.simpleMessage(
             "כתוב את האימייל והסיסמה שלך 💁‍♂️"),

@@ -10,7 +10,6 @@ Future<List<Cuisine>> getCuisines({String? type}) async {
   try {
     String url = '${GlobalConfiguration().getValue('api_base_url')}cuisines';
 
-    // إضافة نوع المطعم إذا تم تمريره
     if (type != null) {
       url += '?type=$type';
     }
@@ -23,8 +22,19 @@ Future<List<Cuisine>> getCuisines({String? type}) async {
     if (response.statusCode == 200) {
       print("mElkerm 00 : get the Cuisines in the repository: ${response.body}");
       final decoded = json.decode(response.body);
-      print("mElkerm 11 : get the Cuisines in the repository: ${decoded['data'].length} items found.");
+      
+      // التحقق من وجود البيانات - إصلاح المنطق
+      if (decoded['data'] == null) {
+        print("mElkerm Warning: data is null for type=$type, trying without type parameter...");
+        // إذا كانت البيانات null وكان هناك معامل type، جرب بدون معامل type
+        if (type != null) {
+          return await getCuisines(); // استدعاء بدون معامل type
+        }
+        return [];
+      }
+      
       final List<dynamic> data = decoded['data'];
+      print("mElkerm 11 : get the Cuisines in the repository: ${data.length} items found.");
       print("mElkerm 22 : get the Cuisines in the repository: ${data.length} items found.");
 
       print("mElkerm get the Cuisines in the repository");

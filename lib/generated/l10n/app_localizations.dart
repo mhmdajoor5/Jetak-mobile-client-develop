@@ -2889,6 +2889,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'What They Say'**
   String get what_they_say;
+
+  /// No description provided for @what_would_you_like_today.
+  ///
+  /// In en, this message translates to:
+  /// **'🔹 What would you like today?'**
+  String get what_would_you_like_today;
+
+  /// No description provided for @near_you.
+  ///
+  /// In en, this message translates to:
+  /// **'🔹 Near you'**
+  String get near_you;
+
+  /// No description provided for @shops_near_you.
+  ///
+  /// In en, this message translates to:
+  /// **'Shops Near You'**
+  String get shops_near_you;
+
+  /// No description provided for @searching_for_nearby_stores.
+  ///
+  /// In en, this message translates to:
+  /// **'Searching for nearby stores...'**
+  String get searching_for_nearby_stores;
+
+  /// No description provided for @nearby_stores.
+  ///
+  /// In en, this message translates to:
+  /// **'🔹 Nearby Stores'**
+  String get nearby_stores;
 }
 
 class _AppLocalizationsDelegate

@@ -1493,4 +1493,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get what_they_say => 'What They Say';
+
+  @override
+  String get what_would_you_like_today => '🔹 What would you like today?';
+
+  @override
+  String get near_you => '🔹 Near you';
+
+  @override
+  String get shops_near_you => 'Shops Near You';
+
+  @override
+  String get searching_for_nearby_stores => 'Searching for nearby stores...';
+
+  @override
+  String get nearby_stores => '🔹 Nearby Stores';
 }

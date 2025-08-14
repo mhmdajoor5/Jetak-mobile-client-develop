@@ -655,6 +655,11 @@
   "help_supports": "Help & Support",
   "your_order_has_been_successfully_submitted": "Your order has been successfully submitted",
   "featured_foods": "Featured Foods",
-  "what_they_say": "What They Say"
+  "what_they_say": "What They Say",
+  "what_would_you_like_today": "🔹 What would you like today?",
+  "near_you": "🔹 Near you",
+  "shops_near_you": "Shops Near You",
+  "searching_for_nearby_stores": "Searching for nearby stores...",
+  "nearby_stores": "🔹 Nearby Stores"
 
 }

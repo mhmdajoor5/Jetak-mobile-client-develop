@@ -1464,4 +1464,19 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get what_they_say => 'מה הם אומרים';
+
+  @override
+  String get what_would_you_like_today => '🔹 מה תרצה היום?';
+
+  @override
+  String get near_you => '🔹 לידך';
+
+  @override
+  String get shops_near_you => 'חנויות לידך';
+
+  @override
+  String get searching_for_nearby_stores => 'מחפש חנויות קרובות...';
+
+  @override
+  String get nearby_stores => '🔹 חנויות קרובות';
 }

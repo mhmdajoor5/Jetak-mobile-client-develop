@@ -20,6 +20,7 @@ import '../Home/home_search_section.dart' show HomeSearchSection;
 import '../Home/home_slider_section.dart' show HomeSliderSection;
 import '../Home/home_top_restaurants_section.dart' show HomeTopRestaurantsSection;
 import '../Home/home_trending_section.dart' show HomeTrendingSection;
+import '../Home/home_suggested_products_section.dart' show HomeSuggestedProductsSection;
 
 class HomeWidget extends StatefulWidget {
   final GlobalKey<ScaffoldState>? parentScaffoldKey;
@@ -85,7 +86,9 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                             restaurants: _con.topRestaurants,
                           ),
                           // إضافة قسم "ماذا ترغب اليوم؟" للمطاعم
-                          _buildCravingSection(),
+                          Visibility(
+                            visible: _con.storeCuisines.isNotEmpty,
+                              child: _buildCravingSection()),
                           // // إضافة قسم المتاجر
                           // _buildStoresSection(),
                           // إضافة قسم "القريبة منك"
@@ -94,6 +97,10 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                           HomeOrderAgainSection(),
                           // إضافة قسم "جديد في التطبيق"
                           HomeNewlyAddedSection(),
+                          // إضافة قسم "المنتجات المقترحة"
+                          HomeSuggestedProductsSection(
+                            suggestedProducts: _con.suggestedProducts,
+                          ),
                         ],
                       );
                     case 'trending_week':
@@ -103,9 +110,17 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                         foodsList: _con.trendingFoods,
                         heroTag: 'home_food_carousel',
                       );
+                      
                     case 'categories':
-                      return HomeCuisinesSection(
-                        cuisines: _con.cuisines,
+                      // إضافة قسم منفصل للمطابخ العامة
+                      return Column(
+                        children: [
+                          // قسم مطابخ المطاعم
+                          if (_con.restaurantCuisines.isNotEmpty)
+                            HomeCuisinesSection(
+                              cuisines: _con.restaurantCuisines,
+                            ),
+                        ],
                       );
                     case 'popular':
                       return HomePopularSection(
@@ -131,10 +146,13 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
     // استخدام البيانات من API بدلاً من القائمة الثابتة
     final List<Cuisine> quickOptions = _con.restaurantCuisines.take(7).toList();
 
-    // إذا لم توجد بيانات من API، استخدم قائمة احتياطية
+    // إذا لم توجد بيانات من API، إخفاء القسم تماماً
     if (quickOptions.isEmpty) {
+      print("mElkerm Debug: No cuisines available, hiding craving section");
       return SizedBox.shrink(); // إخفاء القسم إذا لم توجد بيانات
     }
+
+    print("mElkerm Debug: Showing craving section with ${quickOptions.length} cuisines");
 
     return Container(
       margin: EdgeInsets.only(top: 20),
@@ -144,7 +162,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              '🔹 ماذا ترغب اليوم؟',
+              S.of(context).what_would_you_like_today,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 20,
@@ -265,6 +283,12 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
   }
 
   Widget _buildNearbyStoresSection() {
+    // إخفاء القسم إذا لم توجد متاجر قريبة
+    if (_con.nearbyStores.isEmpty && !_con.isLoadingNearbyStores) {
+      print("mElkerm Debug: No nearby stores available, hiding nearby stores section");
+      return SizedBox.shrink();
+    }
+
     return Container(
       margin: EdgeInsets.only(top: 20),
       child: Column(
@@ -276,7 +300,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '🔹 القريبة منك',
+                  S.of(context).near_you,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 20,
@@ -284,7 +308,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                   ),
                 ),
                 Text(
-                  'Shops Near You',
+                  S.of(context).shops_near_you,
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 14,
@@ -307,7 +331,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                     CircularProgressIndicator(),
                     SizedBox(height: 10),
                     Text(
-                      'جاري البحث عن المتاجر القريبة...',
+                      S.of(context).searching_for_nearby_stores,
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 14,
@@ -431,40 +455,6 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                   );
                 },
               ),
-            )
-          // عرض رسالة إذا لم توجد مطاعم
-          else
-            Container(
-              height: 150,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.store,
-                      size: 50,
-                      color: Colors.grey[400],
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      'لا توجد متاجر قريبة حالياً',
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      'سيتم إضافة المتاجر القريبة قريباً',
-                      style: TextStyle(
-                        color: Colors.grey[500],
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ),
         ],
       ),
@@ -487,7 +477,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              '🔹 المتاجر القريبة',
+              S.of(context).nearby_stores,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 20,

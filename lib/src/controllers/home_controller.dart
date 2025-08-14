@@ -28,6 +28,7 @@ import '../repository/resturant/popular_reatauran_repository.dart';
 import '../repository/settings_repository.dart';
 import '../repository/home/get_newly_added_restaurants_repo.dart';
 import '../repository/home/slider_repository.dart';
+import '../repository/home/get_suggested_products_repository.dart';
 
 class HomeController extends ControllerMVC {
   // Add scaffoldKey
@@ -43,6 +44,7 @@ class HomeController extends ControllerMVC {
   List<Restaurant> popularRestaurants = <Restaurant>[];
   List<Review> recentReviews = <Review>[];
   List<Food> trendingFoods = <Food>[];
+  List<Food> suggestedProducts = <Food>[];
   
   // إضافة متغيرات للمطاعم القريبة
   List<Restaurant> nearbyStores = <Restaurant>[];
@@ -59,6 +61,7 @@ class HomeController extends ControllerMVC {
   bool isLoadingTopRestaurants = false;
   bool isLoadingPopularRestaurants = false;
   bool isLoadingTrendingFoods = false;
+  bool isLoadingSuggestedProducts = false;
 
   // Data loading completion state
   bool _isDataLoaded = false;
@@ -80,13 +83,14 @@ class HomeController extends ControllerMVC {
     try {
       final results = await Future.wait<dynamic>([
         getSlides(),
-        getCuisines(), // جميع المطابخ
-        getCuisines(type: 'restaurant'), // مطابخ المطاعم
-        getCuisines(type: 'store'), // مطابخ المتاجر
+        getCuisines(),
+        getCuisines(type: 'restaurant'),
+        getCuisines(type: 'store'),
         getTopRestaurants(),
         fetchPopularRestaurants(),
         getTrendingFoods(),
-        getNewlyAddedRestaurants(), // إضافة جلب المطاعم الجديدة
+        getNewlyAddedRestaurants(),
+        getSuggestedProducts(),
       ]);
 
       slides = results[0] as List<Slide>;
@@ -96,7 +100,13 @@ class HomeController extends ControllerMVC {
       topRestaurants = results[4] as List<Restaurant>;
       popularRestaurants = results[5] as List<Restaurant>;
       trendingFoods = results[6] as List<Food>;
-      newlyAddedRestaurants = results[7] as List<Restaurant>; // إضافة المطاعم الجديدة
+      newlyAddedRestaurants = results[7] as List<Restaurant>;
+      suggestedProducts = results[8] as List<Food>; 
+      
+      print("mElkerm Debug: HomeController - Suggested products loaded: ${suggestedProducts.length}");
+      print("mElkerm Debug: HomeController - Restaurant cuisines: ${restaurantCuisines.length}");
+      print("mElkerm Debug: HomeController - Store cuisines: ${storeCuisines.length}");
+      
       getPopularRestaurants = true;
 
       _isDataLoaded = true;
@@ -121,8 +131,8 @@ class HomeController extends ControllerMVC {
 
         slides = basicResults[0] as List<Slide>;
         cuisines = basicResults[1] as List<Cuisine>;
-        restaurantCuisines = basicResults[1] as List<Cuisine>; // استخدام نفس البيانات
-        storeCuisines = basicResults[1] as List<Cuisine>; // استخدام نفس البيانات
+        restaurantCuisines = basicResults[1] as List<Cuisine>;
+        storeCuisines = basicResults[1] as List<Cuisine>;
         topRestaurants = basicResults[2] as List<Restaurant>;
         popularRestaurants = basicResults[3] as List<Restaurant>;
         trendingFoods = basicResults[4] as List<Food>;

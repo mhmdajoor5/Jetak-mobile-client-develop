@@ -6,15 +6,22 @@ import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
 import '../models/restaurant.dart';
 import '../models/route_argument.dart';
+import '../models/food.dart';
 import '../repository/settings_repository.dart';
+import 'HtmlDescriptionWidget.dart';
 
 // ignore: must_be_immutable
 class CardWidget extends StatelessWidget {
   final Restaurant restaurant;
   final String heroTag;
+  final Food? food; // إضافة معامل Food اختياري لعرض معلومات المنتج
 
-  const CardWidget({Key? key, required this.restaurant, required this.heroTag})
-    : super(key: key);
+  const CardWidget({
+    Key? key, 
+    required this.restaurant, 
+    required this.heroTag,
+    this.food,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -161,18 +168,30 @@ class CardWidget extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 6), // تقليل المسافة من 10 إلى 6
-                        Text(
-                          Helper.skipHtml(restaurant.description),
-                          overflow: TextOverflow.fade,
-                          softWrap: false,
-                          style: TextStyle(
-                            //fontFamily: 'Nunito',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
-                            color: Color(0xFF9D9FA4),
-                            height: 1.3,
+                        // عرض وصف المنتج مع دعم HTML إذا كان متوفراً
+                        if (food != null && food!.description.isNotEmpty)
+                          HtmlDescriptionWidget(
+                            htmlContent: food!.description,
+                            textStyle: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
+                              color: Color(0xFF9D9FA4),
+                              height: 1.3,
+                            ),
+                            maxHeight: 60,
+                          )
+                        else
+                          Text(
+                            Helper.skipHtml(restaurant.description),
+                            overflow: TextOverflow.fade,
+                            softWrap: false,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
+                              color: Color(0xFF9D9FA4),
+                              height: 1.3,
+                            ),
                           ),
-                        ),
 
 
                       ],
@@ -245,32 +264,16 @@ class CardWidget extends StatelessWidget {
                       Icon(Icons.access_time, size: 16),
                       SizedBox(width: 4),
                       Text(
-                        S.of(context).twentyToThirtyMin,
+                        // عرض وقت التحضير من المنتج إذا كان متوفراً، وإلا عرض وقت المطعم
+                        food != null && food!.estTime > 0 
+                            ? '${food!.estTime} دقيقة'
+                            : S.of(context).twentyToThirtyMin,
                         style: TextStyle(
-                          //fontFamily: 'Nunito',
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           height: 1.6,
                           color: Color(0xFF9D9FA4),
                         ),
-                      ),
-                      SizedBox(width: 10),
-                      SizedBox(width: 10),
-                      Row(
-                        children: [
-                          Icon(Icons.star, color: Colors.orange, size: 16),
-                          SizedBox(width: 4),
-                          Text(
-                            restaurant.rate.toString(),
-                            style: TextStyle(
-                              //fontFamily: 'Nunito',
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              height: 1.6,
-                              color: Color(0xFF9D9FA4),
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),

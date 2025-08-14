@@ -625,6 +625,11 @@
   "help_supports": "עזרה ותמיכה",
   "your_order_has_been_successfully_submitted": "ההזמנה שלך נשלחה בהצלחה",
   "featured_foods": "מזונות מובילים",
-  "what_they_say": "מה הם אומרים"
+  "what_they_say": "מה הם אומרים",
+  "what_would_you_like_today": "🔹 מה תרצה היום?",
+  "near_you": "🔹 לידך",
+  "shops_near_you": "חנויות לידך",
+  "searching_for_nearby_stores": "מחפש חנויות קרובות...",
+  "nearby_stores": "🔹 חנויות קרובות"
 
 }

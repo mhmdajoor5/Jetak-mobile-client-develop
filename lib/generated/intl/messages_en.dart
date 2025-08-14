@@ -434,6 +434,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "near_to": MessageLookupByLibrary.simpleMessage("Near to"),
         "near_to_your_current_location": MessageLookupByLibrary.simpleMessage(
             "Near to your current location"),
+        "near_you": MessageLookupByLibrary.simpleMessage("🔹 Near you"),
+        "nearby_stores":
+            MessageLookupByLibrary.simpleMessage("🔹 Nearby Stores"),
         "newMessageFrom":
             MessageLookupByLibrary.simpleMessage("New message from"),
         "new_address_added_successfully": MessageLookupByLibrary.simpleMessage(
@@ -627,6 +630,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Search for food, chef, etc"),
         "search_for_restaurants_or_foods": MessageLookupByLibrary.simpleMessage(
             "Search for restaurants or foods"),
+        "searching_for_nearby_stores": MessageLookupByLibrary.simpleMessage(
+            "Searching for nearby stores..."),
         "see_all": MessageLookupByLibrary.simpleMessage("See all"),
         "select": MessageLookupByLibrary.simpleMessage("Select"),
         "selectExtrasToAddThemOnTheFood": MessageLookupByLibrary.simpleMessage(
@@ -647,6 +652,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "shopping": MessageLookupByLibrary.simpleMessage("Shopping"),
         "shopping_cart": MessageLookupByLibrary.simpleMessage("Shopping Cart"),
+        "shops_near_you":
+            MessageLookupByLibrary.simpleMessage("Shops Near You"),
         "should_be_a_valid_email":
             MessageLookupByLibrary.simpleMessage("Should be a valid email"),
         "should_be_more_than_3_characters":
@@ -785,6 +792,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),
         "whatTheySay": MessageLookupByLibrary.simpleMessage("What They Say ?"),
         "what_they_say": MessageLookupByLibrary.simpleMessage("What They Say"),
+        "what_would_you_like_today": MessageLookupByLibrary.simpleMessage(
+            "🔹 What would you like today?"),
         "work": MessageLookupByLibrary.simpleMessage("Work"),
         "writeEmailAndPassword": MessageLookupByLibrary.simpleMessage(
             "Write your email and password 💁‍♂️"),

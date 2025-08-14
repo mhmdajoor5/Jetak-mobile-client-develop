@@ -337,6 +337,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "most_popular": MessageLookupByLibrary.simpleMessage("الأكثر شهرة"),
         "multirestaurants": MessageLookupByLibrary.simpleMessage("عدة مطابخ"),
         "my_orders": MessageLookupByLibrary.simpleMessage("طلباتي"),
+        "near_you": MessageLookupByLibrary.simpleMessage("🔹 القريبة منك"),
+        "nearby_stores":
+            MessageLookupByLibrary.simpleMessage("🔹 المتاجر القريبة"),
         "newMessageFrom":
             MessageLookupByLibrary.simpleMessage("رسالة جديدة من"),
         "new_address_added_successfully": MessageLookupByLibrary.simpleMessage(
@@ -491,6 +494,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "search": MessageLookupByLibrary.simpleMessage("البحث"),
         "search_for_restaurants_or_foods":
             MessageLookupByLibrary.simpleMessage("البحث في المطاعم والأطعمة"),
+        "searching_for_nearby_stores": MessageLookupByLibrary.simpleMessage(
+            "جاري البحث عن المتاجر القريبة..."),
         "see_all": MessageLookupByLibrary.simpleMessage("عرض الكل"),
         "select": MessageLookupByLibrary.simpleMessage("اختر"),
         "selectLocationType":
@@ -503,6 +508,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "service_fee": MessageLookupByLibrary.simpleMessage("رسوم الخدمة"),
         "settings": MessageLookupByLibrary.simpleMessage("الإعدادات"),
         "shopping_cart": MessageLookupByLibrary.simpleMessage("سلة التسوق"),
+        "shops_near_you":
+            MessageLookupByLibrary.simpleMessage("المتاجر القريبة"),
         "should_be_a_valid_email": MessageLookupByLibrary.simpleMessage(
             "يجب أن يكون بريدًا إلكترونيًا صالحًا"),
         "should_be_more_than_3_characters":
@@ -618,6 +625,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "نرسل رمز OTP للتحقق من رقم هاتفك"),
         "welcome": MessageLookupByLibrary.simpleMessage("مرحبا"),
         "what_they_say": MessageLookupByLibrary.simpleMessage("آراء العملاء"),
+        "what_would_you_like_today":
+            MessageLookupByLibrary.simpleMessage("🔹 ماذا ترغب اليوم؟"),
         "work": MessageLookupByLibrary.simpleMessage("العمل"),
         "writeEmailAndPassword": MessageLookupByLibrary.simpleMessage(
             "اكتب بريدك الإلكتروني وكلمة المرور 💁‍♂️"),

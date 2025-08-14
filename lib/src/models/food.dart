@@ -58,9 +58,12 @@ class Food {
 
   factory Food.fromJSON(Map<String, dynamic>? jsonMap) {
     try {
+      print("mElkerm Debug: Food.fromJSON - Parsing food with ID: ${jsonMap?['id']}");
+      
       double basePrice = (jsonMap?['price'] as num?)?.toDouble() ?? 0.0;
       double discount = (jsonMap?['discount_price'] as num?)?.toDouble() ?? 0.0;
-      return Food(
+      
+      final food = Food(
         id: jsonMap?['id']?.toString() ?? '',
         name: jsonMap?['name']?.toString() ?? '',
         price: discount != 0 ? discount : basePrice,
@@ -81,7 +84,11 @@ class Food {
         foodReviews: jsonMap?['food_reviews'] != null ? List<Review>.from(jsonMap!['food_reviews'].map((e) => Review.fromJSON(e))).toSet().toList() : [],
         nutritions: jsonMap?['nutrition'] != null ? List<Nutrition>.from(jsonMap!['nutrition'].map((e) => Nutrition.fromJSON(e))).toSet().toList() : [],
       );
+      
+      print("mElkerm Debug: Food.fromJSON - Successfully parsed food: ${food.name} (ID: ${food.id})");
+      return food;
     } catch (e) {
+      print("mElkerm Debug: Food.fromJSON - Error parsing food: $e");
       print(CustomTrace(StackTrace.current, message: e.toString()));
       return Food();
     }
