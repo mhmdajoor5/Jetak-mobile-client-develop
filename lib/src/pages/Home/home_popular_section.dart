@@ -21,10 +21,10 @@ class HomePopularSection extends StatelessWidget {
           child: ListTile(
             dense: true,
             contentPadding: EdgeInsets.zero,
-            leading: Icon(
-              Icons.trending_up,
-              color: Theme.of(context).hintColor,
-            ),
+            // leading: Icon(
+            //   Icons.trending_up,
+            //   color: Theme.of(context).hintColor,
+            // ),
             title: Text(
               S.of(context).most_popular,
               style: Theme.of(context).textTheme.headlineLarge,

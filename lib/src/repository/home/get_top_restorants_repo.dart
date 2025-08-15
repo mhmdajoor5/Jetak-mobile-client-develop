@@ -24,6 +24,11 @@ import '../../models/restaurant.dart';
 Future<List<Restaurant>> getTopRestaurants() async {
   print("mElkerm 555 Strart to fetch the Top Restaurants in the repository");
   try {
+    // إذا لم نعرف موقع المستخدم، لا نعرض قسم العروض القريبة
+    if (deliveryAddress.value.isUnknown()) {
+      print("mElkerm 555 ▶ user location unknown → hide offers near you section");
+      return [];
+    }
     // Build URI with query params
     final baseUrl = GlobalConfiguration().getValue('api_base_url');
     final uri = Uri.parse('${baseUrl}restaurants').replace(queryParameters: {
@@ -70,20 +75,29 @@ Future<List<Restaurant>> getTopRestaurants() async {
       // Ensure they actually have an offer (best_discount exists)
       restaurants = restaurants.where((r) => r.coupon != null && r.coupon!.valid).toList();
 
-      // Compute distance if missing and we have user location
-      if (!deliveryAddress.value.isUnknown()) {
-        final userLat = deliveryAddress.value.latitude ?? 0.0;
-        final userLon = deliveryAddress.value.longitude ?? 0.0;
-        for (final r in restaurants) {
-          if ((r.distance == 0 || r.distance.isNaN) && r.latitude.isNotEmpty && r.longitude.isNotEmpty) {
-            final rLat = double.tryParse(r.latitude) ?? 0.0;
-            final rLon = double.tryParse(r.longitude) ?? 0.0;
-            if (rLat != 0.0 && rLon != 0.0) {
-              r.distance = Helper.calculateDistance(userLat, userLon, rLat, rLon);
-            }
+      // Compute distance and filter by proximity (can deliver to user)
+      final userLat = deliveryAddress.value.latitude ?? 0.0;
+      final userLon = deliveryAddress.value.longitude ?? 0.0;
+      for (final r in restaurants) {
+        if ((r.distance == 0 || r.distance.isNaN) && r.latitude.isNotEmpty && r.longitude.isNotEmpty) {
+          final rLat = double.tryParse(r.latitude) ?? 0.0;
+          final rLon = double.tryParse(r.longitude) ?? 0.0;
+          if (rLat != 0.0 && rLon != 0.0) {
+            r.distance = Helper.calculateDistance(userLat, userLon, rLat, rLon);
           }
         }
       }
+
+      // Filter: keep only restaurants that can deliver to user's location (near you)
+      final beforeProximityCount = restaurants.length;
+      restaurants = restaurants.where((r) {
+        final canDeliver = Helper.canDelivery(r);
+        if (!canDeliver) {
+          print("mElkerm 555 ▶ filtered out (far/not deliverable): ${r.name} | distance=${r.distance} range=${r.deliveryRange}");
+        }
+        return canDeliver;
+      }).toList();
+      print("mElkerm 555 ▶ proximity filter: $beforeProximityCount → ${restaurants.length}");
 
       // Sort by nearest first
       restaurants.sort((a, b) => a.distance.compareTo(b.distance));
