@@ -31,7 +31,6 @@ class HomePopularSection extends StatelessWidget {
             ),
           ),
         ),
-        // استخدام نفس كرت المنتجات المقترحة (CardWidget) عبر CardsCarouselWidget
         CardsCarouselWidget(
           restaurantsList: restaurants,
           heroTag: 'home_popular_restaurants',

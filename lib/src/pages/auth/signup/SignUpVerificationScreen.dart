@@ -245,9 +245,15 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String _tr({required String en, required String ar, required String he}) {
+      final code = Localizations.localeOf(context).languageCode;
+      if (code == 'ar') return ar;
+      if (code == 'he') return he;
+      return en;
+    }
     return Scaffold(
       appBar: AppBar(
-        title: Text('رمز التحقق'),
+        title: Text(_tr(en: 'Verification code', ar: 'رمز التحقق', he: 'קוד אימות')),
         centerTitle: true,
       ),
       body: Padding(
@@ -256,7 +262,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'لقد أرسلنا لك رمز التحقق',
+              _tr(en: 'We sent you a verification code', ar: 'لقد أرسلنا لك رمز التحقق', he: 'שלחנו אליך קוד אימות'),
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
             ),
@@ -342,7 +348,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
                   child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3),
                 )
                     : Text(
-                    'تحقق',
+                    _tr(en: 'Verify', ar: 'تحقق', he: 'אמת'),
                   style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -355,7 +361,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
                     : TextButton(
                   onPressed: canResend ? resendCode : null,
                   child: Text(
-                    'إعادة إرسال',
+                    _tr(en: 'Resend', ar: 'إعادة إرسال', he: 'שלח שוב'),
                     style: TextStyle(
                       color: canResend ? Colors.blue.shade700 : Colors.grey,
                       fontWeight: FontWeight.bold,
@@ -364,7 +370,11 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
                 ),
                 if (!canResend)
                   Text(
-                    'يمكن إعادة الإرسال خلال $resendCooldown ثانية',
+                    _tr(
+                      en: 'You can resend in $resendCooldown seconds',
+                      ar: 'يمكن إعادة الإرسال خلال $resendCooldown ثانية',
+                      he: 'ניתן לשלוח שוב בעוד $resendCooldown שניות',
+                    ),
                     style: TextStyle(
                       color: Colors.grey.shade600,
                       fontSize: 13,
@@ -378,7 +388,7 @@ class _SignUpVerificationScreenState extends State<SignUpVerificationScreen> {
                 Navigator.pop(context);
               },
               child: Text(
-                'العودة لتعديل الرقم',
+                _tr(en: 'Back to edit number', ar: 'العودة لتعديل الرقم', he: 'חזרה לעריכת המספר'),
                 style: TextStyle(color: Colors.blue),
               ),
             ),
