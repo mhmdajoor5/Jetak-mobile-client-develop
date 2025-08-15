@@ -70,7 +70,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
         children: [
           // Title
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -87,9 +87,13 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
                           en: 'New in the app',
                           ar: 'جديد في التطبيق',
                           he: 'חדש באפליקציה'),
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(
+                        fontFamily: 'Nunito',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                        height: 1.6,
+                        letterSpacing: 0,
                         color: Color(0xFF1A1A1A),
                       ),
                     ),
@@ -138,11 +142,11 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
               ],
             ),
           ),
-          SizedBox(height: 8),
+          SizedBox(height: 12),
           
           // Subtitle
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               _tr(context,
                   en: 'New restaurants and stores recently added',
@@ -155,7 +159,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
               ),
             ),
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 12),
           
           // قائمة المطاعم والمتاجر الجديدة
           if (isLoading)
@@ -277,10 +281,10 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
 
   Widget _buildRestaurantsList() {
     return Container(
-      height: 350,
+      height: 280,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 16),
         itemCount: newlyAddedRestaurants.length,
         itemBuilder: (context, index) {
           final restaurant = newlyAddedRestaurants[index];

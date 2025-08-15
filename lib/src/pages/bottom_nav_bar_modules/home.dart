@@ -167,12 +167,16 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               S.of(context).what_would_you_like_today,
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 20,
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                fontFamily: 'Nunito',
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+                height: 1.6,
+                letterSpacing: 0,
                 color: Colors.black87,
               ),
             ),
@@ -182,13 +186,14 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
             height: 90,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: 18),
               itemCount: quickOptions.length,
               itemBuilder: (context, index) {
                 final cuisine = quickOptions[index];
                 return Container(
                   width: 70,
                   margin: EdgeInsets.only(right: 8),
+                  // padding: EdgeInsets.symmetric(horizontal: 8),
                   child: GestureDetector(
                     onTap: () {
                       _navigateToCuisineRestaurants(cuisine);
@@ -222,8 +227,8 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                           borderRadius: BorderRadius.circular(8),
                                           child: Image.network(
                                             cuisine.image.url,
-                                            width: 24,
-                                            height: 24,
+                                            width: 32,
+                                            height: 32,
                                             fit: BoxFit.cover,
                                             errorBuilder: (context, error, stackTrace) {
                                               return _getDefaultEmoji(cuisine.name);
@@ -231,7 +236,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                           ),
                                         )
                                       : _getDefaultEmoji(cuisine.name),
-                                  SizedBox(height: 3),
+                                  SizedBox(height: 16),
                                   // اسم المطبخ
                                   Text(
                                     cuisine.name,
@@ -306,12 +311,18 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  S.of(context).near_you,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
-                    color: Colors.black87,
+                Expanded(
+                  child: Text(
+                    S.of(context).near_you,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontFamily: 'Nunito',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      height: 1.6,
+                      letterSpacing: 0,
+                      color: Colors.black87,
+                    ),
                   ),
                 ),
                 Text(

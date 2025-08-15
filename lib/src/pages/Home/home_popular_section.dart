@@ -17,7 +17,7 @@ class HomePopularSection extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 0),
           child: ListTile(
             dense: true,
             contentPadding: EdgeInsets.zero,
@@ -27,7 +27,15 @@ class HomePopularSection extends StatelessWidget {
             // ),
             title: Text(
               S.of(context).most_popular,
-              style: Theme.of(context).textTheme.headlineLarge,
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                fontFamily: 'Nunito',
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+                height: 1.6,
+                letterSpacing: 0,
+                color: Colors.black,
+              ),
             ),
           ),
         ),

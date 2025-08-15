@@ -18,17 +18,19 @@ class HomeTopRestaurantsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 S.of(context).offers_near_you,
-                style: TextStyle(
-                  //fontFamily: 'Nunito',
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                  fontFamily: 'Nunito',
                   fontWeight: FontWeight.w500,
-                  fontSize: 21,
+                  fontSize: 16,
                   height: 1.6,
+                  letterSpacing: 0,
                   color: Colors.black,
                 ),
               ),
@@ -70,7 +72,7 @@ class HomeTopRestaurantsSection extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 12),
         CardsCarouselWidget(
           restaurantsList: restaurants,
           heroTag: 'home_top_restaurants',

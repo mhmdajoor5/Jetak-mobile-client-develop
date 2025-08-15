@@ -382,6 +382,8 @@ class RouteGenerator {
         );
       case '/OffersNearYou':
         return MaterialPageRoute(builder: (_) => OffersNearYouPage());
+      case '/NewlyAddedAll':
+        return MaterialPageRoute(builder: (_) => HomeNewlyAddedAllPage());
       case '/RazorPay':
         return MaterialPageRoute(
           builder: (_) => RazorPayPaymentWidget(

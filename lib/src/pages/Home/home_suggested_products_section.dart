@@ -32,25 +32,31 @@ class _HomeSuggestedProductsSectionState extends StateMVC<HomeSuggestedProductsS
     if (widget.suggestedProducts.isEmpty) return SizedBox.shrink();
 
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: EdgeInsets.only(top: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // العنوان
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  _tr(context,
-                      en: 'Suggested products',
-                      ar: 'المنتجات المقترحة',
-                      he: 'מוצרים מומלצים'),
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
-                    color: Colors.black87,
+                Expanded(
+                  child: Text(
+                    _tr(context,
+                        en: 'Suggested products',
+                        ar: 'المنتجات المقترحة',
+                        he: 'מוצרים מומלצים'),
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                      fontFamily: 'Nunito',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      height: 1.6,
+                      letterSpacing: 0,
+                      color: Colors.black87,
+                    ),
                   ),
                 ),
                 Text(
@@ -67,10 +73,10 @@ class _HomeSuggestedProductsSectionState extends StateMVC<HomeSuggestedProductsS
               ],
             ),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 12),
           // وصف القسم
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               _tr(context,
                   en: 'Order your favorite product directly without entering a store',
@@ -82,13 +88,13 @@ class _HomeSuggestedProductsSectionState extends StateMVC<HomeSuggestedProductsS
               ),
             ),
           ),
-          SizedBox(height: 15),
+          SizedBox(height: 12),
           // قائمة المنتجات
           Container(
-            height: 300,
+            height: 281,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.symmetric(horizontal: 16),
               itemCount: widget.suggestedProducts.length,
               itemBuilder: (context, index) {
                 final food = widget.suggestedProducts[index];
