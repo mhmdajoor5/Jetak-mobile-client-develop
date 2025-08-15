@@ -26,7 +26,7 @@ class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
         width: 292,
         decoration: BoxDecoration(
@@ -144,7 +144,7 @@ class CardWidget extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8), // تقليل vertical padding من 10 إلى 8
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8), // تقليل vertical padding من 10 إلى 8
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -253,7 +253,7 @@ class CardWidget extends StatelessWidget {
             /// add here divider
             // Divider closer to the content above to reduce vertical gap
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Divider(
                 height: 17,
                 thickness: 1.2,
@@ -262,7 +262,7 @@ class CardWidget extends StatelessWidget {
             ),
 
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

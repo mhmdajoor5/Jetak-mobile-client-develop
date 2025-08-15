@@ -63,6 +63,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
 
   @override
   Widget build(BuildContext context) {
+    final isHeb = Localizations.localeOf(context).languageCode == 'he';
     return Container(
       margin: EdgeInsets.only(top: 20),
       child: Column(
@@ -74,30 +75,60 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.new_releases,
-                      color: Color(0xFF2196F3),
-                      size: 24,
+                Expanded(
+                  child: Align(
+                    alignment: isHeb ? Alignment.centerRight : Alignment.centerLeft,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: isHeb
+                          ? [
+                              Text(
+                                _tr(context,
+                                    en: 'New in the app',
+                                    ar: 'جديد في التطبيق',
+                                    he: 'חדש באפליקציה'),
+                                textAlign: TextAlign.right,
+                                style: const TextStyle(
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  height: 1.6,
+                                  letterSpacing: 0,
+                                  color: Color(0xFF1A1A1A),
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Icon(
+                                Icons.new_releases,
+                                color: Color(0xFF2196F3),
+                                size: 24,
+                              ),
+                            ]
+                          : [
+                              Icon(
+                                Icons.new_releases,
+                                color: Color(0xFF2196F3),
+                                size: 24,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                _tr(context,
+                                    en: 'New in the app',
+                                    ar: 'جديد في التطبيق',
+                                    he: 'חדש באפליקציה'),
+                                textAlign: TextAlign.left,
+                                style: const TextStyle(
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  height: 1.6,
+                                  letterSpacing: 0,
+                                  color: Color(0xFF1A1A1A),
+                                ),
+                              ),
+                            ],
                     ),
-                    SizedBox(width: 8),
-                    Text(
-                      _tr(context,
-                          en: 'New in the app',
-                          ar: 'جديد في التطبيق',
-                          he: 'חדש באפליקציה'),
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                        fontFamily: 'Nunito',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                        height: 1.6,
-                        letterSpacing: 0,
-                        color: Color(0xFF1A1A1A),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -143,7 +174,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
             ),
           ),
           SizedBox(height: 12),
-          
+
           // Subtitle
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -152,6 +183,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
                   en: 'New restaurants and stores recently added',
                   ar: 'مطاعم ومتاجر جديدة مضافة حديثاً',
                   he: 'מסעדות וחנויות שנוספו לאחרונה'),
+              textAlign: isHeb ? TextAlign.right : TextAlign.left,
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
@@ -160,7 +192,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
             ),
           ),
           SizedBox(height: 12),
-          
+
           // قائمة المطاعم والمتاجر الجديدة
           if (isLoading)
             _buildLoadingState()
@@ -284,7 +316,7 @@ class _HomeNewlyAddedSectionState extends StateMVC<HomeNewlyAddedSection> {
       height: 280,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: 0),
         itemCount: newlyAddedRestaurants.length,
         itemBuilder: (context, index) {
           final restaurant = newlyAddedRestaurants[index];

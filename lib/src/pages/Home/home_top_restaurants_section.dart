@@ -24,7 +24,7 @@ class HomeTopRestaurantsSection extends StatelessWidget {
             children: [
               Text(
                 S.of(context).offers_near_you,
-                textAlign: TextAlign.left,
+                textAlign: Localizations.localeOf(context).languageCode == 'he' ? TextAlign.right : TextAlign.left,
                 style: const TextStyle(
                   fontFamily: 'Nunito',
                   fontWeight: FontWeight.w500,

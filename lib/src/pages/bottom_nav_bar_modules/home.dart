@@ -170,7 +170,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               S.of(context).what_would_you_like_today,
-              textAlign: TextAlign.left,
+              textAlign: Localizations.localeOf(context).languageCode == 'he' ? TextAlign.right : TextAlign.left,
               style: const TextStyle(
                 fontFamily: 'Nunito',
                 fontWeight: FontWeight.w500,
@@ -186,7 +186,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
             height: 90,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(horizontal: 18),
+              padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
               itemCount: quickOptions.length,
               itemBuilder: (context, index) {
                 final cuisine = quickOptions[index];
@@ -221,14 +221,13 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  // صورة المطبخ أو أيقونة افتراضية
                                   cuisine.image.url.isNotEmpty
                                       ? ClipRRect(
                                           borderRadius: BorderRadius.circular(8),
                                           child: Image.network(
                                             cuisine.image.url,
-                                            width: 32,
-                                            height: 32,
+                                            width: 43,
+                                            height: 43,
                                             fit: BoxFit.cover,
                                             errorBuilder: (context, error, stackTrace) {
                                               return _getDefaultEmoji(cuisine.name);
@@ -307,7 +306,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -365,7 +364,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
               height: 200,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
                 itemCount: _con.nearbyStores.length,
                 itemBuilder: (context, index) {
                   final restaurant = _con.nearbyStores[index];

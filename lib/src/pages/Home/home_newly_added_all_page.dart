@@ -79,7 +79,7 @@ class _HomeNewlyAddedAllPageState extends State<HomeNewlyAddedAllPage> {
                     ],
                   )
                 : ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                     itemCount: _items.length,
                     itemBuilder: (context, index) {
                       final restaurant = _items[index];

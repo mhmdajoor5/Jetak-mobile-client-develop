@@ -27,7 +27,7 @@ class HomePopularSection extends StatelessWidget {
             // ),
             title: Text(
               S.of(context).most_popular,
-              textAlign: TextAlign.left,
+              textAlign: Localizations.localeOf(context).languageCode == 'he' ? TextAlign.right : TextAlign.left,
               style: const TextStyle(
                 fontFamily: 'Nunito',
                 fontWeight: FontWeight.w500,

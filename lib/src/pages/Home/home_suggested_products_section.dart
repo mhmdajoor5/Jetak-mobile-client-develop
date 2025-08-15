@@ -30,6 +30,7 @@ class _HomeSuggestedProductsSectionState extends StateMVC<HomeSuggestedProductsS
   @override
   Widget build(BuildContext context) {
     if (widget.suggestedProducts.isEmpty) return SizedBox.shrink();
+    final isHeb = Localizations.localeOf(context).languageCode == 'he';
 
     return Container(
       margin: EdgeInsets.only(top: 12),
@@ -48,7 +49,7 @@ class _HomeSuggestedProductsSectionState extends StateMVC<HomeSuggestedProductsS
                         en: 'Suggested products',
                         ar: 'المنتجات المقترحة',
                         he: 'מוצרים מומלצים'),
-                    textAlign: TextAlign.left,
+                    textAlign: isHeb ? TextAlign.right : TextAlign.left,
                     style: const TextStyle(
                       fontFamily: 'Nunito',
                       fontWeight: FontWeight.w500,
@@ -82,6 +83,7 @@ class _HomeSuggestedProductsSectionState extends StateMVC<HomeSuggestedProductsS
                   en: 'Order your favorite product directly without entering a store',
                   ar: 'اطلب منتجك المفضل مباشرة بدون دخول متجر',
                   he: 'הזמן את המוצר המועדף ישירות בלי להיכנס לחנות'),
+              textAlign: isHeb ? TextAlign.right : TextAlign.left,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey[600],

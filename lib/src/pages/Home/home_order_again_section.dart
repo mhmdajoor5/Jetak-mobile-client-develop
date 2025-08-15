@@ -49,7 +49,7 @@ class _HomeOrderAgainSectionState extends StateMVC<HomeOrderAgainSection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -101,7 +101,7 @@ class _HomeOrderAgainSectionState extends StateMVC<HomeOrderAgainSection> {
           ),
           SizedBox(height: 15),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
             child: Text(
               _tr(context,
                   en: 'Your previous orders from restaurants and stores',
@@ -149,7 +149,7 @@ class _HomeOrderAgainSectionState extends StateMVC<HomeOrderAgainSection> {
       height: 280,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
         itemCount: ordersByRestaurant.length,
         itemBuilder: (context, index) {
           String restaurantId = ordersByRestaurant.keys.elementAt(index);
