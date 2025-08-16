@@ -2780,6 +2780,96 @@ class S {
     );
   }
 
+  /// `Coupon Code`
+  String get coupon_code {
+    return Intl.message(
+      'Coupon Code',
+      name: 'coupon_code',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Apply Coupon`
+  String get apply_coupon {
+    return Intl.message(
+      'Apply Coupon',
+      name: 'apply_coupon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove Coupon`
+  String get remove_coupon {
+    return Intl.message(
+      'Remove Coupon',
+      name: 'remove_coupon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coupon applied successfully!`
+  String get coupon_applied {
+    return Intl.message(
+      'Coupon applied successfully!',
+      name: 'coupon_applied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coupon removed`
+  String get coupon_removed {
+    return Intl.message(
+      'Coupon removed',
+      name: 'coupon_removed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid or expired coupon code`
+  String get invalid_coupon {
+    return Intl.message(
+      'Invalid or expired coupon code',
+      name: 'invalid_coupon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This coupon does not apply to the current restaurant`
+  String get coupon_not_for_restaurant {
+    return Intl.message(
+      'This coupon does not apply to the current restaurant',
+      name: 'coupon_not_for_restaurant',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a coupon code`
+  String get please_enter_coupon {
+    return Intl.message(
+      'Please enter a coupon code',
+      name: 'please_enter_coupon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coupon Discount`
+  String get coupon_discount {
+    return Intl.message(
+      'Coupon Discount',
+      name: 'coupon_discount',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Change`
   String get change {
     return Intl.message(

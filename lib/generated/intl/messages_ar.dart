@@ -86,6 +86,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_settings": MessageLookupByLibrary.simpleMessage("إعدادات التطبيق"),
         "application_preferences":
             MessageLookupByLibrary.simpleMessage("تفضيلات التطبيق"),
+        "apply_coupon": MessageLookupByLibrary.simpleMessage("تطبيق الكوبون"),
         "back_to_edit_number":
             MessageLookupByLibrary.simpleMessage("تعديل الرقم"),
         "buildingName": MessageLookupByLibrary.simpleMessage("اسم المبنى"),
@@ -136,6 +137,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "continueBtn": MessageLookupByLibrary.simpleMessage("متابعة"),
         "continueText": MessageLookupByLibrary.simpleMessage("متابعة"),
         "continue_button": MessageLookupByLibrary.simpleMessage("استمرار"),
+        "coupon_applied":
+            MessageLookupByLibrary.simpleMessage("تم تطبيق الكوبون بنجاح!"),
+        "coupon_code": MessageLookupByLibrary.simpleMessage("رمز الكوبون"),
+        "coupon_discount": MessageLookupByLibrary.simpleMessage("خصم الكوبون"),
+        "coupon_not_for_restaurant": MessageLookupByLibrary.simpleMessage(
+            "هذا الكوبون لا ينطبق على المطعم الحالي"),
+        "coupon_removed":
+            MessageLookupByLibrary.simpleMessage("تم إزالة الكوبون"),
         "credit_card": MessageLookupByLibrary.simpleMessage("بطاقة ائتمان"),
         "cuisines": MessageLookupByLibrary.simpleMessage("المطابخ"),
         "current_location":
@@ -274,6 +283,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "ingredients": MessageLookupByLibrary.simpleMessage("المكونات"),
         "invalidCouponCode":
             MessageLookupByLibrary.simpleMessage("رمز القسيمة غير صالح"),
+        "invalid_coupon": MessageLookupByLibrary.simpleMessage(
+            "رمز الكوبون غير صحيح أو منتهي الصلاحية"),
         "item_subtotal": MessageLookupByLibrary.simpleMessage("مجموع العناصر"),
         "itemsInCart": MessageLookupByLibrary.simpleMessage("العناصر في السلة"),
         "john_doe": MessageLookupByLibrary.simpleMessage("فلان الفلاني"),
@@ -425,7 +436,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pay": MessageLookupByLibrary.simpleMessage("ادفع"),
         "payNow": MessageLookupByLibrary.simpleMessage("ادفع الآن"),
         "pay_now": MessageLookupByLibrary.simpleMessage("ادفع الان"),
-        "payment": MessageLookupByLibrary.simpleMessage("الدقع"),
+        "payment": MessageLookupByLibrary.simpleMessage("الدفع"),
         "payment_method": MessageLookupByLibrary.simpleMessage("طريقة الدفع"),
         "payment_mode": MessageLookupByLibrary.simpleMessage("طريقة الدفع"),
         "payment_options": MessageLookupByLibrary.simpleMessage("خيارات الدفع"),
@@ -448,6 +459,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseWait": MessageLookupByLibrary.simpleMessage("يرجى الانتظار..."),
         "please_correct_form_errors": MessageLookupByLibrary.simpleMessage(
             "يرجى تصحيح الأخطاء في النموذج"),
+        "please_enter_coupon":
+            MessageLookupByLibrary.simpleMessage("يرجى إدخال رمز الكوبون"),
         "please_enter_phone_number":
             MessageLookupByLibrary.simpleMessage("يرجى إدخال رقم الهاتف"),
         "please_fill_all_fields": MessageLookupByLibrary.simpleMessage(
@@ -474,6 +487,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "register": MessageLookupByLibrary.simpleMessage("تسجيل"),
         "register_successful":
             MessageLookupByLibrary.simpleMessage("تم التسجيل بنجاح"),
+        "remove_coupon": MessageLookupByLibrary.simpleMessage("إزالة الكوبون"),
         "resend_available_in": m6,
         "resend_code": MessageLookupByLibrary.simpleMessage(
             "لم يصلك الرمز؟ إعادة الإرسال"),

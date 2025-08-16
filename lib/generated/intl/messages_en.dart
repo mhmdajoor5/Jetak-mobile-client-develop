@@ -94,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_settings": MessageLookupByLibrary.simpleMessage("App Settings"),
         "application_preferences":
             MessageLookupByLibrary.simpleMessage("Application Preferences"),
+        "apply_coupon": MessageLookupByLibrary.simpleMessage("Apply Coupon"),
         "apply_filters": MessageLookupByLibrary.simpleMessage("Apply Filters"),
         "areYouSureYouWantToCancelThisOrder":
             MessageLookupByLibrary.simpleMessage(
@@ -185,6 +186,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "continueBtn": MessageLookupByLibrary.simpleMessage("Continue"),
         "continueText": MessageLookupByLibrary.simpleMessage("Continue"),
         "continue_button": MessageLookupByLibrary.simpleMessage("Continue"),
+        "coupon_applied": MessageLookupByLibrary.simpleMessage(
+            "Coupon applied successfully!"),
+        "coupon_code": MessageLookupByLibrary.simpleMessage("Coupon Code"),
+        "coupon_discount":
+            MessageLookupByLibrary.simpleMessage("Coupon Discount"),
+        "coupon_not_for_restaurant": MessageLookupByLibrary.simpleMessage(
+            "This coupon does not apply to the current restaurant"),
+        "coupon_removed":
+            MessageLookupByLibrary.simpleMessage("Coupon removed"),
         "credit_card": MessageLookupByLibrary.simpleMessage("Credit card"),
         "cuisines": MessageLookupByLibrary.simpleMessage("Cuisines"),
         "current_location":
@@ -359,6 +369,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "ingredients": MessageLookupByLibrary.simpleMessage("Ingredients"),
         "invalidCouponCode":
             MessageLookupByLibrary.simpleMessage("Invalid Coupon"),
+        "invalid_coupon": MessageLookupByLibrary.simpleMessage(
+            "Invalid or expired coupon code"),
         "item_subtotal": MessageLookupByLibrary.simpleMessage("Item Subtotal"),
         "items": MessageLookupByLibrary.simpleMessage("Items"),
         "itemsInCart": MessageLookupByLibrary.simpleMessage("Items in Cart"),
@@ -575,6 +587,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseWait": MessageLookupByLibrary.simpleMessage("Please wait..."),
         "please_correct_form_errors": MessageLookupByLibrary.simpleMessage(
             "Please correct the form errors"),
+        "please_enter_coupon":
+            MessageLookupByLibrary.simpleMessage("Please enter a coupon code"),
         "please_enter_phone_number": MessageLookupByLibrary.simpleMessage(
             "Please enter your phone number"),
         "please_fill_all_fields": MessageLookupByLibrary.simpleMessage(
@@ -602,6 +616,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "register": MessageLookupByLibrary.simpleMessage("Register"),
         "register_successful":
             MessageLookupByLibrary.simpleMessage("Registration successful"),
+        "remove_coupon": MessageLookupByLibrary.simpleMessage("Remove Coupon"),
         "resend_available_in": m6,
         "resend_code": MessageLookupByLibrary.simpleMessage(
             "Didn\'t receive the code? Resend"),

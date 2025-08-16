@@ -28,11 +28,11 @@ class _CardsCarouselWidgetState extends State<CardsCarouselWidget> {
         ? CardsCarouselLoaderWidget()
         : Container(
           height: 280,
-          child: ListView.builder(
-
+          child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.symmetric(horizontal: 16 ),
+            padding: EdgeInsets.symmetric(horizontal: 16),
             itemCount: widget.restaurantsList!.length,
+            separatorBuilder: (context, index) => SizedBox(width: 12),
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
