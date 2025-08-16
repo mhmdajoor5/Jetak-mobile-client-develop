@@ -83,7 +83,9 @@ class Cart {
         
         // إضافة الرسوم الإضافية للإضافات التي تتجاوز الحد
         for (int i = allowedCount; i < groupExtras.length; i++) {
-          result += groupExtras[i].price + extraGroup.maxCharge;
+          final extra = groupExtras[i];
+          final perItemCharge = (extra.extraCharge > 0) ? extra.extraCharge : extraGroup.maxCharge;
+          result += extra.price + perItemCharge;
         }
       } else {
         // عدد الإضافات ضمن الحد المسموح أو لا يوجد حد

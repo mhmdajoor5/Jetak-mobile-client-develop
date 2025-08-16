@@ -693,7 +693,9 @@ class Helper {
         
         // إضافة الرسوم الإضافية للإضافات التي تتجاوز الحد
         for (int i = allowedCount; i < groupExtras.length; i++) {
-          totalPrice += groupExtras[i].price + extraGroup.maxCharge;
+          final extra = groupExtras[i];
+          final perItemCharge = (extra.extraCharge > 0) ? extra.extraCharge : extraGroup.maxCharge;
+          totalPrice += extra.price + perItemCharge;
         }
       } else {
         // عدد الإضافات ضمن الحد المسموح أو لا يوجد حد

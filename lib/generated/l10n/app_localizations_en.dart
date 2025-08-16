@@ -898,6 +898,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get coupon_applied => 'Coupon applied successfully!';
 
   @override
+  String get coupon_applied_short => 'Coupon applied';
+
+  @override
   String get coupon_removed => 'Coupon removed';
 
   @override
@@ -915,6 +918,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get change => 'Change';
+
+  @override
+  String get unavailable => 'Unavailable';
 
   @override
   String get payment => 'Payment';
@@ -1536,4 +1542,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nearby_stores => '🔹 Nearby Stores';
+
+  @override
+  String get apply => 'Apply';
+
+  @override
+  String get payment_methods => 'Payment methods';
 }

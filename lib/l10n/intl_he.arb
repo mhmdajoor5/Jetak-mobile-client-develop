@@ -251,6 +251,18 @@
   "tapAgainToLeave": "הקש שוב כדי לצאת",
   "validCouponCode": "קוד קופון תקף",
   "invalidCouponCode": "קוד קופון לא תקין",
+  "add_a_promo_code": "הוסף קוד קופון",
+  "coupon_code": "קוד קופון",
+  "apply_coupon": "החל קופון",
+  "remove_coupon": "הסר קופון",
+  "coupon_applied": "הקופון הוחל בהצלחה!",
+  "coupon_applied_short": "קופון הוחל",
+  "coupon_removed": "הקופון הוסר",
+  "invalid_coupon": "קוד קופון לא תקף או שפג תוקפו",
+  "coupon_not_for_restaurant": "הקופון אינו חל על המסעדה הנוכחית",
+  "please_enter_coupon": "אנא הזן קוד קופון",
+  "coupon_discount": "הנחת קופון",
+  "enter_here": "הזן כאן",
   "haveCouponCode": "יש לך קוד קופון?",
   "messages": "הודעות",
   "youDontHaveAnyConversations": "אין לך שיחות",
@@ -632,4 +644,9 @@
   "searching_for_nearby_stores": "מחפש חנויות קרובות...",
   "nearby_stores": "🔹 חנויות קרובות"
 
+  ,
+  "apply": "החל",
+  "payment_method": "אמצעי תשלום",
+  "credit_card": "כרטיס אשראי",
+  "unavailable": "לא זמין"
 }

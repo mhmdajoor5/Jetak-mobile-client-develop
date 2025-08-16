@@ -94,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_settings": MessageLookupByLibrary.simpleMessage("App Settings"),
         "application_preferences":
             MessageLookupByLibrary.simpleMessage("Application Preferences"),
+        "apply": MessageLookupByLibrary.simpleMessage("Apply"),
         "apply_coupon": MessageLookupByLibrary.simpleMessage("Apply Coupon"),
         "apply_filters": MessageLookupByLibrary.simpleMessage("Apply Filters"),
         "areYouSureYouWantToCancelThisOrder":
@@ -188,6 +189,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "continue_button": MessageLookupByLibrary.simpleMessage("Continue"),
         "coupon_applied": MessageLookupByLibrary.simpleMessage(
             "Coupon applied successfully!"),
+        "coupon_applied_short":
+            MessageLookupByLibrary.simpleMessage("Coupon applied"),
         "coupon_code": MessageLookupByLibrary.simpleMessage("Coupon Code"),
         "coupon_discount":
             MessageLookupByLibrary.simpleMessage("Coupon Discount"),
@@ -560,6 +563,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Payment card updated successfully"),
         "payment_method":
             MessageLookupByLibrary.simpleMessage("Payment method"),
+        "payment_methods":
+            MessageLookupByLibrary.simpleMessage("Payment methods"),
         "payment_mode": MessageLookupByLibrary.simpleMessage("Payment Mode"),
         "payment_options":
             MessageLookupByLibrary.simpleMessage("Payment Options"),
@@ -774,6 +779,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "twentyToThirtyMin": MessageLookupByLibrary.simpleMessage("20-30 min"),
         "typeToStartChat":
             MessageLookupByLibrary.simpleMessage("Type to start chat"),
+        "unavailable": MessageLookupByLibrary.simpleMessage("Unavailable"),
         "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
         "unreadNotifications":
             MessageLookupByLibrary.simpleMessage("Unread Notifications"),

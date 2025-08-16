@@ -48,6 +48,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "הוסף או צור תוויות כתובת כדי לבחור בקלות בין כתובות משלוח"),
         "addToCart": MessageLookupByLibrary.simpleMessage("הוסף לעגלה"),
+        "add_a_promo_code":
+            MessageLookupByLibrary.simpleMessage("הוסף קוד קופון"),
         "add_credit_card":
             MessageLookupByLibrary.simpleMessage("הוסף כרטיס אשראי חדש"),
         "add_delivery_address":
@@ -85,6 +87,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_settings": MessageLookupByLibrary.simpleMessage("הגדרות אפליקציה"),
         "application_preferences":
             MessageLookupByLibrary.simpleMessage("העדפות האפליקציה"),
+        "apply": MessageLookupByLibrary.simpleMessage("החל"),
+        "apply_coupon": MessageLookupByLibrary.simpleMessage("החל קופון"),
         "apply_filters": MessageLookupByLibrary.simpleMessage("החל סינון"),
         "areYouSureYouWantToCancelThisOrder":
             MessageLookupByLibrary.simpleMessage(
@@ -164,6 +168,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "continueBtn": MessageLookupByLibrary.simpleMessage("המשך"),
         "continueText": MessageLookupByLibrary.simpleMessage("המשך"),
         "continue_button": MessageLookupByLibrary.simpleMessage("המשך"),
+        "coupon_applied":
+            MessageLookupByLibrary.simpleMessage("הקופון הוחל בהצלחה!"),
+        "coupon_applied_short":
+            MessageLookupByLibrary.simpleMessage("קופון הוחל"),
+        "coupon_code": MessageLookupByLibrary.simpleMessage("קוד קופון"),
+        "coupon_discount": MessageLookupByLibrary.simpleMessage("הנחת קופון"),
+        "coupon_not_for_restaurant": MessageLookupByLibrary.simpleMessage(
+            "הקופון אינו חל על המסעדה הנוכחית"),
+        "coupon_removed": MessageLookupByLibrary.simpleMessage("הקופון הוסר"),
+        "credit_card": MessageLookupByLibrary.simpleMessage("כרטיס אשראי"),
         "cuisines": MessageLookupByLibrary.simpleMessage("סוגי מטבח"),
         "current_location": MessageLookupByLibrary.simpleMessage("מיקום נוכחי"),
         "cvc": MessageLookupByLibrary.simpleMessage("CVC"),
@@ -238,6 +252,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("הזן את קוד הדלת"),
         "enterYourEmail":
             MessageLookupByLibrary.simpleMessage("הזן את כתובת האימייל שלך"),
+        "enter_here": MessageLookupByLibrary.simpleMessage("הזן כאן"),
         "entranceStaircase":
             MessageLookupByLibrary.simpleMessage("כניסה / מדרגות"),
         "errorFetchingNotifications": m4,
@@ -324,6 +339,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "ingredients": MessageLookupByLibrary.simpleMessage("מרכיבים"),
         "invalidCouponCode":
             MessageLookupByLibrary.simpleMessage("קוד קופון לא תקין"),
+        "invalid_coupon": MessageLookupByLibrary.simpleMessage(
+            "קוד קופון לא תקף או שפג תוקפו"),
         "item_subtotal":
             MessageLookupByLibrary.simpleMessage("סכום ביניים של פריטים"),
         "items": MessageLookupByLibrary.simpleMessage("פריטים"),
@@ -501,6 +518,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paymentMode": MessageLookupByLibrary.simpleMessage("אמצעי תשלום"),
         "payment_card_updated_successfully":
             MessageLookupByLibrary.simpleMessage("כרטיס התשלום עודכן בהצלחה"),
+        "payment_method": MessageLookupByLibrary.simpleMessage("אמצעי תשלום"),
         "payment_mode": MessageLookupByLibrary.simpleMessage("מצב תשלום"),
         "payment_options":
             MessageLookupByLibrary.simpleMessage("אפשרויות תשלום"),
@@ -525,6 +543,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseWait": MessageLookupByLibrary.simpleMessage("אנא המתן..."),
         "please_correct_form_errors":
             MessageLookupByLibrary.simpleMessage("אנא תקן את השגיאות בטופס"),
+        "please_enter_coupon":
+            MessageLookupByLibrary.simpleMessage("אנא הזן קוד קופון"),
         "please_enter_phone_number":
             MessageLookupByLibrary.simpleMessage("אנא הזן את מספר הטלפון שלך"),
         "please_fill_all_fields":
@@ -552,6 +572,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "register": MessageLookupByLibrary.simpleMessage("הרשמה"),
         "register_successful":
             MessageLookupByLibrary.simpleMessage("ההרשמה הצליחה"),
+        "remove_coupon": MessageLookupByLibrary.simpleMessage("הסר קופון"),
         "resend_available_in": m6,
         "resend_code":
             MessageLookupByLibrary.simpleMessage("לא קיבלת את הקוד? שלח שוב"),
@@ -698,6 +719,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "twentyToThirtyMin": MessageLookupByLibrary.simpleMessage("20-30 דקות"),
         "typeToStartChat":
             MessageLookupByLibrary.simpleMessage("הקלד כדי להתחיל צ\'אט"),
+        "unavailable": MessageLookupByLibrary.simpleMessage("לא זמין"),
         "unknown": MessageLookupByLibrary.simpleMessage("לא ידוע"),
         "unreadNotifications":
             MessageLookupByLibrary.simpleMessage("התראות שלא נקראו"),

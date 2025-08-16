@@ -142,7 +142,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: Text(
-                      'خصم الكوبون',
+                      S.of(context).coupon_discount,
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,

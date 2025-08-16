@@ -2820,6 +2820,16 @@ class S {
     );
   }
 
+  /// `Coupon applied`
+  String get coupon_applied_short {
+    return Intl.message(
+      'Coupon applied',
+      name: 'coupon_applied_short',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Coupon removed`
   String get coupon_removed {
     return Intl.message(
@@ -2875,6 +2885,16 @@ class S {
     return Intl.message(
       'Change',
       name: 'change',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unavailable`
+  String get unavailable {
+    return Intl.message(
+      'Unavailable',
+      name: 'unavailable',
       desc: '',
       args: [],
     );
@@ -4835,6 +4855,26 @@ class S {
     return Intl.message(
       '🔹 Nearby Stores',
       name: 'nearby_stores',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Apply`
+  String get apply {
+    return Intl.message(
+      'Apply',
+      name: 'apply',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Payment methods`
+  String get payment_methods {
+    return Intl.message(
+      'Payment methods',
+      name: 'payment_methods',
       desc: '',
       args: [],
     );

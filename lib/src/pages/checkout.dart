@@ -394,14 +394,14 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'كوبون مطبق: ${_con.coupon.code}',
+                          '${S.of(context).coupon_applied_short}: ${_con.coupon.code}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.green,
                           ),
                         ),
                         Text(
-                          'خصم: ${_con.coupon.discountType == 'fixed' ? '${_con.coupon.discount} دينار' : '${_con.coupon.discount}%'}',
+                          '${S.of(context).discount}: ${_con.coupon.discountType == 'fixed' ? '${_con.coupon.discount} دينار' : '${_con.coupon.discount}%'}',
                           style: TextStyle(color: Colors.green[700]),
                         ),
                       ],
@@ -468,7 +468,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                     ),
                   ),
                   child: Text(
-                    'تطبيق',
+                    S.of(context).apply,
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

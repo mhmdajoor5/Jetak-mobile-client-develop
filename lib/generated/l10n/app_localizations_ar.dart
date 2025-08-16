@@ -197,7 +197,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get email => 'البريد الإلكتروني';
 
   @override
-  String get phone => 'رقم الهاتف';
+  String get phone => 'رقم الجوال';
 
   @override
   String get address => 'العنوان';
@@ -218,7 +218,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get english => 'الإنجليزية';
 
   @override
-  String get help_support => 'المساعدة والدعم';
+  String get help_support => 'المساعدة';
 
   @override
   String get register => 'تسجيل';
@@ -301,7 +301,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get help__support => 'المساعدة';
 
   @override
-  String get pending_payment => 'الدفع معلق';
+  String get pending_payment => 'في انتظار الدفع';
 
   @override
   String get light_mode => 'الوضع الفاتح';
@@ -476,7 +476,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get you_must_signin_to_access_to_this_section =>
-      'يجب تسجيل الدخول للوصول إلى هذا القسم';
+      'يجب تسجيل الدخول لمشاهدة هذه الصفحة';
 
   @override
   String get tell_us_about_this_restaurant => 'أخبرنا عن هذا المطعم';
@@ -501,10 +501,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get delivery_fee => 'رسوم التوصيل';
 
   @override
-  String get order_status_changed => 'تغيرت حالة الطلب';
+  String get order_status_changed => 'تم تغيير حالة الطلب';
 
   @override
-  String get new_order_from_client => 'طلب جديد من العميل';
+  String get new_order_from_client => 'طلب جديد من عميل';
 
   @override
   String get shopping => 'Shopping';
@@ -538,7 +538,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mi => 'ميل';
 
   @override
-  String get delivery_address => 'عنوان التوصيل';
+  String get delivery_address => 'Delivery Address';
 
   @override
   String get current_location => 'الموقع الحالي';
@@ -586,7 +586,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get fields => 'Fields';
 
   @override
-  String get this_food_was_added_to_cart => 'تم إضافة هذا الطعام إلى السلة';
+  String get this_food_was_added_to_cart => 'تم إضافة المنتج إلى السلة';
 
   @override
   String get foods_result => 'Foods result';
@@ -601,7 +601,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get all => 'All';
 
   @override
-  String get this_restaurant_is_closed_ => 'هذا المطعم مغلق';
+  String get this_restaurant_is_closed_ => 'This restaurant is closed';
 
   @override
   String get unknown => 'غير معروف';
@@ -677,7 +677,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get orderingFromAnotherRestaurantWillClearYourCart =>
-      'الطلب من مطعم آخر سيؤدي إلى إفراغ سلة التسوق. هل تريد المتابعة؟';
+      'Ordering from another restaurant will clear your current cart. Do you want to continue?';
 
   @override
   String get continueText => 'متابعة';
@@ -713,7 +713,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cannot_add_from_different_restaurant =>
-      'لا يمكن إضافة من مطعم مختلف';
+      'لا يمكن إضافة منتجات من مطاعم مختلفة في نفس الطلب. هل تريد إفراغ السلة وإضافة منتجات من هذا المطعم؟';
 
   @override
   String get foodRefreshedSuccessfuly => 'تم تحديث الطعام بنجاح';
@@ -784,7 +784,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'انقر للدفع باستخدام طريقة RazorPay';
 
   @override
-  String get tapAgainToLeave => 'انقر مرة أخرى للمغادرة';
+  String get tapAgainToLeave => 'Tap again to leave';
 
   @override
   String get validCouponCode => 'رمز القسيمة صالح';
@@ -888,6 +888,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get coupon_applied => 'تم تطبيق الكوبون بنجاح!';
 
   @override
+  String get coupon_applied_short => 'كوبون مطبق';
+
+  @override
   String get coupon_removed => 'تم إزالة الكوبون';
 
   @override
@@ -905,6 +908,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get change => 'تغيير';
+
+  @override
+  String get unavailable => 'غير متاح';
 
   @override
   String get payment => 'الدفع';
@@ -934,7 +940,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get delivery => 'التوصيل';
 
   @override
-  String get pickup => 'الاستلام';
+  String get pickup => 'استلام';
 
   @override
   String open_until(Object time) {
@@ -1371,38 +1377,38 @@ class AppLocalizationsAr extends AppLocalizations {
   String get cartIsEmpty => 'السلة فارغة';
 
   @override
-  String get chooseOrderType => 'اختر نوع الطلب';
+  String get chooseOrderType => 'اختيار نوع الطلب';
 
   @override
-  String get hi => 'مرحباً 👋';
+  String get hi => 'مرحبًا 👋';
 
   @override
   String get writeEmailAndPassword =>
-      'اكتب بريدك الإلكتروني وكلمة المرور 💁‍♂️';
+      ' اكتب بريدك الإلكتروني وكلمة المرور 💁‍♂️';
 
   @override
-  String get providePhoneNumber => 'أعطنا رقم هاتفك 🙅‍♂️';
+  String get providePhoneNumber => 'زوّدنا برقم هاتفك 🙅‍♂️';
 
   @override
-  String get codeSent => 'أرسلنا لك رمزاً 🧏‍♂️';
+  String get codeSent => 'لقد أرسلنا لك رمزًا 🧏‍♂️';
 
   @override
-  String get enterTheDoorCode => 'أدخل رمز الباب';
+  String get enterTheDoorCode => 'اكتب لنا كود الباب';
 
   @override
-  String get otherInstructionsForCourier => 'تعليمات أخرى للرسول';
+  String get otherInstructionsForCourier => 'تعليمات أخرى لمندوب التوصيل';
 
   @override
-  String get additions => 'إضافات';
+  String get additions => 'Additions';
 
   @override
-  String get itemsInCart => 'العناصر في السلة';
+  String get itemsInCart => 'Items in Cart';
 
   @override
-  String get pay => 'ادفع';
+  String get pay => 'Pay';
 
   @override
-  String get search_for_restaurants_or_foods => 'البحث في المطاعم والأطعمة';
+  String get search_for_restaurants_or_foods => 'ابحث عن مطاعم أو أطعمة';
 
   @override
   String get ordered_by_nearby_first => 'مرتبة حسب الأقرب أولاً';
@@ -1515,4 +1521,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get nearby_stores => '🔹 المتاجر القريبة';
+
+  @override
+  String get apply => 'تطبيق';
+
+  @override
+  String get payment_methods => 'Payment methods';
 }

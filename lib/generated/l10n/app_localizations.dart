@@ -1762,6 +1762,12 @@ abstract class AppLocalizations {
   /// **'Coupon applied successfully!'**
   String get coupon_applied;
 
+  /// No description provided for @coupon_applied_short.
+  ///
+  /// In en, this message translates to:
+  /// **'Coupon applied'**
+  String get coupon_applied_short;
+
   /// No description provided for @coupon_removed.
   ///
   /// In en, this message translates to:
@@ -1797,6 +1803,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Change'**
   String get change;
+
+  /// No description provided for @unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get unavailable;
 
   /// No description provided for @payment.
   ///
@@ -2973,6 +2985,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'🔹 Nearby Stores'**
   String get nearby_stores;
+
+  /// No description provided for @apply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get apply;
+
+  /// No description provided for @payment_methods.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment methods'**
+  String get payment_methods;
 }
 
 class _AppLocalizationsDelegate

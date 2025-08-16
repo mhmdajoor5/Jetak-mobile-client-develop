@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:restaurantcustomer/src/models/extra_group.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/food_controller.dart';
@@ -418,23 +419,45 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                             itemCount: groupExtras.length,
                                             itemBuilder: (context, extraIndex) {
                                               final extra = groupExtras[extraIndex];
+                                              final isPriced = (extra.price > 0);
+                                              final group = _con.food.extraGroups.firstWhere(
+                                                (g) => g.id == extra.extraGroupId,
+                                                orElse: () => ExtraGroup(),
+                                              );
+                                              final maxAllowed = group.maxAllowed ?? 3;
+                                              final currentCountInGroup = _con.food.extras.where(
+                                                (e) => e.extraGroupId == extra.extraGroupId && selectedExtras.contains(e.id),
+                                              ).length;
+
                                               return CheckboxListTile(
                                                 title: Text(
                                                   extra.name,
                                                   style: TextStyle(fontSize: 14), // added explicit font size
                                                 ),
-                                                subtitle: Helper.getPrice(extra.price, context),
+                                                subtitle: isPriced ? Helper.getPrice(extra.price, context) : Text(S.of(context).unavailable),
                                                 value: selectedExtras.contains(extra.id),
+                                                enabled: isPriced,
                                                 onChanged: (bool? value) {
-                                                  setState(() {
-                                                    if (value == true) {
-                                                      selectedExtras.add(extra.id);
-                                                      extra.checked = true;
-                                                    } else {
+                                                  if (!(value ?? false)) {
+                                                    setState(() {
                                                       selectedExtras.remove(extra.id);
                                                       extra.checked = false;
-                                                    }
-                                                    // تحديث السعر الإجمالي
+                                                      _con.calculateTotal();
+                                                    });
+                                                    return;
+                                                  }
+
+                                                  if (!isPriced) return;
+                                                  if (currentCountInGroup >= maxAllowed) {
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(content: Text(' maxAllowedمسموح اختيار %d فقط من هذه المجموعة'  )),
+                                                    );
+                                                    return;
+                                                  }
+
+                                                  setState(() {
+                                                    selectedExtras.add(extra.id);
+                                                    extra.checked = true;
                                                     _con.calculateTotal();
                                                   });
                                                 },

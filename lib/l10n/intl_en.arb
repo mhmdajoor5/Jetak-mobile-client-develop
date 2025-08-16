@@ -279,12 +279,14 @@
   "apply_coupon":"Apply Coupon",
   "remove_coupon":"Remove Coupon",
   "coupon_applied":"Coupon applied successfully!",
+  "coupon_applied_short":"Coupon applied",
   "coupon_removed":"Coupon removed",
   "invalid_coupon":"Invalid or expired coupon code",
   "coupon_not_for_restaurant":"This coupon does not apply to the current restaurant",
   "please_enter_coupon":"Please enter a coupon code",
   "coupon_discount":"Coupon Discount",
   "change":"Change",
+  "unavailable":"Unavailable",
   "payment":"Payment",
   "order_summary":"Order Summary",
   "include_tax":"Include tax ( if applicable )",
@@ -671,4 +673,7 @@
   "searching_for_nearby_stores": "Searching for nearby stores...",
   "nearby_stores": "🔹 Nearby Stores"
 
+  ,
+  "apply": "Apply",
+  "payment_methods": "Payment methods"
 }

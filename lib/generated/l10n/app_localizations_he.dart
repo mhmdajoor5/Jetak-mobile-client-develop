@@ -853,10 +853,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get chats => 'צ\'אטים';
 
   @override
-  String get payment_method => 'Payment method';
+  String get payment_method => 'אמצעי תשלום';
 
   @override
-  String get credit_card => 'Credit card';
+  String get credit_card => 'כרטיס אשראי';
 
   @override
   String get cash => 'Cash';
@@ -865,38 +865,43 @@ class AppLocalizationsHe extends AppLocalizations {
   String get add_courier_tip => 'Add courier tip';
 
   @override
-  String get add_a_promo_code => 'Add a promo code';
+  String get add_a_promo_code => 'הוסף קוד קופון';
 
   @override
-  String get coupon_code => 'Coupon Code';
+  String get coupon_code => 'קוד קופון';
 
   @override
-  String get apply_coupon => 'Apply Coupon';
+  String get apply_coupon => 'החל קופון';
 
   @override
-  String get remove_coupon => 'Remove Coupon';
+  String get remove_coupon => 'הסר קופון';
 
   @override
-  String get coupon_applied => 'Coupon applied successfully!';
+  String get coupon_applied => 'הקופון הוחל בהצלחה!';
 
   @override
-  String get coupon_removed => 'Coupon removed';
+  String get coupon_applied_short => 'קופון הוחל';
 
   @override
-  String get invalid_coupon => 'Invalid or expired coupon code';
+  String get coupon_removed => 'הקופון הוסר';
 
   @override
-  String get coupon_not_for_restaurant =>
-      'This coupon does not apply to the current restaurant';
+  String get invalid_coupon => 'קוד קופון לא תקף או שפג תוקפו';
 
   @override
-  String get please_enter_coupon => 'Please enter a coupon code';
+  String get coupon_not_for_restaurant => 'הקופון אינו חל על המסעדה הנוכחית';
 
   @override
-  String get coupon_discount => 'Coupon Discount';
+  String get please_enter_coupon => 'אנא הזן קוד קופון';
+
+  @override
+  String get coupon_discount => 'הנחת קופון';
 
   @override
   String get change => 'שנה';
+
+  @override
+  String get unavailable => 'לא זמין';
 
   @override
   String get payment => 'Payment';
@@ -920,7 +925,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get pay_now => 'Pay now';
 
   @override
-  String get enter_here => 'Enter here';
+  String get enter_here => 'הזן כאן';
 
   @override
   String get delivery => 'משלוח';
@@ -1507,4 +1512,10 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get nearby_stores => '🔹 חנויות קרובות';
+
+  @override
+  String get apply => 'החל';
+
+  @override
+  String get payment_methods => 'Payment methods';
 }
