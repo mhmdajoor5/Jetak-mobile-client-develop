@@ -4,6 +4,7 @@ import 'package:restaurantcustomer/src/models/restaurant.dart';
 
 import '../helpers/custom_trace.dart';
 import '../models/address.dart';
+import '../models/coupon.dart';
 import '../models/food_order.dart';
 import '../models/order_status.dart';
 import '../models/payment.dart';
@@ -25,6 +26,7 @@ class Order {
   Address deliveryAddress;
   String orderType;
   Restaurant? restaurant;
+  Coupon? coupon;
 
   Order({
     this.id = '',
@@ -40,6 +42,7 @@ class Order {
     Payment? payment,
     Address? deliveryAddress,
     this.restaurant,
+    this.coupon,
   }) : orderStatus = orderStatus ?? OrderStatus.fromJSON({}),
        dateTime = dateTime ?? DateTime(0),
        user = user ?? User.fromJSON({}),
@@ -219,6 +222,12 @@ class Order {
       "payment": payment.toMap(),
       "order_type": orderType,
     };
+
+    // إضافة الكوبون إذا كان موجوداً
+    if (coupon != null && coupon!.valid == true && coupon!.code != null && coupon!.code!.isNotEmpty) {
+      map["coupon_code"] = coupon!.code;
+      print('🎫 إضافة كوبون للطلب: ${coupon!.code}');
+    }
 
     // إرسال بيانات العنوان مباشرة بدلاً من ID فقط
     if (!deliveryAddress.isUnknown()) {

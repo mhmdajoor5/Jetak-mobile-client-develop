@@ -23,10 +23,18 @@ Future<Stream<Coupon>> verifyCoupon(String code) async {
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data as Map<String, dynamic>?)).expand((data) => (data as List)).map((data) {
+    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) {
+      print('🎫 البيانات القادمة من API: $data');
+      return Helper.getData(data as Map<String, dynamic>?);
+    }).expand((data) {
+      print('🎫 البيانات بعد Helper.getData: $data');
+      return (data as List);
+    }).map((data) {
+      print('🎫 إنشاء كوبون من البيانات: $data');
       return Coupon.fromJSON(data);
     });
   } catch (e) {
+    print('🎫 خطأ في repository: $e');
     print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
     return new Stream.value(new Coupon.fromJSON({}));
   }

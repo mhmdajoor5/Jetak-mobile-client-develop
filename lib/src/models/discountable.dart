@@ -12,8 +12,23 @@ class Discountable {
 
   factory Discountable.fromJSON(Map<String, dynamic>? jsonMap) {
     try {
-      return Discountable(id: jsonMap?['id']?.toString() ?? '', discountableType: jsonMap?['discountable_type']?.toString(), discountableId: jsonMap?['discountable_id']?.toString(),coupon: jsonMap?['coupon'] != null ? Coupon.fromJSON(jsonMap!['coupon']) : null,);
+      print('🎫 إنشاء Discountable من JSON: $jsonMap');
+      
+      Discountable discountable = Discountable(
+        id: jsonMap?['id']?.toString() ?? '', 
+        discountableType: jsonMap?['discountable_type']?.toString(), 
+        discountableId: jsonMap?['discountable_id']?.toString(),
+        coupon: jsonMap?['coupon'] != null ? Coupon.fromJSON(jsonMap!['coupon']) : null,
+      );
+      
+      print('🎫 Discountable المنشأ:');
+      print('🎫 - ID: ${discountable.id}');
+      print('🎫 - Type: ${discountable.discountableType}');
+      print('🎫 - DiscountableID: ${discountable.discountableId}');
+      
+      return discountable;
     } catch (e) {
+      print('🎫 خطأ في إنشاء Discountable: $e');
       print(CustomTrace(StackTrace.current, message: e.toString()));
       return Discountable();
     }

@@ -876,10 +876,38 @@ class AppLocalizationsAr extends AppLocalizations {
   String get add_a_promo_code => 'اضافة رمز الخصم';
 
   @override
+  String get coupon_code => 'رمز الكوبون';
+
+  @override
+  String get apply_coupon => 'تطبيق الكوبون';
+
+  @override
+  String get remove_coupon => 'إزالة الكوبون';
+
+  @override
+  String get coupon_applied => 'تم تطبيق الكوبون بنجاح!';
+
+  @override
+  String get coupon_removed => 'تم إزالة الكوبون';
+
+  @override
+  String get invalid_coupon => 'رمز الكوبون غير صحيح أو منتهي الصلاحية';
+
+  @override
+  String get coupon_not_for_restaurant =>
+      'هذا الكوبون لا ينطبق على المطعم الحالي';
+
+  @override
+  String get please_enter_coupon => 'يرجى إدخال رمز الكوبون';
+
+  @override
+  String get coupon_discount => 'خصم الكوبون';
+
+  @override
   String get change => 'تغيير';
 
   @override
-  String get payment => 'الدقع';
+  String get payment => 'الدفع';
 
   @override
   String get order_summary => 'ملخص الطلب';

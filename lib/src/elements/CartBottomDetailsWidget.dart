@@ -99,7 +99,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
                     ),
                   ),
                   Helper.getPrice(
-                    _con.carts[0].food!.restaurant!.deliveryFee,
+                    _con.deliveryFee,
                     context,
                     style: Theme.of(context).textTheme.titleMedium,
                     zeroPlaceholder: 'Free',
@@ -135,6 +135,33 @@ class CartBottomDetailsWidget extends StatelessWidget {
             //   ],
             // ),
             // SizedBox(height: 10),
+            
+            // عرض خصم الكوبون إذا كان موجوداً
+            if (_con.coupon.valid == true && _con.coupon.discount != null) ...[
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      'خصم الكوبون',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    '-${_con.coupon.discountType == 'fixed' ? '${_con.coupon.discount} دينار' : '${_con.coupon.discount}%'}',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.green,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 5),
+            ],
             Divider(color: AppColors.colorF1F1F1),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -193,25 +220,13 @@ class CartBottomDetailsWidget extends StatelessWidget {
   }
 
   Widget _buildPriceWidget(BuildContext context) {
-    final restaurant = _con.carts[0].food!.restaurant!;
-    final total = _con.total;
-    final deliveryFee = restaurant.deliveryFee;
-
     final textStyle = Theme.of(context).textTheme.bodyMedium?.merge(
       TextStyle(color: Color(0xFF272727)),
     );
 
-    if (selectedTap == 2) {
-      return Helper.getPrice(
-        total - deliveryFee,
-        context,
-        style: textStyle,
-        zeroPlaceholder: 'Free',
-      );
-    }
-
+    // استخدام total مباشرة لأنه يحتوي على الحساب الصحيح
     return Helper.getPrice(
-      total,
+      _con.total,
       context,
       style: textStyle,
       zeroPlaceholder: 'Free',

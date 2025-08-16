@@ -146,6 +146,12 @@ class CheckoutController extends CartController {
     _order.foodOrders = <FoodOrder>[];
     _order.tax = carts[0].food?.restaurant.defaultTax ?? 0.0;
     
+    // إضافة الكوبون إلى الطلب إذا كان صحيحاً
+    if (coupon.valid == true && coupon.code != null && coupon.code!.isNotEmpty) {
+      _order.coupon = coupon;
+      print('🎫 إضافة الكوبون للطلب: ${coupon.code}');
+    }
+    
     // تحديد نوع الطلب بناءً على طريقة الدفع
     String orderType = 'delivery'; // القيمة الافتراضية
     if (payment?.method == 'Pay on Pickup') {

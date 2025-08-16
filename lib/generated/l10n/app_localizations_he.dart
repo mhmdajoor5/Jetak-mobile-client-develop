@@ -868,6 +868,34 @@ class AppLocalizationsHe extends AppLocalizations {
   String get add_a_promo_code => 'Add a promo code';
 
   @override
+  String get coupon_code => 'Coupon Code';
+
+  @override
+  String get apply_coupon => 'Apply Coupon';
+
+  @override
+  String get remove_coupon => 'Remove Coupon';
+
+  @override
+  String get coupon_applied => 'Coupon applied successfully!';
+
+  @override
+  String get coupon_removed => 'Coupon removed';
+
+  @override
+  String get invalid_coupon => 'Invalid or expired coupon code';
+
+  @override
+  String get coupon_not_for_restaurant =>
+      'This coupon does not apply to the current restaurant';
+
+  @override
+  String get please_enter_coupon => 'Please enter a coupon code';
+
+  @override
+  String get coupon_discount => 'Coupon Discount';
+
+  @override
   String get change => 'שנה';
 
   @override

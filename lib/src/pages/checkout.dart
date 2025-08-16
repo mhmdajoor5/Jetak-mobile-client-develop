@@ -17,6 +17,8 @@ class CheckoutWidget extends StatefulWidget {
 class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
   late CheckoutController _con;
   String selectedOrderType = 'delivery';
+  final TextEditingController _couponController = TextEditingController();
+  final FocusNode _couponFocusNode = FocusNode();
 
   _CheckoutWidgetState() : super(CheckoutController()) {
     _con = controller as CheckoutController;
@@ -26,6 +28,13 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
   void initState() {
     _con.listenForCarts();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _couponController.dispose();
+    _couponFocusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -52,6 +61,27 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
+                  // زر اختبار في الأعلى
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        print('🎫 زر الاختبار في الأعلى تم الضغط عليه');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('الزر في الأعلى يعمل!'),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                      },
+                      child: Text('اختبار في الأعلى - اضغط هنا'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                  ),
+                  
                   Padding(
                     padding:
                     const EdgeInsets.only(left: 20, right: 10),
@@ -73,6 +103,54 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                     onChanged: (card) => _con.updateCreditCard(card),
                   ),
                   SizedBox(height: 20),
+                  
+                  // حقل الكوبون
+                  _buildCouponSection(),
+                  SizedBox(height: 20),
+                  
+                  // زر اختبار بسيط
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        print('🎫 زر الاختبار تم الضغط عليه');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('زر الاختبار يعمل!'),
+                            backgroundColor: Colors.blue,
+                          ),
+                        );
+                      },
+                      child: Text('اختبار - اضغط هنا'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                  ),
+                  
+                  // زر اختبار إضافي
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        print('🎫 زر الاختبار الثاني تم الضغط عليه');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('الزر الثاني يعمل أيضاً!'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      },
+                      child: Text('اختبار 2 - اضغط هنا'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -184,6 +262,22 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                     ],
                   ),
                   SizedBox(height: 3),
+                  // عرض خصم الكوبون إذا كان موجوداً
+                  if (_con.coupon.valid == true && _con.coupon.discount != null) ...[
+                    Row(
+                      children: <Widget>[
+                        Expanded(child: Text('خصم الكوبون')),
+                        Text(
+                          '-${_con.coupon.discountType == 'fixed' ? '${_con.coupon.discount} دينار' : '${_con.coupon.discount}%'}',
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 3),
+                  ],
                   // تم إزالة عرض الضريبة لأن الأسعار تدخل مع الضريبة مسبقاً
                   // Row(
                   //   children: <Widget>[
@@ -245,6 +339,146 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCouponSection() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Theme.of(context).dividerColor,
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.local_offer,
+                color: Theme.of(context).primaryColor,
+                size: 20,
+              ),
+              SizedBox(width: 8),
+              Text(
+                'كوبون الخصم',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 12),
+          if (_con.coupon.valid == true) ...[
+            // عرض الكوبون المطبق
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.green.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.green, width: 1),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.check_circle, color: Colors.green, size: 20),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'كوبون مطبق: ${_con.coupon.code}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green,
+                          ),
+                        ),
+                        Text(
+                          'خصم: ${_con.coupon.discountType == 'fixed' ? '${_con.coupon.discount} دينار' : '${_con.coupon.discount}%'}',
+                          style: TextStyle(color: Colors.green[700]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.close, color: Colors.green),
+                    onPressed: () {
+                      _con.removeCoupon();
+                      _couponController.clear();
+                      setState(() {});
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ] else ...[
+            // حقل إدخال الكوبون مبسط
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _couponController,
+                    decoration: InputDecoration(
+                      hintText: 'أدخل رمز الكوبون',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 12,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: () {
+                    print('🎫 تم الضغط على زر التطبيق');
+                    if (_couponController.text.trim().isNotEmpty) {
+                      print('🎫 النص المدخل: ${_couponController.text.trim()}');
+                      _con.doApplyCoupon(_couponController.text.trim());
+                      setState(() {
+                        print('🎫 تم تحديث الـ UI من زر التطبيق');
+                      });
+                    } else {
+                      print('🎫 النص فارغ');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('يرجى إدخال رمز الكوبون'),
+                          backgroundColor: Colors.orange,
+                        ),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                  ),
+                  child: Text(
+                    'تطبيق',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );

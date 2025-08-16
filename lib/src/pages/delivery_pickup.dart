@@ -52,6 +52,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   List<CardItem> savedCards = [];
   int selectedCardIndex = -1;
   late TextEditingController addressController;
+  TextEditingController couponController = TextEditingController();
 
   _DeliveryPickupWidgetState() : super(DeliveryPickupController()) {
     _con = controller as DeliveryPickupController;
@@ -86,6 +87,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   @override
   void dispose() {
     addressController.dispose();
+    couponController.dispose();
     super.dispose();
   }
 
@@ -646,12 +648,18 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                   TabItem(
                     text: S.of(context).delivery,
                     isSelected: selectedTap == 1,
-                    onPressed: () => setState(() => selectedTap = 1),
+                    onPressed: () {
+                      setState(() => selectedTap = 1);
+                      _con.updateSelectedTap(1);
+                    },
                   ),
                   TabItem(
                     text: S.of(context).pickup,
                     isSelected: selectedTap == 2,
-                    onPressed: () => setState(() => selectedTap = 2),
+                    onPressed: () {
+                      setState(() => selectedTap = 2);
+                      _con.updateSelectedTap(2);
+                    },
                   ),
                 ],
               ),
@@ -889,7 +897,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
               //       }),
               // ),
               const SizedBox(height: 16),
-              _buildPromoCodeField(TextEditingController()),
+              _buildPromoCodeField(couponController),
               const SizedBox(height: 24),
               CartBottomDetailsWidget(
                 con: _con,
@@ -904,23 +912,130 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   }
 
   Widget _buildPromoCodeField(TextEditingController controller) {
-    return CustomTextField(
-      lableText: S.of(context).add_a_promo_code,
-      hint: S.of(context).enter_here,
-      prefix: SvgPicture.asset(
-        'assets/img/ticket-discount.svg',
-        width: 18,
-        height: 18,
-        fit: BoxFit.scaleDown,
-        colorFilter: ColorFilter.mode(AppColors.color9D9FA4, BlendMode.srcATop),
-      ),
-      suffix: const Icon(
-        Icons.arrow_forward_ios,
-        size: 12,
-        color: AppColors.color9D9FA4,
-      ),
-      controller: controller,
-      onSuffixTapped: () {},
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          S.of(context).add_a_promo_code,
+          style: AppTextStyles.font16W600Black,
+        ),
+        SizedBox(height: 8),
+        if (_con.coupon.valid == true) ...[
+          // عرض الكوبون المطبق
+          Container(
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.green.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.green, width: 1),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.green, size: 20),
+                SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'كوبون مطبق: ${_con.coupon.code}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
+                        ),
+                      ),
+                      Text(
+                        'خصم: ${_con.coupon.discountType == 'fixed' ? '${_con.coupon.discount} دينار' : '${_con.coupon.discount}%'}',
+                        style: TextStyle(color: Colors.green[700]),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.close, color: Colors.green),
+                  onPressed: () {
+                    _con.removeCoupon();
+                    controller.clear();
+                    setState(() {});
+                  },
+                ),
+              ],
+            ),
+          ),
+        ] else ...[
+          // حقل إدخال الكوبون
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: controller,
+                  decoration: InputDecoration(
+                    hintText: S.of(context).enter_here,
+                    prefixIcon: SvgPicture.asset(
+                      'assets/img/ticket-discount.svg',
+                      width: 18,
+                      height: 18,
+                      fit: BoxFit.scaleDown,
+                      colorFilter: ColorFilter.mode(AppColors.color9D9FA4, BlendMode.srcATop),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
+                  ),
+                  onSubmitted: (value) {
+                    if (value.trim().isNotEmpty) {
+                      print('🎫 تم الضغط على Enter: $value');
+                      _con.doApplyCoupon(value.trim());
+                      setState(() {});
+                    }
+                  },
+                ),
+              ),
+              SizedBox(width: 8),
+              ElevatedButton(
+                onPressed: () {
+                  print('🎫 تم الضغط على زر التطبيق');
+                  if (controller.text.trim().isNotEmpty) {
+                    print('🎫 النص المدخل: ${controller.text.trim()}');
+                    _con.doApplyCoupon(controller.text.trim());
+                    setState(() {});
+                  } else {
+                    print('🎫 النص فارغ');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('يرجى إدخال رمز الكوبون'),
+                        backgroundColor: Colors.orange,
+                      ),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.color26386A,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                ),
+                child: Text(
+                  'تطبيق',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ],
     );
   }
 

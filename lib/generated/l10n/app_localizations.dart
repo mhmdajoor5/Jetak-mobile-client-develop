@@ -1738,6 +1738,60 @@ abstract class AppLocalizations {
   /// **'Add a promo code'**
   String get add_a_promo_code;
 
+  /// No description provided for @coupon_code.
+  ///
+  /// In en, this message translates to:
+  /// **'Coupon Code'**
+  String get coupon_code;
+
+  /// No description provided for @apply_coupon.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Coupon'**
+  String get apply_coupon;
+
+  /// No description provided for @remove_coupon.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Coupon'**
+  String get remove_coupon;
+
+  /// No description provided for @coupon_applied.
+  ///
+  /// In en, this message translates to:
+  /// **'Coupon applied successfully!'**
+  String get coupon_applied;
+
+  /// No description provided for @coupon_removed.
+  ///
+  /// In en, this message translates to:
+  /// **'Coupon removed'**
+  String get coupon_removed;
+
+  /// No description provided for @invalid_coupon.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid or expired coupon code'**
+  String get invalid_coupon;
+
+  /// No description provided for @coupon_not_for_restaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'This coupon does not apply to the current restaurant'**
+  String get coupon_not_for_restaurant;
+
+  /// No description provided for @please_enter_coupon.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a coupon code'**
+  String get please_enter_coupon;
+
+  /// No description provided for @coupon_discount.
+  ///
+  /// In en, this message translates to:
+  /// **'Coupon Discount'**
+  String get coupon_discount;
+
   /// No description provided for @change.
   ///
   /// In en, this message translates to:
