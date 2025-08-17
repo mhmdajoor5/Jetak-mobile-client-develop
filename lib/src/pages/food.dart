@@ -419,7 +419,6 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                             itemCount: groupExtras.length,
                                             itemBuilder: (context, extraIndex) {
                                               final extra = groupExtras[extraIndex];
-                                              final isPriced = (extra.price > 0);
                                               final group = _con.food.extraGroups.firstWhere(
                                                 (g) => g.id == extra.extraGroupId,
                                                 orElse: () => ExtraGroup(),
@@ -428,15 +427,19 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                               final currentCountInGroup = _con.food.extras.where(
                                                 (e) => e.extraGroupId == extra.extraGroupId && selectedExtras.contains(e.id),
                                               ).length;
+                                              final bool isWithinLimit = currentCountInGroup < maxAllowed;
+                                              final bool canSelectBeyondLimit = (extra.extraCharge > 0) || (group.maxCharge > 0);
+                                              final bool isSelected = selectedExtras.contains(extra.id);
+                                              final bool isEnabled = isSelected || isWithinLimit || (!isWithinLimit && canSelectBeyondLimit);
 
                                               return CheckboxListTile(
                                                 title: Text(
                                                   extra.name,
                                                   style: TextStyle(fontSize: 14), // added explicit font size
                                                 ),
-                                                subtitle: isPriced ? Helper.getPrice(extra.price, context) : Text(S.of(context).unavailable),
-                                                value: selectedExtras.contains(extra.id),
-                                                enabled: isPriced,
+                                                subtitle: Helper.getPrice(extra.price, context),
+                                                value: isSelected,
+                                                enabled: isEnabled,
                                                 onChanged: (bool? value) {
                                                   if (!(value ?? false)) {
                                                     setState(() {
@@ -447,12 +450,16 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                                     return;
                                                   }
 
-                                                  if (!isPriced) return;
-                                                  if (currentCountInGroup >= maxAllowed) {
-                                                    ScaffoldMessenger.of(context).showSnackBar(
-                                                      SnackBar(content: Text(' maxAllowedمسموح اختيار %d فقط من هذه المجموعة'  )),
-                                                    );
-                                                    return;
+                                                  // محاولة تحديد عنصر
+                                                  if (!isWithinLimit) {
+                                                    // خارج الحد المسموح
+                                                    if (!canSelectBeyondLimit) {
+                                                      ScaffoldMessenger.of(context).showSnackBar(
+                                                        SnackBar(content: Text('لا يمكن اختيار عنصر إضافي بدون رسوم')), 
+                                                      );
+                                                      return;
+                                                    }
+                                                    // مسموح لأنه يحتوي على رسوم إضافية
                                                   }
 
                                                   setState(() {
