@@ -412,6 +412,20 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                               color: Colors.black,
                                             ),
                                           ),
+                                          SizedBox(height: 4),
+                                          if ((group.maxAllowed ?? 0) > 0)
+                                            Text(
+                                              _tr(
+                                                context,
+                                                en: 'You can select up to ${group.maxAllowed} options',
+                                                ar: 'يمكنك اختيار حتى ${group.maxAllowed} خيارات',
+                                                he: 'ניתן לבחור עד ${group.maxAllowed} אפשרויות',
+                                              ),
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.grey[600],
+                                              ),
+                                            ),
                                           SizedBox(height: 8),
                                           ListView.builder(
                                             shrinkWrap: true,
