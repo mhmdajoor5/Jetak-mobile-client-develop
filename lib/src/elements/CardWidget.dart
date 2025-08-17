@@ -23,6 +23,18 @@ class CardWidget extends StatelessWidget {
     this.food,
   }) : super(key: key);
 
+  String _minutesWord(BuildContext context) {
+    final code = Localizations.localeOf(context).languageCode;
+    if (code == 'ar') return 'دقيقة';
+    if (code == 'he') return 'דקות';
+    return 'min';
+  }
+
+  // اعرض السعر كما يعود من الـ API لمكونات الـ Food:
+  double _apiPrice(Food f) {
+    return (f.discountPrice > 0) ? f.discountPrice : f.price;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -271,10 +283,10 @@ class CardWidget extends StatelessWidget {
                       Icon(Icons.access_time, size: 16),
                       SizedBox(width: 4),
                       Text(
-                        // عرض وقت التحضير من المنتج إذا كان متوفراً، وإلا عرض وقت المطعم
+                        // عرض وقت التحضير من المنتج إذا كان متوفراً، وإلا عرض وقت افتراضي 20-30
                         food != null && food!.estTime > 0 
-                            ? '${food!.estTime} دقيقة'
-                            : S.of(context).twentyToThirtyMin,
+                            ? '${food!.estTime} ${_minutesWord(context)}'
+                            : '20-30 ${_minutesWord(context)}',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -282,6 +294,18 @@ class CardWidget extends StatelessWidget {
                           color: Color(0xFF9D9FA4),
                         ),
                       ),
+                      if (food != null) ...[
+                        SizedBox(width: 10),
+                        Helper.getPrice(
+                          _apiPrice(food!),
+                          context,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF2C3E50),
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ],

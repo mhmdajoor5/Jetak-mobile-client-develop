@@ -70,29 +70,32 @@ class CuisinesCarouselItemWidget extends StatelessWidget {
                 ],
               ),
               child: ClipOval(
-                child: (cuisine.image.url ?? '').toLowerCase().endsWith('.svg')
-                    ? Image.asset(
-                  'assets/img/restaurant.png',
-                  fit: BoxFit.cover,
-                )
-                    : (cuisine.image.icon != null &&
-                    cuisine.image.icon!.isNotEmpty &&
-                    cuisine.image.icon!.startsWith('http'))
-                    ? CachedNetworkImage(
-                  fit: BoxFit.cover,
-                  imageUrl: cuisine.image.icon!,
-                  placeholder: (context, url) => Image.asset(
-                    'assets/img/restaurant.png',
-                    fit: BoxFit.cover,
-                  ),
-                  errorWidget: (context, url, error) => Image.asset(
-                    'assets/img/restaurant.png',
-                    fit: BoxFit.cover,
-                  ),
-                )
-                    : Image.asset(
-                  'assets/img/restaurant.png',
-                  fit: BoxFit.cover,
+                child: Padding(
+                  padding: EdgeInsets.all(15),
+                  child: (cuisine.image.url ?? '').toLowerCase().endsWith('.svg')
+                      ? Image.asset(
+                          'assets/img/restaurant.png',
+                          fit: BoxFit.cover,
+                        )
+                      : (cuisine.image.icon != null &&
+                              cuisine.image.icon.isNotEmpty &&
+                              cuisine.image.icon.startsWith('http'))
+                          ? CachedNetworkImage(
+                              fit: BoxFit.cover,
+                              imageUrl: cuisine.image.icon,
+                              placeholder: (context, url) => Image.asset(
+                                'assets/img/restaurant.png',
+                                fit: BoxFit.cover,
+                              ),
+                              errorWidget: (context, url, error) => Image.asset(
+                                'assets/img/restaurant.png',
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : Image.asset(
+                              'assets/img/restaurant.png',
+                              fit: BoxFit.cover,
+                            ),
                 ),
               ),
             ),

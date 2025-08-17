@@ -27,6 +27,13 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
     _con = controller as FoodController;
   }
 
+  // اعرض السعر كما يعود من الـ API:
+  // عند وجود خصم، يتم حفظ السعر الأصلي في discountPrice داخل الموديل
+  // وإلا فالسعر في الحقل price
+  double _apiPrice(Food f) {
+    return (f.discountPrice > 0) ? f.discountPrice : f.price;
+  }
+
   String _tr(BuildContext context, {required String en, required String ar, required String he}) {
     final code = Localizations.localeOf(context).languageCode;
     if (code == 'ar') return ar;
@@ -43,6 +50,8 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
       if (providedFood.id.isNotEmpty) {
         _con.listenForFavorite(foodId: providedFood.id);
       }
+      // احسب الإجمالي فوراً عندما يتم تمرير كائن Food كامل لتفادي بقاء السعر 0
+      _con.calculateTotal();
     } else if ((widget.routeArgument.id ?? '').isNotEmpty) {
       _con.listenForFood(context, foodId: widget.routeArgument.id!);
       _con.listenForFavorite(foodId: widget.routeArgument.id!);
@@ -244,12 +253,12 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                     CrossAxisAlignment.end,
                                     children: [
                                       Helper.getPrice(
-                                        _con.food.price,
+                                        _apiPrice(_con.food),
                                         context,
                                         style: TextStyle(
                                           fontSize: 18, // reduced from 20
                                           fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).primaryColor,
+                                          color: Colors.black,
                                         ),
                                       ),
                                       SizedBox(height: 5),
@@ -658,7 +667,8 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                               ),
                               SizedBox(width: 8),
                               Helper.getPrice(
-                                _con.total,
+                                // اعرض سعر المنتج كما يأتي من الـ API مضروباً بالكمية فقط (بدون إضافات)
+                                _apiPrice(_con.food) * _con.quantity,
                                 context,
                                 style: TextStyle(
                                   color: Colors.white,

@@ -15,6 +15,13 @@ class SuggestedProductCardWidget extends StatelessWidget {
     required this.heroTag,
   }) : super(key: key);
 
+  String _minutesWord(BuildContext context) {
+    final code = Localizations.localeOf(context).languageCode;
+    if (code == 'ar') return 'دقيقة';
+    if (code == 'he') return 'דקות';
+    return 'min';
+  }
+
   String _fixImageUrl(String url) {
     if (url.contains('carrytechnologies.coimages')) {
       return url.replaceFirst('carrytechnologies.coimages', 'carrytechnologies.co/images');
@@ -24,6 +31,13 @@ class SuggestedProductCardWidget extends StatelessWidget {
       return 'https://carrytechnologies.co/storage/app/public/3856/SLIDES-01.png';
     }
     return url;
+  }
+
+  // اعرض السعر كما يعود من الـ API:
+  // إذا كان هناك خصم، تم حفظ السعر الأصلي في discountPrice حسب منطق Food.fromJSON
+  // وإلا فالسعر في الحقل price.
+  double _apiPrice(Food f) {
+    return (f.discountPrice > 0) ? f.discountPrice : f.price;
   }
 
   @override
@@ -169,9 +183,9 @@ class SuggestedProductCardWidget extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // السعر
+                      // السعر من الـ API كما هو
                       Helper.getPrice(
-                        food.price,
+                        _apiPrice(food),
                         context,
                         style: TextStyle(
                           fontSize: 18,
@@ -215,10 +229,20 @@ class SuggestedProductCardWidget extends StatelessWidget {
                           ),
                           SizedBox(width: 4),
                           Text(
-                            '${food.estTime} دقيقة',
+                            '${food.estTime} ${_minutesWord(context)}',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
+                              color: Color(0xFF6C757D),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Helper.getPrice(
+                            _apiPrice(food),
+                            context,
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
                               color: Color(0xFF6C757D),
                             ),
                           ),
