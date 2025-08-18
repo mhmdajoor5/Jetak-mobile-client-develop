@@ -84,6 +84,9 @@ dependencies:
       url: https://github.com/kishormainali/pusher-channels-flutter.git
       ref: master
 
+  # Intercom customer support chat
+  intercom_flutter: ^9.4.3
+
   flutter_easyloading: ^3.0.5
   flutter_spinkit: ^5.2.1
   bot_toast: ^4.1.3
