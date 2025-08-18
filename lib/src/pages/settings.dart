@@ -433,11 +433,14 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
           Divider(height: 1),
 
           // App Settings
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text(
-              S.of(context).app_settings,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
+          Visibility(
+            visible: false,
+            child: ListTile(
+              leading: Icon(Icons.settings),
+              title: Text(
+                S.of(context).app_settings,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
+              ),
             ),
           ),
           Divider(height: 1),
