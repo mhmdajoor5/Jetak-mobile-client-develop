@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../../generated/l10n.dart';
@@ -7,6 +8,7 @@ import '../../controllers/map_controller.dart';
 import '../../elements/CardsCarouselWidget.dart';
 import '../../models/restaurant.dart';
 import '../../models/route_argument.dart';
+import '../../helpers/helper.dart';
 
 class MapWidget extends StatefulWidget {
   final RouteArgument? routeArgument;
@@ -84,6 +86,12 @@ class _MapWidgetState extends StateMVC<MapWidget> {
           IconButton(
             icon: Icon(Icons.filter_list, color: Theme.of(context).appBarTheme.iconTheme?.color),
             onPressed: () => widget.parentScaffoldKey?.currentState?.openEndDrawer(),
+          ),
+          IconButton(
+            icon: Icon(Icons.help_outline, color: Theme.of(context).appBarTheme.iconTheme?.color),
+            onPressed: () async {
+              await Helper.openIntercomMessenger(context);
+            },
           ),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -31,9 +32,9 @@ class _CartWidgetState extends StateMVC<CartWidget> {
     if (url.contains('carrytechnologies.coimages')) {
       return url.replaceFirst('carrytechnologies.coimages', 'carrytechnologies.co/images');
     }
-    // إذا كان الرابط يحتوي على صور غير موجودة، استخدم صورة افتراضية
-    if (url.contains('restaurant.png') || url.contains('icons/avif.png')) {
-      return 'https://carrytechnologies.co/storage/app/public/3856/SLIDES-01.png';
+    // إذا كان الرابط يحتوي على صور غير موجودة، استخدم صورة افتراضية محلية
+    if (url.contains('restaurant.png') || url.contains('icons/avif.png') || url.contains('image_default.png')) {
+      return 'assets/img/restaurant.png';
     }
     return url;
   }
@@ -78,6 +79,17 @@ class _CartWidgetState extends StateMVC<CartWidget> {
               context,
             ).textTheme.headlineSmall?.merge(TextStyle(letterSpacing: 1.3)),
           ),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.help_outline,
+                color: Theme.of(context).hintColor,
+              ),
+              onPressed: () async {
+                await Helper.openIntercomMessenger(context);
+              },
+            ),
+          ],
         ),
         body: Column(
           children: [

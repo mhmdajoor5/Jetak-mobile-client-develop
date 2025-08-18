@@ -10,18 +10,18 @@ class Media {
   String size;
 
   Media({this.id = '', this.name = '', String? url, String? thumb, String? icon, this.size = ''})
-      : url = url ?? "${GlobalConfiguration().getValue('base_url')}/images/restaurant.png",
-        thumb = thumb ?? "${GlobalConfiguration().getValue('base_url')}/images/restaurant.png",
-        icon = icon ?? "${GlobalConfiguration().getValue('base_url')}/images/restaurant.png";
+      : url = url ?? "assets/img/restaurant.png",
+        thumb = thumb ?? "assets/img/restaurant.png",
+        icon = icon ?? "assets/img/restaurant.png";
 
   factory Media.fromJSON(Map<String, dynamic>? jsonMap) {
     try {
       return Media(
         id: jsonMap?['id']?.toString() ?? '',
         name: jsonMap?['name']?.toString() ?? '',
-        url: jsonMap?['url']?.toString() ?? "${GlobalConfiguration().getValue('base_url')}/images/image_default.png",
-        thumb: jsonMap?['thumb']?.toString() ?? "${GlobalConfiguration().getValue('base_url')}/images/image_default.png",
-        icon: jsonMap?['icon']?.toString() ?? "${GlobalConfiguration().getValue('base_url')}/images/image_default.png",
+        url: jsonMap?['url']?.toString() ?? "assets/img/restaurant.png",
+        thumb: jsonMap?['thumb']?.toString() ?? "assets/img/restaurant.png",
+        icon: jsonMap?['icon']?.toString() ?? "assets/img/restaurant.png",
         size: jsonMap?['formated_size']?.toString() ?? '',
       );
     } catch (e) {

@@ -1,4 +1,9 @@
 {
   "base_url": "https://carrytechnologies.co",
-  "api_base_url": "https://carrytechnologies.co/api/"
+  "api_base_url": "https://carrytechnologies.co/api/",
+  "intercom": {
+    "app_id": "j3he2pue",
+    "ios_api_key": "ios_sdk-9dd934131d451492917c16a61a9ec34824400eee",
+    "android_api_key": "android_sdk-d8df6307ae07677807b288a2d5138821b8bfe4f9"
+  }
 }

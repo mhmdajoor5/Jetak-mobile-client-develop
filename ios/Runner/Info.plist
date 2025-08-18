@@ -100,6 +100,8 @@
 		<string>PhotoLibrary access is required to select user's profile image that will be added in the app</string>
 		<key>NSCameraUsageDescription</key>
 		<string>Camera access is required to select user's profile image that will be added in the app</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Microphone access is required for video recording in Intercom chat support</string>
 		<key>NSSpeechRecognitionUsageDescription</key>
 		<string>SpeechRecognition access not used but required by permissions API.</string>
 		<key>UIBackgroundModes</key>

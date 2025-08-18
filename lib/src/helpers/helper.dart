@@ -27,6 +27,8 @@ import '../models/order.dart';
 import '../models/restaurant.dart';
 import '../repository/settings_repository.dart';
 import 'custom_trace.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
+import 'dart:io';
 
 class Helper {
   late BuildContext context;
@@ -706,5 +708,60 @@ class Helper {
     }
 
     return totalPrice;
+  }
+
+  /// Check if Intercom is available and initialized
+  static Future<bool> isIntercomAvailable() async {
+    try {
+      // محاولة الوصول إلى Intercom instance
+      await Intercom.instance.displayMessenger();
+      return true;
+    } catch (e) {
+      print('Intercom is not available: $e');
+      return false;
+    }
+  }
+
+  static Future<void> openIntercomMessenger(BuildContext context) async {
+    try {
+      print('Attempting to open Intercom messenger...');
+      
+      // التحقق من الاتصال بالإنترنت أولاً
+      if (!await hasInternetConnection()) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('No internet connection. Please check your connection and try again.'),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
+        return;
+      }
+      
+      await Intercom.instance.displayMessenger();
+      print('Intercom messenger opened successfully');
+    } catch (e) {
+      print('Error opening Intercom: $e');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Help service is not available at the moment. Please try again later.'),
+            backgroundColor: Colors.orange,
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<bool> hasInternetConnection() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+    } on SocketException catch (_) {
+      return false;
+    }
   }
 }

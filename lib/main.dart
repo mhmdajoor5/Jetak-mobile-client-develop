@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:global_configuration/global_configuration.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 
 import 'generated/l10n.dart';
 import 'route_generator.dart';
@@ -35,6 +36,32 @@ Future<void> main() async {
   
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // Initialize Intercom using configuration values
+  final appId = GlobalConfiguration().getValue("intercom")?["app_id"]?.toString() ?? '';
+  final iosKey = GlobalConfiguration().getValue("intercom")?["ios_api_key"]?.toString() ?? '';
+  final androidKey = GlobalConfiguration().getValue("intercom")?["android_api_key"]?.toString() ?? '';
+  
+  print('Intercom Configuration:');
+  print('  App ID: $appId');
+  print('  iOS Key: ${iosKey.isNotEmpty ? "✓ Set" : "✗ Missing"}');
+  print('  Android Key: ${androidKey.isNotEmpty ? "✓ Set" : "✗ Missing"}');
+  
+  if (appId.isNotEmpty && (iosKey.isNotEmpty || androidKey.isNotEmpty)) {
+    try {
+      await Intercom.instance.initialize(
+        appId,
+        iosApiKey: iosKey.isNotEmpty ? iosKey : null,
+        androidApiKey: androidKey.isNotEmpty ? androidKey : null,
+      );
+      print('✓ Intercom initialized successfully');
+    } catch (e) {
+      print('✗ Intercom initialization failed: $e');
+      // ignore initialization error silently to avoid blocking app start
+    }
+  } else {
+    print('✗ Intercom configuration incomplete');
+  }
   
   runApp(MyApp());
 }
@@ -53,6 +80,22 @@ class _MyAppState extends State<MyApp> {
     
     // تنظيف العناوين المعطوبة عند بدء التطبيق
     AddressHelper.cleanupSavedAddresses();
+
+    // Send FCM/APNS token to Intercom when available
+    FirebaseMessaging.instance.getToken().then((token) async {
+      if (token != null && token.isNotEmpty) {
+        try {
+          await Intercom.instance.sendTokenToIntercom(token);
+        } catch (_) {}
+      }
+    });
+    FirebaseMessaging.instance.getAPNSToken().then((apns) async {
+      if (apns != null && apns.isNotEmpty) {
+        try {
+          await Intercom.instance.sendTokenToIntercom(apns);
+        } catch (_) {}
+      }
+    });
     
     super.initState();
   }

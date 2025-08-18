@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:restaurantcustomer/src/models/extra_group.dart';
 
@@ -188,6 +189,14 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                       icon: Icons.share,
                                       color: Colors.black,
                                       onPressed: () {},
+                                    ),
+                                    SizedBox(width: 10),
+                                    _buildCircleButton(
+                                      icon: Icons.help_outline,
+                                      color: Colors.black,
+                                      onPressed: () async {
+                                        await Helper.openIntercomMessenger(context);
+                                      },
                                     ),
                                   ],
                                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../../generated/l10n.dart';
@@ -10,6 +11,7 @@ import '../../elements/PermissionDeniedWidget.dart';
 import '../../elements/ProfileAvatarWidget.dart';
 import '../../elements/ShoppingCartButtonWidget.dart';
 import '../../repository/user_repository.dart';
+import '../../helpers/helper.dart';
 
 
 class ProfileWidget extends StatefulWidget {
@@ -54,6 +56,12 @@ class _ProfileWidgetState extends StateMVC<ProfileWidget> {
           ShoppingCartButtonWidget(
             iconColor: Theme.of(context).appBarTheme.iconTheme?.color,
             labelColor: Theme.of(context).colorScheme.secondary,
+          ),
+          IconButton(
+            icon: Icon(Icons.help_outline, color: Theme.of(context).appBarTheme.iconTheme?.color),
+            onPressed: () async {
+              await Helper.openIntercomMessenger(context);
+            },
           ),
         ],
       ),

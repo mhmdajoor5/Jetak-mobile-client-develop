@@ -32,9 +32,9 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
     if (url.contains('carrytechnologies.coimages')) {
       return url.replaceFirst('carrytechnologies.coimages', 'carrytechnologies.co/images');
     }
-    // إذا كان الرابط يحتوي على صور غير موجودة، استخدم صورة افتراضية
-    if (url.contains('restaurant.png') || url.contains('icons/avif.png')) {
-      return 'https://carrytechnologies.co/storage/app/public/3856/SLIDES-01.png';
+    // إذا كان الرابط يحتوي على صور غير موجودة، استخدم صورة افتراضية محلية
+    if (url.contains('restaurant.png') || url.contains('icons/avif.png') || url.contains('image_default.png')) {
+      return 'assets/img/restaurant.png';
     }
     return url;
   }

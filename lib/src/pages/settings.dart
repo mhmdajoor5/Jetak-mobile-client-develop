@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../generated/l10n.dart';
 import '../controllers/settings_controller.dart';
@@ -480,7 +481,9 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
             title: Text(S.of(context).help_support,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
-            onTap: () => Navigator.of(context).pushNamed('/Help'),
+            onTap: () async {
+              await Helper.openIntercomMessenger(context);
+            },
           ),
           Divider(height: 1),
         ],
