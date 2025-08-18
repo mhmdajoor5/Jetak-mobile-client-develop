@@ -19,9 +19,8 @@ import Intercom
     
     // Initialize Intercom
     Intercom.setApiKey("ios_sdk-9dd934131d451492917c16a61a9ec34824400eee", forAppId: "j3he2pue")
-    Intercom.setLauncherVisible(true)
-    // If you have identifying information for your user you can use `Intercom.loginUser(with:completion:)`
-    Intercom.loginUnidentifiedUser()
+    Intercom.setLauncherVisible(false) // إخفاء زر Intercom الافتراضي
+    // تسجيل المستخدم سيتم من Flutter عند توفر البيانات
     
     GeneratedPluginRegistrant.register(with: self)
       

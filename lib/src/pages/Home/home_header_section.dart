@@ -86,34 +86,34 @@ class HomeHeaderSection extends StatelessWidget {
                   iconColor: Color(0xFF292D32),
                   labelColor: Colors.red,
                 ),
-                SizedBox(width: 7),
-                // زر المساعدة - Intercom
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.help_outline,
-                      color: Color(0xFF292D32),
-                      size: 20,
-                    ),
-                    onPressed: () async {
-                      await Helper.openIntercomMessenger(context);
-                    },
-                    padding: EdgeInsets.zero,
-                  ),
-                ),
+                // زر المساعدة - Intercom (مخفي)
+                // SizedBox(width: 7),
+                // Container(
+                //   width: 40,
+                //   height: 40,
+                //   decoration: BoxDecoration(
+                //     color: Colors.white,
+                //     borderRadius: BorderRadius.circular(20),
+                //     boxShadow: [
+                //       BoxShadow(
+                //         color: Colors.black.withOpacity(0.1),
+                //         blurRadius: 4,
+                //         offset: Offset(0, 2),
+                //       ),
+                //     ],
+                //   ),
+                //   child: IconButton(
+                //     icon: Icon(
+                //       Icons.help_outline,
+                //       color: Color(0xFF292D32),
+                //       size: 20,
+                //     ),
+                //     onPressed: () async {
+                //       await Helper.openIntercomMessenger(context);
+                //     },
+                //     padding: EdgeInsets.zero,
+                //   ),
+                // ),
               ],
             ),
           ),

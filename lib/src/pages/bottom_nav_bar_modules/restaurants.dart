@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -37,6 +38,8 @@ class _RestaurantsWidgetState extends State<RestaurantsWidget> {
   void initState() {
     super.initState();
     _entityType = widget.restaurantType;
+    print('mElkerm Debug: Initializing with restaurantType: ${widget.restaurantType}');
+    print('mElkerm Debug: _entityType set to: $_entityType');
     _loadCuisines();
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
@@ -51,9 +54,31 @@ class _RestaurantsWidgetState extends State<RestaurantsWidget> {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final List list = data['data'];
+        final allCuisines = list.map((e) => Cuisine.fromJSON(e)).toList();
+        
+        // فلترة المطابخ حسب النوع
+        print('mElkerm Debug: Entity type: $_entityType');
+        print('mElkerm Debug: Total cuisines loaded: ${allCuisines.length}');
+        
+        // طباعة أنواع المطابخ المتاحة
+        final cuisineTypes = allCuisines.map((c) => '${c.name}: ${c.type}').toList();
+        print('mElkerm Debug: Available cuisine types: $cuisineTypes');
+        
+        final filteredCuisines = allCuisines.where((cuisine) {
+          final shouldInclude = _entityType == 'store' 
+              ? cuisine.type == 'store'
+              : (cuisine.type == 'restaurant' || cuisine.type == 'resturent');
+          
+          print('mElkerm Debug: Cuisine "${cuisine.name}" type: "${cuisine.type}" - Include: $shouldInclude');
+          return shouldInclude;
+        }).toList();
+        
         setState(() {
-          cuisines = list.map((e) => Cuisine.fromJSON(e)).toList();
+          cuisines = filteredCuisines;
         });
+        
+        print('mElkerm Debug: Filtered cuisines count: ${cuisines.length}');
+        print('mElkerm Debug: Filtered cuisines: ${cuisines.map((c) => '${c.name} (${c.type})').toList()}');
       } else {
         print('Failed to load cuisines, status code: ${response.statusCode}');
       }

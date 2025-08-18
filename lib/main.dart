@@ -12,6 +12,7 @@ import 'src/helpers/address_helper.dart';
 import 'src/models/setting.dart';
 import 'src/repository/settings_repository.dart' as settingRepo;
 import 'src/repository/user_repository.dart' as userRepo;
+import 'src/services/intercom_service.dart';
 
 // Top-level function to handle background messages
 @pragma('vm:entry-point')
@@ -97,9 +98,44 @@ class _MyAppState extends State<MyApp> {
       }
     });
     
+    // تسجيل المستخدم في Intercom عند توفر البيانات
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _setupIntercomUser();
+      _hideIntercomElements();
+    });
+    
     super.initState();
   }
 
+  Future<void> _setupIntercomUser() async {
+    try {
+      final user = userRepo.currentUser.value;
+      if (user.id != null) {
+        await IntercomService.loginUser(user);
+      } else {
+        // مراقبة تغييرات المستخدم
+        userRepo.currentUser.addListener(() {
+          final updatedUser = userRepo.currentUser.value;
+          if (updatedUser.id != null) {
+            IntercomService.loginUser(updatedUser);
+          }
+        });
+      }
+    } catch (e) {
+      print('❌ خطأ في إعداد Intercom: $e');
+    }
+  }
+
+  Future<void> _hideIntercomElements() async {
+    try {
+      // إخفاء جميع عناصر Intercom عند بدء التطبيق
+      await IntercomService.hideInAppMessages();
+      print('✅ Intercom elements hidden on app start');
+    } catch (e) {
+      print('❌ خطأ في إخفاء عناصر Intercom: $e');
+    }
+  }
+  
   String _getFontFamily(String languageCode) {
     switch (languageCode) {
       case 'ar':
@@ -300,14 +336,7 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-TextDirection _getTextDirection(String languageCode) {
-  if (languageCode == 'ar' || languageCode == 'he') {
-    return TextDirection.rtl;
-  } else {
-    return TextDirection.ltr;
-  }
-}
-
+ 
 // Simple maintenance screen shown when app_status != '1'
 class _AppUnavailableScreen extends StatelessWidget {
   final VoidCallback onRetry;

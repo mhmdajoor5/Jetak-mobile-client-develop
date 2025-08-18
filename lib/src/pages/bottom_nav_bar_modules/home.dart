@@ -150,7 +150,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
 
   Widget _buildCravingSection() {
     // استخدام مطابخ المتاجر القادمة من API (type=store)
-    final List<Cuisine> quickOptions = _con.storeCuisines.take(7).toList();
+    final List<Cuisine> quickOptions = _con.storeCuisines.toList();
 
     // إذا لم توجد بيانات من API، إخفاء القسم تماماً
     if (quickOptions.isEmpty) {
@@ -183,7 +183,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
           ),
           SizedBox(height: 15),
           Container(
-            height: 90,
+            height: 85,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
@@ -216,7 +216,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                           // Main content area
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -226,8 +226,8 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                           borderRadius: BorderRadius.circular(8),
                                           child: Image.network(
                                             cuisine.image.url,
-                                            width: 43,
-                                            height: 43,
+                                            width: 40,
+                                            height: 40,
                                             fit: BoxFit.cover,
                                             errorBuilder: (context, error, stackTrace) {
                                               return _getDefaultEmoji(cuisine.name);
@@ -235,18 +235,18 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                           ),
                                         )
                                       : _getDefaultEmoji(cuisine.name),
-                                  SizedBox(height: 16),
+                                  SizedBox(height: 8),
                                   // اسم المطبخ
                                   Text(
                                     cuisine.name,
                                     textAlign: TextAlign.center,
                                     overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
+                                    maxLines: 1,
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 10,
+                                      fontSize: 9,
                                       color: Color(0xFF272727),
-                                      height: 1.2,
+                                      height: 1.1,
                                     ),
                                   ),
                                 ],
@@ -480,7 +480,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
 
   // إضافة قسم منفصل للمتاجر
   Widget _buildStoresSection() {
-    final List<Cuisine> storeOptions = _con.storeCuisines.take(7).toList();
+    final List<Cuisine> storeOptions = _con.storeCuisines.toList();
 
     if (storeOptions.isEmpty) {
       return SizedBox.shrink();

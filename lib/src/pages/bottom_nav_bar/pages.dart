@@ -13,11 +13,13 @@ import '../../helpers/helper.dart';
 import '../../models/route_argument.dart';
 import '../../repository/user_repository.dart' as userRepo;
 import '../bottom_nav_bar_modules/home.dart';
-import '../bottom_nav_bar_modules/orders.dart';
+import '../bottom_nav_bar_modules/store.dart';
 import '../bottom_nav_bar_modules/profile.dart';
 import '../bottom_nav_bar_modules/map.dart';
 import '../bottom_nav_bar_modules/restaurants.dart';
 import '../settings.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
+import '../../services/intercom_service.dart';
 
 // ignore: must_be_immutable
 class PagesWidget extends StatefulWidget {
@@ -128,6 +130,7 @@ class _PagesWidgetState extends State<PagesWidget> {
   }
 
   void _selectTab(int tabItem) {
+    print('mElkerm Debug: _selectTab called with tabItem: $tabItem');
     setState(() {
       widget.currentTab = tabItem;
       switch (tabItem) {
@@ -144,16 +147,17 @@ class _PagesWidgetState extends State<PagesWidget> {
           ); //
           break;
         case 2:
+          print('mElkerm Debug: Creating StoresWidget with restaurantType: store');
           widget.currentPage = StoresWidget(
             parentScaffoldKey: widget.scaffoldKey,
             restaurantType: 'store',
           );
           break;
         case 3:
-          widget.currentPage = MapWidget(
-            parentScaffoldKey: widget.scaffoldKey,
-            routeArgument: widget.routeArgument,
-          );
+          // فتح Intercom بدلاً من Map
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            IntercomService.displayCustomMessenger();
+          });
           break;
 
         /// mElkerm : add profile Screen to the bottom nav bar
@@ -375,15 +379,13 @@ class _PagesWidgetState extends State<PagesWidget> {
                     icon: Column(
                       children: [
                         SvgPicture.asset(
-                          'assets/img/location.svg',
+                          'assets/img/messagesbootom.svg',
                           height: 24,
                           width: 24,
-                          color: Colors.grey,
                         ),
                         Text(
-                          S.of(context).maps,
+                          'Chats',
                           style: TextStyle(
-                            //fontFamily: 'Nunito',
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             height: 1.6,
@@ -396,18 +398,13 @@ class _PagesWidgetState extends State<PagesWidget> {
                     activeIcon: Column(
                       children: [
                         SvgPicture.asset(
-                          'assets/img/location.svg',
+                          'assets/img/messagesbootom.svg',
                           height: 24,
                           width: 24,
-                          colorFilter: ColorFilter.mode(
-                            Color(0xff26386A),
-                            BlendMode.srcIn,
-                          ),
                         ),
                         Text(
-                          S.of(context).maps,
+                          'Chats',
                           style: TextStyle(
-                            //fontFamily: 'Nunito',
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             height: 1.6,

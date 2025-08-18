@@ -39,7 +39,7 @@ class _CuisineDetailsWidgetState extends StateMVC<CuisineDetailsWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          _con.cuisine?.name ?? 'Cuisine',
+          _con.cuisine?.name ?? (_con.isStoreType ? 'Store Category' : 'Cuisine'),
           style: Theme.of(context).textTheme.headlineMedium?.merge(TextStyle(letterSpacing: 1.3)),
         ),
       ),
@@ -92,10 +92,17 @@ class _CuisineDetailsWidgetState extends StateMVC<CuisineDetailsWidget> {
                                   Text(
                                     _con.cuisine!.description!,
                                     style: Theme.of(context).textTheme.bodyMedium,
+                                  )
+                                else if (_con.isStoreType)
+                                  Text(
+                                    _con.browseMessage,
+                                    style: Theme.of(context).textTheme.bodyMedium?.merge(
+                                      TextStyle(color: Theme.of(context).hintColor),
+                                    ),
                                   ),
                                 SizedBox(height: 20),
                                 Text(
-                                  '${_con.restaurants.length} Restaurants',
+                                  '${_con.restaurants.length} ${_con.entityName}',
                                                                      style: Theme.of(context).textTheme.headlineSmall?.merge(
                                      TextStyle(
                                        fontWeight: FontWeight.w600,
@@ -125,13 +132,13 @@ class _CuisineDetailsWidgetState extends StateMVC<CuisineDetailsWidget> {
                               child: Column(
                                 children: [
                                   Icon(
-                                    Icons.restaurant_outlined,
+                                    _con.entityIcon,
                                     size: 64,
                                     color: Theme.of(context).hintColor,
                                   ),
                                   SizedBox(height: 16),
                                   Text(
-                                    'No restaurants found for this cuisine',
+                                    _con.noDataMessage,
                                     style: Theme.of(context).textTheme.headlineSmall,
                                     textAlign: TextAlign.center,
                                   ),

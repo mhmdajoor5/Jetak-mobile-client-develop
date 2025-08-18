@@ -32,7 +32,7 @@ class _CardsCarouselWidgetState extends State<CardsCarouselWidget> {
             scrollDirection: Axis.horizontal,
             padding: EdgeInsets.symmetric(horizontal: 16),
             itemCount: widget.restaurantsList!.length,
-            separatorBuilder: (context, index) => SizedBox(width: 12),
+            separatorBuilder: (context, index) => SizedBox(width: 16),
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {

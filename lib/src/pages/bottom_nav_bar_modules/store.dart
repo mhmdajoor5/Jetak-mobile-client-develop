@@ -107,9 +107,10 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../../generated/l10n.dart';
 import '../../elements/CaregoriesCarouselWidget.dart';
 import '../../elements/SearchBarWidget.dart';
-import '../../models/category.dart';
+import '../../models/cuisine.dart';
 import '../../models/restaurant.dart';
 import '../../elements/grid_card_widget.dart';
+import '../../elements/CuisinesCarouselWidget.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -128,46 +129,74 @@ class StoresWidget extends StatefulWidget {
 }
 
 class _StoresWidgetState extends State<StoresWidget> {
-  static const _pageSize = 10;
+  static const _pageSize = 20; // زيادة حجم الصفحة
   final PagingController<int, Restaurant> _pagingController = PagingController(
     firstPageKey: 1,
   );
-  List<Category> categories = [];
+  List<Cuisine> cuisines = [];
   late final String _entityType;
 
   @override
   void initState() {
     super.initState();
+    print('mElkerm Debug: StoresWidget initState called');
     _entityType = widget.restaurantType;
-    _loadCategories();
+    print('mElkerm Debug: StoresWidget initializing with restaurantType: ${widget.restaurantType}');
+    print('mElkerm Debug: _entityType set to: $_entityType');
+    _loadCuisines();
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
   }
 
-  Future<void> _loadCategories() async {
+  Future<void> _loadCuisines() async {
+    print('mElkerm Debug: StoresWidget _loadCuisines() called');
     try {
+      // إزالة الـ limit من API call
       final response = await http.get(
-        Uri.parse('https://carrytechnologies.co/api/categories'),
+        Uri.parse('https://carrytechnologies.co/api/cuisines?type=store&limit=100'),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final List list = data['data'];
+        final allCuisines = list.map((e) => Cuisine.fromJSON(e)).toList();
+        
+        // فلترة المطابخ حسب النوع
+        print('mElkerm Debug: StoresWidget Entity type: $_entityType');
+        print('mElkerm Debug: StoresWidget Total cuisines loaded: ${allCuisines.length}');
+        
+        // طباعة أنواع المطابخ المتاحة
+        final cuisineTypes = allCuisines.map((c) => '${c.name}: ${c.type}').toList();
+        print('mElkerm Debug: StoresWidget Available cuisine types: $cuisineTypes');
+        
+        final filteredCuisines = allCuisines.where((cuisine) {
+          final shouldInclude = _entityType == 'store' 
+              ? cuisine.type == 'store'
+              : (cuisine.type == 'restaurant' || cuisine.type == 'resturent');
+          
+          print('mElkerm Debug: StoresWidget Cuisine "${cuisine.name}" type: "${cuisine.type}" - Include: $shouldInclude');
+          return shouldInclude;
+        }).toList();
+        
         setState(() {
-          categories = list.map((e) => Category.fromJSON(e)).toList();
+          cuisines = filteredCuisines;
         });
+        
+        print('mElkerm Debug: StoresWidget Filtered cuisines count: ${cuisines.length}');
+        print('mElkerm Debug: StoresWidget Filtered cuisines: ${cuisines.map((c) => '${c.name} (${c.type})').toList()}');
       } else {
-        print('Failed to load categories, status code: ${response.statusCode}');
+        print('Failed to load cuisines, status code: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error loading categories: $e');
+      print('Error loading cuisines: $e');
     }
   }
 
   Future<void> _fetchPage(int pageKey) async {
     try {
+      // إزالة الـ limit من API call للمطاعم
       final String apiUrl =
-          'https://carrytechnologies.co/api/restaurants?page=$pageKey&type=$_entityType';
+          'https://carrytechnologies.co/api/restaurants?page=$pageKey&type=$_entityType&limit=50';
       final response = await http.get(Uri.parse(apiUrl));
 
       if (response.statusCode == 200) {
@@ -184,6 +213,8 @@ class _StoresWidgetState extends State<StoresWidget> {
                       _entityType.toLowerCase(),
                 )
                 .toList();
+
+        print('mElkerm Debug: StoresWidget Fetched ${filteredList.length} restaurants for page $pageKey');
 
         final isLastPage = pageKey >= lastPage;
         if (isLastPage) {
@@ -209,6 +240,7 @@ class _StoresWidgetState extends State<StoresWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print('mElkerm Debug: StoresWidget build called');
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -220,7 +252,7 @@ class _StoresWidgetState extends State<StoresWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          S.of(context).stores,
+          _entityType == 'store' ? S.of(context).stores : S.of(context).restaurants,
           style: Theme.of(
             context,
           ).textTheme.headlineSmall?.merge(TextStyle(letterSpacing: 1.3)),
@@ -229,7 +261,7 @@ class _StoresWidgetState extends State<StoresWidget> {
       body: RefreshIndicator(
         onRefresh: () async {
           _pagingController.refresh();
-          await _loadCategories();
+          await _loadCuisines();
         },
         child: CustomScrollView(
           slivers: [
@@ -252,7 +284,7 @@ class _StoresWidgetState extends State<StoresWidget> {
                   horizontal: 20,
                   vertical: 10,
                 ),
-                child: CategoriesCarouselWidget(categories: categories),
+                child: CuisinesCarouselWidget(cuisines: cuisines),
               ),
             ),
             SliverPadding(
@@ -267,10 +299,22 @@ class _StoresWidgetState extends State<StoresWidget> {
                       ),
                   noItemsFoundIndicatorBuilder:
                       (_) => Center(
-                        child: Text(
-                          widget.restaurantType.toLowerCase() == 'store'
-                              ? S.of(context).no_stores_found
-                              : S.of(context).no_restaurants_found,
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.store_outlined,
+                              size: 64,
+                              color: Theme.of(context).hintColor,
+                            ),
+                            SizedBox(height: 16),
+                            Text(
+                              widget.restaurantType.toLowerCase() == 'store'
+                                  ? S.of(context).no_stores_found
+                                  : S.of(context).no_restaurants_found,
+                              style: Theme.of(context).textTheme.headlineSmall,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
                         ),
                       ),
                 ),

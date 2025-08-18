@@ -17,6 +17,25 @@ class CuisineDetailsController extends ControllerMVC {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }
 
+  // Helper methods for cuisine type
+  bool get isStoreType => cuisine?.type == 'store';
+  bool get isRestaurantType => cuisine?.type == 'restaurant' || cuisine?.type == 'resturent';
+  
+  String get entityName => isStoreType ? 'Stores' : 'Restaurants';
+  String get entityNameSingular => isStoreType ? 'Store' : 'Restaurant';
+  
+  String get noDataMessage => isStoreType 
+      ? 'No stores found for this category'
+      : 'No restaurants found for this cuisine';
+  
+  String get browseMessage => isStoreType 
+      ? 'Browse stores in this category'
+      : 'Browse restaurants in this cuisine';
+  
+  IconData get entityIcon => isStoreType 
+      ? Icons.store_outlined 
+      : Icons.restaurant_outlined;
+
   Future<void> loadCuisineDetails(String cuisineId) async {
     setState(() {
       isLoading = true;

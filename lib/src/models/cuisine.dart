@@ -5,10 +5,11 @@ class Cuisine {
   String id;
   String name;
   String description;
+  String type;
   Media image;
   bool selected;
 
-  Cuisine({this.id = '', this.name = '', this.description = '', Media? image, this.selected = false}) : image = image ?? Media();
+  Cuisine({this.id = '', this.name = '', this.description = '', this.type = '', Media? image, this.selected = false}) : image = image ?? Media();
 
   factory Cuisine.fromJSON(Map<String, dynamic>? jsonMap) {
     try {
@@ -16,6 +17,7 @@ class Cuisine {
         id: jsonMap?['id']?.toString() ?? '',
         name: jsonMap?['name']?.toString() ?? '',
         description: jsonMap?['description']?.toString() ?? '',
+        type: jsonMap?['type']?.toString() ?? '',
         image: (jsonMap?['media'] != null && (jsonMap!['media'] as List).isNotEmpty) ? Media.fromJSON(jsonMap['media'][0]) : Media(),
         selected: jsonMap?['selected'] ?? false,
       );

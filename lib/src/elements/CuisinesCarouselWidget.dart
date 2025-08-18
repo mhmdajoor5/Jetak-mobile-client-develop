@@ -12,6 +12,7 @@ class CuisinesCarouselWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('mElkerm Debug: CuisinesCarouselWidget build called with ${cuisines.length} cuisines');
     return cuisines.isEmpty
         ? CircularLoadingWidget(height: 150)
         : Container(

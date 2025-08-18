@@ -28,6 +28,7 @@ import '../models/restaurant.dart';
 import '../repository/settings_repository.dart';
 import 'custom_trace.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
+import '../services/intercom_service.dart';
 import 'dart:io';
 
 class Helper {
@@ -714,7 +715,7 @@ class Helper {
   static Future<bool> isIntercomAvailable() async {
     try {
       // محاولة الوصول إلى Intercom instance
-      await Intercom.instance.displayMessenger();
+      await IntercomService.displayCustomMessenger();
       return true;
     } catch (e) {
       print('Intercom is not available: $e');
@@ -740,7 +741,7 @@ class Helper {
         return;
       }
       
-      await Intercom.instance.displayMessenger();
+      await IntercomService.displayCustomMessenger();
       print('Intercom messenger opened successfully');
     } catch (e) {
       print('Error opening Intercom: $e');

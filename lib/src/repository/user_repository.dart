@@ -8,6 +8,7 @@ import '../helpers/helper.dart';
 import '../models/address.dart';
 import '../models/credit_card.dart';
 import '../models/user.dart' as userModel;
+import '../services/intercom_service.dart';
 
 ValueNotifier<userModel.User> currentUser = ValueNotifier(userModel.User());
 
@@ -210,6 +211,13 @@ Future<bool> resetPassword(userModel.User user) async {
 }
 
 Future<void> logout() async {
+  // تسجيل الخروج من Intercom
+  try {
+    await IntercomService.logoutUser();
+  } catch (e) {
+    print('❌ خطأ في تسجيل الخروج من Intercom: $e');
+  }
+  
   currentUser.value = userModel.User();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.remove('current_user');
@@ -222,6 +230,17 @@ Future<void> setCurrentUser(String jsonString) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(
         'current_user', json.encode(json.decode(jsonString)['data']));
+    
+    // تحديث currentUser value
+    currentUser.value = userModel.User.fromJSON(json.decode(jsonString)['data']);
+    currentUser.notifyListeners();
+    
+    // تسجيل المستخدم في Intercom
+    try {
+      await IntercomService.loginUser(currentUser.value);
+    } catch (e) {
+      print('❌ خطأ في تسجيل المستخدم في Intercom: $e');
+    }
   }
 }
 
@@ -279,6 +298,14 @@ Future<userModel.User> update(userModel.User user) async {
   setCurrentUser(response.body);
   currentUser.value =
       userModel.User.fromJSON(json.decode(response.body)['data']);
+  
+  // تحديث بيانات المستخدم في Intercom
+  try {
+    await IntercomService.updateUserData(currentUser.value);
+  } catch (e) {
+    print('❌ خطأ في تحديث بيانات المستخدم في Intercom: $e');
+  }
+  
   return currentUser.value;
 }
 

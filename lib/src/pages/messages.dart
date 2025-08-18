@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
+import '../services/intercom_service.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/chat_controller.dart';
@@ -75,7 +77,16 @@ class _MessagesWidgetState extends StateMVC<MessagesWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(S.of(context).messages, overflow: TextOverflow.fade, maxLines: 1, style: Theme.of(context).textTheme.headlineSmall?.merge(TextStyle(letterSpacing: 1.3))),
-        actions: <Widget>[new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).colorScheme.secondary)],
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.support_agent, color: Theme.of(context).hintColor),
+            onPressed: () {
+              IntercomService.displayCustomMessenger();
+            },
+            tooltip: 'Support Chat',
+          ),
+          new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).colorScheme.secondary)
+        ],
       ),
       body: currentUser.value.apiToken == null ? PermissionDeniedWidget() : ListView(primary: false, children: <Widget>[conversationsList()]),
     );
