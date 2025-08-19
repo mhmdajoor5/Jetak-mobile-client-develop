@@ -1,15 +1,26 @@
+import 'dart:io';
 import 'package:intercom_flutter/intercom_flutter.dart';
 import '../models/user.dart';
 
 class IntercomService {
   static Future<void> loginUser(User user) async {
     try {
+      print('🔄 Intercom: Attempting to login user...');
+      print('🔄 Intercom: User ID: ${user.id}');
+      print('🔄 Intercom: User Name: ${user.name}');
+      print('🔄 Intercom: User Email: ${user.email}');
+      
       if (user.id != null && user.name != null && user.name!.isNotEmpty) {
+        print('🔄 Intercom: Logging in identified user...');
+        
         await Intercom.instance.loginIdentifiedUser(
           userId: user.id!,
           email: user.email ?? '',
           // name: user.name!,
         );
+        
+        print('🔄 Intercom: Updating user data...');
+        
         await Intercom.instance.updateUser(
           email: user.email ?? '',
           name: user.name!,
@@ -22,14 +33,22 @@ class IntercomService {
             'verified_phone': user.verifiedPhone ? 'true' : 'false',
           },
         );
-        print('✅ Intercom: Logged in ${user.name}');
+        
+        print('✅ Intercom: Successfully logged in ${user.name}');
       } else {
+        print('🔄 Intercom: Logging in unidentified user...');
         await Intercom.instance.loginUnidentifiedUser();
         print('⚠️ Intercom: Logged unidentified user');
       }
     } catch (e) {
       print('❌ Intercom login error: $e');
-      await Intercom.instance.loginUnidentifiedUser();
+      print('❌ Intercom login error stack trace: ${e.toString()}');
+      try {
+        await Intercom.instance.loginUnidentifiedUser();
+        print('⚠️ Intercom: Fallback to unidentified user');
+      } catch (fallbackError) {
+        print('❌ Intercom fallback error: $fallbackError');
+      }
     }
   }
 
@@ -80,7 +99,24 @@ class IntercomService {
     } catch (e) {
       print('❌ Intercom custom messenger error: $e');
       // في حالة الخطأ، افتح messenger عادي
-      await Intercom.instance.displayMessenger();
+      try {
+        await Intercom.instance.displayMessenger();
+      } catch (displayError) {
+        print('❌ Intercom display messenger error: $displayError');
+        // إذا فشل كل شيء، حاول إعادة تهيئة Intercom على Android
+        if (Platform.isAndroid) {
+          print('🔄 Attempting to reinitialize Intercom on Android...');
+          try {
+            await Intercom.instance.initialize(
+              'j3he2pue',
+              androidApiKey: 'android_sdk-d8df6307ae07677807b288a2d5138821b8bfe4f9',
+            );
+            await Intercom.instance.displayMessenger();
+          } catch (reinitError) {
+            print('❌ Intercom reinitialization failed: $reinitError');
+          }
+        }
+      }
     }
   }
 

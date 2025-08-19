@@ -59,3 +59,10 @@
     public *** warn(...);
     public *** error(...);
 }
+
+# Intercom ProGuard rules
+-keep class io.intercom.android.sdk.** { *; }
+-keep class io.intercom.android.sdk.identity.** { *; }
+-keep class io.intercom.android.sdk.metrics.** { *; }
+-keep class io.intercom.android.sdk.models.** { *; }
+-keep class io.intercom.android.sdk.utilities.** { *; }

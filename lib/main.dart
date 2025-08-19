@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -50,11 +51,14 @@ Future<void> main() async {
   
   if (appId.isNotEmpty && (iosKey.isNotEmpty || androidKey.isNotEmpty)) {
     try {
-      await Intercom.instance.initialize(
-        appId,
-        iosApiKey: iosKey.isNotEmpty ? iosKey : null,
-        androidApiKey: androidKey.isNotEmpty ? androidKey : null,
-      );
+      // على Android، Intercom مُهيأ بالفعل في Application class
+      if (Platform.isIOS) {
+        await Intercom.instance.initialize(
+          appId,
+          iosApiKey: iosKey.isNotEmpty ? iosKey : null,
+          androidApiKey: androidKey.isNotEmpty ? androidKey : null,
+        );
+      }
       print('✓ Intercom initialized successfully');
     } catch (e) {
       print('✗ Intercom initialization failed: $e');
@@ -109,20 +113,28 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _setupIntercomUser() async {
     try {
+      print('🔄 Setting up Intercom user...');
       final user = userRepo.currentUser.value;
+      print('🔄 Current user: ${user.name} (${user.email}) - ID: ${user.id}');
+      
       if (user.id != null) {
+        print('🔄 User has ID, logging in...');
         await IntercomService.loginUser(user);
       } else {
+        print('🔄 User has no ID, setting up listener...');
         // مراقبة تغييرات المستخدم
         userRepo.currentUser.addListener(() {
           final updatedUser = userRepo.currentUser.value;
+          print('🔄 User updated: ${updatedUser.name} (${updatedUser.email}) - ID: ${updatedUser.id}');
           if (updatedUser.id != null) {
+            print('🔄 User now has ID, logging in...');
             IntercomService.loginUser(updatedUser);
           }
         });
       }
     } catch (e) {
       print('❌ خطأ في إعداد Intercom: $e');
+      print('❌ خطأ في إعداد Intercom stack trace: ${e.toString()}');
     }
   }
 

@@ -9,6 +9,12 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    
+    <!-- Intercom permissions -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
          In most cases you can leave this as-is, but you if you want to provide
@@ -18,10 +24,18 @@
     <application
         android:usesCleartextTraffic="true"
         android:label="Food Delivery App"
-        android:name="${applicationName}"
+        android:name=".IntercomApplication"
         android:icon="@mipmap/launcher_icon">
          <meta-data android:name="com.google.android.geo.API_KEY"
                    android:value="AIzaSyDdyth2EiAjU9m9eE_obC5fnTY1yeVNTJU"/>
+         
+         <!-- Intercom meta-data -->
+         <meta-data
+             android:name="io.intercom.android.sdk.APP_ID"
+             android:value="j3he2pue" />
+         <meta-data
+             android:name="io.intercom.android.sdk.API_KEY"
+             android:value="android_sdk-d8df6307ae07677807b288a2d5138821b8bfe4f9" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

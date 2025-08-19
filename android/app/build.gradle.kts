@@ -97,6 +97,11 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
     
+    // Intercom dependency
+    implementation("io.intercom.android:intercom-sdk:latest.release")
+    // Firebase messaging for push notifications
+    implementation("com.google.firebase:firebase-messaging:23.1.1")
+    
     configurations.all {
         exclude(group = "com.google.android.gms", module = "play-services-safetynet")
     }
