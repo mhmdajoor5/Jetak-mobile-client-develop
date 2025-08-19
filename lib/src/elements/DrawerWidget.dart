@@ -144,7 +144,8 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
   ListTile _buildIntercomTile(BuildContext context, String title, IconData icon) {
     return ListTile(
       onTap: () {
-        IntercomService.displayCustomMessenger();
+        final intercomService = IntercomService();
+        intercomService.openMessenger();
       },
       leading: Icon(icon, color: Theme.of(context).focusColor.withOpacity(1)),
       title: Text(title, style: Theme.of(context).textTheme.titleMedium),

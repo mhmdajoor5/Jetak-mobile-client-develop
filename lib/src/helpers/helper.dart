@@ -715,8 +715,8 @@ class Helper {
   static Future<bool> isIntercomAvailable() async {
     try {
       // محاولة الوصول إلى Intercom instance
-      await IntercomService.displayCustomMessenger();
-      return true;
+      final intercomService = IntercomService();
+      return intercomService.isInitialized;
     } catch (e) {
       print('Intercom is not available: $e');
       return false;
@@ -741,7 +741,8 @@ class Helper {
         return;
       }
       
-      await IntercomService.displayCustomMessenger();
+      final intercomService = IntercomService();
+      await intercomService.openMessenger();
       print('Intercom messenger opened successfully');
     } catch (e) {
       print('Error opening Intercom: $e');

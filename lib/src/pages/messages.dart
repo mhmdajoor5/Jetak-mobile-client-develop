@@ -81,7 +81,7 @@ class _MessagesWidgetState extends StateMVC<MessagesWidget> {
           IconButton(
             icon: Icon(Icons.support_agent, color: Theme.of(context).hintColor),
             onPressed: () {
-              IntercomService.displayCustomMessenger();
+              // IntercomService.displayCustomMessenger();
             },
             tooltip: 'Support Chat',
           ),

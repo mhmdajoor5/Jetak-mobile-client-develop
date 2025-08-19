@@ -213,7 +213,8 @@ Future<bool> resetPassword(userModel.User user) async {
 Future<void> logout() async {
   // تسجيل الخروج من Intercom
   try {
-    await IntercomService.logoutUser();
+    final intercomService = IntercomService();
+    await intercomService.logout();
   } catch (e) {
     print('❌ خطأ في تسجيل الخروج من Intercom: $e');
   }
@@ -237,7 +238,12 @@ Future<void> setCurrentUser(String jsonString) async {
     
     // تسجيل المستخدم في Intercom
     try {
-      await IntercomService.loginUser(currentUser.value);
+      final intercomService = IntercomService();
+      await intercomService.loginUser(
+        userId: currentUser.value.id,
+        email: currentUser.value.email,
+        name: currentUser.value.name,
+      );
     } catch (e) {
       print('❌ خطأ في تسجيل المستخدم في Intercom: $e');
     }
@@ -301,7 +307,12 @@ Future<userModel.User> update(userModel.User user) async {
   
   // تحديث بيانات المستخدم في Intercom
   try {
-    await IntercomService.updateUserData(currentUser.value);
+    final intercomService = IntercomService();
+    await intercomService.loginUser(
+      userId: currentUser.value.id,
+      email: currentUser.value.email,
+      name: currentUser.value.name,
+    );
   } catch (e) {
     print('❌ خطأ في تحديث بيانات المستخدم في Intercom: $e');
   }

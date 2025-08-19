@@ -39,33 +39,36 @@ Future<void> main() async {
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  // Initialize Intercom using configuration values
-  final appId = GlobalConfiguration().getValue("intercom")?["app_id"]?.toString() ?? '';
-  final iosKey = GlobalConfiguration().getValue("intercom")?["ios_api_key"]?.toString() ?? '';
-  final androidKey = GlobalConfiguration().getValue("intercom")?["android_api_key"]?.toString() ?? '';
-  
-  print('Intercom Configuration:');
-  print('  App ID: $appId');
-  print('  iOS Key: ${iosKey.isNotEmpty ? "✓ Set" : "✗ Missing"}');
-  print('  Android Key: ${androidKey.isNotEmpty ? "✓ Set" : "✗ Missing"}');
-  
-  if (appId.isNotEmpty && (iosKey.isNotEmpty || androidKey.isNotEmpty)) {
-    try {
-      // على Android، Intercom مُهيأ بالفعل في Application class
-      if (Platform.isIOS) {
-        await Intercom.instance.initialize(
-          appId,
-          iosApiKey: iosKey.isNotEmpty ? iosKey : null,
-          androidApiKey: androidKey.isNotEmpty ? androidKey : null,
-        );
+  // تهيئة Intercom باستخدام الخدمة المحسنة
+  try {
+    final appId = GlobalConfiguration().getValue("intercom")?["app_id"]?.toString() ?? '';
+    final iosKey = GlobalConfiguration().getValue("intercom")?["ios_api_key"]?.toString() ?? '';
+    final androidKey = GlobalConfiguration().getValue("intercom")?["android_api_key"]?.toString() ?? '';
+    
+    print('Intercom Configuration:');
+    print('  App ID: $appId');
+    print('  iOS Key: $iosKey');
+    print('  Android Key: $androidKey');
+    
+    if (appId.isNotEmpty && (iosKey.isNotEmpty || androidKey.isNotEmpty)) {
+      final intercomService = IntercomService();
+      final success = await intercomService.initialize(
+        appId: appId,
+        iosApiKey: iosKey.isNotEmpty ? iosKey : null,
+        androidApiKey: androidKey.isNotEmpty ? androidKey : null,
+      );
+      
+      if (success) {
+        print('Intercom initialized successfully using service');
+      } else {
+        print('Intercom initialization failed using service');
       }
-      print('✓ Intercom initialized successfully');
-    } catch (e) {
-      print('✗ Intercom initialization failed: $e');
-      // ignore initialization error silently to avoid blocking app start
+    } else {
+      print('Intercom configuration incomplete, skipping initialization');
     }
-  } else {
-    print('✗ Intercom configuration incomplete');
+  } catch (e) {
+    print('Error initializing Intercom: $e');
+    // لا نريد أن نوقف التطبيق إذا فشلت تهيئة Intercom
   }
   
   runApp(MyApp());
@@ -90,14 +93,16 @@ class _MyAppState extends State<MyApp> {
     FirebaseMessaging.instance.getToken().then((token) async {
       if (token != null && token.isNotEmpty) {
         try {
-          await Intercom.instance.sendTokenToIntercom(token);
+          final intercomService = IntercomService();
+          await intercomService.sendTokenToIntercom(token);
         } catch (_) {}
       }
     });
     FirebaseMessaging.instance.getAPNSToken().then((apns) async {
       if (apns != null && apns.isNotEmpty) {
         try {
-          await Intercom.instance.sendTokenToIntercom(apns);
+          final intercomService = IntercomService();
+          await intercomService.sendTokenToIntercom(apns);
         } catch (_) {}
       }
     });
@@ -119,7 +124,12 @@ class _MyAppState extends State<MyApp> {
       
       if (user.id != null) {
         print('🔄 User has ID, logging in...');
-        await IntercomService.loginUser(user);
+        final intercomService = IntercomService();
+        await intercomService.loginUser(
+          userId: user.id,
+          email: user.email,
+          name: user.name,
+        );
       } else {
         print('🔄 User has no ID, setting up listener...');
         // مراقبة تغييرات المستخدم
@@ -128,7 +138,12 @@ class _MyAppState extends State<MyApp> {
           print('🔄 User updated: ${updatedUser.name} (${updatedUser.email}) - ID: ${updatedUser.id}');
           if (updatedUser.id != null) {
             print('🔄 User now has ID, logging in...');
-            IntercomService.loginUser(updatedUser);
+            final intercomService = IntercomService();
+            intercomService.loginUser(
+              userId: updatedUser.id,
+              email: updatedUser.email,
+              name: updatedUser.name,
+            );
           }
         });
       }
@@ -141,7 +156,8 @@ class _MyAppState extends State<MyApp> {
   Future<void> _hideIntercomElements() async {
     try {
       // إخفاء جميع عناصر Intercom عند بدء التطبيق
-      await IntercomService.hideInAppMessages();
+      final intercomService = IntercomService();
+      await intercomService.hideMessenger();
       print('✅ Intercom elements hidden on app start');
     } catch (e) {
       print('❌ خطأ في إخفاء عناصر Intercom: $e');

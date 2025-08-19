@@ -1,142 +1,167 @@
 import 'dart:io';
 import 'package:intercom_flutter/intercom_flutter.dart';
-import '../models/user.dart';
+import 'package:flutter/material.dart';
 
 class IntercomService {
-  static Future<void> loginUser(User user) async {
+  static final IntercomService _instance = IntercomService._internal();
+  factory IntercomService() => _instance;
+  IntercomService._internal();
+
+  bool _isInitialized = false;
+  bool _isUserLoggedIn = false;
+
+  /// تهيئة Intercom مع معالجة الأخطاء
+  Future<bool> initialize({
+    required String appId,
+    String? iosApiKey,
+    String? androidApiKey,
+  }) async {
+    if (_isInitialized) {
+      print('Intercom already initialized');
+      return true;
+    }
+
     try {
-      print('🔄 Intercom: Attempting to login user...');
-      print('🔄 Intercom: User ID: ${user.id}');
-      print('🔄 Intercom: User Name: ${user.name}');
-      print('🔄 Intercom: User Email: ${user.email}');
+      await Intercom.instance.initialize(
+        appId,
+        iosApiKey: iosApiKey,
+        androidApiKey: androidApiKey,
+      );
       
-      if (user.id != null && user.name != null && user.name!.isNotEmpty) {
-        print('🔄 Intercom: Logging in identified user...');
-        
-        await Intercom.instance.loginIdentifiedUser(
-          userId: user.id!,
-          email: user.email ?? '',
-          // name: user.name!,
-        );
-        
-        print('🔄 Intercom: Updating user data...');
-        
-        await Intercom.instance.updateUser(
-          email: user.email ?? '',
-          name: user.name!,
-          phone: user.phone ?? '',
-          company: 'Carry Eats Hub',
-          customAttributes: {
-            'user_id': user.id!,
-            'phone': user.phone ?? '',
-            'address': user.address ?? '',
-            'verified_phone': user.verifiedPhone ? 'true' : 'false',
-          },
-        );
-        
-        print('✅ Intercom: Successfully logged in ${user.name}');
-      } else {
-        print('🔄 Intercom: Logging in unidentified user...');
-        await Intercom.instance.loginUnidentifiedUser();
-        print('⚠️ Intercom: Logged unidentified user');
-      }
-    } catch (e) {
-      print('❌ Intercom login error: $e');
-      print('❌ Intercom login error stack trace: ${e.toString()}');
-      try {
-        await Intercom.instance.loginUnidentifiedUser();
-        print('⚠️ Intercom: Fallback to unidentified user');
-      } catch (fallbackError) {
-        print('❌ Intercom fallback error: $fallbackError');
-      }
-    }
-  }
-
-  static Future<void> logoutUser() async {
-    try {
-      await Intercom.instance.logout();
-      print('✅ Intercom: Logged out');
-    } catch (e) {
-      print('❌ Intercom logout error: $e');
-    }
-  }
-
-  static Future<void> updateUserData(User user) async {
-    try {
-      if (user.id != null && user.name != null) {
-        await Intercom.instance.updateUser(
-          email: user.email ?? '',
-          name: user.name!,
-          phone: user.phone ?? '',
-          company: 'Carry Eats Hub',
-          customAttributes: {
-            'user_id': user.id!,
-            'phone': user.phone ?? '',
-            'address': user.address ?? '',
-            'verified_phone': user.verifiedPhone ? 'true' : 'false',
-          },
-        );
-        print('✅ Intercom: Updated user ${user.name}');
-      }
-    } catch (e) {
-      print('❌ Intercom update user error: $e');
-    }
-  }
-
-  // دالة جديدة لفتح Intercom مع مظهر مخصص
-  static Future<void> displayCustomMessenger() async {
-    try {
-      // إخفاء جميع الإشعارات في التطبيق
-      await Intercom.instance.setInAppMessagesVisibility(IntercomVisibility.gone);
+      _isInitialized = true;
+      print('Intercom initialized successfully');
       
-      // إخفاء شريط التطبيق (App Bar) في Intercom
+      // إخفاء الـ launcher الافتراضي
       await Intercom.instance.setLauncherVisibility(IntercomVisibility.gone);
       
-      // فتح messenger مع إعدادات مخصصة
-      await Intercom.instance.displayMessenger();
-      
-      print('✅ Intercom: Custom messenger displayed with hidden elements');
+      return true;
     } catch (e) {
-      print('❌ Intercom custom messenger error: $e');
-      // في حالة الخطأ، افتح messenger عادي
-      try {
-        await Intercom.instance.displayMessenger();
-      } catch (displayError) {
-        print('❌ Intercom display messenger error: $displayError');
-        // إذا فشل كل شيء، حاول إعادة تهيئة Intercom على Android
-        if (Platform.isAndroid) {
-          print('🔄 Attempting to reinitialize Intercom on Android...');
-          try {
-            await Intercom.instance.initialize(
-              'j3he2pue',
-              androidApiKey: 'android_sdk-d8df6307ae07677807b288a2d5138821b8bfe4f9',
-            );
-            await Intercom.instance.displayMessenger();
-          } catch (reinitError) {
-            print('❌ Intercom reinitialization failed: $reinitError');
-          }
-        }
+      print('Error initializing Intercom: $e');
+      return false;
+    }
+  }
+
+  /// تسجيل المستخدم في Intercom
+  Future<bool> loginUser({
+    String? userId,
+    String? email,
+    String? name,
+  }) async {
+    if (!_isInitialized) {
+      print('Intercom not initialized');
+      return false;
+    }
+
+    try {
+      if (userId != null && userId.isNotEmpty) {
+        await Intercom.instance.loginIdentifiedUser(
+          userId: userId,
+          email: email,
+        );
+      } else if (email != null && email.isNotEmpty) {
+        await Intercom.instance.loginIdentifiedUser(
+          email: email,
+        );
+      } else {
+        await Intercom.instance.loginUnidentifiedUser();
       }
+
+      // تحديث بيانات المستخدم إذا كانت متوفرة
+      if (name != null && name.isNotEmpty) {
+        await Intercom.instance.updateUser(
+          name: name,
+        );
+      }
+
+      _isUserLoggedIn = true;
+      print('User logged in to Intercom successfully');
+      return true;
+    } catch (e) {
+      print('Error logging user to Intercom: $e');
+      return false;
     }
   }
 
-  // دالة لإخفاء جميع الإشعارات في التطبيق
-  static Future<void> hideInAppMessages() async {
+  /// فتح محادثة Intercom
+  Future<void> openMessenger() async {
+    if (!_isInitialized) {
+      print('Intercom not initialized');
+      return;
+    }
+
     try {
-      await Intercom.instance.setInAppMessagesVisibility(IntercomVisibility.gone);
-      print('✅ Intercom: In-app messages hidden');
+      await Intercom.instance.displayMessenger();
     } catch (e) {
-      print('❌ Intercom hide messages error: $e');
+      print('Error opening Intercom messenger: $e');
     }
   }
 
-  // دالة لإظهار الإشعارات في التطبيق
-  static Future<void> showInAppMessages() async {
-    try {
-      await Intercom.instance.setInAppMessagesVisibility(IntercomVisibility.visible);
-      print('✅ Intercom: In-app messages shown');
-    } catch (e) {
-      print('❌ Intercom show messages error: $e');
+  /// إخفاء محادثة Intercom
+  Future<void> hideMessenger() async {
+    if (!_isInitialized) {
+      return;
     }
+
+    try {
+      await Intercom.instance.hideMessenger();
+    } catch (e) {
+      print('Error hiding Intercom messenger: $e');
+    }
+  }
+
+  /// إرسال رسالة إلى Intercom
+  Future<void> sendMessage(String message) async {
+    if (!_isInitialized || !_isUserLoggedIn) {
+      print('Intercom not ready for messaging');
+      return;
+    }
+
+    try {
+      // Intercom Flutter plugin لا يدعم sendMessage مباشرة
+      // بدلاً من ذلك، نفتح المحادثة
+      await Intercom.instance.displayMessenger();
+    } catch (e) {
+      print('Error opening Intercom messenger: $e');
+    }
+  }
+
+  /// إرسال token الإشعارات إلى Intercom
+  Future<void> sendTokenToIntercom(String token) async {
+    if (!_isInitialized) {
+      print('Intercom not initialized');
+      return;
+    }
+
+    try {
+      await Intercom.instance.sendTokenToIntercom(token);
+      print('Token sent to Intercom successfully');
+    } catch (e) {
+      print('Error sending token to Intercom: $e');
+    }
+  }
+
+  /// تسجيل خروج المستخدم من Intercom
+  Future<void> logout() async {
+    if (!_isInitialized) {
+      return;
+    }
+
+    try {
+      await Intercom.instance.logout();
+      _isUserLoggedIn = false;
+      print('User logged out from Intercom');
+    } catch (e) {
+      print('Error logging out from Intercom: $e');
+    }
+  }
+
+  /// التحقق من حالة Intercom
+  bool get isInitialized => _isInitialized;
+  bool get isUserLoggedIn => _isUserLoggedIn;
+
+  /// إعادة تعيين الحالة (للتطوير)
+  void reset() {
+    _isInitialized = false;
+    _isUserLoggedIn = false;
   }
 }

@@ -156,7 +156,8 @@ class _PagesWidgetState extends State<PagesWidget> {
         case 3:
           // فتح Intercom بدلاً من Map
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            IntercomService.displayCustomMessenger();
+            final intercomService = IntercomService();
+            intercomService.openMessenger();
           });
           break;
 

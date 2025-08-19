@@ -37,6 +37,12 @@ android {
         targetSdk = flutter.targetSdkVersion.toInt()
         versionCode = flutter.versionCode.toInt()
         versionName = flutter.versionName
+        
+        // إعدادات إضافية لـ Intercom
+        multiDexEnabled = true
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
     }
 
     signingConfigs {
@@ -59,6 +65,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            
+            // إعدادات إضافية لـ Intercom في الإصدار المطلق
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
+        }
 
 //            isMinifyEnabled = true
 //            isShrinkResources = true
